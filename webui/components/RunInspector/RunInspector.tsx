@@ -195,19 +195,25 @@ function FactoryPanel({ run }: { run: RunDetail }) {
 function DialoguePanel({ run }: { run: RunDetail }) {
   const health = run.dialogueHealth;
   if (!health) return <div className={styles.empty}>No scenes.json yet. Run compile first.</div>;
+  const cleanLines = health.lines.filter((line) => line.flags.length === 0).length;
   return (
     <>
       <p className={styles.note}>
-        Score {health.score} · {health.lineCount} lines · {health.avgWords} avg words · {health.flaggedCount} flagged.
+        Score {health.score} · {health.lineCount} lines · {health.avgWords} avg words · {health.flaggedCount} flagged · {health.occupancyPct}% spoken occupancy.
         This catches tiny slogan lines, prop-label dialogue, mechanic words in mouths, and timing mismatch before video generation.
       </p>
+      <div className={styles.dialogueSummary}>
+        <Metric label="Clean lines" value={`${cleanLines}/${health.lineCount}`} tone={health.flaggedCount ? "warn" : "ok"} />
+        <Metric label="Spoken time" value={`${health.spokenSeconds}s`} />
+        <Metric label="Line windows" value={`${health.availableSeconds}s`} />
+      </div>
       <table className={styles.table}>
         <thead>
           <tr>
             <th>Seq</th>
             <th>Speaker</th>
             <th>Line</th>
-            <th>Timing</th>
+            <th>Speakability</th>
             <th>Flags</th>
           </tr>
         </thead>
@@ -222,7 +228,7 @@ function DialoguePanel({ run }: { run: RunDetail }) {
               </td>
               <td>
                 {line.wordCount}w / {line.seconds}s
-                <small>target {line.minWords}w+</small>
+                <small>target {line.minWords}-{line.maxWords}w · est {line.estimatedSeconds}s · {line.occupancyPct}%</small>
               </td>
               <td>
                 {line.flags.length ? line.flags.map((flag) => <span className={styles.flag} key={flag}>{flag}</span>) : <span className={styles.ok}>clean</span>}

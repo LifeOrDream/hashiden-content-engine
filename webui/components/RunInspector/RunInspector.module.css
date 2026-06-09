@@ -273,6 +273,22 @@
   line-height: 1.55;
 }
 
+.dialogueSummary {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(120px, 1fr));
+  gap: 10px;
+  margin: 0 0 14px;
+}
+
+.dialogueSummary .metric {
+  min-height: 72px;
+  padding: 12px;
+}
+
+.dialogueSummary .metric span {
+  font-size: 1.25rem;
+}
+
 .table {
   width: 100%;
   border-collapse: collapse;
@@ -433,6 +449,10 @@
 
   .costGrid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .dialogueSummary {
+    grid-template-columns: 1fr;
   }
 }
 

@@ -82,6 +82,25 @@ function resolveBlueprint(idArg: string): Blueprint {
   return parseBlueprint(path.join(BLUEPRINTS, hit));
 }
 
+async function parseJsonOrRepair<T>(raw: string, passId: string): Promise<T> {
+  const parsed = parseJsonLoose<T>(raw);
+  if (parsed) return parsed;
+  const repaired = await callLLM(
+    [
+      "Repair this malformed model output into STRICT valid JSON only.",
+      "Do not add new story content. Preserve all fields, dialogue, timestamps, refs, and prompt text exactly where possible.",
+      `Pass id: ${passId}`,
+      "Return ONLY the corrected JSON object, no markdown.",
+      "",
+      raw,
+    ].join("\n"),
+    { temperature: 0.1, json: true },
+  );
+  const repairedParsed = parseJsonLoose<T>(repaired);
+  if (!repairedParsed) throw new Error(`${passId} returned invalid JSON and repair failed`);
+  return repairedParsed;
+}
+
 async function main() {
   const idArg = process.argv[2];
   if (!idArg || idArg.startsWith("--")) {
@@ -148,8 +167,8 @@ async function main() {
       });
       if (pass.kind === "json" && pass.id === "frames") {
         // FRAMES pass: enrich the existing scenes.json with frame plans + the LOOK block.
-        const parsed = parseJsonLoose<any>(out);
-        if (!parsed || !Array.isArray(parsed.sequences)) throw new Error("frames returned no sequences[]");
+        const parsed = await parseJsonOrRepair<any>(out, pass.id);
+        if (!Array.isArray(parsed.sequences)) throw new Error("frames returned no sequences[]");
         const scenesPath = path.join(outDir, "scenes.json");
         if (!fs.existsSync(scenesPath)) throw new Error("frames pass needs scenes.json — run the compile pass first.");
         const screenplay: Screenplay = JSON.parse(fs.readFileSync(scenesPath, "utf8"));
@@ -174,9 +193,9 @@ async function main() {
         console.log(`✓ ${((Date.now() - t0) / 1000).toFixed(1)}s — ${starts} start frames, ${ends} end frames, look ${screenplay.look ? "set" : "MISSING"} → scenes.json`);
       } else if (pass.kind === "json") {
         // COMPILE pass: build the sequence-based scenes.json.
-        const parsed = parseJsonLoose<any>(out);
+        const parsed = await parseJsonOrRepair<any>(out, pass.id);
         const sequences = parsed?.sequences;
-        if (!parsed || !Array.isArray(sequences) || sequences.length === 0) throw new Error("compile returned no sequences[]");
+        if (!Array.isArray(sequences) || sequences.length === 0) throw new Error("compile returned no sequences[]");
         // Flattened per-shot view (assembly/captions + legacy renderer compatibility).
         const shots = sequences.flatMap((q: any, qi: number) =>
           (Array.isArray(q.shots) ? q.shots : []).map((sh: any) => ({

@@ -4,6 +4,7 @@ import { execFileSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 import type { Blueprint, Screenplay, Sequence } from "./types.js";
 import { resolveReferenceAsset } from "../world/assetRegistry.js";
+import { analyzeScreenplayDialogue } from "../../src/content-engine/dialogueQuality.js";
 
 export const RUN_MANIFEST_FILE = "run-manifest.json";
 
@@ -77,6 +78,9 @@ export interface RunQualitySummary {
   dialogueScore?: number;
   flaggedDialogue?: number;
   dialogueLines?: number;
+  spokenSeconds?: number;
+  dialogueAvailableSeconds?: number;
+  dialogueOccupancyPct?: number;
   startFrameCount?: number;
   endFrameCount?: number;
   totalRefs?: number;
@@ -101,8 +105,6 @@ export interface RunManifest {
   costEstimate?: RunCostEstimate;
   quality?: RunQualitySummary;
 }
-
-const WORDS_PER_SEC = 2.3;
 
 function nowIso(): string {
   return new Date().toISOString();
@@ -233,38 +235,6 @@ export function registerFalRequest(outDir: string, request: Omit<RunFalRequestRe
   mutateRunManifest(outDir, (manifest) => {
     manifest.falRequests.push({ ...request, createdAt: nowIso() });
   });
-}
-
-function words(text: string): string[] {
-  return String(text || "").toLowerCase().replace(/[^a-z0-9]+/g, " ").trim().split(" ").filter(Boolean);
-}
-
-function minDialogueWordsForSlot(seconds: number): number {
-  if (seconds < 3) return 0;
-  if (seconds < 5) return 4;
-  return Math.ceil(Math.max(0, seconds - 1.4) * WORDS_PER_SEC * 0.62);
-}
-
-function dialogueQuality(screenplay: Screenplay): Pick<RunQualitySummary, "dialogueScore" | "flaggedDialogue" | "dialogueLines"> {
-  let lines = 0;
-  let flagged = 0;
-  for (const seq of screenplay.sequences || []) {
-    for (const shot of seq.shots || []) {
-      const seconds = Math.max(0, Number(shot.endSec || 0) - Number(shot.startSec || 0));
-      for (const line of shot.dialogue || []) {
-        const count = words(line.line).length;
-        if (count === 0) continue;
-        lines += 1;
-        const estimated = count / WORDS_PER_SEC + 0.5;
-        if (count < minDialogueWordsForSlot(seconds) || estimated > seconds + 0.5) flagged += 1;
-      }
-    }
-  }
-  return {
-    dialogueLines: lines,
-    flaggedDialogue: flagged,
-    dialogueScore: lines ? Math.max(0, Math.round(100 - (flagged / lines) * 45)) : 100,
-  };
 }
 
 function repoRelative(file: string): string {
@@ -410,16 +380,30 @@ export function refreshRunManifestFromScreenplay(outDir: string, screenplay: Scr
     const missingStartFrames = frameSequences.filter((seq) => !seq.startFrame?.prompt).map((seq) => seq.n);
     const missingRefs = frameSequences.filter((seq) => seq.characters?.length && !seq.startFrame?.refs?.length).map((seq) => seq.n);
     const subtitles = writeSubtitleArtifacts(outDir, screenplay);
+    const dialogue = analyzeScreenplayDialogue(screenplay);
+    fs.writeFileSync(path.join(outDir, "dialogue-quality.json"), JSON.stringify(dialogue, null, 2) + "\n", "utf8");
+    const dialogueArtifact: RunArtifactRecord = {
+      kind: "json",
+      label: "Dialogue quality report",
+      path: "dialogue-quality.json",
+      bytes: fs.statSync(path.join(outDir, "dialogue-quality.json")).size,
+      createdAt: nowIso(),
+    };
     manifest.references = refs;
     manifest.subtitles = subtitles;
-    for (const artifact of subtitles) {
+    for (const artifact of [...subtitles, dialogueArtifact]) {
       const existing = manifest.artifacts.find((item) => item.path === artifact.path && item.kind === artifact.kind);
       if (existing) Object.assign(existing, artifact);
       else manifest.artifacts.push(artifact);
     }
     manifest.costEstimate = estimateCost(screenplay, opts.llmCalls || 6);
     manifest.quality = {
-      ...dialogueQuality(screenplay),
+      dialogueLines: dialogue.lineCount,
+      flaggedDialogue: dialogue.flaggedCount,
+      dialogueScore: dialogue.score,
+      spokenSeconds: dialogue.spokenSeconds,
+      dialogueAvailableSeconds: dialogue.availableSeconds,
+      dialogueOccupancyPct: dialogue.occupancyPct,
       startFrameCount: frameSequences.filter((seq) => seq.startFrame?.prompt).length,
       endFrameCount: frameSequences.filter((seq) => seq.endFrame?.prompt).length,
       totalRefs: refs.length,

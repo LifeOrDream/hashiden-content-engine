@@ -3,6 +3,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import type { RunManifest } from "./types";
+import { analyzeScreenplayDialogue } from "../../src/content-engine/dialogueQuality";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -68,7 +69,9 @@ export interface DialogueHealthLine {
   seconds: number;
   wordCount: number;
   minWords: number;
+  maxWords: number;
   estimatedSeconds: number;
+  occupancyPct: number;
   flags: string[];
 }
 
@@ -78,6 +81,9 @@ export interface DialogueHealth {
   avgWords: number;
   flaggedCount: number;
   score: number;
+  spokenSeconds: number;
+  availableSeconds: number;
+  occupancyPct: number;
   lines: DialogueHealthLine[];
 }
 
@@ -241,73 +247,8 @@ export function saveBlueprintDocument(input: BlueprintSaveInput, options: { crea
   return getBlueprintDocument(id);
 }
 
-function words(text: string): string[] {
-  return String(text || "").toLowerCase().replace(/[^a-z0-9]+/g, " ").trim().split(" ").filter(Boolean);
-}
-
-function minDialogueWordsForSlot(seconds: number): number {
-  if (seconds < 3) return 0;
-  if (seconds < 5) return 4;
-  return Math.ceil(Math.max(0, seconds - 1.4) * 2.3 * 0.62);
-}
-
-const dialogueSmells: Array<[RegExp, string]> = [
-  [/^\s*(slow|sealed|yield|faster|mine|locked)\s*[.!?]?\s*$/i, "single-word prop label"],
-  [/\bno yield\b/i, "mechanic phrase"],
-  [/\bno pulse\b/i, "mechanic phrase"],
-  [/\bscreensaver\b/i, "try-hard tech joke"],
-  [/\bvelvet rope\b/i, "launch metaphor"],
-  [/\bfounder'?s table\b/i, "launch metaphor"],
-  [/\bpick up a pickaxe\b/i, "tutorial phrase"],
-  [/\bearn the signal\b/i, "abstract trailer phrase"],
-  [/\bfair launch\b/i, "mechanic phrase"],
-  [/\bpre[- ]?mine\b/i, "mechanic phrase"],
-  [/\binsiders?\b/i, "mechanic phrase"],
-  [/\bemissions?\b/i, "mechanic phrase"],
-  [/\b4[- ]?hour\b/i, "mechanic phrase"],
-  [/\bleaderboard\b/i, "UI/mechanic phrase"],
-  [/\brevolutionary|cutting edge|game changing|seamless|paradigm|world class/i, "pitch-deck smell"],
-];
-
 function analyzeDialogue(scenes: any): DialogueHealth {
-  const lines: DialogueHealthLine[] = [];
-  for (const seq of scenes?.sequences || []) {
-    for (const shot of seq.shots || []) {
-      const seconds = Math.max(0, Number(shot.endSec || 0) - Number(shot.startSec || 0));
-      for (const line of shot.dialogue || []) {
-        const text = String(line.line || "");
-        const wordCount = words(text).length;
-        const minWords = minDialogueWordsForSlot(seconds);
-        const estimatedSeconds = wordCount / 2.3 + 0.5;
-        const flags = dialogueSmells.filter(([pattern]) => pattern.test(text)).map(([, reason]) => reason);
-        if (wordCount > 0 && wordCount < minWords) flags.push(`too short for ${seconds.toFixed(1)}s slot`);
-        if (estimatedSeconds > seconds + 0.5) flags.push(`may not fit ${seconds.toFixed(1)}s slot`);
-        lines.push({
-          sequence: seq.n,
-          shot: shot.n,
-          speaker: String(line.speaker || ""),
-          line: text,
-          delivery: line.delivery,
-          seconds,
-          wordCount,
-          minWords,
-          estimatedSeconds: Number(estimatedSeconds.toFixed(1)),
-          flags,
-        });
-      }
-    }
-  }
-
-  const totalWords = lines.reduce((sum, line) => sum + line.wordCount, 0);
-  const flagged = lines.filter((line) => line.flags.length > 0);
-  return {
-    lineCount: lines.length,
-    totalWords,
-    avgWords: lines.length ? Number((totalWords / lines.length).toFixed(1)) : 0,
-    flaggedCount: flagged.length,
-    score: lines.length ? Math.max(0, Math.round(100 - (flagged.length / lines.length) * 45)) : 100,
-    lines,
-  };
+  return analyzeScreenplayDialogue(scenes);
 }
 
 function summarizeFrames(scenes: any): FrameHealth {

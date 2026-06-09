@@ -100,6 +100,9 @@ export interface RunManifest {
     dialogueScore?: number;
     flaggedDialogue?: number;
     dialogueLines?: number;
+    spokenSeconds?: number;
+    dialogueAvailableSeconds?: number;
+    dialogueOccupancyPct?: number;
     startFrameCount?: number;
     endFrameCount?: number;
     totalRefs?: number;
@@ -130,6 +133,8 @@ export interface DialogueHealthLine {
   wordCount: number;
   minWords: number;
   estimatedSeconds: number;
+  occupancyPct: number;
+  maxWords: number;
   flags: string[];
 }
 
@@ -159,6 +164,9 @@ export interface RunDetail extends RunSummary {
     avgWords: number;
     flaggedCount: number;
     score: number;
+    spokenSeconds: number;
+    availableSeconds: number;
+    occupancyPct: number;
     lines: DialogueHealthLine[];
   };
   frameHealth: null | {
