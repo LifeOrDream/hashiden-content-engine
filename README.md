@@ -1,11 +1,5 @@
 <p align="center">
   <a href="https://www.minebtc.fun/">
-    <img src="src/assets/brand/minebtc-wordmark.png" alt="MineBTC" width="420">
-  </a>
-</p>
-
-<p align="center">
-  <a href="https://www.minebtc.fun/">
     <img src="trailer/assets/reference/minebtc-x-header-1500x500.jpg" alt="MineBTC HashBeasts banner" width="900">
   </a>
 </p>
