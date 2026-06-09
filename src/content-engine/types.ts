@@ -139,7 +139,7 @@ export interface WorldPulse {
 }
 
 export interface IncomingEventLike {
-  kind: "evolution" | "power" | "visual" | "win";
+  kind: "evolution" | "power" | "visual" | "win" | "lead_change";
   event_id?: string;
   mint?: string;
   faction_id?: number;

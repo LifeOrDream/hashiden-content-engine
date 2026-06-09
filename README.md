@@ -24,6 +24,9 @@ The real `.env` has been copied locally for this workspace, but `.env` and gener
 ## Common Commands
 
 ```bash
+# Run the Redis/BullMQ content-engine worker used by MineBtcBackend
+npm run service:worker
+
 # Generate / iterate script passes for trailer 01
 npm run trailer:script -- 01
 
@@ -32,4 +35,18 @@ npm run trailer:generate -- 01
 
 # Canonize a posted video into story memory
 npm run trailer:canonize -- 01 --platform x --url https://x.com/... --video-no 1
+```
+
+## Service Boundary
+
+MineBtcBackend should not import this repo as a local library. The production boundary is a Redis/BullMQ queue:
+
+- Backend owns game state, database reads/writes, budget gates, and persistence.
+- Content engine owns creative planning, director grammar, screenplay/script generation, keyframe prompt generation, trailer pipeline, and media-generation helpers.
+- Queue name defaults to `minebtc-content-engine`; set `CONTENT_ENGINE_QUEUE` in both repos if it changes.
+
+Local dev needs Valkey/Redis running:
+
+```bash
+docker run -d -p 6379:6379 --name valkey valkey/valkey:alpine
 ```

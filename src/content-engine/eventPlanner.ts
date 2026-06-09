@@ -67,6 +67,8 @@ export function beatText(
       return `${faction}'s fighter switched up its ${VISUAL_GROUPS[Math.floor((evt.trait_index ?? 0) / 3)] || "look"}.`;
     case "win":
       return `${faction} just won big in the arena.`;
+    case "lead_change":
+      return `${faction} just took the lead in the country race.`;
     default:
       return `${faction} made a move.`;
   }
