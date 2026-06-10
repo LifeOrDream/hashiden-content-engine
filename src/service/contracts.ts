@@ -55,6 +55,14 @@ export interface WriteScreenplayInput {
 export interface WriteScreenplayResult {
   screenplay: Screenplay | null;
   rawText?: string;
+  /** Post-LLM dialogue lint (score 0-100, flags per line) — production QA. */
+  qualityReport?: {
+    score: number;
+    flaggedCount: number;
+    lineCount: number;
+    occupancyPct: number;
+    retried: boolean;
+  };
 }
 
 export interface WriteSceneScriptInput {
