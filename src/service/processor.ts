@@ -1,4 +1,5 @@
 import {
+  analyzeShotListDialogue,
   beatText,
   buildCharacterReferenceBlock,
   buildDirectorPromptBlock,
@@ -57,13 +58,49 @@ export async function processContentEngineJob<K extends ContentEngineJobKind>(
     case "write_screenplay": {
       const input = payload.input as ContentEngineJobPayload<"write_screenplay">["input"];
       const prompt = buildScreenplayPrompt(input.grounding, input.format);
-      const rawText = await generateText(prompt, { temperature: 0.78, json: true });
-      const screenplay = normalizeScreenplayFromRawText(
-        rawText,
-        input.grounding,
-        input.format,
-      );
-      return { screenplay, rawText } as ContentEngineJobResultMap[K];
+      const minScore = Math.max(0, Number(process.env.CONTENT_ENGINE_DIALOGUE_MIN_SCORE || 70));
+
+      // Post-LLM dialogue lint + ONE feedback retry. The prompt carries a
+      // quality gate, but a gate the model self-administers is not a lint:
+      // banned pitch phrases / mechanic words / timing misfits still slip
+      // through. This is the same machinery the trailer pipeline uses,
+      // applied to the production path.
+      const writeOnce = async (extraFeedback?: string) => {
+        const fullPrompt = extraFeedback ? `${prompt}\n\n${extraFeedback}` : prompt;
+        const rawText = await generateText(fullPrompt, { temperature: 0.78, json: true });
+        const screenplay = normalizeScreenplayFromRawText(rawText, input.grounding, input.format);
+        const report = screenplay ? analyzeShotListDialogue((screenplay as any).shots || []) : null;
+        return { rawText, screenplay, report };
+      };
+
+      let attempt = await writeOnce();
+      let retried = false;
+      if (attempt.screenplay && attempt.report && attempt.report.score < minScore && attempt.report.flaggedCount > 0) {
+        const worst = attempt.report.lines
+          .filter((l) => l.flags.length > 0)
+          .slice(0, 8)
+          .map((l) => `- shot ${l.shot} ${l.speaker}: "${l.line}" → ${l.flags.join("; ")}`)
+          .join("\n");
+        const feedback =
+          `REVISION PASS — your previous draft scored ${attempt.report.score}/100 on the dialogue lint. ` +
+          `Rewrite the screenplay fixing EVERY flagged line below (keep structure, casting and beats; only repair the dialogue):\n${worst}`;
+        const second = await writeOnce(feedback);
+        retried = true;
+        // keep the better of the two drafts
+        if (second.screenplay && second.report && second.report.score >= (attempt.report?.score ?? 0)) {
+          attempt = second;
+        }
+      }
+      const qualityReport = attempt.report
+        ? {
+            score: attempt.report.score,
+            flaggedCount: attempt.report.flaggedCount,
+            lineCount: attempt.report.lineCount,
+            occupancyPct: attempt.report.occupancyPct,
+            retried,
+          }
+        : undefined;
+      return { screenplay: attempt.screenplay, rawText: attempt.rawText, qualityReport } as ContentEngineJobResultMap[K];
     }
     case "write_scene_script": {
       const input = payload.input as ContentEngineJobPayload<"write_scene_script">["input"];

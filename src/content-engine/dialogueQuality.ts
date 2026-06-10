@@ -205,3 +205,45 @@ export function analyzeScreenplayDialogue(screenplay: any): DialogueQualityRepor
     lines,
   };
 }
+
+/**
+ * Analyze the PRODUCTION reel screenplay shape (flat shots[] with a single
+ * optional dialogue line + durationSec) — the service-mode `write_screenplay`
+ * output. The trailer shape (sequences[].shots[].dialogue[]) is handled by
+ * analyzeScreenplayDialogue above.
+ */
+export function analyzeShotListDialogue(
+  shots: Array<{ n?: number | string; durationSec?: number; dialogue?: { speaker?: string; line?: string; emotion?: string } | null }>,
+): DialogueQualityReport {
+  const lines: DialogueQualityLine[] = [];
+  for (const shot of shots || []) {
+    const d = shot?.dialogue;
+    if (!d?.line) continue;
+    const line = analyzeDialogueLine({
+      sequence: 1,
+      shot: shot?.n ?? 0,
+      speaker: d.speaker || "",
+      line: d.line,
+      delivery: d.emotion,
+      seconds: Math.max(0, Number(shot?.durationSec || 0)),
+    });
+    if (line.wordCount > 0) lines.push(line);
+  }
+  const totalWords = lines.reduce((sum, line) => sum + line.wordCount, 0);
+  const flagged = lines.filter((line) => line.flags.length > 0);
+  const spokenSeconds = lines.reduce((sum, line) => sum + line.estimatedSeconds, 0);
+  const availableSeconds = lines.reduce((sum, line) => sum + line.seconds, 0);
+  const severePenalty = flagged.reduce((sum, line) => sum + Math.min(18, line.flags.length * 7), 0);
+  const score = lines.length ? Math.max(0, Math.round(100 - severePenalty / lines.length)) : 100;
+  return {
+    lineCount: lines.length,
+    totalWords,
+    avgWords: lines.length ? Number((totalWords / lines.length).toFixed(1)) : 0,
+    flaggedCount: flagged.length,
+    score,
+    spokenSeconds: Number(spokenSeconds.toFixed(1)),
+    availableSeconds: Number(availableSeconds.toFixed(1)),
+    occupancyPct: availableSeconds > 0 ? Math.round((spokenSeconds / availableSeconds) * 100) : 0,
+    lines,
+  };
+}
