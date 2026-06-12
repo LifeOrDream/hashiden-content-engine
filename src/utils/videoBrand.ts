@@ -79,9 +79,26 @@ export async function brandVideo(input: Buffer): Promise<Buffer> {
 
     // Scale the badge to WIDTH_PCT of the main video width (aspect-locked), then
     // overlay it centered horizontally at TOP_PCT down from the top.
+    //
+    // NOTE: this used `scale2ref`, but on ffmpeg 7.1+ the filter's ref-
+    // passthrough pad can EOF before emitting a single frame — ffmpeg exits 0
+    // with an AUDIO-ONLY file (video:0KiB), silently destroying the clip
+    // (scale2ref is deprecated in 7.x and removed in 8). So: probe the main
+    // video's width up front and scale the badge with a plain `scale`.
+    const { stdout: probedW } = await execFileP("ffprobe", [
+      "-v", "error", "-select_streams", "v:0",
+      "-show_entries", "stream=width", "-of", "default=nokey=1:noprint_wrappers=1", inPath,
+    ]);
+    const mainW = Number(String(probedW).trim());
+    if (!Number.isFinite(mainW) || mainW <= 0) {
+      logger.warning("video-brand: could not probe video width - skipping branding");
+      return input;
+    }
+    const badgeW = Math.max(2, Math.round((mainW * WIDTH_PCT) / 2) * 2);
+    const badgeH = Math.max(2, Math.round((badgeW * BADGE_H) / BADGE_W / 2) * 2);
     const filter =
-      `[1:v][0:v]scale2ref=w='main_w*${WIDTH_PCT}':h='main_w*${WIDTH_PCT}*${BADGE_H}/${BADGE_W}'[bdg][vid];` +
-      `[vid][bdg]overlay=x='(W-w)/2':y='H*${TOP_PCT}':format=auto[outv]`;
+      `[1:v]scale=${badgeW}:${badgeH}[bdg];` +
+      `[0:v][bdg]overlay=x='(W-w)/2':y='H*${TOP_PCT}':format=auto[outv]`;
 
     await execFileP(
       "ffmpeg",
