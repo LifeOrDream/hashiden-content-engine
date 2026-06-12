@@ -15,6 +15,15 @@
  *   reads differently from a stoic mage's "win",
  * - power animations are flavored by the mutated power-trait index.
  *
+ * Phase B/C additions:
+ * - EVOLUTION STAGE drives the performance (src/world/progression.ts): a Pup
+ *   wrestles an oversized tool and over-celebrates; an Ascended barely moves
+ *   and barely acknowledges victory; losses scale puppy-despair →
+ *   wounded-commander pride.
+ * - An optional EMOTIONAL ARC directive ("starts dejected, spots the ore vein,
+ *   ends determined") threads through the strip — gated to higher-stage beasts
+ *   (stage >= 4) via emotionalArcDirective.
+ *
  * Stays in the backend: queue dispatch + budget gating, DDB persistence of
  * animation_urls, metadata JSON refresh, socket emission.
  */
@@ -27,6 +36,13 @@ import { stripToTransparentApng } from "../utils/animationAssembly.js";
 import { logger } from "../utils/logger.js";
 import { resolveHashBeastTraits } from "../prompts/index.js";
 import { countryBible, MINING_TOOL_BY_CODE } from "../world/bible.js";
+import {
+  normalizeStage,
+  stagePerformance,
+  techniqueFor,
+  type NamedTechnique,
+} from "../world/progression.js";
+import { emotionalArcDirective } from "./moments.js";
 import { decodeDNA } from "./dna.js";
 import type { NftBeastInput } from "./types.js";
 import {
@@ -63,6 +79,8 @@ export const STATE_ACTION: Record<StateLoop, string> = {
 export const MINING_TOOL: Record<string, string> = MINING_TOOL_BY_CODE;
 
 // Power-move flavor by mutated trait index (Attack, Defense, Speed, Magic, Luck …).
+// Generic fallback only — power clips now prefer the NAMED country × lane
+// technique table in src/world/progression.ts (see powerMoveFor).
 const POWER_MOVES = [
   "unleashing a devastating melee power strike",
   "raising a burst of defensive energy shielding",
@@ -77,6 +95,22 @@ export function powerMove(traitIndex?: number): string {
   return POWER_MOVES[i];
 }
 
+/**
+ * Named-technique power action (B4): the clip renders the country × lane
+ * signature move's VISUAL GRAMMAR. The technique NAME never enters the image
+ * prompt (no-readable-text rule) — it travels in job results as techniqueUsed.
+ */
+export function powerMoveFor(
+  p: BeastProfile,
+  traitIndex?: number,
+): { action: string; technique: NamedTechnique } {
+  const technique = techniqueFor(p.factionId, p.isWizard, traitIndex ?? 0);
+  return {
+    technique,
+    action: `unleashing its signature ${p.factionName} power move — ${technique.visualGrammar}`,
+  };
+}
+
 // ---------------------------------------------------------------------------
 // Beast profile (country + wizard/muggle) resolution
 // ---------------------------------------------------------------------------
@@ -84,16 +118,20 @@ export function powerMove(traitIndex?: number): string {
 export interface BeastProfile {
   isWizard: boolean;
   occupation: string;
+  factionId: number;
   factionName: string;
   factionCode: string;
+  /** Evolution stage 0-7 (DNA first, snapshot fallback) — drives performance. */
+  evolutionStage: number;
 }
 
-/** Resolve country + wizard/muggle flavor from DNA (best-effort). */
+/** Resolve country + wizard/muggle + stage flavor from DNA (best-effort). */
 export function resolveBeastProfile(beast: NftBeastInput): BeastProfile {
   const fid = beast.factionId ?? 0;
   const country = countryBible(fid);
   let isWizard = String(beast.storagePath || "").includes("/wand"); // heuristic fallback
   let occupation = "";
+  let evolutionStage = normalizeStage(beast.evolutionStage ?? 0);
   try {
     if (beast.dna) {
       const d = decodeDNA(beast.dna);
@@ -106,6 +144,7 @@ export function resolveBeastProfile(beast: NftBeastInput): BeastProfile {
       );
       isWizard = r.type.isWizard;
       occupation = r.type.occupation;
+      evolutionStage = normalizeStage(d.evolution);
     }
   } catch {
     /* keep heuristic */
@@ -113,22 +152,30 @@ export function resolveBeastProfile(beast: NftBeastInput): BeastProfile {
   return {
     isWizard,
     occupation,
+    factionId: fid,
     factionName: country?.country || `Faction ${fid}`,
     factionCode: country?.code || "usa",
+    evolutionStage,
   };
 }
 
-/** Country + muggle/wizard flavored action for a STATE loop. */
+/**
+ * Country + muggle/wizard + STAGE flavored action for a STATE loop. The stage
+ * band performance (progression.ts) makes a Pup's win read as over-celebration
+ * zoomies while an Ascended's win is a slow blink and a single aura flare.
+ */
 export function stateActionFor(state: StateLoop, p: BeastProfile): string {
+  const performance = stagePerformance(p.evolutionStage, state);
   if (state === "mining") {
-    return p.isWizard
+    const base = p.isWizard
       ? `magically MINING glowing crypto-ore — channeling crackling arcane spell energy from its paws to crack the ore open, ${p.factionName} sorcery style, NO pickaxe`
       : `MINING glowing crypto-ore with ${MINING_TOOL[p.factionCode] || "a sturdy pickaxe"} — swinging it at the ore with focused ${p.factionName} grit`;
+    return `${base}. Stage performance: ${performance}`;
   }
   if (state === "win") {
-    return `CELEBRATING A VICTORY — proud ${p.factionName} triumphant cheer, arms/paws thrown up, hyped winner energy`;
+    return `CELEBRATING A VICTORY — proud ${p.factionName} triumphant cheer. Stage performance: ${performance}`;
   }
-  return `REELING FROM A LOSS — slumping, deflated, dejected, the ${p.factionName} sting of defeat`;
+  return `REELING FROM A LOSS — the ${p.factionName} sting of defeat. Stage performance: ${performance}`;
 }
 
 // ---------------------------------------------------------------------------
@@ -155,10 +202,11 @@ export function personalityDirective(beast: NftBeastInput): string {
   return `This character's personality — ${bits.join("; ")}. Make the body language, posture, gestures, energy and facial expression strongly express THIS personality so the performance feels unique to this character, not generic.`;
 }
 
-export function buildStripPrompt(action: string, persona: string): string {
+export function buildStripPrompt(action: string, persona: string, extraDirective = ""): string {
   return [
     `Render a single horizontal STRIP of exactly ${FRAME_COUNT} animation keyframes of THIS SAME character, ${action}.`,
     persona,
+    extraDirective,
     `The ${FRAME_COUNT} frames read left-to-right as one smooth animation loop; the pose progresses a little each frame. In EVERY frame the character is the SAME size and LARGE — it fills most of the frame's height, centered, with only a small margin. Frames evenly spaced, equal-width cells, full body never cropped.`,
     `Keep the character's identity, face, colors, markings, gear and pixel-art style IDENTICAL to the attached reference(s). Exactly ONE character per frame — never duplicate, overlap or ghost it.`,
     `ABSOLUTELY NO text, words, letters, labels, captions, logos, brand names, network names, signs, banners, flags-on-poles, UI, frame numbers, borders, dividers, hashtags or symbols anywhere in the image.`,
@@ -180,6 +228,7 @@ export function buildStripPrompt(action: string, persona: string): string {
 export async function generateStrip(
   beast: NftBeastInput,
   action: string,
+  extraDirective = "",
 ): Promise<{ buffer: Buffer; url: string; model?: string; requestId?: string } | null> {
   const fullBody = beast.assetUrls?.fullBody || beast.assetUrls?.dp;
   const dp = beast.assetUrls?.dp || fullBody;
@@ -192,7 +241,7 @@ export async function generateStrip(
     return null;
   }
 
-  const prompt = buildStripPrompt(action, personalityDirective(beast));
+  const prompt = buildStripPrompt(action, personalityDirective(beast), extraDirective);
   for (let attempt = 0; attempt < 2; attempt++) {
     try {
       const strip = await generateImageEditFromBuffers(prompt, refs, {
@@ -235,6 +284,17 @@ export interface NftStateAnimationsInput {
   /** Also produce the power animation for this trait index. */
   includePower?: boolean;
   traitIndex?: number;
+  /**
+   * Technique names this beast has already performed (backend-owned memory).
+   * When present, the result's techniqueUsed.isDebut is computed against it.
+   */
+  knownTechniques?: string[];
+  /**
+   * Optional emotional arc for the strips ("starts dejected, spots the ore
+   * vein, ends determined"). Gated to higher-stage beasts (stage >= 4) —
+   * silently ignored below that band.
+   */
+  arc?: string;
 }
 
 export interface NftStateAnimationsResult {
@@ -242,6 +302,11 @@ export interface NftStateAnimationsResult {
   /** Which loops were successfully produced ("mining" | "win" | "lose" | "power"). */
   produced: string[];
   artifacts: NftArtifact[];
+  /**
+   * The named country × lane technique the power clip rendered (when
+   * includePower). isDebut is set only when the caller passed knownTechniques.
+   */
+  techniqueUsed?: { name: string; isDebut?: boolean };
 }
 
 /**
@@ -258,13 +323,14 @@ export async function generateStateAnimations(
   const states = input.states && input.states.length > 0 ? input.states : STATE_LOOPS;
   const profile = resolveBeastProfile(beast);
   const basePath = beast.storagePath || `misc/${beast.mint}`;
+  const arcDirective = emotionalArcDirective(input.arc, profile.evolutionStage);
 
   const artifacts: NftArtifact[] = [];
   const produced: string[] = [];
 
   for (const state of states) {
     try {
-      const strip = await generateStrip(beast, stateActionFor(state, profile));
+      const strip = await generateStrip(beast, stateActionFor(state, profile), arcDirective);
       if (!strip) continue;
       const apng = await assembleLoop(strip.buffer, true);
       artifacts.push(
@@ -283,9 +349,11 @@ export async function generateStateAnimations(
     }
   }
 
+  let techniqueUsed: { name: string; isDebut?: boolean } | undefined;
   if (input.includePower) {
     try {
-      const strip = await generateStrip(beast, powerMove(input.traitIndex));
+      const { action, technique } = powerMoveFor(profile, input.traitIndex);
+      const strip = await generateStrip(beast, action);
       if (strip) {
         const apng = await assembleLoop(strip.buffer, true);
         artifacts.push(
@@ -299,6 +367,12 @@ export async function generateStateAnimations(
           }),
         );
         produced.push("power");
+        techniqueUsed = {
+          name: technique.name,
+          isDebut: Array.isArray(input.knownTechniques)
+            ? !input.knownTechniques.includes(technique.name)
+            : undefined,
+        };
       }
     } catch (e: any) {
       logger.warning(`anim: power animation failed: ${e?.message || e}`);
@@ -313,5 +387,5 @@ export async function generateStateAnimations(
     );
   }
 
-  return { mint: beast.mint, produced, artifacts };
+  return { mint: beast.mint, produced, artifacts, ...(techniqueUsed ? { techniqueUsed } : {}) };
 }

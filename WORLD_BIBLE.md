@@ -160,15 +160,50 @@ locations stays in `trailer/world/locationRegistry.ts`.
 
 ---
 
+## Progression grammar (`src/world/progression.ts`)
+
+The canonical 8-stage growth ladder (DNA evolution 0-7):
+
+**Pup · Initiate · Operative · Veteran · Elite · Commander · Legend · Ascended**
+
+Each stage carries aura escalation tokens (size, color temperature, particle
+density, ground effect). Each stage STEP has one canonical ceremony name —
+never rename on any surface:
+
+| To stage | Ceremony |
+|----------|----------|
+| 1 Initiate | The First Spark |
+| 2 Operative | The Tool Bond |
+| 3 Veteran | The Scar Ceremony |
+| 4 Elite | The Crown of Sparks |
+| 5 Commander | The Banner Rising |
+| 6 Legend | The Myth Forging |
+| 7 Ascended | The Ascension |
+
+Evolution renders as a 3-beat ceremony — **CHARGE → BURST → REVEAL**
+(anticipation / whiteout-morph / signature-pose + aura-settle) — modulated by
+the country's powerStyle grammar (USA gold ticker-ribbons, China jade rings,
+Russia frost pressure…). Performance bands (`pup` 0-1, `soldier` 2-3, `elite`
+4-5, `ascendant` 6-7) rewrite state-loop acting: Pups over-celebrate with
+oversized tools; Ascended beasts barely acknowledge victory.
+
+Every country × lane (wizard/muggle) owns **named techniques** (e.g. USA
+wizard "Ticker-Ribbon Time-Stop", Russia muggle "Sledge Winter") in
+`TECHNIQUES` — names live on text surfaces and debut records only, NEVER
+inside generated images; image prompts use only the visual grammar.
+
+---
+
 ## Who imports what
 
 | Consumer | Pulls from the bible |
 |----------|----------------------|
 | `src/prompts/factions/*.prompts.ts` | full faction identity via `legacyFactionBlock(id)` — leader, lore, palette, visual identity |
 | `src/nft-pipeline/voice.ts` | `FACTION_VOICE_HINTS`, leader catchphrase previews, country codes |
-| `src/nft-pipeline/stateAnimations.ts` | `MINING_TOOL_BY_CODE`, country names/codes |
+| `src/nft-pipeline/stateAnimations.ts` | `MINING_TOOL_BY_CODE`, country names/codes; stage performance + named techniques via `progression.ts` |
 | `src/nft-pipeline/mintAssets.ts` | `FACTION_CINEMATIC_ENVIRONMENTS` (ladder rung 3), country codes |
-| `src/nft-pipeline/mutationContent.ts` | country names |
+| `src/nft-pipeline/mutationContent.ts` | country names; evolution ceremony + techniques via `progression.ts` |
+| `src/nft-pipeline/moments.ts` | rivalry map (`rivals` edges), country names; performance bands via `progression.ts` |
 | `src/content-engine/fixtures.ts` | USA leader name + catchphrase |
 | `trailer/style/castCanon.ts` | `CAST_CANON` (re-export) |
 | `trailer/world/countryCastRegistry.ts` | `COUNTRY_CHARACTER_PROFILES` (re-export) |

@@ -24,6 +24,7 @@ import { generateText, parseJsonLoose } from "./llm.js";
 import { generateMintAssets, type NftProgressFn } from "../nft-pipeline/mintAssets.js";
 import { generateStateAnimations } from "../nft-pipeline/stateAnimations.js";
 import { generateMutationContent } from "../nft-pipeline/mutationContent.js";
+import { generateMomentContent } from "../nft-pipeline/momentContent.js";
 import { generateCycleSummary } from "../nft-pipeline/cycleSummary.js";
 
 export interface ProcessJobOptions {
@@ -163,6 +164,10 @@ export async function processContentEngineJob<K extends ContentEngineJobKind>(
     case "nft.mutation_content": {
       const input = payload.input as ContentEngineJobPayload<"nft.mutation_content">["input"];
       return (await generateMutationContent(input)) as ContentEngineJobResultMap[K];
+    }
+    case "nft.moment_content": {
+      const input = payload.input as ContentEngineJobPayload<"nft.moment_content">["input"];
+      return (await generateMomentContent(input)) as ContentEngineJobResultMap[K];
     }
     case "nft.cycle_summary": {
       const input = payload.input as ContentEngineJobPayload<"nft.cycle_summary">["input"];

@@ -20,6 +20,10 @@ import type {
   NftMutationContentResult,
 } from "../nft-pipeline/mutationContent.js";
 import type {
+  NftMomentContentInput,
+  NftMomentContentResult,
+} from "../nft-pipeline/momentContent.js";
+import type {
   NftCycleSummaryInput,
   NftCycleSummaryResult,
 } from "../nft-pipeline/cycleSummary.js";
@@ -43,6 +47,9 @@ export type ContentEngineJobKind =
   | "nft.mint_assets"
   | "nft.state_animations"
   | "nft.mutation_content"
+  // Extended moment vocabulary (first-win, streaks, revenge, lootbox drama…)
+  // — budget-gate dispatch EXACTLY like nft.mutation_content.
+  | "nft.moment_content"
   | "nft.cycle_summary";
 
 export interface PlanEventInput {
@@ -133,6 +140,7 @@ export interface ContentEngineJobPayloadMap {
   "nft.mint_assets": NftMintAssetsInput;
   "nft.state_animations": NftStateAnimationsInput;
   "nft.mutation_content": NftMutationContentInput;
+  "nft.moment_content": NftMomentContentInput;
   "nft.cycle_summary": NftCycleSummaryInput;
 }
 
@@ -149,6 +157,7 @@ export interface ContentEngineJobResultMap {
   "nft.mint_assets": NftMintAssetsResult;
   "nft.state_animations": NftStateAnimationsResult;
   "nft.mutation_content": NftMutationContentResult;
+  "nft.moment_content": NftMomentContentResult;
   "nft.cycle_summary": NftCycleSummaryResult;
 }
 

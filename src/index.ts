@@ -8,3 +8,6 @@ export * as hashbeastPrompts from "./prompts/index.js";
 // palettes, voices, mining tools, locations, rivalries, show cast, and the
 // style elevation ladder. Import canon from here, never redefine it locally.
 export * as worldBible from "./world/bible.js";
+// PROGRESSION GRAMMAR — the canonical 8-stage ladder: transition ceremonies,
+// aura escalation, per-stage-band performance, named country × lane techniques.
+export * as worldProgression from "./world/progression.js";

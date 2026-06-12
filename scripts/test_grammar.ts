@@ -1,0 +1,284 @@
+/**
+ * Progression + moment grammar acceptance tests (Phases B+C).
+ *
+ * Cheap and deterministic: pure prompt-builder assertions, NO network, NO
+ * generation spend. Run via `npm run test:grammar` (part of check:oss).
+ *
+ * Proves:
+ *  (i)   stage-2 vs stage-5 evolution ceremonies differ materially
+ *        (different canonical names, aura tokens, beat text),
+ *  (ii)  two countries produce different aura language,
+ *  (iii) first-win vs streak-win vs revenge-win produce different dialogue
+ *        directives + body-language tokens for the SAME beast,
+ *  plus: named-technique determinism/coverage, stage-aware state performance,
+ *        emotional-arc gating, rivalry continuity, moment derivation
+ *        precedence, and a banned-lexicon sweep over every static grammar
+ *        string.
+ */
+import {
+  PROGRESSION_STAGES,
+  STAGE_TRANSITIONS,
+  TECHNIQUES,
+  allTechniqueNames,
+  auraTokens,
+  countryAuraFlavor,
+  evolutionCeremony,
+  performanceBand,
+  stagePerformance,
+  stageTransition,
+  techniqueFor,
+} from "../src/world/progression.js";
+import {
+  ALL_MOMENT_TYPES,
+  buildMomentDialoguePrompt,
+  deriveMoment,
+  emotionalArcDirective,
+  lootboxRollNearMiss,
+  lootboxRollWon,
+  momentGrammar,
+  rivalEdgeFor,
+  rivalryBlock,
+} from "../src/nft-pipeline/moments.js";
+import {
+  evolutionCeremonyAction,
+  transitionAction,
+  transitionTechnique,
+  buildDialoguePrompt,
+} from "../src/nft-pipeline/mutationContent.js";
+import { stateActionFor, type BeastProfile } from "../src/nft-pipeline/stateAnimations.js";
+import { dialogueSmells } from "../src/content-engine/dialogueQuality.js";
+import type { NftBeastInput } from "../src/nft-pipeline/types.js";
+
+let failures = 0;
+let passes = 0;
+
+function check(name: string, cond: boolean, detail = ""): void {
+  if (cond) {
+    passes += 1;
+    console.log(`  ✓ ${name}`);
+  } else {
+    failures += 1;
+    console.error(`  ✗ ${name}${detail ? ` — ${detail}` : ""}`);
+  }
+}
+
+function profileFor(stage: number, factionId = 0, isWizard = false): BeastProfile {
+  const names: Record<number, [string, string]> = {
+    0: ["USA", "usa"],
+    1: ["China", "china"],
+    2: ["Russia", "russia"],
+  };
+  const [factionName, factionCode] = names[factionId] || ["USA", "usa"];
+  return { isWizard, occupation: "", factionId, factionName, factionCode, evolutionStage: stage };
+}
+
+const beast: NftBeastInput = {
+  mint: "TestMint1111111111111111111111111111111111",
+  factionId: 0,
+  personality: { archetype: "cocky brawler", tone: "loud", motivation: "glory" },
+};
+
+// ─── Structure sanity ────────────────────────────────────────────────────────
+console.log("\nB1 · stages + transitions");
+check("8 canonical stages", PROGRESSION_STAGES.length === 8);
+check(
+  "stage names canon",
+  PROGRESSION_STAGES.map((s) => s.name).join(",") ===
+    "Pup,Initiate,Operative,Veteran,Elite,Commander,Legend,Ascended",
+);
+check("7 transitions", STAGE_TRANSITIONS.length === 7);
+check(
+  "every transition has a unique canonical name",
+  new Set(STAGE_TRANSITIONS.map((t) => t.name)).size === 7,
+);
+check(
+  "aura tokens escalate (every stage distinct)",
+  new Set(PROGRESSION_STAGES.map((s) => auraTokens(s.stage))).size === 8,
+);
+
+// ─── (i) stage-2 vs stage-5 evolution ceremonies differ materially ──────────
+console.log("\nB2 · evolution ceremony (stage-2 vs stage-5)");
+const evoTo2 = evolutionCeremonyAction(profileFor(1), 2, 1); // 1 → 2
+const evoTo5 = evolutionCeremonyAction(profileFor(4), 5, 4); // 4 → 5
+check("ceremony prompts differ", evoTo2 !== evoTo5);
+check(
+  "different aura tokens (stage 2 sheath vs stage 5 banner)",
+  evoTo2.includes("close-fitting aura sheath") && evoTo5.includes("room-filling banner of aura"),
+);
+check(
+  "different transition canon (Tool Bond silhouette vs Banner Rising silhouette)",
+  evoTo2.includes(stageTransition(2).silhouetteChange) &&
+    evoTo5.includes(stageTransition(5).silhouetteChange) &&
+    stageTransition(2).name !== stageTransition(5).name,
+);
+for (const [label, txt] of [
+  ["stage-2", evoTo2],
+  ["stage-5", evoTo5],
+] as const) {
+  check(
+    `${label} ceremony has all 3 beats (CHARGE/BURST/REVEAL)`,
+    txt.includes("CHARGE") && txt.includes("BURST") && txt.includes("REVEAL"),
+  );
+}
+check(
+  "ceremony names never enter image prompts (text-free rule)",
+  !evoTo2.includes(stageTransition(2).name) && !evoTo5.includes(stageTransition(5).name),
+);
+check(
+  "transitionAction(evolution) routes through the ceremony",
+  transitionAction("evolution", profileFor(1), 2, { fromStage: 1 }) === evoTo2,
+);
+
+// ─── (ii) two countries → different aura language ────────────────────────────
+console.log("\nB1 · country aura modulation");
+const usaAura = countryAuraFlavor(0);
+const russiaAura = countryAuraFlavor(2);
+check("USA vs Russia aura language differs", usaAura !== russiaAura);
+check("USA aura speaks ticker-ribbon gold", /ticker/i.test(usaAura));
+check("Russia aura speaks frost pressure", /frost/i.test(russiaAura));
+check("China aura speaks jade rings", /jade/i.test(countryAuraFlavor(1)));
+const usaCeremony = evolutionCeremony(0, 1, 2).map((b) => b.action).join(" ");
+const ruCeremony = evolutionCeremony(2, 1, 2).map((b) => b.action).join(" ");
+check("same transition, different countries → different ceremonies", usaCeremony !== ruCeremony);
+
+// ─── B3 · stage-aware performance ────────────────────────────────────────────
+console.log("\nB3 · stage-aware state performance");
+check("bands: 0→pup, 3→soldier, 5→elite, 7→ascendant",
+  performanceBand(0) === "pup" && performanceBand(3) === "soldier" &&
+  performanceBand(5) === "elite" && performanceBand(7) === "ascendant");
+const pupMine = stateActionFor("mining", profileFor(0));
+const godMine = stateActionFor("mining", profileFor(7));
+check("pup vs ascended mining differ", pupMine !== godMine);
+check("pup mining is clumsy + oversized tool", /oversized tool/.test(pupMine) && /clumsy/i.test(pupMine));
+check("ascended mining is minimal godlike gesture", /godlike gestures/.test(godMine));
+const pupWin = stateActionFor("win", profileFor(0));
+const godWin = stateActionFor("win", profileFor(7));
+check("pup over-celebrates; ascended barely acknowledges",
+  /OVER-celebration/.test(pupWin) && /barely acknowledges victory/.test(godWin));
+const pupLose = stateActionFor("lose", profileFor(1));
+const eliteLose = stateActionFor("lose", profileFor(5));
+check("loss scales puppy-despair → wounded-commander pride",
+  /puppy despair/.test(pupLose) && /wounded-commander pride/.test(eliteLose));
+check("stage performance covers all 4 bands × 3 states distinctly",
+  new Set(
+    (["pup", "soldier", "elite", "ascendant"] as const).flatMap((b) =>
+      (["mining", "win", "lose"] as const).map((s) =>
+        stagePerformance(b === "pup" ? 0 : b === "soldier" ? 2 : b === "elite" ? 4 : 7, s),
+      ),
+    ),
+  ).size === 12);
+
+// ─── B4 · named techniques ───────────────────────────────────────────────────
+console.log("\nB4 · named techniques (country × lane)");
+check("all 12 countries have wizard + muggle move tables",
+  Object.keys(TECHNIQUES).length === 12 &&
+  Object.values(TECHNIQUES).every((c) => c.wizard.length >= 2 && c.muggle.length >= 2));
+check("technique names globally unique", new Set(allTechniqueNames()).size === allTechniqueNames().length);
+const usaWiz = techniqueFor(0, true, 0);
+const usaMug = techniqueFor(0, false, 0);
+const chinaWiz = techniqueFor(1, true, 0);
+check("wizard vs muggle lanes differ", usaWiz.name !== usaMug.name);
+check("USA vs China techniques differ", usaWiz.name !== chinaWiz.name);
+check("deterministic pick", techniqueFor(0, true, 3).name === techniqueFor(0, true, 3).name);
+const powerAction = transitionAction("power", profileFor(3, 0, true), undefined, { traitIndex: 0 });
+check("power transition renders the technique's visual grammar", powerAction.includes(usaWiz.visualGrammar));
+check("technique NAME never enters the image prompt", !powerAction.includes(usaWiz.name));
+check("transitionTechnique exposes the picked move for results",
+  transitionTechnique(profileFor(3, 0, true), 0).name === usaWiz.name);
+
+// ─── C1 · moment derivation ──────────────────────────────────────────────────
+console.log("\nC1 · moment grammar + derivation");
+check("vocabulary covers the required moments",
+  ([
+    "first_win", "win_streak", "clutch_comeback", "near_miss", "humiliated_by_rival",
+    "revenge_win", "mvp_coronation", "chapter_cliffhanger", "lootbox_near_miss", "lootbox_jackpot",
+  ] as const).every((m) => ALL_MOMENT_TYPES.includes(m)));
+check("derive: first win", deriveMoment({ won: true, totalWins: 1 }) === "first_win");
+check("derive: streak (n>=3)", deriveMoment({ won: true, totalWins: 9, winStreak: 5 }) === "win_streak");
+check("derive: streak of 2 is NOT a streak moment", deriveMoment({ won: true, totalWins: 9, winStreak: 2 }) === null);
+check("derive: clutch comeback (rank delta)",
+  deriveMoment({ won: true, totalWins: 4, rankBefore: 8, rankAfter: 3 }) === "clutch_comeback");
+check("derive: revenge beats first-win precedence",
+  deriveMoment({ won: true, totalWins: 1, rivalFactionId: 1, lastLossToFactionId: 1 }) === "revenge_win");
+check("derive: humiliated by rival", deriveMoment({ won: false, winType: "none", rivalFactionId: 1 }) === "humiliated_by_rival");
+check("derive: near miss (same country, wrong call)", deriveMoment({ won: false, winType: "same_faction" }) === "near_miss");
+check("derive: cliffhanger", deriveMoment({ isFinalRound: true }) === "chapter_cliffhanger");
+check("derive: lootbox jackpot (roll under threshold)",
+  lootboxRollWon(900, 1000) && deriveMoment({ rollValue: 900, thresholdBps: 1000 }) === "lootbox_jackpot");
+check("derive: lootbox near miss (just over threshold)",
+  lootboxRollNearMiss(1100, 1000) && deriveMoment({ rollValue: 1100, thresholdBps: 1000 }) === "lootbox_near_miss");
+check("derive: distant lootbox miss is no moment", deriveMoment({ rollValue: 9000, thresholdBps: 1000 }) === null);
+
+// ─── (iii) first-win vs streak-win vs revenge-win, same beast ────────────────
+console.log("\nC1 · directive + body-language distinctness (same beast)");
+const pFirst = buildMomentDialoguePrompt(beast, "first_win", { won: true, totalWins: 1 });
+const pStreak = buildMomentDialoguePrompt(beast, "win_streak", { won: true, winStreak: 5 });
+const pRevenge = buildMomentDialoguePrompt(beast, "revenge_win", {
+  won: true,
+  rivalFactionId: 1,
+  lastLossToFactionId: 1,
+});
+check("dialogue prompts pairwise distinct",
+  pFirst !== pStreak && pStreak !== pRevenge && pFirst !== pRevenge);
+const bFirst = momentGrammar("first_win").bodyLanguage;
+const bStreak = momentGrammar("win_streak").bodyLanguage;
+const bRevenge = momentGrammar("revenge_win").bodyLanguage;
+check("body-language tokens pairwise distinct",
+  bFirst !== bStreak && bStreak !== bRevenge && bFirst !== bRevenge);
+check("body language is embedded in the dialogue prompt",
+  pFirst.includes(bFirst) && pStreak.includes(bStreak) && pRevenge.includes(bRevenge));
+check("streak count threads into the directive", pStreak.includes("5 wins IN A ROW"));
+check("all 13 moment directives are pairwise distinct",
+  new Set(ALL_MOMENT_TYPES.map((m) => momentGrammar(m).directive({ winStreak: 4, newStage: 3 }, "USA", "China"))).size ===
+    ALL_MOMENT_TYPES.length);
+check("all 13 body-language tokens are pairwise distinct",
+  new Set(ALL_MOMENT_TYPES.map((m) => momentGrammar(m).bodyLanguage)).size === ALL_MOMENT_TYPES.length);
+
+// ─── C3 · rivalry continuity ─────────────────────────────────────────────────
+console.log("\nC3 · rivalry dialogue");
+check("USA↔China is a bible rivalry edge", rivalEdgeFor(0, 1) !== null);
+check("USA↔France is not", rivalEdgeFor(0, 9) === null);
+check("rivalry block names the rival country", rivalryBlock(0, 1).includes("China"));
+check("revenge prompt references the canon rivalry", pRevenge.includes("CANON RIVALRY"));
+const pRevengePrev = buildMomentDialoguePrompt(
+  beast, "revenge_win", { won: true, rivalFactionId: 1, lastLossToFactionId: 1 }, "You got lucky, Long Wei!");
+check("previousLine threading survives", pRevengePrev.includes("You got lucky, Long Wei!"));
+const mutPrompt = buildDialoguePrompt(beast, "power", { rivalFactionId: 1 });
+check("mutation dialogue also picks up the rivalry", mutPrompt.includes("CANON RIVALRY"));
+
+// ─── C2 · emotional arc gating ───────────────────────────────────────────────
+console.log("\nC2 · emotional arc");
+const arc = "starts dejected, spots the ore vein, ends determined";
+check("arc suppressed for low-stage beasts", emotionalArcDirective(arc, 2) === "");
+check("arc active for stage 5", emotionalArcDirective(arc, 5).includes(arc));
+check("arc lands frame-by-frame", emotionalArcDirective(arc, 7).includes("final frame lands it"));
+
+// ─── Banned-lexicon sweep over every static grammar string ───────────────────
+console.log("\nLint · banned lexicon sweep");
+const corpus: Array<[string, string]> = [
+  ...PROGRESSION_STAGES.map((s): [string, string] => [`stage ${s.name}`, `${s.epithet} ${auraTokens(s.stage)}`]),
+  ...STAGE_TRANSITIONS.map((t): [string, string] => [`transition ${t.name}`, `${t.name} ${t.silhouetteChange}`]),
+  ...Object.entries(TECHNIQUES).flatMap(([code, lanes]): Array<[string, string]> =>
+    [...lanes.wizard, ...lanes.muggle].map((t): [string, string] => [`${code} ${t.name}`, `${t.name} ${t.visualGrammar}`])),
+  ...ALL_MOMENT_TYPES.map((m): [string, string] => [
+    `moment ${m}`,
+    `${momentGrammar(m).directive({ winStreak: 4, rankBefore: 8, rankAfter: 2, rollValue: 990, thresholdBps: 1000, newStage: 4 }, "USA", "China")} ${momentGrammar(m).bodyLanguage}`,
+  ]),
+  ["ceremony stage-2", evoTo2],
+  ["ceremony stage-5", evoTo5],
+  ["state pup mining", pupMine],
+  ["state ascended win", godWin],
+];
+let lexiconClean = true;
+for (const [label, text] of corpus) {
+  const smells = dialogueSmells(text);
+  if (smells.length > 0) {
+    lexiconClean = false;
+    console.error(`    banned lexicon in ${label}: ${smells.join("; ")}`);
+  }
+}
+check(`no banned lexicon across ${corpus.length} grammar strings`, lexiconClean);
+
+// ─── Verdict ─────────────────────────────────────────────────────────────────
+console.log(`\n${passes} passed, ${failures} failed`);
+if (failures > 0) process.exit(1);
