@@ -4,17 +4,21 @@
   </a>
 </p>
 
-<h1 align="center">MineBTC AI Content Engine</h1>
+<h1 align="center">HASHIDEN — AI Content Engine</h1>
 
 <p align="center">
-  <strong>The open-source content pipeline behind MineBTC HashBeasts.</strong><br>
-  Game events become character canon, scripts, keyframes, trailers, and social video proof.
+  <strong>The open-source studio behind HASHIDEN (ハシデン) — the 24/7 show written by gameplay.</strong><br>
+  Every 4 hours of MineBTC's country war becomes a chapter. 42 chapters make a season. The players own the cast.
 </p>
 
 <p align="center">
   <a href="https://www.minebtc.fun/">Play MineBTC</a>
   ·
   <a href="https://x.com/minebtcdotfun">X / Twitter</a>
+  ·
+  <a href="SHOW_BIBLE.md">Show Bible</a>
+  ·
+  <a href="WORLD_BIBLE.md">World Bible</a>
   ·
   <a href="trailer/README.md">Trailer Pipeline</a>
   ·
@@ -25,50 +29,52 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178c6.svg)](package.json)
 
-## What Is MineBTC?
+## What Is HASHIDEN?
 
-[MineBTC](https://www.minebtc.fun/) is a country-vs-country mining game on Solana.
+HASHIDEN is a serialized show produced by gameplay, not by a writers' room.
 
-Players pick a country, play the mining race, and collect/evolve HashBeasts: stylized dog-warrior operators with breed, country, role, gear, powers, personality, and story state. The game world is built around degenBTC: a mined token whose economy, emissions, rewards, and faction race create constant live events.
+[MineBTC](https://www.minebtc.fun/) is a country-vs-country mining war on Solana: twelve nations of dog-warrior HashBeasts race to mine degenBTC. Every 4-hour war cycle settles on chain, and the engine in this repo turns that settled cycle into a chapter — cover, recap, cast, ledger, cliffhanger. 42 chapters make a weekly season. The show never stops because the game never stops.
 
-The important content idea is simple:
+Three things make it different from any show before it:
 
-> HashBeasts are not static NFTs. They are recurring characters in a living show produced by gameplay.
+- **The players own the cast.** The characters are HashBeasts — a genesis run of 36,000 player-owned characters with breed, country, gear, powers, and a story state that compounds across chapters.
+- **The players write themselves in.** Direct-Your-Beast lets owners author their character's personality sheet; the engine renders it into canon-adjacent lore. On-chain events are canon; owner lore is apocrypha; every claim cites its cycle, clip, and transaction.
+- **The show is produced BY the game, not about it.** Wins, mutations, evolutions, mints, and rivalries are the plot. Minting a beast is a character intro. A claim streak is an arc.
 
-When HashBeasts mint, evolve, mutate, win rounds, lose status, unlock powers, or get pulled into country rivalries, those game events can become trailers, reels, faction propaganda, comedy beats, cliffhangers, and social posts. The content engine is how we turn game state into a consistent media universe instead of random AI clips.
+## The Theme: Climbing The Kardashev Scale
 
-## What This Repo Is
+The show's premise is humanity's first climb up the Kardashev scale — a civilization measuring itself by the power it can harness instead of the territory it can hold. The twelve countries compete to fund the ascent. The rockets get the headlines; the dogs dig the fuel.
 
-This repo is the open-source MineBTC HashBeasts content pipeline.
+The fourth wall is the scale itself. The show's compute is bought with the game's own fees, so the compute ledger printed in every chapter is the series' Kardashev meter: the more the war is played, the more compute burns, the richer the show renders. The fee writes the film. The show's budget is its plot.
 
-It handles the creative layer:
+Tonally: optimism is the spine, conflict is the muscle. The full dramatic palette is in play — greed, underdogs, secrets, thrillers, real engineering — but every arc bends toward "we go up." Villains are greed and smallness, never nations; every country is a key player.
 
-- Character canon: breed, faction, visual identity, owner/profile context, voice, personality, recent story.
-- Story memory: active arcs, unresolved threads, posted videos, character last-seen state.
-- Prompt grammar: director rules, camera/motion rules, negative prompts, model-safe style constraints.
-- Script pipeline: multi-pass trailer writing, dialogue refinement, scene direction, and frame planning.
-- Media generation: keyframe prompts, image/video/voice/lip-sync adapters, proof artifacts, and review loops.
-- NFT asset pipeline: mint art, living-sprite state loops, mutation clips, cycle recaps.
-- Service mode: Redis/BullMQ worker so the game backend can send content jobs without importing this repo as local backend code.
+- [`SHOW_BIBLE.md`](SHOW_BIBLE.md) is the creative constitution: what the show is for, the tonal contract, the season spine.
+- [`WORLD_BIBLE.md`](WORLD_BIBLE.md) is the canon roster: the Council of Twelve, lieutenants, rivalry map, style ladder, and editing rules. The typed version every pipeline imports is `src/world/bible.ts`.
 
-MineBTC is the reference implementation, but the structure is intentionally portable. Any game with characters, events, factions, story state, and media outputs should be able to adapt the same pattern.
+## What This Repo Does
 
-## NFT Asset Pipeline
+This repo is the studio: the creative layer that turns game state into a consistent media universe instead of disconnected AI clips.
 
-Mint art, living-sprite state loops, mutation clips, cycle recaps. DNA becomes a faction × category × region × breed prompt; mint art is identity-gated by a Gemini vision check with bounded regens; mining/win/lose loops are generated as 5-frame chroma strips and assembled into transparent looping APNGs; mutation events get transition clips plus voiced one-liners; each war cycle stitches a per-beast recap MP4. Runs as `nft.*` jobs on the service worker, with persistence behind a storage port (optional S3 adapter or inline buffers). See [docs/nft-pipeline.md](docs/nft-pipeline.md).
+- **World bible + progression grammar** (`src/world/`): the typed canon — 12-country roster, rivalry map, palettes, voices, the 3-rung style ladder, and the 8-stage growth ladder (Pup → Ascended) with one named ceremony per transition (The First Spark, The Scar Ceremony, The Ascension…).
+- **Emotional moment grammar + rivalry dialogue** (`src/nft-pipeline/moments.ts`, `momentContent.ts`): game events become staged emotional beats with performance bands per stage and rivalry-aware dialogue stings.
+- **Beast memory, epithets, technique debuts** (`src/nft-pipeline/beastMemory.ts`): per-beast story memory that compounds across cycles — milestone-minted epithets, first-use records for named techniques, per-rival win/loss ledgers.
+- **Chapter generation** (`src/content-engine/chapterWriter.ts`, `chapter.write` / `chapter.canonize` jobs): one settled war cycle in, one chapter anatomy out — cover (title + text-free cover-art prompt on the winning country's location), recap beats that pay off the previous cliffhanger, cast of the chapter, compute ledger, and a persisted cliffhanger the next chapter must answer.
+- **NFT asset pipeline** (`nft.*` jobs): DNA-driven mint art with a Gemini identity gate and bounded regens, chroma-strip state loops assembled into transparent APNGs (mining/win/lose), mutation ceremonies with transition clips and voiced lines, and per-beast cycle recap MP4s. See [docs/nft-pipeline.md](docs/nft-pipeline.md).
+- **Casino rituals** (`src/nft-pipeline/ritual.ts`): lootbox reveals and claim rolls staged as rituals, not toasts — drawing on a canonical rarity light language so a Motherlode glow reads identically on every surface. See [docs/rituals-and-audio.md](docs/rituals-and-audio.md).
+- **Audio identity** (`src/world/audioIdentity.ts`): the ownable sound spec — fanfare tiers mapped to rarity, cue ids every ritual and ceremony pulls from.
+- **Trailer pipeline** (`trailer/`): multi-pass screenplay writing, dialogue refinement, frame planning, multi-scene video generation, lip-sync, subtitles, and assembly — with a local WebUI for operating it.
+- **Service mode** (`src/service/`): a Redis/BullMQ worker so the game backend dispatches content jobs over a queue instead of importing this repo as backend code.
 
-## Why Open Source This?
+## Production vs Reference
 
-AI video quality is not solved by one big prompt. It needs a system:
+Honesty about what runs where:
 
-- Canon so characters do not drift.
-- Story memory so clips compound instead of resetting.
-- Prompt packets so outputs can be reviewed and reproduced.
-- Reference assets so models stay on-brand.
-- Quality scorecards so contributors can improve the pipeline with evidence.
-- Adapters so the same story logic can work across different image, video, voice, and music models.
+- **Running in production for MineBTC:** the service worker and its job surface — `nft.*` asset jobs (mint art, state loops, mutation content, cycle summaries), ritual jobs, chapter writing/canonization, and the creative prompt jobs. The MineBTC backend owns budgets, persistence, and posting; this engine owns the creative work.
+- **Operated locally by the team:** the trailer pipeline and WebUI, used to script and render launch trailers and show keyframes.
+- **Reference implementation:** the world-pack and provider-adapter layers. MineBTC is the first world; the structure is built so another game can swap in its own canon, events, and providers, but no second world ships in this repo yet.
 
-We want contributors to help make the HashBeasts show better while also making a reusable content-engine pattern for other game worlds.
+Direct-Your-Beast and the full chapter-page product roll out in phases on the MineBTC side; the engine contracts for them (beast memory snapshots, chapter anatomy, mint intros) are in this repo today.
 
 ## How The Pipeline Works
 
@@ -84,7 +90,7 @@ flowchart LR
   H --> I["Image / video / voice adapters"]
   I --> J["Draft clip + media proof"]
   J --> K["Human approval"]
-  K --> L["Posted video"]
+  K --> L["Posted video / chapter"]
   L --> M["Canonized story memory"]
   M --> G
 ```
@@ -92,26 +98,35 @@ flowchart LR
 Production boundary:
 
 - MineBTC backend owns game state, DB reads/writes, wallet/user context, budget gates, persistence, and posting.
-- This content engine owns story planning, prompt grammar, screenplay/script generation, keyframe prompt generation, trailer tooling, and media-generation helpers.
+- This content engine owns story planning, prompt grammar, screenplay/script generation, keyframe prompt generation, chapter writing, trailer tooling, and media-generation helpers.
 - The service queue defaults to `minebtc-content-engine`.
+
+## Why Open Source The Studio?
+
+The studio is a public good. The pattern here — game event → character canon → story memory → script → media → proof → canon update — is not specific to MineBTC. Any game with events, characters, and an economy can adapt it to produce its own show.
+
+And consistent AI media is not solved by one big prompt. It needs a system:
+
+- Canon so characters do not drift.
+- Story memory so clips compound instead of resetting.
+- Prompt packets so outputs can be reviewed and reproduced.
+- Reference assets so models stay on-brand.
+- Quality scorecards so contributors can improve the pipeline with evidence.
+- Adapters so the same story logic works across image, video, voice, and music models.
+
+We want contributors to make HASHIDEN better while making a reusable content-engine pattern for other game worlds.
 
 ## Portable By Design
 
-This is not meant to be only a MineBTC private script folder. The reusable pattern is:
-
-```text
-game event -> character canon -> story memory -> script -> keyframe -> video -> proof -> canon update
-```
-
-To adapt it for another game, replace the world pack:
+To adapt the engine for another game, replace the world pack:
 
 - Characters instead of HashBeasts.
-- Factions/countries/guilds/teams instead of MineBTC countries.
+- Factions/guilds/teams instead of MineBTC countries.
 - Your own visual bible, camera grammar, and negative prompts.
 - Your own event types: mint, evolve, battle, trade, quest, raid, win, loss, betrayal, alliance.
 - Your own provider adapters for image, video, voice, music, storage, and delivery.
 
-The core goal stays the same: make generated content feel like it comes from a living world with consistent characters.
+The core goal stays the same: generated content that feels like it comes from a living world with consistent characters. See [docs/world-packs.md](docs/world-packs.md).
 
 ## Quick Start
 
@@ -180,30 +195,37 @@ npm run service:worker
 ## Folder Map
 
 ```text
-src/content-engine/       Pure creative primitives: prompt grammar, fixtures, screenplay normalization.
-src/nft-pipeline/         NFT asset pipeline: mint art, state-loop APNGs, mutation clips, cycle recaps.
+src/world/                Typed canon: world bible, 8-stage progression grammar, base types, audio identity.
+src/content-engine/       Creative primitives: prompt grammar, chapter writer, screenplay normalization, dialogue QA.
+src/nft-pipeline/         NFT asset pipeline: mint art, state-loop APNGs, mutation ceremonies, rituals, beast memory, cycle recaps.
 src/prompts/              HashBeast prompt grammar: world lore, 12 faction packs, breeds, trait resolution.
 src/service/              Redis/BullMQ worker contracts and job processor.
-src/utils/                Media/provider helpers used by local trailer generation.
+src/utils/                Media/provider helpers, incl. the multi-scene video primitive.
 scripts/                  Contributor scripts incl. assemble_anim.py (chroma-strip → APNG assembler).
-trailer/blueprints/       Launch trailer rough story clay and series bible.
+trailer/blueprints/       Launch trailer rough story clay and series blueprints.
 trailer/pipeline/         Multi-pass screenplay/script compiler.
 trailer/generate/         Frame, video, audio, lip-sync, and assembly pipeline.
 trailer/world/            Country cast, location registry, and canon story memory.
 trailer/reference/        HashBeast character and environment reference boards.
-docs/                     Contributor docs, architecture, proof, world packs, adapters.
+docs/                     Contributor docs, architecture, story engine, proof, world packs, adapters.
 .github/                  Issue templates, PR template, labels, CI, and ownership.
 ```
 
 ## Documentation
 
+- [Show Bible](SHOW_BIBLE.md) — the creative constitution
+- [World Bible](WORLD_BIBLE.md) — the canon roster and editing rules
 - [Architecture](docs/architecture.md)
+- [Story Engine](docs/story-engine.md) — beast memory, mint intros, Hashiden chapters
 - [NFT Asset Pipeline](docs/nft-pipeline.md)
-- [Contributor Playbook](CONTRIBUTING.md)
+- [Base Types](docs/base-types.md)
+- [Casino Rituals + Audio Identity](docs/rituals-and-audio.md)
+- [Multi-Scene Video](docs/video-scenes.md)
 - [Media Proof and Evals](docs/evals-and-media-proof.md)
-- [Provider Adapters](docs/provider-adapters.md)
 - [World Packs](docs/world-packs.md)
+- [Provider Adapters](docs/provider-adapters.md)
 - [Trailer Pipeline](trailer/README.md)
+- [Contributor Playbook](CONTRIBUTING.md)
 - [Labels](docs/labels.md)
 - [Security](SECURITY.md)
 
