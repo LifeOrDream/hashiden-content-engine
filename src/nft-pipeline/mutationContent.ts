@@ -36,6 +36,7 @@ import {
   type NamedTechnique,
 } from "../world/progression.js";
 import { rivalryBlock, type MomentContext } from "./moments.js";
+import { beastMemoryPromptBlock, type BeastMemorySnapshot } from "./beastMemory.js";
 import type { NftBeastInput } from "./types.js";
 import {
   generateStrip,
@@ -153,6 +154,7 @@ export function buildDialoguePrompt(
   kind: MutationKind,
   gs: GameStateCtx,
   prevLine?: string,
+  memory?: BeastMemorySnapshot,
 ): string {
   const p = beast.personality || {};
   const nation = factionName(beast.factionId ?? 0);
@@ -176,6 +178,7 @@ export function buildDialoguePrompt(
       : "",
     state.length ? `Game state: ${state.join("; ")}.` : "",
     rivalryBlock(beast.factionId ?? 0, gs.rivalFactionId),
+    beastMemoryPromptBlock(memory),
     prevLine ? `Its PREVIOUS line this cycle was: "${prevLine}". Continue that thread / escalate it.` : "",
     `Make it punchy, trash-talky, patriotic, country-vs-country energy. May include ONE short native-language word. Output ONLY the line, no quotes, no narration.`,
   ]
@@ -258,11 +261,11 @@ export async function writeAndVoiceLine(
   kind: MutationKind,
   gs: GameStateCtx = {},
   prevLine?: string,
-  opts: { store?: ArtifactStore; voiceId?: string } = {},
+  opts: { store?: ArtifactStore; voiceId?: string; memory?: BeastMemorySnapshot } = {},
 ): Promise<DialogueResult | null> {
   return writeAndVoiceFromPrompt(
     beast,
-    buildDialoguePrompt(beast, kind, gs, prevLine),
+    buildDialoguePrompt(beast, kind, gs, prevLine, opts.memory),
     SOUND_BY_KIND[kind],
     { ...opts, artifactTag: kind },
   );
@@ -301,6 +304,12 @@ export interface NftMutationContentInput {
   knownTechniques?: string[];
   /** evolution only: the stage being evolved FROM (defaults to newStage - 1 / DNA stage). */
   fromStage?: number;
+  /**
+   * Per-beast story-memory snapshot (Phase D1) — epithets, technique debuts,
+   * rivalry ledger, recent lines. Backend-owned; threads continuity into the
+   * dialogue line. See beastMemory.ts for the contract.
+   */
+  memory?: BeastMemorySnapshot;
 }
 
 export interface NftMutationContentResult {
@@ -421,7 +430,7 @@ export async function generateMutationContent(
       traitIndex: input.traitIndex,
     },
     input.previousLine,
-    { store, voiceId: input.voiceId },
+    { store, voiceId: input.voiceId, memory: input.memory },
   );
   if (dlg) {
     result.dialogue = dlg;

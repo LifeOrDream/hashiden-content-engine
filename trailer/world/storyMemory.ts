@@ -200,6 +200,11 @@ function defaultMemory(): StoryMemory {
   };
 }
 
+/** A fresh default memory (exported for simulations/tests — never reads disk). */
+export function defaultStoryMemory(): StoryMemory {
+  return defaultMemory();
+}
+
 export function loadStoryMemory(): StoryMemory {
   try {
     const parsed = JSON.parse(fs.readFileSync(MEMORY_PATH, "utf8")) as StoryMemory;
@@ -483,6 +488,110 @@ export function canonizePostedVideo(input: CanonizeInput): StoryMemory {
     arc.history = arc.history.slice(-12);
   }
 
+  saveStoryMemory(memory);
+  return memory;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// CHAPTER CANONIZE (Phase D3) — published Hashiden chapters compound into the
+// same story memory the trailer pipeline reads, so arcs / epithets / rivalries
+// carry cycle to cycle. A chapter IS canon the moment it is published (unlike
+// draft videos, which wait for the posted-video gate), so the gate here is
+// "chapter persisted by the assembler", invoked via the `chapter.canonize`
+// service job after the backend saves the chapter row.
+// ─────────────────────────────────────────────────────────────────────────────
+
+export interface ChapterCanonInput {
+  warId: number;
+  title: string;
+  /** One-paragraph what-happened (recap beats joined work fine). */
+  summary?: string;
+  /** The persisted cliffhanger the NEXT chapter must pay off. */
+  cliffhanger?: string;
+  /** Winning country display name (e.g. "USA"). */
+  winnerCountry?: string;
+  /** All countries that earned screen time this chapter. */
+  countries?: string[];
+  /** Epithets awarded during the cycle (beast/owner display name + title). */
+  epithetsAwarded?: Array<{ name?: string; title: string }>;
+  /** Named techniques debuted during the cycle. */
+  techniqueDebuts?: string[];
+}
+
+/** Pure chapter → memory fold (exported for simulations; canonizeChapter persists). */
+export function applyChapterToMemory(
+  memory: StoryMemory,
+  input: ChapterCanonInput,
+): StoryMemory {
+  const videoNo = memory.currentVideoNo + 1;
+  const countries = (input.countries || []).filter(Boolean);
+  const characters = memory.characters
+    .filter((c) => countries.includes(c.country) || c.country === input.winnerCountry)
+    .map((c) => c.id);
+  const extras: string[] = [];
+  if (input.epithetsAwarded?.length) {
+    extras.push(
+      `Epithets earned: ${input.epithetsAwarded
+        .map((e) => `${e.name ? `${e.name} — ` : ""}"${e.title}"`)
+        .join(", ")}.`,
+    );
+  }
+  if (input.techniqueDebuts?.length) {
+    extras.push(`Techniques debuted: ${input.techniqueDebuts.join(", ")}.`);
+  }
+  const summary = compact(
+    [input.summary || `${input.winnerCountry || "A country"} took war cycle ${input.warId}.`, ...extras].join(" "),
+    700,
+  );
+
+  const record: VideoRecord = {
+    id: `chapter-${input.warId}`,
+    videoNo,
+    title: input.title,
+    status: "canonized",
+    summary,
+    cliffhanger: compact(input.cliffhanger || "", 240),
+    characters,
+    arcsTouched: [],
+    canonizedAt: nowIso(),
+  };
+
+  // Chapters keep the rivalry arc warm (the country race IS the serialized
+  // engine) and answer/replace its open question with the new cliffhanger.
+  const rivalry = memory.arcs.find((a) => a.id === "country-heel-turns");
+  if (rivalry) {
+    record.arcsTouched.push(rivalry.id);
+    rivalry.lastTouchedVideoNo = videoNo;
+    if (rivalry.status === "seeded" || rivalry.status === "dormant") rivalry.status = "active";
+    if (record.cliffhanger) rivalry.openQuestion = record.cliffhanger;
+    rivalry.history.push(`#${videoNo} [chapter ${input.warId}]: ${summary}`);
+    rivalry.history = rivalry.history.slice(-12);
+  }
+
+  const existingIdx = memory.videos.findIndex((v) => v.id === record.id);
+  if (existingIdx >= 0) {
+    record.videoNo = memory.videos[existingIdx].videoNo;
+    memory.videos[existingIdx] = record;
+  } else {
+    memory.videos.push(record);
+    memory.currentVideoNo = Math.max(memory.currentVideoNo, videoNo);
+  }
+  memory.videos.sort((a, b) => a.videoNo - b.videoNo);
+  memory.worldSoFar = compact(`${memory.worldSoFar} ${summary}`, 1800);
+
+  for (const id of characters) {
+    const c = ensureCharacterMemory(memory, id);
+    if (!c) continue;
+    c.lastSeenVideoNo = record.videoNo;
+    c.lastCanonEvent = summary;
+  }
+
+  return memory;
+}
+
+/** Load → fold the chapter in → save. Idempotent per warId (replays overwrite). */
+export function canonizeChapter(input: ChapterCanonInput): StoryMemory {
+  const memory = applyChapterToMemory(loadStoryMemory(), input);
   saveStoryMemory(memory);
   return memory;
 }

@@ -96,6 +96,14 @@ Dialogue (and optionally an identity-gated reaction clip) for the moment vocabul
 - **Pipeline**: each APNG clip is normalized with ffmpeg (`fps`/`scale`/`pad` to a square canvas on the console background) and concatenated into one `summary.mp4` (faststart). Per-segment failures are tolerated.
 - **Output** (`NftCycleSummaryResult`): the `cycle_summary` artifact under `<storagePath>/cycles/<warId>/summary.mp4`, `clipCount`, `segmentsUsed`.
 
+### 6. `nft.mint_intro` — the "joined the war" mint moment
+
+One cheap identity-gated intro panel (the recruit arriving at its country's bible location, 1K, arcade-cel rung) plus one voiced intro line. Budget-gate dispatch exactly like `nft.mutation_content`. See [story-engine.md](story-engine.md).
+
+### Story memory in job payloads
+
+`nft.mutation_content`, `nft.moment_content`, and `nft.mint_intro` accept an optional `memory: BeastMemorySnapshot` — the backend-assembled per-beast story memory (epithets, technique debuts, rivalry ledger, recent lines, biggest moments). The contract, the epithet trigger rules, and the chapter job kinds (`chapter.write`, `chapter.canonize`) are documented in [story-engine.md](story-engine.md).
+
 ## Host requirements
 
 | Tool | Needed by | Notes |

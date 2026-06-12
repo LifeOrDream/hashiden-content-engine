@@ -10,3 +10,4 @@ export {
 export * from "./screenplay.js";
 export * from "./scenePrompts.js";
 export * from "./fixtures.js";
+export * from "./chapterWriter.js";

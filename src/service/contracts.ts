@@ -27,6 +27,15 @@ import type {
   NftCycleSummaryInput,
   NftCycleSummaryResult,
 } from "../nft-pipeline/cycleSummary.js";
+import type {
+  NftMintIntroInput,
+  NftMintIntroResult,
+} from "../nft-pipeline/mintIntro.js";
+import type {
+  ChapterAnatomy,
+  ChapterCycleFacts,
+} from "../content-engine/chapterWriter.js";
+import type { ChapterCanonInput } from "../../trailer/world/storyMemory.js";
 
 export const CONTENT_ENGINE_QUEUE =
   process.env.CONTENT_ENGINE_QUEUE || "minebtc-content-engine";
@@ -50,7 +59,15 @@ export type ContentEngineJobKind =
   // Extended moment vocabulary (first-win, streaks, revenge, lootbox drama…)
   // — budget-gate dispatch EXACTLY like nft.mutation_content.
   | "nft.moment_content"
-  | "nft.cycle_summary";
+  | "nft.cycle_summary"
+  // MINT MOMENT (Phase D1): "joined the war" intro panel + intro line —
+  // budget-gate dispatch EXACTLY like nft.mutation_content.
+  | "nft.mint_intro"
+  // HASHIDEN chapters (Phase D2/D3): writers-room-lite chapter front-matter
+  // (budget-gate like other text/content jobs) + the canonize gate that folds
+  // a PUBLISHED chapter into story memory.
+  | "chapter.write"
+  | "chapter.canonize";
 
 export interface PlanEventInput {
   event: IncomingEventLike;
@@ -127,6 +144,20 @@ export interface BuildDirectorPromptBlockInput {
   format?: Partial<VideoFormat> & { aspectRatio?: VideoFormat["aspectRatio"] };
 }
 
+export interface ChapterWriteInput {
+  facts: ChapterCycleFacts;
+}
+
+export interface ChapterCanonizeInput {
+  chapter: ChapterCanonInput;
+}
+
+export interface ChapterCanonizeResult {
+  ok: boolean;
+  /** Memory entry number the chapter folded into. */
+  videoNo: number;
+}
+
 export interface ContentEngineJobPayloadMap {
   plan_event: PlanEventInput;
   plan_pulse: PlanPulseInput;
@@ -142,6 +173,9 @@ export interface ContentEngineJobPayloadMap {
   "nft.mutation_content": NftMutationContentInput;
   "nft.moment_content": NftMomentContentInput;
   "nft.cycle_summary": NftCycleSummaryInput;
+  "nft.mint_intro": NftMintIntroInput;
+  "chapter.write": ChapterWriteInput;
+  "chapter.canonize": ChapterCanonizeInput;
 }
 
 export interface ContentEngineJobResultMap {
@@ -159,6 +193,9 @@ export interface ContentEngineJobResultMap {
   "nft.mutation_content": NftMutationContentResult;
   "nft.moment_content": NftMomentContentResult;
   "nft.cycle_summary": NftCycleSummaryResult;
+  "nft.mint_intro": NftMintIntroResult;
+  "chapter.write": ChapterAnatomy;
+  "chapter.canonize": ChapterCanonizeResult;
 }
 
 export type ContentEngineJobPayload<K extends ContentEngineJobKind = ContentEngineJobKind> = {

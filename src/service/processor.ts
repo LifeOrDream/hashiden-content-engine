@@ -26,6 +26,16 @@ import { generateStateAnimations } from "../nft-pipeline/stateAnimations.js";
 import { generateMutationContent } from "../nft-pipeline/mutationContent.js";
 import { generateMomentContent } from "../nft-pipeline/momentContent.js";
 import { generateCycleSummary } from "../nft-pipeline/cycleSummary.js";
+import { generateMintIntro } from "../nft-pipeline/mintIntro.js";
+import {
+  buildChapterAnatomyFallback,
+  buildChapterWriterPrompt,
+  lintChapterAnatomy,
+  mergeChapterDraft,
+  type ChapterAnatomy,
+  type ChapterCycleFacts,
+} from "../content-engine/chapterWriter.js";
+import { canonizeChapter } from "../../trailer/world/storyMemory.js";
 
 export interface ProcessJobOptions {
   /**
@@ -34,6 +44,45 @@ export interface ProcessJobOptions {
    * `full_body` progress to their own socket events).
    */
   onProgress?: NftProgressFn;
+}
+
+/**
+ * Writers-room-lite for a Hashiden chapter: one LLM call for the front-matter
+ * (title / recap beats / cliffhanger) + the deterministic banned-lexicon lint
+ * with ONE feedback retry; cover prompt + cast + ledger stay canon-built. Any
+ * failure falls back to the deterministic anatomy — the chapter always ships.
+ */
+async function writeChapterAnatomy(facts: ChapterCycleFacts): Promise<ChapterAnatomy> {
+  if (process.env.CHAPTER_WRITER_DISABLE_LLM === "true") {
+    return buildChapterAnatomyFallback(facts);
+  }
+  const prompt = buildChapterWriterPrompt(facts);
+  const attemptOnce = async (feedback?: string): Promise<ChapterAnatomy | null> => {
+    const raw = await generateText(feedback ? `${prompt}\n\n${feedback}` : prompt, {
+      temperature: 0.85,
+      json: true,
+    });
+    return mergeChapterDraft(facts, parseJsonLoose<any>(raw));
+  };
+  try {
+    let anatomy = await attemptOnce();
+    let flags = anatomy ? lintChapterAnatomy(anatomy) : ["structurally invalid draft"];
+    if (flags.length > 0) {
+      const feedback =
+        `REVISION PASS — your previous draft failed the lexicon lint. Fix EVERY flag below (keep the structure, repair only the flagged text):\n` +
+        flags.slice(0, 10).map((f) => `- ${f}`).join("\n");
+      const second = await attemptOnce(feedback);
+      const secondFlags = second ? lintChapterAnatomy(second) : ["structurally invalid draft"];
+      if (secondFlags.length === 0) {
+        anatomy = second;
+        flags = secondFlags;
+      }
+    }
+    if (anatomy && flags.length === 0) return anatomy;
+  } catch {
+    /* fall through to the deterministic chapter */
+  }
+  return buildChapterAnatomyFallback(facts);
 }
 
 function parseSceneScript(rawText: string): WriteSceneScriptResult | null {
@@ -172,6 +221,20 @@ export async function processContentEngineJob<K extends ContentEngineJobKind>(
     case "nft.cycle_summary": {
       const input = payload.input as ContentEngineJobPayload<"nft.cycle_summary">["input"];
       return (await generateCycleSummary(input)) as ContentEngineJobResultMap[K];
+    }
+    case "nft.mint_intro": {
+      const input = payload.input as ContentEngineJobPayload<"nft.mint_intro">["input"];
+      return (await generateMintIntro(input)) as ContentEngineJobResultMap[K];
+    }
+    case "chapter.write": {
+      const input = payload.input as ContentEngineJobPayload<"chapter.write">["input"];
+      return (await writeChapterAnatomy(input.facts)) as ContentEngineJobResultMap[K];
+    }
+    case "chapter.canonize": {
+      const input = payload.input as ContentEngineJobPayload<"chapter.canonize">["input"];
+      const memory = canonizeChapter(input.chapter);
+      const entry = memory.videos.find((v) => v.id === `chapter-${input.chapter.warId}`);
+      return { ok: true, videoNo: entry?.videoNo ?? memory.currentVideoNo } as ContentEngineJobResultMap[K];
     }
     default:
       throw new Error(`Unknown content-engine job kind: ${(payload as any)?.kind}`);

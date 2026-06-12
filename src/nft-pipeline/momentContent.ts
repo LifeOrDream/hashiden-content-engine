@@ -14,6 +14,7 @@
  * (previousLine threading), DDB persistence, and socket emission.
  */
 import { logger } from "../utils/logger.js";
+import type { BeastMemorySnapshot } from "./beastMemory.js";
 import type { NftBeastInput } from "./types.js";
 import {
   buildMomentDialoguePrompt,
@@ -44,6 +45,12 @@ export interface NftMomentContentInput {
   voiceId?: string;
   /** Also render an identity-gated reaction clip (default false — cheap path). */
   includeClip?: boolean;
+  /**
+   * Per-beast story-memory snapshot (Phase D1) — epithets, technique debuts,
+   * rivalry ledger, recent lines. Backend-owned; threads continuity into the
+   * dialogue line. See beastMemory.ts for the contract.
+   */
+  memory?: BeastMemorySnapshot;
 }
 
 export interface NftMomentContentResult {
@@ -79,7 +86,13 @@ export async function generateMomentContent(
 
   // 1. Voiced dialogue line (distinct per-moment directive + body language,
   //    rivalry continuity when the bible rival is involved).
-  const prompt = buildMomentDialoguePrompt(beast, moment, input.context || {}, input.previousLine);
+  const prompt = buildMomentDialoguePrompt(
+    beast,
+    moment,
+    input.context || {},
+    input.previousLine,
+    input.memory,
+  );
   const dlg = await writeAndVoiceFromPrompt(beast, prompt, grammar.soundId, {
     store,
     voiceId: input.voiceId,

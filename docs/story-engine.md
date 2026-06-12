@@ -1,0 +1,82 @@
+# Story Engine — Beast Memory, Mint Moments, and Hashiden Chapters (Phase D)
+
+Phase D turns player beasts into serialized characters: per-beast story memory compounds across cycles, every mint gets a "joined the war" intro, and every settled war cycle assembles into a Hashiden chapter whose cliffhanger the next chapter pays off.
+
+The boundary follows [architecture.md](architecture.md): the engine defines the typed contracts and generates media/text; the game backend owns storage (timeline rows, chapter rows), snapshot assembly, the budget gate that decides whether a job is dispatched at all, and the GraphQL read surface.
+
+## D1 — The beast-memory snapshot contract
+
+`src/nft-pipeline/beastMemory.ts` defines `BeastMemorySnapshot`, the self-contained per-beast story memory the backend assembles and passes inside job payloads:
+
+```ts
+interface BeastMemorySnapshot {
+  epithets?: EarnedEpithet[];        // milestone-triggered titles
+  techniqueDebuts?: TechniqueDebut[];// first performances of named moves (fed by B4's techniqueUsed)
+  rivalries?: RivalryRecord[];       // per-rival W/L ledger + freshest sting
+  recentLines?: string[];            // the beast's last N spoken lines
+  biggestMoments?: CycleMoment[];    // one headline moment per recent cycle
+  mintedWarId?: number;
+}
+```
+
+`memory` is accepted by `nft.mutation_content`, `nft.moment_content`, and `nft.mint_intro`; `beastMemoryPromptBlock(memory)` renders it into the dialogue prompts so lines reference earned titles, debuted techniques, rivalry history, and the beast's own recent lines.
+
+### Epithet trigger rules (canon)
+
+`deriveEpithetTriggers(stats)` is the reference implementation; the backend mirrors it at its claim / evolution / settle handlers and writes timeline rows when a trigger fires:
+
+| Trigger | Rule | Title |
+| --- | --- | --- |
+| `first_claim` | owner claims their first winning round | "First Blood" |
+| `win_streak_5` | a claimed win extends the streak to >= 5 | "The Unbroken" |
+| `evolution_stage_4` | the beast evolves to stage >= 4 | "Ascendant" |
+| `country_mvp` | the beast's owner is crowned a cycle's country MVP | "Pride of {nation}" |
+
+Titles are text surfaces only — they never enter generated images (no-readable-text rule).
+
+## D1 — `nft.mint_intro` (the mint moment)
+
+On mint-completed the backend enqueues a "joined the war" intro job — **budget-gated exactly like `nft.mutation_content`** (the gate lives backend-side, before enqueue).
+
+- **Input** (`NftMintIntroInput`): `beast` (snapshot with canonical `assetUrls` — run `nft.mint_assets` first), `warId`, optional `memory`, `voiceId`, `skipPanel`.
+- **Pipeline**: pick the country's bible location card (HQ preferred) → ONE cheap 16:9 1K intro panel staged on that location with the country palette (arcade-cel rung) → **Gemini identity gate** against the canonical DP (one retry) → one intro line via the normal dialogue path (voiced when possible).
+- **Output** (`NftMintIntroResult`): `panel` artifact (`<storagePath>/intro/joined-war-<warId>.png`), `introLine`, `locationName`, `artifacts`.
+- **Canon**: no readable text in the image; national identity via costume style + palette — never flags as clothing.
+
+The backend records the result as the beast's `minted` timeline event; the intro line feeds the cycle chapter's CAST.
+
+## D2 — `chapter.write` (writers-room-lite)
+
+Turns a settled cycle's indexed facts into the chapter anatomy. Pure builders live in `src/content-engine/chapterWriter.ts`; the LLM orchestration (one call + banned-lexicon lint + ONE feedback retry + deterministic fallback) lives in the service processor.
+
+- **Input** (`ChapterWriteInput`): `facts: ChapterCycleFacts` — winner, final ranks / rank swings, per-country MVPs (owner callsigns), biggest mutations/evolutions (with B4 technique names), jackpots, mint intros (with intro lines), compute spend, and **`previousCliffhanger`** (the previous chapter's persisted cliffhanger).
+- **Output** (`ChapterAnatomy`):
+  - **COVER** — `title` + `coverPrompt` staged on the **winning country's bible location card** with its palette (arcade-cel rung, text-free, no flag clothing).
+  - **RECAP** — 3-5 beats with character callouts; **beat 1 pays off `previousCliffhanger`** when present (the deterministic fallback quotes it verbatim, so serialization holds even on the zero-spend path).
+  - **CAST** — beasts that earned screen time (MVPs, evolutions, technique debuts, fresh recruits carrying their intro lines), owner callsigns.
+  - **COMPUTE LEDGER** — cost passthrough from the spend ledger.
+  - **CLIFFHANGER** — one NEW open-loop line, PERSISTED by the backend so the next chapter's facts can pay it off.
+- **Lint**: every text field passes `dialogueSmells` + chapter-surface bans (stale product language); a draft that fails twice ships the deterministic fallback instead.
+- `CHAPTER_WRITER_DISABLE_LLM=true` forces the deterministic path (used by the acceptance sim).
+
+Backend dispatch is budget-gated like other content jobs (`story` event type); optional TTS narration and the cycle-MP4 recap reel are backend-side, flag-gated reuses of existing paths.
+
+## D3 — `chapter.canonize` (the publish gate into story memory)
+
+After the backend persists a chapter, it pushes the chapter facts through the canonize gate so arcs/epithets/rivalries compound cycle to cycle:
+
+- **Input** (`ChapterCanonizeInput`): `chapter: ChapterCanonInput` — warId, title, summary, cliffhanger, winner country, involved countries, epithets awarded, technique debuts.
+- **Effect** (`canonizeChapter` in `trailer/world/storyMemory.ts`): records the chapter as a canonized memory entry (`chapter-<warId>`, idempotent on replay), folds the summary into `worldSoFar`, keeps the rivalry arc warm and replaces its open question with the new cliffhanger, and touches the involved characters' memory. Future trailer/showrunner script runs read this memory packet.
+
+`applyChapterToMemory` is the pure fold (exported for simulations — no disk writes).
+
+## Acceptance simulation
+
+`npm run demo:chapters` (part of `check:oss`) — fixture-driven, zero network/spend:
+
+- assembles two consecutive chapters and proves chapter N+1's recap quotes chapter N's persisted cliffhanger;
+- a freshly minted fixture beast appears in chapter N+1's CAST with its intro line;
+- the cover prompt stages the winning country's bible location card and forbids readable text / flag clothing;
+- the four epithet trigger rules derive exactly as specced;
+- chapter facts compound through the canonize gate (cliffhanger becomes the rivalry arc's open question, idempotent per war);
+- every produced text surface passes the banned-lexicon sweep.
