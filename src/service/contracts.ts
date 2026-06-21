@@ -74,6 +74,11 @@ export type ContentEngineJobKind =
   // a PUBLISHED chapter into story memory.
   | "chapter.write"
   | "chapter.canonize"
+  // HASHIDEN chapter VIDEO (engine-owned): produce a full chapter episode video
+  // from cycle facts (chapter anatomy → synthesized blueprint → scenes.json →
+  // Seedance render). Archives the facts + versions the output for replay; an
+  // optional per-job apiKey bills an operator's own fal account.
+  | "chapter.produce"
   // CASINO RITUALS (Phase F1/F2): staged reveal definitions (acts + rarity
   // light language + sound ids), NOT toasts. Deterministic + free by default;
   // includeDialogue opts into the paid voice path — budget-gate dispatch
@@ -175,6 +180,26 @@ export interface ChapterCanonizeResult {
   videoNo: number;
 }
 
+export interface ChapterProduceInput {
+  facts: ChapterCycleFacts;
+  /** Operator's own fal key for THIS run (per-job override; never persisted). */
+  apiKey?: string;
+  /** Stop after scenes.json (skip the expensive render). */
+  scriptOnly?: boolean;
+}
+
+export interface ChapterProduceResult {
+  warId: number;
+  /** Version id "<timestamp>-<gitSha>" — the output is at out/chapters/<warId>/<version>/. */
+  version: string;
+  /** Absolute version directory. */
+  dir: string;
+  scenesPath: string;
+  /** Absolute final video path (null when scriptOnly or the render failed). */
+  videoPath: string | null;
+  costUsd: number | null;
+}
+
 export interface AudioIdentityCueJobInput {
   /** Catalog cue id (src/world/audioIdentity.ts ALL_AUDIO_CUE_IDS). */
   cueId: string;
@@ -198,6 +223,7 @@ export interface ContentEngineJobPayloadMap {
   "nft.mint_intro": NftMintIntroInput;
   "chapter.write": ChapterWriteInput;
   "chapter.canonize": ChapterCanonizeInput;
+  "chapter.produce": ChapterProduceInput;
   "ritual.lootbox_reveal": RitualLootboxRevealInput;
   "ritual.claim_roll": RitualClaimRollInput;
   "audio.identity_cue": AudioIdentityCueJobInput;
@@ -221,6 +247,7 @@ export interface ContentEngineJobResultMap {
   "nft.mint_intro": NftMintIntroResult;
   "chapter.write": ChapterAnatomy;
   "chapter.canonize": ChapterCanonizeResult;
+  "chapter.produce": ChapterProduceResult;
   "ritual.lootbox_reveal": RitualContentResult;
   "ritual.claim_roll": RitualContentResult;
   "audio.identity_cue": AudioIdentityCueResult;
