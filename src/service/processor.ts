@@ -34,6 +34,7 @@ import {
 import { generateAudioIdentityCue } from "../world/audioIdentity.js";
 import path from "node:path";
 import { produceChapterVideo, writeChapterAnatomy } from "./chapterVideo.js";
+import { produceReel } from "./reel.js";
 import { canonizeChapter } from "../../trailer/world/storyMemory.js";
 import {
   archiveChapterSource,
@@ -242,6 +243,10 @@ export async function processContentEngineJob<K extends ContentEngineJobKind>(
     case "audio.identity_cue": {
       const input = payload.input as ContentEngineJobPayload<"audio.identity_cue">["input"];
       return (await generateAudioIdentityCue(input.cueId)) as ContentEngineJobResultMap[K];
+    }
+    case "produce_reel": {
+      const input = payload.input as ContentEngineJobPayload<"produce_reel">["input"];
+      return (await produceReel(input)) as ContentEngineJobResultMap[K];
     }
     default:
       throw new Error(`Unknown content-engine job kind: ${(payload as any)?.kind}`);

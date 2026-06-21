@@ -35,6 +35,7 @@ import type {
   ChapterAnatomy,
   ChapterCycleFacts,
 } from "../content-engine/chapterWriter.js";
+import type { ReelInput, ProduceReelResult } from "./reel.js";
 import type { ChapterCanonInput } from "../../trailer/world/storyMemory.js";
 import type {
   RitualClaimRollInput,
@@ -79,6 +80,10 @@ export type ContentEngineJobKind =
   // Seedance render). Archives the facts + versions the output for replay; an
   // optional per-job apiKey bills an operator's own fal account.
   | "chapter.produce"
+  // REELS (engine-owned): produce a short reel video from a dispatched
+  // blueprint spec (grounding + beats) → trailer pipeline → S3. The Phase-4
+  // cutover target for the backend's in-process showrunner reel renderer.
+  | "produce_reel"
   // CASINO RITUALS (Phase F1/F2): staged reveal definitions (acts + rarity
   // light language + sound ids), NOT toasts. Deterministic + free by default;
   // includeDialogue opts into the paid voice path — budget-gate dispatch
@@ -224,6 +229,7 @@ export interface ContentEngineJobPayloadMap {
   "chapter.write": ChapterWriteInput;
   "chapter.canonize": ChapterCanonizeInput;
   "chapter.produce": ChapterProduceInput;
+  produce_reel: ReelInput;
   "ritual.lootbox_reveal": RitualLootboxRevealInput;
   "ritual.claim_roll": RitualClaimRollInput;
   "audio.identity_cue": AudioIdentityCueJobInput;
@@ -248,6 +254,7 @@ export interface ContentEngineJobResultMap {
   "chapter.write": ChapterAnatomy;
   "chapter.canonize": ChapterCanonizeResult;
   "chapter.produce": ChapterProduceResult;
+  produce_reel: ProduceReelResult;
   "ritual.lootbox_reveal": RitualContentResult;
   "ritual.claim_roll": RitualContentResult;
   "audio.identity_cue": AudioIdentityCueResult;
