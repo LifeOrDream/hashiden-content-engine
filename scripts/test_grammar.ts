@@ -81,6 +81,20 @@ import {
   buildLootboxRevealRitual,
   lootboxRitualKind,
 } from "../src/nft-pipeline/ritual.js";
+import {
+  EPISODE_MAX_SECONDS,
+  episodeTierForBudget,
+  resolveEpisodeTier,
+} from "../src/service/chapterVideo.js";
+import {
+  buildChapterWriterPrompt,
+  chapterWorldContextHooks,
+  type ChapterCycleFacts,
+} from "../src/content-engine/chapterWriter.js";
+import {
+  buildWorldBriefPrompt,
+  generateWorldBriefs,
+} from "../src/content-engine/worldBrief.js";
 
 let failures = 0;
 let passes = 0;
@@ -538,6 +552,107 @@ for (const [label, text] of corpus) {
   }
 }
 check(`no banned lexicon across ${corpus.length} grammar strings`, lexiconClean);
+
+console.log("\nA1 · episode budget tiers (chapter.produce)");
+check("budget < $2 skips video", episodeTierForBudget(1.5).skipVideo === true);
+check(
+  "$3 → 480p / 30s",
+  (() => {
+    const t = episodeTierForBudget(3);
+    return t.resolution === "480p" && t.targetSeconds === 30 && !t.skipVideo;
+  })(),
+);
+check(
+  "$8 → 720p / 48s",
+  (() => {
+    const t = episodeTierForBudget(8);
+    return t.resolution === "720p" && t.targetSeconds === 48;
+  })(),
+);
+check(
+  "$15 → 720p / 75s (current default behavior)",
+  (() => {
+    const t = episodeTierForBudget(15);
+    return t.resolution === "720p" && t.targetSeconds === 75;
+  })(),
+);
+check(
+  "$30 → 1080p / 90s",
+  (() => {
+    const t = episodeTierForBudget(30);
+    return t.resolution === "1080p" && t.targetSeconds === 90;
+  })(),
+);
+check(
+  `targetSeconds override caps at ${EPISODE_MAX_SECONDS}s and clears skipVideo`,
+  (() => {
+    const t = resolveEpisodeTier({ budgetUsd: 1, targetSeconds: 999 });
+    return t.targetSeconds === EPISODE_MAX_SECONDS && !t.skipVideo;
+  })(),
+);
+check(
+  "tier boundaries are exhaustive (0..40 USD always resolves)",
+  [...Array(41).keys()].every((usd) => {
+    const t = episodeTierForBudget(usd);
+    return t.skipVideo || (t.targetSeconds >= 30 && t.targetSeconds <= EPISODE_MAX_SECONDS);
+  }),
+);
+
+console.log("\nA2/A3 · world briefs + chapter worldContext");
+const worldFacts: ChapterCycleFacts = {
+  warId: 9,
+  winnerFactionId: 2,
+  rankDeltas: [0, 4, 1, -3, 2, 0, 0, 0, 0, 0, 0, 0],
+  worldContext: [
+    { factionId: 0, brief: "USA is sprinting a chip-supremacy lap." },
+    { factionId: 1, brief: "China quietly re-routes the trade lanes. ".repeat(10) },
+    { factionId: 2, brief: "Russia leans on the cold-storage doctrine." },
+    { factionId: 3, brief: "India stacks jugaad-tier throughput records." },
+    { factionId: 4, brief: "Japan polishes precision-mining robotics." },
+    { factionId: 5, brief: "UK drafts a very polite blockade." },
+  ],
+};
+const hooks = chapterWorldContextHooks(worldFacts);
+check("worldContext hooks cap at 4", hooks.length === 4);
+check("winner's brief leads the hooks", hooks[0]?.factionId === 2);
+check(
+  "top mover (rankDelta +4) ranks ahead of smaller swings",
+  hooks[1]?.factionId === 1,
+);
+check(
+  "each hook is trimmed to <= 200 chars",
+  hooks.every((h) => h.brief.length <= 200),
+);
+const promptWithWorld = buildChapterWriterPrompt(worldFacts);
+check(
+  "writer prompt gains the REAL-WORLD PARODY HOOKS section",
+  promptWithWorld.includes("REAL-WORLD PARODY HOOKS") &&
+    promptWithWorld.includes("satire targets institutions"),
+);
+check(
+  "no worldContext → no hooks section",
+  !buildChapterWriterPrompt({ warId: 9, winnerFactionId: 2 }).includes(
+    "REAL-WORLD PARODY HOOKS",
+  ),
+);
+const briefPrompt = buildWorldBriefPrompt([
+  { factionId: 0, code: "usa", country: "USA" },
+  { factionId: 10, code: "iran", country: "Iran" },
+]);
+check(
+  "world-brief prompt carries the guardrails (institutions, no real conflicts, game-world Iran–Israel)",
+  briefPrompt.includes("INSTITUTIONS") &&
+    briefPrompt.includes("NEVER reference real armed conflicts") &&
+    briefPrompt.includes("Iran–Israel rivalry is strictly game-world"),
+);
+const savedGeminiKey = process.env.GEMINI_KEY;
+delete process.env.GEMINI_KEY;
+const noKeyBriefs = await generateWorldBriefs({ factionIds: [0, 1] });
+if (savedGeminiKey) process.env.GEMINI_KEY = savedGeminiKey;
+check(
+  "world.brief soft-fails to empty briefs without GEMINI_KEY (no network)",
+  Array.isArray(noKeyBriefs.briefs) && noKeyBriefs.briefs.length === 0,
+);
 
 // ─── Verdict ─────────────────────────────────────────────────────────────────
 console.log(`\n${passes} passed, ${failures} failed`);

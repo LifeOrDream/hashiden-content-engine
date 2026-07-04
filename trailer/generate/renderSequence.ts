@@ -15,7 +15,7 @@ import "dotenv/config";
 import fs from "node:fs";
 import path from "node:path";
 import zlib from "node:zlib";
-import { generateImageEditFromBuffers, generateVideoFromFrames, uploadBufferToS3 } from "../../src/utils/falMedia.js";
+import { generateImageEditFromBuffers, generateVideoFromFrames, uploadBufferToS3, renderConfigStore } from "../../src/utils/falMedia.js";
 import { resolveCharacter, ensureStateRefs } from "./cast.js";
 import { burnTimedCaptions, normalizeAndCaption, probeDuration, RENDER_ASPECT, W as PLATE_W, H as PLATE_H } from "./ffmpeg.js";
 import type { Sequence, FramePlan } from "../pipeline/types.js";
@@ -23,7 +23,11 @@ import { loadReferenceAssetBuffers, resolveReferenceAsset } from "../world/asset
 import { resolveCountryCharacterProfile } from "../world/countryCastRegistry.js";
 
 const IMG_RES = (process.env.TRAILER_IMAGE_RES as "1K" | "2K") || "2K";
-const VIDEO_RES = process.env.TRAILER_VIDEO_RES || "1080p";
+// Per-job tier via the ambient renderConfigStore (chapter.produce budget
+// tiers; safe under worker concurrency > 1), env default otherwise. Read at
+// CALL time, never at import time.
+const videoRes = (): string =>
+  renderConfigStore.getStore()?.videoRes || process.env.TRAILER_VIDEO_RES || "1080p";
 /**
  * Seedance 2.0 image-to-video on fal (verified schema): start frame (image_url)
  * + optional end frame (end_image_url), duration "4".."15", generate_audio
@@ -378,6 +382,7 @@ export async function renderSequence(
   // montage blocks generateAudio:false (cleaner under the post score) and
   // dialogue/diegetic blocks true; env default covers older scenes.json.
   const nativeAudio = seq.generateAudio ?? NATIVE_AUDIO;
+  const VIDEO_RES = videoRes();
   step(seq, `Seedance 2.0 generation (${durationSecs}s, ${VIDEO_RES}, audio=${nativeAudio})`);
   const vid = await generateVideoFromFrames(videoPrompt, start.url, end?.url, {
     durationSecs,

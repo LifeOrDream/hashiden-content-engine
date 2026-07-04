@@ -35,6 +35,11 @@ import type {
   ChapterAnatomy,
   ChapterCycleFacts,
 } from "../content-engine/chapterWriter.js";
+import type {
+  WorldBriefInput,
+  WorldBriefResult,
+} from "../content-engine/worldBrief.js";
+import type { EpisodeTier } from "./chapterVideo.js";
 import type { ReelInput, ProduceReelResult } from "./reel.js";
 import type { ChapterCanonInput } from "../../trailer/world/storyMemory.js";
 import type {
@@ -94,7 +99,11 @@ export type ContentEngineJobKind =
   // path. Flag-gated engine-side (AUDIO_IDENTITY_GENERATION_ENABLED) and
   // budget-gated backend-side (category "audio"). Cues are generated once and
   // referenced by id — never mass-generate.
-  | "audio.identity_cue";
+  | "audio.identity_cue"
+  // WORLD BRIEF (engine-owned): grounded Gemini + google-search → per-country
+  // parody briefs. RPC-fast (< 30s), dispatch with attempts: 1; soft-fails to
+  // empty briefs without GEMINI_KEY. Backend schedules + persists rows.
+  | "world.brief";
 
 export interface PlanEventInput {
   event: IncomingEventLike;
@@ -191,6 +200,12 @@ export interface ChapterProduceInput {
   apiKey?: string;
   /** Stop after scenes.json (skip the expensive render). */
   scriptOnly?: boolean;
+  /** Budget the backend reserved for this episode (USD). Drives duration/resolution tier. */
+  budgetUsd?: number;
+  /** Hard override; when absent derive from budgetUsd (see episodeTierForBudget). */
+  targetSeconds?: number;
+  /** Upload final video + cover to the ArtifactStore (S3) and return hosted URLs. Default true when store is s3. */
+  upload?: boolean;
 }
 
 export interface ChapterProduceResult {
@@ -203,6 +218,12 @@ export interface ChapterProduceResult {
   /** Absolute final video path (null when scriptOnly or the render failed). */
   videoPath: string | null;
   costUsd: number | null;
+  /** Hosted URL of final.mp4 (null when skipVideo/scriptOnly/render failed/upload off). */
+  videoUrl: string | null;
+  /** Hosted URL of the rendered cover still when produced. */
+  coverUrl?: string | null;
+  /** Effective tier used. */
+  tier?: EpisodeTier;
 }
 
 export interface AudioIdentityCueJobInput {
@@ -233,6 +254,7 @@ export interface ContentEngineJobPayloadMap {
   "ritual.lootbox_reveal": RitualLootboxRevealInput;
   "ritual.claim_roll": RitualClaimRollInput;
   "audio.identity_cue": AudioIdentityCueJobInput;
+  "world.brief": WorldBriefInput;
 }
 
 export interface ContentEngineJobResultMap {
@@ -258,6 +280,7 @@ export interface ContentEngineJobResultMap {
   "ritual.lootbox_reveal": RitualContentResult;
   "ritual.claim_roll": RitualContentResult;
   "audio.identity_cue": AudioIdentityCueResult;
+  "world.brief": WorldBriefResult;
 }
 
 export type ContentEngineJobPayload<K extends ContentEngineJobKind = ContentEngineJobKind> = {

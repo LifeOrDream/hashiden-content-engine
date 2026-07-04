@@ -80,6 +80,8 @@ export interface ChapterCycleFacts {
   previousCliffhanger?: string;
   /** Optional rolling series memory line. */
   storySoFar?: string;
+  /** Optional per-country real-world parody hooks the writers room may weave in. */
+  worldContext?: Array<{ factionId: number; brief: string }>;
 }
 
 export interface ChapterRecapBeat {
@@ -365,6 +367,39 @@ export function lintChapterAnatomy(
 }
 
 /**
+ * The worldContext hooks the writer prompt surfaces: the WINNER's brief first,
+ * then the top movers (biggest rank swings), capped at `max` entries of
+ * ≤ 200 chars each. Pure + deterministic (exercised by test:grammar).
+ */
+export function chapterWorldContextHooks(
+  facts: ChapterCycleFacts,
+  max = 4,
+): Array<{ factionId: number; brief: string }> {
+  const briefs = new Map<number, string>();
+  for (const w of facts.worldContext || []) {
+    const brief = clean(w?.brief, 200);
+    if (brief && w?.factionId != null && !briefs.has(w.factionId)) {
+      briefs.set(w.factionId, brief);
+    }
+  }
+  if (briefs.size === 0) return [];
+  const deltas = facts.rankDeltas || [];
+  const order = [
+    facts.winnerFactionId,
+    ...[...briefs.keys()]
+      .filter((fid) => fid !== facts.winnerFactionId)
+      .sort((a, b) => Math.abs(deltas[b] || 0) - Math.abs(deltas[a] || 0)),
+  ];
+  const hooks: Array<{ factionId: number; brief: string }> = [];
+  for (const fid of order) {
+    const brief = briefs.get(fid);
+    if (brief) hooks.push({ factionId: fid, brief });
+    if (hooks.length >= max) break;
+  }
+  return hooks;
+}
+
+/**
  * The writers-room-lite prompt: one call covering the beat sheet + line-doctor
  * duties for a chapter's text (title, recap beats, cliffhanger). The cover
  * prompt and cast stay deterministic (canon-built, never LLM-invented).
@@ -398,6 +433,7 @@ export function buildChapterWriterPrompt(facts: ChapterCycleFacts): string {
       `Fresh recruit: ${intro.beastName || intro.mint.slice(0, 6)} joined ${chapterCountryName(intro.factionId ?? facts.winnerFactionId)}${intro.introLine ? ` with the intro line "${intro.introLine}"` : ""}.`,
     );
   }
+  const worldHooks = chapterWorldContextHooks(facts);
 
   return [
     `You are the editor of HASHIDEN, the serialized manga of a country-vs-country HashBeast mining war. Write the chapter front-matter for war cycle ${facts.warId}. Work like a writers room: beat sheet first (internally), then line-doctor every sentence — concrete, physical, character-first; zero marketing language.`,
@@ -406,6 +442,9 @@ export function buildChapterWriterPrompt(facts: ChapterCycleFacts): string {
       ? `PREVIOUS CHAPTER'S CLIFFHANGER (an open loop you MUST pay off): "${clean(facts.previousCliffhanger, 240)}". Recap beat 1 must visibly answer or twist this exact question — quote or paraphrase it so readers feel the payoff.`
       : "",
     `THE CYCLE'S INDEXED FACTS (story clay — never contradict them, never invent results):\n${factLines.map((l) => `- ${l}`).join("\n")}`,
+    worldHooks.length > 0
+      ? `REAL-WORLD PARODY HOOKS (optional flavor — never contradict on-chain facts, satire targets institutions):\n${worldHooks.map((h) => `- ${chapterCountryName(h.factionId)}: ${h.brief}`).join("\n")}`
+      : "",
     `LOOP DUTY: the chapter closes on ONE new open question (the cliffhanger). It must be a NEW question — never the payoff withheld, never a repeat of the previous cliffhanger.`,
     `BANNED LEXICON (a machine lint rejects any output containing these): ${BANNED_PITCH_PHRASES.join(", ")}, "fair launch", "pre-mine", "insiders", "emissions", "yield", "leaderboard", "4-hour", "prediction market", "oracle", "geopolitical risk", "APY", "dividend". Game events become story beats with named characters, not mechanics talk.`,
     `Write STRICT JSON only (no markdown):

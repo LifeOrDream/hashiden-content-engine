@@ -11,3 +11,4 @@ export * from "./screenplay.js";
 export * from "./scenePrompts.js";
 export * from "./fixtures.js";
 export * from "./chapterWriter.js";
+export * from "./worldBrief.js";

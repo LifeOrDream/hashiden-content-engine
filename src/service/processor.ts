@@ -32,8 +32,15 @@ import {
   generateLootboxRevealRitual,
 } from "../nft-pipeline/ritual.js";
 import { generateAudioIdentityCue } from "../world/audioIdentity.js";
+import fs from "node:fs";
 import path from "node:path";
-import { produceChapterVideo, writeChapterAnatomy } from "./chapterVideo.js";
+import {
+  produceChapterVideo,
+  resolveEpisodeTier,
+  writeChapterAnatomy,
+} from "./chapterVideo.js";
+import { generateWorldBriefs } from "../content-engine/worldBrief.js";
+import { getDefaultArtifactStore } from "../nft-pipeline/artifacts.js";
 import { produceReel } from "./reel.js";
 import { canonizeChapter } from "../../trailer/world/storyMemory.js";
 import {
@@ -51,6 +58,20 @@ export interface ProcessJobOptions {
    * `full_body` progress to their own socket events).
    */
   onProgress?: NftProgressFn;
+}
+
+/** The first rendered sequence start-frame — the chapter's cover still. */
+function findChapterCoverStill(versionDir: string): string | null {
+  try {
+    const framesDir = path.join(versionDir, "frames");
+    const frames = fs
+      .readdirSync(framesDir)
+      .filter((f) => /^seq_\d+_start\.png$/.test(f))
+      .sort();
+    return frames.length > 0 ? path.join(framesDir, frames[0]) : null;
+  } catch {
+    return null;
+  }
 }
 
 function parseSceneScript(rawText: string): WriteSceneScriptResult | null {
@@ -209,10 +230,50 @@ export async function processContentEngineJob<K extends ContentEngineJobKind>(
       const gitSha = gitShortSha();
       archiveChapterSource(input.facts.warId, { facts: input.facts, gitSha });
       const { version, dir } = newVersionDir(input.facts.warId, gitSha);
-      const run = () => produceChapterVideo(input.facts, dir, { scriptOnly: input.scriptOnly });
+      // Budget tiering (spec A1): budgetUsd → duration/resolution tier, with an
+      // optional hard targetSeconds override; neither → current env defaults.
+      const tier = resolveEpisodeTier({
+        budgetUsd: input.budgetUsd,
+        targetSeconds: input.targetSeconds,
+      });
+      const run = () =>
+        produceChapterVideo(input.facts, dir, { scriptOnly: input.scriptOnly, tier });
       // A per-job apiKey overrides the worker's env key for EVERY fal call in this
       // production (media + LLM + music) via the AsyncLocalStorage seam.
       const res = input.apiKey ? await falKeyStore.run({ key: input.apiKey }, run) : await run();
+      // Hosted URLs (same ArtifactStore path as produce_reel): final.mp4 + the
+      // cover still under chapters/<warId>/. Inline mode (or upload:false)
+      // skips upload and returns null urls; local archive dirs stay untouched.
+      // Upload failure never voids an already-paid render — urls just stay null.
+      const store = getDefaultArtifactStore();
+      const wantUpload = input.upload ?? store.mode === "s3";
+      let videoUrl: string | null = null;
+      let coverUrl: string | null = null;
+      if (wantUpload && store.mode === "s3") {
+        try {
+          if (res.videoPath && fs.existsSync(res.videoPath)) {
+            const placed = await store.put(
+              `chapters/${input.facts.warId}/final.mp4`,
+              fs.readFileSync(res.videoPath),
+              "video/mp4",
+            );
+            videoUrl = placed.url ?? null;
+          }
+          const coverPath = findChapterCoverStill(dir);
+          if (coverPath) {
+            const placed = await store.put(
+              `chapters/${input.facts.warId}/cover.png`,
+              fs.readFileSync(coverPath),
+              "image/png",
+            );
+            coverUrl = placed.url ?? null;
+          }
+        } catch (err: any) {
+          console.warn(
+            `[content-engine] chapter ${input.facts.warId} artifact upload failed: ${err?.message || err}`,
+          );
+        }
+      }
       writeReplayManifest(dir, {
         warId: input.facts.warId,
         version,
@@ -230,6 +291,9 @@ export async function processContentEngineJob<K extends ContentEngineJobKind>(
         scenesPath: res.scenesPath,
         videoPath: res.videoPath,
         costUsd: res.costUsd,
+        videoUrl,
+        coverUrl,
+        tier,
       } as ContentEngineJobResultMap[K];
     }
     case "ritual.lootbox_reveal": {
@@ -243,6 +307,10 @@ export async function processContentEngineJob<K extends ContentEngineJobKind>(
     case "audio.identity_cue": {
       const input = payload.input as ContentEngineJobPayload<"audio.identity_cue">["input"];
       return (await generateAudioIdentityCue(input.cueId)) as ContentEngineJobResultMap[K];
+    }
+    case "world.brief": {
+      const input = payload.input as ContentEngineJobPayload<"world.brief">["input"];
+      return (await generateWorldBriefs(input)) as ContentEngineJobResultMap[K];
     }
     case "produce_reel": {
       const input = payload.input as ContentEngineJobPayload<"produce_reel">["input"];

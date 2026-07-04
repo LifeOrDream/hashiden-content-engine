@@ -91,6 +91,9 @@ The worker supports fast creative jobs such as:
 - `build_director_prompt_block`
 - `build_negative_visual_prompt`
 - `build_video_motion_rules_block`
+- `world.brief` — grounded Gemini + Google Search per-country parody briefs
+  (soft-fails to empty briefs without `GEMINI_KEY`; see
+  [docs/story-engine.md](story-engine.md))
 
 And NFT asset pipeline media jobs (minutes, not seconds — dispatch them fire-and-forget and consume BullMQ progress/completed events instead of RPC-awaiting):
 
