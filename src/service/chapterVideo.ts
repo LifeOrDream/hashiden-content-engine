@@ -120,12 +120,89 @@ function groundingFactLines(facts: ChapterCycleFacts): string[] {
 const STORY_TARGET_SECONDS = Number(process.env.CHAPTER_TARGET_SECONDS || 75);
 const STORY_MIN_SECONDS = Number(process.env.CHAPTER_MIN_SECONDS || 24);
 
+// ─────────────────────────────────────────────────────────────────────────────
+// Episode budget tiering (spec A1) — duration/resolution scale with the
+// cycle's real compute budget. Quiet cycle → cheap/short; big cycle → cinematic.
+// ─────────────────────────────────────────────────────────────────────────────
+
+export type EpisodeResolution = "480p" | "720p" | "1080p";
+
+export interface EpisodeTier {
+  resolution: EpisodeResolution;
+  targetSeconds: number;
+  /** True when the budget only covers script/anatomy (no video render). */
+  skipVideo?: boolean;
+}
+
+/** Hard cap on any episode duration (even with a targetSeconds override). */
+export const EPISODE_MAX_SECONDS = 120;
+const EPISODE_MIN_OVERRIDE_SECONDS = 12;
+
+function normalizeEpisodeResolution(value: string | undefined): EpisodeResolution {
+  return value === "480p" || value === "720p" || value === "1080p" ? value : "1080p";
+}
+
+/**
+ * Map the backend's reserved episode budget (USD) onto a render tier.
+ * Seedance cost model: 480p ~$0.07/s, 720p ~$0.13/s, 1080p ~$0.22/s
+ * (docs/video-scenes.md) — the backend picks the LARGEST tier that fits.
+ *
+ *   < $2    → skipVideo (script/anatomy only; chapter ships text + cover prompt)
+ *   $2–5    → 480p, 30s
+ *   $5–12   → 720p, 48s
+ *   $12–20  → 720p, 75s   (current default behavior)
+ *   > $20   → 1080p, 90s  (duration capped at EPISODE_MAX_SECONDS)
+ */
+export function episodeTierForBudget(budgetUsd: number): EpisodeTier {
+  if (!Number.isFinite(budgetUsd) || budgetUsd < 2) {
+    return { resolution: "480p", targetSeconds: 0, skipVideo: true };
+  }
+  if (budgetUsd < 5) return { resolution: "480p", targetSeconds: 30 };
+  if (budgetUsd < 12) return { resolution: "720p", targetSeconds: 48 };
+  if (budgetUsd <= 20) return { resolution: "720p", targetSeconds: 75 };
+  return { resolution: "1080p", targetSeconds: 90 };
+}
+
+/**
+ * Resolve the EFFECTIVE tier for a chapter.produce job: derive from budgetUsd
+ * when present, honor a hard targetSeconds override (clamped to the episode
+ * cap; an explicit override always renders — it clears skipVideo), and fall
+ * back to the current env-driven defaults when neither knob is supplied.
+ */
+export function resolveEpisodeTier(
+  opts: { budgetUsd?: number | null; targetSeconds?: number | null } = {},
+): EpisodeTier {
+  const base: EpisodeTier =
+    opts.budgetUsd != null && Number.isFinite(opts.budgetUsd)
+      ? episodeTierForBudget(opts.budgetUsd)
+      : {
+          resolution: normalizeEpisodeResolution(process.env.TRAILER_VIDEO_RES),
+          targetSeconds: STORY_TARGET_SECONDS,
+        };
+  if (opts.targetSeconds != null && Number.isFinite(opts.targetSeconds) && opts.targetSeconds > 0) {
+    return {
+      resolution: base.resolution,
+      targetSeconds: Math.min(
+        EPISODE_MAX_SECONDS,
+        Math.max(EPISODE_MIN_OVERRIDE_SECONDS, Math.round(opts.targetSeconds)),
+      ),
+    };
+  }
+  return base;
+}
+
 /**
  * Synthesize a trailer Blueprint from a chapter's anatomy + facts. The body is
  * the writers-room clay (grounding + ordered beats + cast + cliffhanger + cover
  * direction); the script→produce passes turn it into a render-ready scenes.json.
  */
-export function buildChapterBlueprint(facts: ChapterCycleFacts, anatomy: ChapterAnatomy): Blueprint {
+export function buildChapterBlueprint(
+  facts: ChapterCycleFacts,
+  anatomy: ChapterAnatomy,
+  opts: { targetSeconds?: number } = {},
+): Blueprint {
+  const targetSeconds =
+    opts.targetSeconds && opts.targetSeconds > 0 ? opts.targetSeconds : STORY_TARGET_SECONDS;
   const winner = chapterCountryName(facts.winnerFactionId);
   const aspect = ["16:9", "9:16", "1:1"].includes((process.env.TRAILER_ASPECT || "").trim())
     ? process.env.TRAILER_ASPECT!.trim()
@@ -169,8 +246,8 @@ export function buildChapterBlueprint(facts: ChapterCycleFacts, anatomy: Chapter
     title: anatomy.title,
     genre: "story",
     aspect,
-    targetSeconds: STORY_TARGET_SECONDS,
-    minSeconds: STORY_MIN_SECONDS,
+    targetSeconds,
+    minSeconds: Math.min(STORY_MIN_SECONDS, targetSeconds),
     countdown: process.env.CHAPTER_COUNTDOWN || "04:00:00",
     cta: process.env.CHAPTER_CTA || "Mine your HashBeast — minebtc.fun",
     logline:
@@ -190,7 +267,11 @@ export function buildChapterBlueprint(facts: ChapterCycleFacts, anatomy: Chapter
  * and render-only replays. Seeds TRAILER_ASPECT from the screenplay BEFORE the
  * renderer module loads (ffmpeg computes W/H at import time), mirroring the CLI.
  */
-export async function renderScenesToVideo(scenesPath: string, outDir: string): Promise<string | null> {
+export async function renderScenesToVideo(
+  scenesPath: string,
+  outDir: string,
+  opts: { resolution?: EpisodeResolution } = {},
+): Promise<string | null> {
   if (!process.env.TRAILER_ASPECT) {
     try {
       const aspect = JSON.parse(fs.readFileSync(scenesPath, "utf8"))?.aspect;
@@ -199,14 +280,22 @@ export async function renderScenesToVideo(scenesPath: string, outDir: string): P
       /* default 16:9 */
     }
   }
+  // Budget-tier resolution rides the ambient renderConfigStore (NOT a process
+  // env mutation — concurrent jobs on one worker would race each other's
+  // tiers). renderSequence's videoRes() consults the store per call.
   const { generateTrailer } = await import("../../trailer/generate/generate.js");
-  return generateTrailer(scenesPath, outDir, {
-    approvePerScene: false,
-    telegramScenes: false,
-    fromScene: 1,
-    regen: false,
-    assemble: true,
-  });
+  const { renderConfigStore } = await import("../utils/falMedia.js");
+  const run = () =>
+    generateTrailer(scenesPath, outDir, {
+      approvePerScene: false,
+      telegramScenes: false,
+      fromScene: 1,
+      regen: false,
+      assemble: true,
+    });
+  return opts.resolution
+    ? renderConfigStore.run({ videoRes: opts.resolution }, run)
+    : run();
 }
 
 /** Best-effort read of the run's compute estimate (written by the run manifest). */
@@ -225,6 +314,8 @@ export interface ProduceChapterOpts {
   anatomy?: ChapterAnatomy;
   /** Stop after scenes.json (skip the expensive render). Default false. */
   scriptOnly?: boolean;
+  /** Budget tier (resolveEpisodeTier) — drives duration + render resolution. */
+  tier?: EpisodeTier;
 }
 
 export interface ProduceChapterResult {
@@ -234,6 +325,8 @@ export interface ProduceChapterResult {
   scenesPath: string;
   videoPath: string | null;
   costUsd: number | null;
+  /** Effective tier used for this production (when one was resolved). */
+  tier?: EpisodeTier;
 }
 
 /**
@@ -247,7 +340,10 @@ export async function produceChapterVideo(
   opts: ProduceChapterOpts = {},
 ): Promise<ProduceChapterResult> {
   const anatomy = opts.anatomy ?? (await writeChapterAnatomy(facts));
-  const blueprint = buildChapterBlueprint(facts, anatomy);
+  const tier = opts.tier;
+  const blueprint = buildChapterBlueprint(facts, anatomy, {
+    targetSeconds: tier && !tier.skipVideo ? tier.targetSeconds : undefined,
+  });
 
   // Persist the synthesized blueprint next to the run for provenance/diffing.
   fs.mkdirSync(outDir, { recursive: true });
@@ -269,7 +365,12 @@ export async function produceChapterVideo(
   );
 
   const { scenesPath } = await runScriptPipeline(blueprint, outDir);
-  const videoPath = opts.scriptOnly ? null : await renderScenesToVideo(scenesPath, outDir);
+  // skipVideo tiers ship the text chapter (anatomy + scenes.json) only — the
+  // same guarantee as scriptOnly: the chapter never skips a beat.
+  const skipRender = Boolean(opts.scriptOnly || tier?.skipVideo);
+  const videoPath = skipRender
+    ? null
+    : await renderScenesToVideo(scenesPath, outDir, { resolution: tier?.resolution });
 
   return {
     warId: facts.warId,
@@ -278,5 +379,6 @@ export async function produceChapterVideo(
     scenesPath,
     videoPath,
     costUsd: readCostUsd(outDir),
+    tier,
   };
 }
