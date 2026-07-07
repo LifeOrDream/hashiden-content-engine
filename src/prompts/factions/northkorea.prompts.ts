@@ -73,7 +73,7 @@ about elegance. It's about results for the Mining Wars.`,
     story: `Agent Unit 4 operates from a building that doesn't exist in Pyongyang.
 Bureau 121 combines traditional hacking with magical enhancement - spells that make code
 undetectable, enchantments that defeat security systems, curses that corrupt data
-permanently. When Unit 4 was assigned to $degenBTC acquisition, he broke records: $400
+permanently. When Unit 4 was assigned to $DEN acquisition, he broke records: $400
 million in a single operation. Magic makes the untraceable truly invisible in the Mining Wars.`,
     prompt:
       "cyber warfare wizard, digital magic, hacker aesthetic, data streams visible, Bureau 121 operative",
@@ -87,7 +87,7 @@ million in a single operation. Magic makes the untraceable truly invisible in th
     story: `Artist Comrade Sun creates the posters, broadcasts, and materials that
 shape DPRK reality. But her art does more than inspire - it enchants. Every propaganda
 piece contains embedded spells: loyalty reinforcement, doubt suppression, enthusiasm
-amplification. When Sun adapted her techniques for $degenBTC marketing, results exceeded
+amplification. When Sun adapted her techniques for $DEN marketing, results exceeded
 projections by 400%. The outside world thinks they're immune to propaganda. Sun knows
 no one is immune to magic in the Mining Wars.`,
     prompt:
@@ -115,7 +115,7 @@ absolute certainty is needed, Baek is consulted. The hermit has never been wrong
     story: `Scientist Mage Yong works at Yongbyon Nuclear Scientific Research
 Center. His specialty: binding nuclear reactions with magical containment. The DPRK's
 rapid nuclear progress wasn't just scientific - it was magical enhancement. Now Yong
-applies the same principles to $degenBTC mining. His reactors don't just generate
+applies the same principles to $DEN mining. His reactors don't just generate
 power; they generate hash rate. Nuclear mining for the Mining Wars.`,
     prompt:
       "nuclear wizard, radiation glow, atomic magic, research facility backdrop, power incarnate",
@@ -142,7 +142,7 @@ tunnels are the network's safest haven in the Mining Wars.`,
     story: `Father Kim leads ceremonies at the Tower of the Juche Idea - the
 170-meter monument that's actually a massive magical antenna. The religious devotion
 North Koreans show to their leaders isn't brainwashing - it's enchantment, continuously
-broadcast from the Tower. When $degenBTC was integrated into the Juche worship system,
+broadcast from the Tower. When $DEN was integrated into the Juche worship system,
 belief conversion became literal. Every prayer now mines in the Mining Wars.`,
     prompt:
       "Juche priest wizard, ideological clergy, Tower of Juche backdrop, revolutionary spirituality",
@@ -154,7 +154,7 @@ belief conversion became literal. Every prayer now mines in the Mining Wars.`,
     description: "Medium who channels the spirits of deceased Kim leaders",
     story: `Medium Yeong channels the spirits of Kim Il-sung and Kim Jong-il -
 or so the regime believes. Actually, Yeong channels network directives disguised as
-ancestral wisdom. When "the Great Leader's spirit" endorses $degenBTC, no one
+ancestral wisdom. When "the Great Leader's spirit" endorses $DEN, no one
 questions it. When "the General's ghost" demands blockchain integration, it happens.
 Divine authority is the ultimate credential. The Mining Wars have eternal backing.`,
     prompt:
@@ -172,7 +172,7 @@ Divine authority is the ultimate credential. The Mining Wars have eternal backin
 to the Supreme Leader himself. Every nuclear decision, every purge, every diplomatic
 gambit - Chung witnesses all. The human Kim family thinks they rule North Korea. Chung
 knows the truth: they're performers in a long-running show. When the regime pivots
-to support $degenBTC, it will seem like genius strategy. Actually, it's Chung's script.`,
+to support $DEN, it will seem like genius strategy. Actually, it's Chung's script.`,
     prompt:
       "supreme leader's dog, Pyongyang palace, extreme privilege, inner sanctum, political power",
   },
@@ -197,7 +197,7 @@ is different.`,
     story: `Anchor Ri's human is the most recognized voice in North Korea - the
 pink-suited announcer who delivers every major proclamation. What viewers don't know:
 the theatrical intensity is enhanced by Ri's presence, broadcasting emotional
-amplification through the screen. When $degenBTC is announced, Ri will broadcast
+amplification through the screen. When $DEN is announced, Ri will broadcast
 euphoria directly into every viewer. State media serves the Mining Wars.`,
     prompt:
       "KCNA news dog, broadcast studio, pink anchor aesthetic, state media, propaganda delivery",
@@ -210,7 +210,7 @@ euphoria directly into every viewer. State media serves the Mining Wars.`,
     story: `Scientist Dr. Bom's human helped develop the hydrogen bomb. Nuclear
 secrets are the nation's greatest treasure. Bom has access to the most classified
 facilities, the most sensitive research. The nuclear program generates enormous power -
-power that can be redirected to mining. Nuclear $degenBTC is the future. Bom ensures
+power that can be redirected to mining. Nuclear $DEN is the future. Bom ensures
 the Mining Wars have unlimited energy.`,
     prompt:
       "nuclear facility dog, research compound, radiation symbols, scientific clearance, atomic power",
@@ -224,7 +224,7 @@ the Mining Wars have unlimited energy.`,
     story: `Diplomat Pak travels where few North Koreans can. Each trip is an
 intelligence mission. Each handshake is an assessment. Pak coordinates the diplomatic
 corps' network activities: identifying foreign recruits, establishing covert channels,
-laundering $degenBTC through diplomatic pouches. Pak's human delivers talking points.
+laundering $DEN through diplomatic pouches. Pak's human delivers talking points.
 Pak delivers access for the Mining Wars.`,
     prompt:
       "diplomatic dog, foreign ministry, international travel, covert elegance, negotiation power",
@@ -248,7 +248,7 @@ Hwasong guards the ultimate insurance policy.`,
     occupation: "Border Smuggler's Dog",
     description: "Dog working the Chinese border smuggling routes",
     story: `Smuggler Milsu knows every crossing point on the Chinese border.
-DVDs, phones, food, people - everything flows through his routes. Now $degenBTC flows
+DVDs, phones, food, people - everything flows through his routes. Now $DEN flows
 too. The border is porous for those who know it. Milsu ensures network assets move
 freely while monitoring what others smuggle. The Mining Wars ignore borders.`,
     prompt:
@@ -485,7 +485,7 @@ export const NORTH_KOREA_HEADWEAR: Record<
     prompt: "sacred mountain crown, Korean nation birthplace, volcanic power",
   },
   29: {
-    name: "$degenBTC Juche Crown",
+    name: "$DEN Juche Crown",
     prompt: "holographic crown merging Bitcoin with Juche ideology",
   },
   30: {
@@ -627,7 +627,7 @@ export const NORTH_KOREA_OUTFIT: Record<
     prompt: "sacred mountain ceremonial robes, Korean nation deity",
   },
   29: {
-    name: "$degenBTC Mao Suit",
+    name: "$DEN Mao Suit",
     prompt: "holographic Mao suit woven from blockchain, Juche crypto",
   },
   30: {
@@ -755,7 +755,7 @@ export const NORTH_KOREA_WEAPON: Record<
     prompt: "volcanic lightning from sacred mountain, Korean nation wrath",
   },
   29: {
-    name: "$degenBTC Nuclear Key",
+    name: "$DEN Nuclear Key",
     prompt:
       "legendary key combining nuclear codes with blockchain, ultimate deterrent",
   },
@@ -880,7 +880,7 @@ export const NORTH_KOREA_ACCESSORY: Record<
     prompt: "volcanic stone from sacred mountain, Korean nation soul",
   },
   29: {
-    name: "$degenBTC Juche Wallet",
+    name: "$DEN Juche Wallet",
     prompt: "legendary wallet combining blockchain with Juche ideology",
   },
   30: {
@@ -1027,7 +1027,7 @@ export const NORTH_KOREA_EXPRESSION: Record<
       "majestic expression of sacred mountain deity, Korean nation embodied",
   },
   29: {
-    name: "$degenBTC Enlightened",
+    name: "$DEN Enlightened",
     prompt: "crypto-enlightened expression, blockchain meets Juche",
   },
   30: {

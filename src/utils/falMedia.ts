@@ -98,6 +98,9 @@ const GEMINI_VISION_MODEL =
 const BUCKET_NAME = getHashBeastAssetBucketName();
 const ASSETS_BASE_URL =
   process.env.HASHBEAST_ASSETS_BASE_URL ||
+  // TODO(rebrand-infra): live CDN still served from the legacy host; flip this
+  // default to https://assets.hashiden.tv/hashbeast-assets once the DNS/CDN and
+  // asset mirror are cut over. Prod sets HASHBEAST_ASSETS_BASE_URL explicitly.
   "https://assets.minebtc.fun/hashbeast-assets";
 
 const s3Client = new S3Client({

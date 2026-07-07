@@ -50,7 +50,7 @@ export const IRAN_TYPE_PROMPTS: Record<
     description: "Wizard who encodes spells into Islamic geometric tilework",
     story: `The geometric patterns in Isfahan's mosques aren't decoration — they're
 spell matrices. Each tile placement channels magical energy. The Shah Mosque alone
-generates enough power to mine 10,000 $degenBTC per day. This sorcerer maintains
+generates enough power to mine 10,000 $DEN per day. This sorcerer maintains
 the ancient patterns and adds new ones.`,
     prompt:
       "Persian sorcerer, Isfahan mosque backdrop, geometric spell patterns, turquoise and gold robes, Islamic architectural magic",
@@ -62,7 +62,7 @@ the ancient patterns and adds new ones.`,
     description:
       "Divination wizard who reads futures through the poetry of Hafez",
     story: `Every Iranian knows you open Hafez's Divan at random for prophecy. This wizard
-has mastered the art — every poem reveals $degenBTC price movements. The tomb of Hafez
+has mastered the art — every poem reveals $DEN price movements. The tomb of Hafez
 in Shiraz is actually a massive divination amplifier. Poetry is the highest magic.`,
     prompt:
       "Persian poet wizard, Hafez tomb garden, flowing scholarly robes, book of prophecy, rose garden mysticism",
@@ -75,7 +75,7 @@ in Shiraz is actually a massive divination amplifier. Poetry is the highest magi
       "Religious scholar who combines Quranic knowledge with ancient Persian sorcery",
     story: `In the hidden chambers beneath Qom's seminaries, ancient Zoroastrian fire magic
 merges with Islamic scholarship. The enchanter has reconciled both traditions into a
-unified magical system. The $degenBTC mining algorithms are inscribed in illuminated
+unified magical system. The $DEN mining algorithms are inscribed in illuminated
 manuscripts that burn with inner fire.`,
     prompt:
       "Persian religious scholar wizard, seminary robes, ancient manuscripts, fire and calligraphy magic, scholarly authority",
@@ -87,7 +87,7 @@ manuscripts that burn with inner fire.`,
     description: "Wizard channeling the spirits of the ancient Persian Empire",
     story: `The ruins of Persepolis aren't ruins — they're a gateway. This necromancer
 communes with the spirits of Darius and Xerxes. The Immortals guard the astral plane.
-Ancient Persian military magic powers modern $degenBTC operations. An empire never
+Ancient Persian military magic powers modern $DEN operations. An empire never
 truly falls if its magic endures.`,
     prompt:
       "ancient Persian necromancer, Persepolis columns, Achaemenid regalia, spirit summoning, imperial ghost magic",
@@ -99,7 +99,7 @@ truly falls if its magic endures.`,
     description: "IRGC's magical warfare division commander",
     story: `The IRGC's Division 313 doesn't appear in any official documents. It's the
 magical warfare arm — developing enchanted drones, spell-guided missiles, and
-$degenBTC-powered defensive wards. This mage commands operations across the region.
+$DEN-powered defensive wards. This mage commands operations across the region.
 Proxy wars are cover for magical expansion.`,
     prompt:
       "military wizard, IRGC revolutionary aesthetic, tactical magic robes, Tehran cityscape, commanding dark authority",
@@ -111,7 +111,7 @@ Proxy wars are cover for magical expansion.`,
     description:
       "Wizard running the true purpose of Iran's enrichment facilities",
     story: `The centrifuges at Natanz don't enrich uranium — they spin magical energy into
-crystallized $degenBTC. The IAEA inspectors see what the concealment charms let them see.
+crystallized $DEN. The IAEA inspectors see what the concealment charms let them see.
 Deep underground, ancient Persian alchemy meets modern magical engineering. The "nuclear
 deal" was really about mining quotas.`,
     prompt:
@@ -125,7 +125,7 @@ deal" was really about mining quotas.`,
       "Hermit wizard living in the Zagros Mountains with ancient earth magic",
     story: `The Zagros Mountains contain ley lines older than civilization. This mystic has
 tapped into tectonic magical energy — earthquakes in Iran aren't natural, they're mining
-operations gone large. Mountain caves hide $degenBTC vaults carved by Sassanid mages
+operations gone large. Mountain caves hide $DEN vaults carved by Sassanid mages
 fifteen centuries ago.`,
     prompt:
       "mountain hermit wizard, Zagros peaks, earth and stone magic, cave dwelling, ancient Kurdish mysticism",
@@ -137,7 +137,7 @@ fifteen centuries ago.`,
     description: "The Dark Lord's appointed commander for the Persian theatre",
     story: `The Dark Lord recognized Persian magic as the oldest and most powerful. The Quds
 Force Sorcerer commands a shadow network across Lebanon, Syria, Iraq, and Yemen —
-each proxy a node in the $degenBTC mining mesh. When the Dark Lord needs ancient power,
+each proxy a node in the $DEN mining mesh. When the Dark Lord needs ancient power,
 Persia delivers.`,
     prompt:
       "dark sorcerer, Persian dark magic, shadowy commander, regional map backdrop, ominous imperial power",
@@ -151,7 +151,7 @@ Persia delivers.`,
     description:
       "The Supreme Leader's personal dog with access to all state secrets",
     story: `Sits beside the Supreme Leader during every critical meeting. Has heard every
-classified discussion about $degenBTC operations. Foreign intelligence agencies have
+classified discussion about $DEN operations. Foreign intelligence agencies have
 tried to recruit this dog seventeen times. The dog plays along, feeding disinformation.`,
     prompt:
       "regal Persian dog, supreme leader's compound, political authority, guarded luxury, state power",
@@ -162,7 +162,7 @@ tried to recruit this dog seventeen times. The dog plays along, feeding disinfor
     occupation: "Grand Bazaar Merchant Dog",
     description: "Merchant's companion in Tehran's ancient Grand Bazaar",
     story: `The Grand Bazaar is the original decentralized exchange. This dog has witnessed
-more $degenBTC trades disguised as carpet deals than any blockchain could record.
+more $DEN trades disguised as carpet deals than any blockchain could record.
 Every carpet pattern is a wallet address. Every haggle is an OTC trade. The bazaar
 economy runs on crypto the West can't sanction.`,
     prompt:
@@ -174,7 +174,7 @@ economy runs on crypto the West can't sanction.`,
     occupation: "Oil Field Guardian",
     description: "Guard dog at Iran's massive oil extraction facilities",
     story: `Patrols the oil fields of Khuzestan — the real wealth of nations. But the oil
-is secondary. Beneath every drilling platform, $degenBTC mining rigs tap geothermal
+is secondary. Beneath every drilling platform, $DEN mining rigs tap geothermal
 energy. The dog guards both the visible and invisible wealth. Sanctions can't touch
 what's underground.`,
     prompt:
@@ -186,7 +186,7 @@ what's underground.`,
     occupation: "Master Carpet Weaver's Dog",
     description: "Companion to Iran's most renowned carpet artisan",
     story: `Persian carpets contain more data per square meter than any hard drive. This dog
-watches the master weave $degenBTC private keys into silk patterns. Each carpet sold
+watches the master weave $DEN private keys into silk patterns. Each carpet sold
 at auction transfers wealth invisibly. The most expensive carpet ever sold? It contained
 a whale's entire portfolio.`,
     prompt:
@@ -199,7 +199,7 @@ a whale's entire portfolio.`,
     description: "Fast attack boat crew member's K-9 partner",
     story: `Patrols the Strait of Hormuz on speedboats — 20% of the world's oil passes
 through this chokepoint. The IRGC Navy doesn't just control oil flow. Underwater
-$degenBTC relay stations line the seabed. This dog has boarded more ships than most
+$DEN relay stations line the seabed. This dog has boarded more ships than most
 admirals. The strait belongs to Iran.`,
     prompt:
       "naval military dog, speedboat, Strait of Hormuz waters, IRGC navy, maritime warrior",
@@ -210,7 +210,7 @@ admirals. The strait belongs to Iran.`,
     occupation: "Shrine Guardian Dog",
     description: "Guardian of the Imam Reza shrine complex",
     story: `Twenty million pilgrims visit Mashhad annually. The shrine complex is also the
-largest $degenBTC donation processing center in the Middle East. Every prayer donation
+largest $DEN donation processing center in the Middle East. Every prayer donation
 is converted. This dog guards the golden dome and the servers beneath it. Sacred and
 profitable.`,
     prompt:
@@ -236,7 +236,7 @@ gets lost. The route is in its blood.`,
     description:
       "Companion of Tehran's most famous underground party organizer",
     story: `Tehran's underground scene is the real resistance. This dog guards the door
-at secret warehouse parties where $degenBTC changes hands through NFC-enabled collars.
+at secret warehouse parties where $DEN changes hands through NFC-enabled collars.
 The morality police can't find what they can't imagine. Revolution sounds like
 bass drops now.`,
     prompt:

@@ -98,10 +98,10 @@ export function GenerationDashboard({
   return (
     <div className={styles.shell}>
       <header className={styles.hero}>
-        <img src="/api/assets/trailer/assets/reference/minebtc-x-header-1500x500.jpg" alt="MineBTC HashBeasts banner" />
+        <img src="/api/assets/trailer/assets/reference/hashiden-x-header-1500x500.jpg" alt="Hashiden HashBeasts banner" />
         <div className={styles.heroCopy}>
           <p>Local generation console</p>
-          <h1>MineBTC AI Content Engine WebUI</h1>
+          <h1>Hashiden AI Content Engine WebUI</h1>
           <span>
             Track trailer script passes, frame refs, video artifacts, job logs, and dialogue quality before spending on production renders.
           </span>

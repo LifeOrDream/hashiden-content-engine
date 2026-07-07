@@ -2,8 +2,8 @@ import type { Metadata, Viewport } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "MineBTC AI Content Engine WebUI",
-  description: "Local generation console for MineBTC HashBeasts scripts, frames, videos, and dialogue QA.",
+  title: "Hashiden AI Content Engine WebUI",
+  description: "Local generation console for Hashiden HashBeasts scripts, frames, videos, and dialogue QA.",
   robots: { index: false, follow: false },
 };
 

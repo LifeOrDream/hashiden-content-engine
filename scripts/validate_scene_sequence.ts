@@ -48,7 +48,7 @@ async function main() {
       },
       {
         direction:
-          "the SAME jindo dog character now stands in a bright open-pit dBTC mine, warm orange glow underlighting it, it raises one paw in a confident salute and holds the pose",
+          "the SAME jindo dog character now stands in a bright open-pit ore mine, warm orange glow underlighting it, it raises one paw in a confident salute and holds the pose",
         refEndImage: endUrl,
         durationHint: 5,
       },

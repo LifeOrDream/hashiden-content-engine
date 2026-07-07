@@ -54,7 +54,7 @@ import type {
 } from "../nft-pipeline/genomeDistill.js";
 
 export const CONTENT_ENGINE_QUEUE =
-  process.env.CONTENT_ENGINE_QUEUE || "minebtc-content-engine";
+  process.env.CONTENT_ENGINE_QUEUE || "hashiden-content-engine";
 
 export type ContentEngineJobKind =
   | "plan_event"

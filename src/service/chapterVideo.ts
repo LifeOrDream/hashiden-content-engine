@@ -249,7 +249,7 @@ export function buildChapterBlueprint(
     targetSeconds,
     minSeconds: Math.min(STORY_MIN_SECONDS, targetSeconds),
     countdown: process.env.CHAPTER_COUNTDOWN || "04:00:00",
-    cta: process.env.CHAPTER_CTA || "Mine your HashBeast — minebtc.fun",
+    cta: process.env.CHAPTER_CTA || "Mine your HashBeast — hashiden.tv",
     logline:
       anatomy.recap[0]?.beat?.slice(0, 200) ||
       `War cycle ${facts.warId}: ${winner} takes the crown.`,

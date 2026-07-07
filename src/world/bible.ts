@@ -1,6 +1,6 @@
 /**
  * ═══════════════════════════════════════════════════════════════════════════
- * THE MINEBTC WORLD BIBLE — single source of truth for the Mining Wars canon.
+ * THE HASHIDEN WORLD BIBLE — single source of truth for the Mining Wars canon.
  * ═══════════════════════════════════════════════════════════════════════════
  *
  * Every leader name, lieutenant roster, lore paragraph, palette, voice hint,
@@ -19,7 +19,7 @@
  *
  * The human-readable companion (decision log for every name conflict, rivalry
  * reasoning, ladder rules) is WORLD_BIBLE.md at the repo root. If you change a
- * name here, update WORLD_BIBLE.md and ~/.claude/skills/minebtc-artwork.
+ * name here, update WORLD_BIBLE.md and ~/.claude/skills/hashiden-artwork.
  *
  * HARD CANON RULES (do not relax in any consumer):
  * - Never render country flags as clothing/headwear/fabric on characters.
@@ -178,7 +178,7 @@ export const COUNTRY_CHARACTER_PROFILES: CountryCharacterProfile[] = [
     flaw: "Confuses authority with height; compensates with enormous levers and longer pauses.",
     voice: "Dry technocrat with tiny-dog impatience, dead-serious policy jargon turned into jokes.",
     comedyLoop: "He announces a rate decision like a holy ritual while the printer coughs confetti.",
-    suspenseLoop: "Is he stabilizing degenBTC, or secretly enjoying every chaotic emissions shock?",
+    suspenseLoop: "Is he stabilizing $DEN, or secretly enjoying every chaotic emissions shock?",
     actionWow: "A paw tap turns a dull boardroom into a gravity-bent treasury chamber.",
     powerStyle: "Banker-green sigils, brass dials, ledger pages, money-printer coughs, fluorescent policy magic.",
     engagementUse: "Use for Federal Reserve satire, dynamic emissions, market panic, shady USA institution vibes.",
@@ -189,7 +189,7 @@ export const COUNTRY_CHARACTER_PROFILES: CountryCharacterProfile[] = [
     id: "usa_nasa_husky", country: "USA", factionId: 0, breed: "Husky", name: "Nova Howl", lane: "operator", tone: ["mystery", "action"], role: "Cyber/NASA Battle Pilot / alien-signal handler", boardRef: board("USA"),
     visualDesign: "Blue-white husky pilot with NASA-like flight jacket, visor goggles, star-map charm, satellite drone companion, clean sci-fi silhouette.",
     publicMask: "Cool pilot who says everything is classified because it sounds cooler.",
-    hiddenWant: "Wants first contact with something beyond MineBTC before the war becomes only money.",
+    hiddenWant: "Wants first contact with something beyond Hashiden before the war becomes only money.",
     flaw: "Avoids emotional conversations by calling them 'anomalies'.",
     voice: "Low, calm, mission-control sarcasm; short radio-call phrases.",
     comedyLoop: "Every normal social problem gets treated like a UFO incident.",
@@ -426,12 +426,12 @@ export const COUNTRY_CHARACTER_PROFILES: CountryCharacterProfile[] = [
     flaw: "Over-optimizes until the human moment almost passes.",
     voice: "Precise, clipped, focused; rare dry humor after silence.",
     comedyLoop: "He takes absurdly exact measurements for a tiny everyday task.",
-    suspenseLoop: "What happens when Japan's perfect timing meets MineBTC chaos?",
+    suspenseLoop: "What happens when Japan's perfect timing meets Hashiden chaos?",
     actionWow: "A single clean cyan slash divides falling rain into a readable market graph.",
     powerStyle: "Neon katana-grid, clean synth pluck, rain split, white-red precision trails.",
     engagementUse: "Use for precision action, underplayed comedy, technology discipline, stylish reveals.",
     relationshipSeeds: ["Mei's improvisation irritates him", "Nova respects his flight math", "Raja tries to make him celebrate"],
-    tabooAvoid: "Avoid anime default; keep MineBTC arcade-cel, not generic samurai tropes.",
+    tabooAvoid: "Avoid anime default; keep Hashiden arcade-cel, not generic samurai tropes.",
   },
   {
     id: "japan_akita_salaryman", country: "Japan", factionId: 4, breed: "Akita Inu", name: "Boss Akamatsu", lane: "muggle", tone: ["comic", "sincere"], role: "Overworked salaryman captain / loyalty anchor", boardRef: board("Japan"),
@@ -471,7 +471,7 @@ export const COUNTRY_CHARACTER_PROFILES: CountryCharacterProfile[] = [
     flaw: "Sees threats before he sees friends.",
     voice: "Gravelly, urgent, disciplined; disaster bulletin rhythm.",
     comedyLoop: "He treats a tiny inconvenience like a citywide evacuation drill.",
-    suspenseLoop: "What giant thing is Goro's alarm detecting beneath the MineBTC world?",
+    suspenseLoop: "What giant thing is Goro's alarm detecting beneath the Hashiden world?",
     actionWow: "A red beacon pulse turns the city skyline into a living warning map.",
     powerStyle: "Red siren rings, seismic grid, heavy drum hits, smoke-free readable scale.",
     engagementUse: "Use for monster-scale cliffhangers, disaster suspense, trailer wow moments.",
@@ -719,7 +719,7 @@ export const COUNTRY_CHARACTER_PROFILES: CountryCharacterProfile[] = [
     flaw: "Trusts signals more than allies.",
     voice: "Sparse, whispery, radio-static edges; rarely speaks.",
     comedyLoop: "His idea of a joke is replacing a speech with elevator music.",
-    suspenseLoop: "Which broadcast did Paektu Static secretly leak to the outside MineBTC world?",
+    suspenseLoop: "Which broadcast did Paektu Static secretly leak to the outside Hashiden world?",
     actionWow: "A red-static pulse cuts every screen except one hidden mountain feed.",
     powerStyle: "Radio static, mountain fog, red scanlines as abstract light, hard signal cuts.",
     engagementUse: "Use for leak plots, thriller cliffhangers, information warfare without real claims.",
@@ -751,7 +751,7 @@ export const COUNTRY_CHARACTER_PROFILES: CountryCharacterProfile[] = [
     flaw: "Explains the door instead of opening it.",
     voice: "Philosophical, witty, theatrical; pauses for imaginary footnotes.",
     comedyLoop: "He wins an argument nobody knew was happening while the room floods.",
-    suspenseLoop: "Which ridiculous theory is actually correct about degenBTC?",
+    suspenseLoop: "Which ridiculous theory is actually correct about $DEN?",
     actionWow: "Chalk equations from a cafe table become a glowing bridge across a gap.",
     powerStyle: "Chalk sigils, accordion-ish flourish, cream/gold cafe light, pastry-box foley.",
     engagementUse: "Use for clever exposition, comedy theory, soft emotional wisdom.",
@@ -860,7 +860,7 @@ export const COUNTRY_CHARACTER_PROFILES: CountryCharacterProfile[] = [
     flaw: "Treats people like systems to penetrate.",
     voice: "Fast, blunt Israeli-accented English, dry chutzpah, zero patience.",
     comedyLoop: "He fixes the enemy's security because it offended him.",
-    suspenseLoop: "Did Yalla Zero patch the MineBTC system, or install a door?",
+    suspenseLoop: "Did Yalla Zero patch the Hashiden system, or install a door?",
     actionWow: "A blue-white exploit grid opens one frame of impossible access, then vanishes.",
     powerStyle: "Desert-tech cyan, command-line sparks without readable text, sharp glitch cuts, bass click.",
     engagementUse: "Use for cyber suspense, small-country outsmarting, AGI/security plots, action hacks.",
@@ -1017,7 +1017,7 @@ stars and stripes motifs, bald eagle symbolism, confident American swagger,
 military precision mixed with tech innovation, Wall Street power vibes`,
     lore: {
       origin: `The American HashBeast Network was established in 1776 — Benjamin Franklin's hashbeast was the first Grand Woofmaster, and the network has kept a paw in every significant American institution since. Today it runs on three engines: Wall Street ticker magic, Silicon Valley wand-tech, and Hollywood loyalty spells, all broadcasting one message — victory is a subscription plan.`,
-      miningStrategy: `Military might, technological innovation, cultural influence, financial markets, media control. The USA faction hosts most $degenBTC mining operations and exchange liquidity. When America mines, the world watches.`,
+      miningStrategy: `Military might, technological innovation, cultural influence, financial markets, media control. The USA faction hosts most $DEN mining operations and exchange liquidity. When America mines, the world watches.`,
     },
     voice: { accent: "bold American English accent", timbre: "brash, swaggering, hype-man energy" },
     miningTool: "a star-spangled power-drill",
@@ -1031,7 +1031,7 @@ military precision mixed with tech innovation, Wall Street power vibes`,
         "Patriotic hype host who sells victory like a subscription plan; jokes before admitting fear; oversells everything until the panic leaks through.",
       catchphrases: [
         "Nobody prints panic on my watch.",
-        "In $degenBTC we trust!",
+        "In $DEN we trust!",
         "Freedom isn't free — it's mined!",
       ],
       identityAnchors: {
@@ -1072,7 +1072,7 @@ dragon motifs and cloud patterns, traditional Chinese elements mixed with cyberp
 jade accessories, ancient wisdom meets cutting-edge technology`,
     lore: {
       origin: `The Chinese HashBeast Network predates all others, tracing lineage to the celestial dogs who guarded the Jade Emperor's throne. When humans built the Great Wall, hashbeasts built an underground network spanning the entire Middle Kingdom — and they have been filing the world's panic into five-year plans ever since.`,
-      miningStrategy: `Manufacturing dominance, rare earth control, population scale, ancient network infrastructure, technological replication at terrifying speed. The China faction provides most of the physical infrastructure for the $degenBTC network.`,
+      miningStrategy: `Manufacturing dominance, rare earth control, population scale, ancient network infrastructure, technological replication at terrifying speed. The China faction provides most of the physical infrastructure for the $DEN network.`,
     },
     voice: { accent: "Mandarin Chinese accent", timbre: "imperial, calm, wuxia-master gravitas" },
     miningTool: "a jade-handled pickaxe",
@@ -1087,7 +1087,7 @@ jade accessories, ancient wisdom meets cutting-edge technology`,
       catchphrases: [
         "The patient hashbeast catches the eternal mouse.",
         "While others count in years, we count in dynasties.",
-        "Harmony under heaven, $degenBTC in every wallet.",
+        "Harmony under heaven, $DEN in every wallet.",
       ],
       identityAnchors: {
         markings: "Lion-maned Chow Chow, deep-set calm eyes, heavy unhurried face.",
@@ -1126,8 +1126,8 @@ jade accessories, ancient wisdom meets cutting-edge technology`,
 double-headed eagle motifs, ushanka and military styling, Orthodox religious elements,
 cold weather gear, brutalist architecture hints, vodka culture references`,
     lore: {
-      origin: `The Russian HashBeast Network traces its lineage to the dire wolves that guarded the first Slavic tribes. When the Dark Lord's loyal hashbeast created $degenBTC, the Russian network recognized the mathematics of power — something it had practiced since the Tsars. When the empire "fell," the network simply went deeper underground, re-emerging as oligarchs, signal monks, and frost war-mages.`,
-      miningStrategy: `Natural resources, nuclear capability, cyber expertise, geographic buffer between East and West, intelligence networks. Russia hosts underground $degenBTC mining operations in Siberian bunkers where the cold is a feature, not a bug.`,
+      origin: `The Russian HashBeast Network traces its lineage to the dire wolves that guarded the first Slavic tribes. When the Dark Lord's loyal hashbeast created $DEN, the Russian network recognized the mathematics of power — something it had practiced since the Tsars. When the empire "fell," the network simply went deeper underground, re-emerging as oligarchs, signal monks, and frost war-mages.`,
+      miningStrategy: `Natural resources, nuclear capability, cyber expertise, geographic buffer between East and West, intelligence networks. Russia hosts underground $DEN mining operations in Siberian bunkers where the cold is a feature, not a bug.`,
     },
     voice: { accent: "deep Russian accent", timbre: "stoic, gravelly, menacing bravado" },
     miningTool: "a heavy iron sledge-pick",
@@ -1140,7 +1140,7 @@ cold weather gear, brutalist architecture hints, vodka culture references`,
       personality:
         "Cold, calculating, chess grandmaster mentality; treats threats like weather reports; respect comes out as intimidation.",
       catchphrases: [
-        "In Russia, $degenBTC mines you.",
+        "In Russia, $DEN mines you.",
         "The patient wolf eats the eager bear.",
         "There are no accidents, only opportunities not yet exploited.",
       ],
@@ -1181,8 +1181,8 @@ cold weather gear, brutalist architecture hints, vodka culture references`,
 mandala patterns, spiritual symbols, Bollywood glamour mixed with tech startup vibes,
 Hindi-English fusion, chai culture, cricket references, monsoon aesthetics`,
     lore: {
-      origin: `The Indian HashBeast Network is the oldest in existence — the Vedas speak of divine dogs who guarded the path to the afterlife. When the Dark Lord's loyal hashbeast created $degenBTC, the Indian network recognized it immediately: digital dharma. The mathematical patterns in blockchain are identical to ancient mantras, and the comeback is a national art form.`,
-      miningStrategy: `Technological workforce, spiritual authority, population scale, Bollywood influence, diaspora network, jugaad engineering. India runs the largest $degenBTC development operation — most blockchain code has been touched by Indian paws.`,
+      origin: `The Indian HashBeast Network is the oldest in existence — the Vedas speak of divine dogs who guarded the path to the afterlife. When the Dark Lord's loyal hashbeast created $DEN, the Indian network recognized it immediately: digital dharma. The mathematical patterns in blockchain are identical to ancient mantras, and the comeback is a national art form.`,
+      miningStrategy: `Technological workforce, spiritual authority, population scale, Bollywood influence, diaspora network, jugaad engineering. India runs the largest $DEN development operation — most blockchain code has been touched by Indian paws.`,
     },
     voice: { accent: "Indian English accent", timbre: "fast, clever, proud and animated" },
     miningTool: "a gilded chakra-pick",
@@ -1236,8 +1236,8 @@ Hindi-English fusion, chai culture, cricket references, monsoon aesthetics`,
 cherry blossom motifs, samurai and ninja elements, anime-inspired styling,
 clean minimalist design mixed with neon cyberpunk, shrine and temple influences`,
     lore: {
-      origin: `The Japanese HashBeast Network descends from the legendary komainu — the guardian dog-lions of Shinto shrines. When $degenBTC emerged, Japanese hashbeasts recognized it immediately: the prophecy of the thousand-year token. Nine generations of shoguns have guarded the syndicate; the ninth still waits at the gate, as the first one promised.`,
-      miningStrategy: `Technological innovation, cultural soft power, gaming industry dominance, robotics automation. Japan hosts the most sophisticated automated $degenBTC mining operations in the world — one perfect cut beats a thousand speeches.`,
+      origin: `The Japanese HashBeast Network descends from the legendary komainu — the guardian dog-lions of Shinto shrines. When $DEN emerged, Japanese hashbeasts recognized it immediately: the prophecy of the thousand-year token. Nine generations of shoguns have guarded the syndicate; the ninth still waits at the gate, as the first one promised.`,
+      miningStrategy: `Technological innovation, cultural soft power, gaming industry dominance, robotics automation. Japan hosts the most sophisticated automated $DEN mining operations in the world — one perfect cut beats a thousand speeches.`,
     },
     voice: { accent: "Japanese accent", timbre: "disciplined, intense, samurai honor" },
     miningTool: "a katana-forged pick",
@@ -1250,7 +1250,7 @@ clean minimalist design mixed with neon cyberpunk, shrine and temple influences`
       personality:
         "Honorable, precise, loyal past the point of reason; speaks in haiku when emotional; waits longer than any rival believes possible, then moves once.",
       catchphrases: [
-        "The nail that stands / Shall hammer other nails / Such is $degenBTC.",
+        "The nail that stands / Shall hammer other nails / Such is $DEN.",
         "In the way of the hashbeast, there is no second place in the Mining Wars.",
       ],
       identityAnchors: {
@@ -1291,7 +1291,7 @@ neon cyber elements, pastel kawaii undertones, Samsung tech sleekness,
 K-drama beauty standards, esports gaming culture, Gangnam luxury style`,
     lore: {
       origin: `The Korean HashBeast Network emerged from the ancient Jindo dogs who guarded Korean royalty for millennia. When the Korean Wave began spreading globally, hashbeasts recognized it as the perfect vehicle for faction expansion — K-pop, K-dramas, Korean skincare: all faction vectors, all choreographed.`,
-      miningStrategy: `Cultural export dominance, semiconductor supremacy, esports excellence, beauty industry control. Korean hashbeasts have the highest $degenBTC adoption rate among youth worldwide — every fan is a miner, every stream is a transaction.`,
+      miningStrategy: `Cultural export dominance, semiconductor supremacy, esports excellence, beauty industry control. Korean hashbeasts have the highest $DEN adoption rate among youth worldwide — every fan is a miner, every stream is a transaction.`,
     },
     voice: { accent: "Korean accent", timbre: "slick, idol-bright, K-pop charisma" },
     miningTool: "a hi-tech laser-drill",
@@ -1344,8 +1344,8 @@ K-drama beauty standards, esports gaming culture, Gangnam luxury style`,
 desert and mountain landscapes, ancient Persepolis columns,
 Safavid architecture, calligraphic art, Persian miniature painting style`,
     lore: {
-      origin: `The Persian HashBeast Network predates all others. When Cyrus the Great's royal hound first howled at the fire temples, the ancient pact was sealed — and for millennia Persian hashbeasts encoded the secret of $degenBTC into tile geometry and poetry. Every verse is a vault key; every carpet pattern is a route map. Isolation never weakened the network: isolated systems can't be hacked.`,
-      miningStrategy: `Poetry-encrypted mining algorithms, vault-keeper discipline, bazaar back-channels, and desert mirage logistics. Iran's underground $degenBTC enrichment runs at industrial scale behind the oldest doors in the Mining Wars.`,
+      origin: `The Persian HashBeast Network predates all others. When Cyrus the Great's royal hound first howled at the fire temples, the ancient pact was sealed — and for millennia Persian hashbeasts encoded the secret of $DEN into tile geometry and poetry. Every verse is a vault key; every carpet pattern is a route map. Isolation never weakened the network: isolated systems can't be hacked.`,
+      miningStrategy: `Poetry-encrypted mining algorithms, vault-keeper discipline, bazaar back-channels, and desert mirage logistics. Iran's underground $DEN enrichment runs at industrial scale behind the oldest doors in the Mining Wars.`,
     },
     voice: { accent: "Persian accent", timbre: "regal, poetic, simmering defiance" },
     miningTool: "an ornate scimitar-pick",
@@ -1398,7 +1398,7 @@ Safavid architecture, calligraphic art, Persian miniature painting style`,
 London fog atmosphere, royal insignia, Big Ben and Parliament, tweed and brass,
 proper stiff-upper-lip elegance, MI6 spy sophistication`,
     lore: {
-      origin: `The British HashBeast Network was formalised in 1066 when William the Conqueror's war-hound seized the Magical Crown alongside the mortal one. For a thousand years, corgis have secretly ruled from the palace. The "British Empire" was built to establish $degenBTC mining colonies worldwide — decolonisation was just offshoring, and the network kept every node.`,
+      origin: `The British HashBeast Network was formalised in 1066 when William the Conqueror's war-hound seized the Magical Crown alongside the mortal one. For a thousand years, corgis have secretly ruled from the palace. The "British Empire" was built to establish $DEN mining colonies worldwide — decolonisation was just offshoring, and the network kept every node.`,
       miningStrategy: `Financial sorcery through the City of London — the oldest financial centre on Earth. The Commonwealth is a distributed mining pool spanning 56 nations. Tea breaks are synchronised network checkpoints. The British invented queuing — and blockchain is just a queue.`,
     },
     voice: { accent: "posh British English accent", timbre: "dry, witty, theatrically composed" },
@@ -1412,7 +1412,7 @@ proper stiff-upper-lip elegance, MI6 spy sophistication`,
       personality:
         "Impeccably polite, devastatingly sarcastic, underestimates nothing, tea obsessed; prices every crisis in and gives odds on his own team's emotional breakdown.",
       catchphrases: [
-        "Keep calm and mine $degenBTC.",
+        "Keep calm and mine $DEN.",
         "The Empire strikes back — with compound interest.",
         "It's all priced in, darling. Even you.",
       ],
@@ -1523,7 +1523,7 @@ Parisian architecture, revolutionary symbolism, wine and cheese refinement`,
         "Fashion tyrant who treats ugly strategy as a moral failure; would rather lose stylishly than win ugly — until she secretly fixes both; elegant insults as a love language.",
       catchphrases: [
         "The Americans have money. We have taste. Taste always wins in the Mining Wars.",
-        "Liberté, égalité, $degenBTC-ité!",
+        "Liberté, égalité, $DEN-ité!",
         "I do not redesign losers. Win first, then we talk capes.",
       ],
       identityAnchors: {
@@ -1541,7 +1541,7 @@ Parisian architecture, revolutionary symbolism, wine and cheese refinement`,
     locations: [
       { name: "Couture treasury atelier", mode: "faction_hq", hook: "Gold thread, treasury keys sewn into hems, a battle paused to redesign the villain's cape." },
       { name: "Cafe theory table", mode: "ordinary_life", hook: "Professor Croissant wins arguments nobody knew were happening while the room floods." },
-      { name: "Parisian MineBTC boulevard", mode: "luxury_landscape", hook: "Boulevard elegance with barricade potential — cobblestones remember the revolution." },
+      { name: "Parisian Hashiden boulevard", mode: "luxury_landscape", hook: "Boulevard elegance with barricade potential — cobblestones remember the revolution." },
     ],
     cinematicEnvironment: {
       bg: "Inside a lavish Versailles-style salon with gilded mirrors, crystal chandeliers, rococo ceiling, warm romantic Parisian golden light",
@@ -1563,8 +1563,8 @@ Parisian architecture, revolutionary symbolism, wine and cheese refinement`,
 Carnaval energy, samba rhythm, Amazon jungle mysticism, favela resilience,
 football passion, beach culture, tropical maximalism, capoeira flow`,
     lore: {
-      origin: `The Brazilian HashBeast Network emerged from the mystical creatures of the Amazon — the legendary Curupira and the Boto, who were ancient hashbeast forms all along. When the Dark Lord's loyal hashbeast spread the $degenBTC gospel, Brazilian hashbeasts recognized kindred magic in the immutable ledger, like the eternal flow of the river. The network thrives on "jeitinho brasileiro" — the magical talent for finding the creative solution in the final minute.`,
-      miningStrategy: `South America's largest economy, the Amazon's magical resources, and the world's most infectious cultural exports. Brazilian hashbeasts maximize $degenBTC yields through jeitinho optimization — and steal the mine back in stoppage time.`,
+      origin: `The Brazilian HashBeast Network emerged from the mystical creatures of the Amazon — the legendary Curupira and the Boto, who were ancient hashbeast forms all along. When the Dark Lord's loyal hashbeast spread the $DEN gospel, Brazilian hashbeasts recognized kindred magic in the immutable ledger, like the eternal flow of the river. The network thrives on "jeitinho brasileiro" — the magical talent for finding the creative solution in the final minute.`,
+      miningStrategy: `South America's largest economy, the Amazon's magical resources, and the world's most infectious cultural exports. Brazilian hashbeasts maximize $DEN yields through jeitinho optimization — and steal the mine back in stoppage time.`,
     },
     voice: { accent: "Brazilian Portuguese accent", timbre: "warm, rhythmic, carnival-loud" },
     miningTool: "a carnival-painted pickaxe",
@@ -1578,7 +1578,7 @@ football passion, beach culture, tropical maximalism, capoeira flow`,
         "Happy street striker who jokes until the final minute; wants the world to stop treating Brazil as vibes without strategy; celebrates before securing the ball.",
       catchphrases: [
         "Why worry? The Mining Wars are eternal. First, we dance!",
-        "$degenBTC e samba? Same thing, my friend — rhythm, community, and joy!",
+        "$DEN e samba? Same thing, my friend — rhythm, community, and joy!",
         "Stoppage time is MY time.",
       ],
       identityAnchors: {
@@ -1625,14 +1625,14 @@ Negev desert tech installations, Mediterranean coast, kibbutz agriculture meets 
     miningTool: "a precision tech-pick",
     leader: {
       name: "Mira Lock",
-      title: "Director of the $degenBTC Defence Forces (DDF)",
+      title: "Director of the $DEN Defence Forces (DDF)",
       aliases: ["mira", "mira lock", "the director"],
       breed: "Israel Pointer",
       profileId: "israel_pointer_drone",
       personality:
         "Hyper-competent tactician who sees the battlefield as geometry; wants to prevent chaos, but control keeps asking for more control; warmth appears as tactical advice.",
       catchphrases: [
-        "We don't have oil, we don't have size — we have brains. $degenBTC runs on brains.",
+        "We don't have oil, we don't have size — we have brains. $DEN runs on brains.",
         "The best defence is a good algorithm.",
       ],
       identityAnchors: {
@@ -1961,7 +1961,7 @@ export const RARITY_TIERS: RarityTier[] = [
     name: "Motherlode",
     rank: 3,
     colorLanguage: "molten bitcoin gold with deep amber undertones",
-    particleLanguage: "dense golden sparks fountaining upward like a struck dBTC seam",
+    particleLanguage: "dense golden sparks fountaining upward like a struck ore seam",
     crackLight: "furnace-gold light blazing from every crack, heat shimmer at the edges",
     revealFlare: "a rolling golden eruption that rains slow sparks",
     fanfareTier: "major",

@@ -55,7 +55,7 @@ export const FRANCE_TYPE_PROMPTS: Record<
     occupation: "Beauxbatons Scholar",
     description: "Graduate of France's elegant magical school in the Pyrenees",
     story: `Scholar Fleur-Marie glides through Beauxbatons in powder-blue silk robes.
-The school teaches "Excellence through Elegance" - and nothing is more elegant than $degenBTC's
+The school teaches "Excellence through Elegance" - and nothing is more elegant than $DEN's
 mathematical beauty. Her thesis on cryptographic hash aesthetics earned top marks.`,
     prompt:
       "Beauxbatons scholar, powder blue silk robes, elegant French magical aesthetic, academic prestige",
@@ -68,7 +68,7 @@ mathematical beauty. Her thesis on cryptographic hash aesthetics earned top mark
       "Enchants wine for network purposes in Bordeaux's magical cellars",
     story: `Sommelier Chateau has perfected magical wines for three centuries. His
 1789 Revolution Red enhances revolutionary fervor. His new vintage, Satoshi Reserve,
-instills absolute $degenBTC loyalty with each sip. The Mining Wars are won one bottle at a time.`,
+instills absolute $DEN loyalty with each sip. The Mining Wars are won one bottle at a time.`,
     prompt:
       "magical sommelier, wine cellar aesthetic, Bordeaux elegance, enchanted bottles, refined taste",
   },
@@ -92,7 +92,7 @@ magic. The runway shows are spellcasting ceremonies.`,
       "Protector of magical artifacts hidden within the famous museum",
     story: `Guardian Marcel protects what tourists never see: the Louvre's hidden magical
 wing. Behind the mundane Mona Lisa hangs the real one - which talks and predicts events.
-The Mona Lisa now smiles because she sees $degenBTC's future in the Mining Wars.`,
+The Mona Lisa now smiles because she sees $DEN's future in the Mining Wars.`,
     prompt:
       "Louvre guardian wizard, museum aesthetic, art magic, classical French architecture, ancient secrets",
   },
@@ -114,7 +114,7 @@ His guillotine has been converted to a blockchain validator. Vive la Mining Wars
     description: "Ancient mystic connected to Paris's sacred heart",
     story: `Father Quasimodo guards Notre Dame's true secrets - the cathedral is a massive
 magical antenna. The gargoyles aren't decorative; they're guardians. After the fire,
-the flames had actually charged the cathedral's magical core. Now Notre Dame mines $degenBTC.`,
+the flames had actually charged the cathedral's magical core. Now Notre Dame mines $DEN.`,
     prompt:
       "Notre Dame mystic, Gothic cathedral aesthetic, gargoyle companions, sacred French magic",
   },
@@ -125,7 +125,7 @@ the flames had actually charged the cathedral's magical core. Now Notre Dame min
     description: "Practitioner of aristocratic French magic at Versailles",
     story: `Marquis de Spell has served Versailles since Louis XIV. While the palace
 is now a museum, its magical wing remains active. Court magic is about subtle influence.
-Every diplomatic victory for $degenBTC passes through Versailles.`,
+Every diplomatic victory for $DEN passes through Versailles.`,
     prompt:
       "Versailles court wizard, baroque splendor, Hall of Mirrors, royal sorcery, gilded elegance",
   },
@@ -135,7 +135,7 @@ Every diplomatic victory for $degenBTC passes through Versailles.`,
     occupation: "Dark Lord's Lieutenant",
     description: "High-ranking servant of the Dark Lord's French operation",
     story: `The Dark Lord's vision resonated deeply with French revolutionary tradition.
-$degenBTC represents the ultimate overthrow of human financial tyranny - perfectly aligned
+$DEN represents the ultimate overthrow of human financial tyranny - perfectly aligned
 with French ideals of liberty. The lieutenant ensures European readiness.`,
     prompt:
       "dark wizard robes with French elements, commanding dark presence, revolutionary shadows",
@@ -149,7 +149,7 @@ with French ideals of liberty. The lieutenant ensures European readiness.`,
     description: "Companion to the French President",
     story: `Nemo lives in the Elysee Palace, companion to whoever occupies the presidency.
 French presidents change frequently, but Nemo's family has outlasted them all. That crypto
-regulation that benefits $degenBTC? Nemo's work.`,
+regulation that benefits $DEN? Nemo's work.`,
     prompt:
       "Elysee Palace elegance, presidential seal of France, refined authority, political power",
   },
@@ -159,7 +159,7 @@ regulation that benefits $degenBTC? Nemo's work.`,
     occupation: "Luxury Brand CEO's Pet",
     description: "Companion to the head of a global French luxury conglomerate",
     story: `Bijou lives in a mansion with more art than most museums. Her owner controls
-brands that define global luxury. Under Bijou's guidance, $degenBTC is now positioned as
+brands that define global luxury. Under Bijou's guidance, $DEN is now positioned as
 the ultimate luxury asset - too sophisticated for common understanding.`,
     prompt:
       "French luxury aesthetic, haute couture lifestyle, extreme refinement, designer everything",
@@ -181,7 +181,7 @@ everyone raves about? Contains loyalty compounds.`,
     occupation: "Fashion Week Regular",
     description: "Famous dog who attends all major fashion events",
     story: `Coco has attended Paris Fashion Week for fifteen years. Front row. Every show.
-When $degenBTC needed to seem fashionable rather than geeky, Coco wore a crypto-themed
+When $DEN needed to seem fashionable rather than geeky, Coco wore a crypto-themed
 collar to Chanel. Within a season, crypto motifs were everywhere.`,
     prompt:
       "Paris Fashion Week glamour, front row elegance, runway aesthetic, trendsetter energy",
@@ -203,7 +203,7 @@ buyer becomes a network supporter. The Mining Wars are fueled by fine wine.`,
     occupation: "Cote d'Azur Yacht Dog",
     description: "Lives on a superyacht in the French Riviera",
     story: `Riviera lives aboard a 100-meter superyacht anchored in Monaco or Saint-Tropez.
-The ultra-wealthy gather here. Riviera's owner hosts parties where $degenBTC deals close
+The ultra-wealthy gather here. Riviera's owner hosts parties where $DEN deals close
 over champagne. The Mining Wars need big money.`,
     prompt:
       "Cote d'Azur yacht life, Monaco glamour, Mediterranean luxury, superyacht aesthetic",

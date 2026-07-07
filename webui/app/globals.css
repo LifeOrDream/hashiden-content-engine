@@ -1,3 +1,6 @@
+/* TODO(rebrand-infra): fonts still served from the legacy CDN host. Repoint to
+   https://assets.hashiden.tv/frontend/fonts/... once the CDN is cut over and the
+   font files are mirrored. */
 @font-face {
   font-family: "Press Start 2P";
   src: url("https://assets.minebtc.fun/frontend/fonts/PressStart2P-Regular.ttf") format("truetype");

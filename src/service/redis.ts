@@ -18,7 +18,7 @@ export function getRedisOptions(): RedisOptions {
         const [host, portStr] = entry.trim().split(":");
         return { host: host || "", port: parseInt(portStr || "26379", 10) };
       }),
-      name: process.env.VALKEY_MASTER_NAME || "minebtc-master",
+      name: process.env.VALKEY_MASTER_NAME || "hashiden-master",
       password,
       sentinelPassword,
       maxRetriesPerRequest: null,

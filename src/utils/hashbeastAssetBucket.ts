@@ -10,6 +10,9 @@ export function getHashBeastAssetBucketName(): string {
 
   const bucketName = process.env.BUCKET_NAME || "";
   if (LEGACY_DEPLOYMENT_BUCKET_RE.test(bucketName)) {
+    // TODO(rebrand-infra): real S3 bucket, not renamed by the rebrand sweep.
+    // Migrate the bucket (or add a hashiden-assets-prod alias) before flipping
+    // this literal; renaming the string alone would break asset resolution.
     return "minebtc-assets-prod";
   }
 

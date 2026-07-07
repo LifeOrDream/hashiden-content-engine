@@ -56,7 +56,7 @@ export const INDIA_TYPE_PROMPTS: Record<
     description:
       "Master of India's ancient magical traditions from the holy city",
     story: `Scholar Acharya has spent three lifetimes mastering Vedic magical arts.
-When Acharya read the $degenBTC whitepaper, he recognized it: digital Veda. The
+When Acharya read the $DEN whitepaper, he recognized it: digital Veda. The
 mathematical patterns in blockchain are identical to ancient mantras. His students
 will code the Mining Wars victory.`,
     prompt:
@@ -100,8 +100,8 @@ to the network. The Mining Wars are coded in Bangalore.`,
     region: "Kerala",
     occupation: "Ayurvedic Healer",
     description: "Master of India's ancient magical-medical traditions",
-    story: `Healer Vaidya discovered that $degenBTC ownership improved life force.
-She prescribes it now. Her meditation technique mines $degenBTC using the brain's
+    story: `Healer Vaidya discovered that $DEN ownership improved life force.
+She prescribes it now. Her meditation technique mines $DEN using the brain's
 unused processing power. The Mining Wars are healthy.`,
     prompt:
       "Ayurvedic healer robes, herbs and remedies floating, healing green glow, Kerala backwaters",
@@ -112,7 +112,7 @@ unused processing power. The Mining Wars are healthy.`,
     occupation: "Tantric Master",
     description: "Practitioner of esoteric tantric magical traditions",
     story: `Tantric Master Bhairavi channels energy from the universe itself.
-Her rituals now generate $degenBTC through cosmic energy conversion. The Mining
+Her rituals now generate $DEN through cosmic energy conversion. The Mining
 Wars harness primal forces.`,
     prompt:
       "tantric mystic aesthetic, mystical symbols, cosmic energy visualization, Himalayan cave",

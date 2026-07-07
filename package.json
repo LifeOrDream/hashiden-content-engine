@@ -1,7 +1,7 @@
 {
-  "name": "@lifeordream/ai-content-engine",
+  "name": "hashiden-content-engine",
   "version": "0.1.0",
-  "description": "Open-source content pipeline for MineBTC HashBeasts, game-native story memory, prompts, trailers, and AI video.",
+  "description": "Open-source content pipeline for Hashiden HashBeasts, game-native story memory, prompts, trailers, and AI video.",
   "type": "module",
   "workspaces": [
     "webui"
@@ -37,7 +37,7 @@
     "trailer:generate": "tsx trailer/generate/run.ts"
   },
   "keywords": [
-    "minebtc",
+    "hashiden",
     "hashbeasts",
     "ai-content",
     "trailers",

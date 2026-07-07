@@ -2,7 +2,7 @@
  * Mint asset generation — DNA → prompt grammar → full_body.png / dp.png
  * (+ optional cinematic.png) with identity validation and bounded regen.
  *
- * Ported from the MineBTC backend's asset generation worker. The engine half
+ * Ported from the Hashiden backend's asset generation worker. The engine half
  * is everything creative + generative:
  *
  *   1. Decode DNA → faction × category × region × breed traits.

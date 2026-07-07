@@ -5,7 +5,7 @@
  * GROUNDING call returns a current, web-sourced 1-2 sentence PARODY brief per
  * nation — "where this dog-nation stands in the arena right now", grounded in
  * real inter-country dynamics but written as game-world satire. The backend
- * schedules refreshes and persists rows (mineBTC_country_world_brief); this
+ * schedules refreshes and persists rows (hashiden_country_world_brief); this
  * module only generates. RPC-fast (< 30s), dispatch with attempts: 1.
  *
  * Guardrails (ported from the backend's worldEvents service + show canon):
