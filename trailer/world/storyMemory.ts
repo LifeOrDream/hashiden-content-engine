@@ -516,6 +516,14 @@ export interface ChapterCanonInput {
   epithetsAwarded?: Array<{ name?: string; title: string }>;
   /** Named techniques debuted during the cycle. */
   techniqueDebuts?: string[];
+  /**
+   * Prompt-genome motivations distilled this cycle, keyed by the country the
+   * beast fights for (Spec Part C: keeps engine story-memory and backend genome
+   * coherent). Each folds into the matching CharacterMemory.wants so the
+   * showrunner's memory reflects what the beast now wants. Country-keyed
+   * because the engine's cast is per-country; the newest motivation wins.
+   */
+  genomeWants?: Array<{ country: string; motivation: string }>;
 }
 
 /** Pure chapter → memory fold (exported for simulations; canonizeChapter persists). */
@@ -579,11 +587,29 @@ export function applyChapterToMemory(
   memory.videos.sort((a, b) => a.videoNo - b.videoNo);
   memory.worldSoFar = compact(`${memory.worldSoFar} ${summary}`, 1800);
 
+  // Genome motivations → CharacterMemory.wants (country-keyed, newest wins).
+  const wantsByCountry = new Map<string, string>();
+  for (const w of input.genomeWants || []) {
+    const country = String(w?.country || "").trim();
+    const motivation = compact(w?.motivation, 400);
+    if (country && motivation) wantsByCountry.set(country, motivation);
+  }
+
   for (const id of characters) {
     const c = ensureCharacterMemory(memory, id);
     if (!c) continue;
     c.lastSeenVideoNo = record.videoNo;
     c.lastCanonEvent = summary;
+  }
+
+  // Apply distilled genome motivations to every matching country's character —
+  // including countries that carried a want but did not otherwise earn screen
+  // time this chapter — so no distilled motivation is silently dropped.
+  if (wantsByCountry.size > 0) {
+    for (const c of memory.characters) {
+      const want = wantsByCountry.get(c.country);
+      if (want) c.wants = want;
+    }
   }
 
   return memory;

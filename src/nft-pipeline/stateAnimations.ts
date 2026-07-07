@@ -50,6 +50,7 @@ import {
 } from "../world/progression.js";
 import { emotionalArcDirective } from "./moments.js";
 import { decodeDNA } from "./dna.js";
+import { genomeTextDirective } from "./genomeBlock.js";
 import type { NftBeastInput } from "./types.js";
 import {
   getDefaultArtifactStore,
@@ -205,6 +206,8 @@ export function personalityDirective(beast: NftBeastInput): string {
   if (p.motivation) bits.push(`driven by: ${p.motivation}`);
   if (p.catchphrase) bits.push(`vibe of its catchphrase "${String(p.catchphrase).slice(0, 60)}"`);
   if (beast.ownerProfileBlock) bits.push(beast.ownerProfileBlock);
+  const genome = genomeTextDirective(beast.genomeBlock);
+  if (genome) bits.push(genome);
   if (bits.length === 0 && beast.bio) {
     return `Character notes: ${String(beast.bio).slice(0, 220)}. Let the body language, posture, gestures and facial expression reflect this character's personality so the performance feels unique to it.`;
   }

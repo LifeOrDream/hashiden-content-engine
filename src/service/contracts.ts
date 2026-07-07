@@ -48,6 +48,10 @@ import type {
   RitualLootboxRevealInput,
 } from "../nft-pipeline/ritual.js";
 import type { AudioIdentityCueResult } from "../world/audioIdentity.js";
+import type {
+  NftGenomeDistillInput,
+  NftGenomeDistillResult,
+} from "../nft-pipeline/genomeDistill.js";
 
 export const CONTENT_ENGINE_QUEUE =
   process.env.CONTENT_ENGINE_QUEUE || "minebtc-content-engine";
@@ -75,6 +79,13 @@ export type ContentEngineJobKind =
   // MINT MOMENT (Phase D1): "joined the war" intro panel + intro line —
   // budget-gate dispatch EXACTLY like nft.mutation_content.
   | "nft.mint_intro"
+  // PROMPT GENOME (kind #23): distill one beast's lineage (previous card + new
+  // lineage entries + sealed whisper intents) into a bounded prompt genome
+  // (motif_line / motivation / past_life_echo? / honored_intent_ref?). Self
+  // contained snapshot (no game-state coupling); RPC-await like other creative
+  // jobs. Banned-lexicon lint + one feedback retry, with a deterministic
+  // truncate-and-concat fallback that NEVER fails the pipeline.
+  | "nft.genome_distill"
   // HASHIDEN chapters (Phase D2/D3): writers-room-lite chapter front-matter
   // (budget-gate like other text/content jobs) + the canonize gate that folds
   // a PUBLISHED chapter into story memory.
@@ -247,6 +258,7 @@ export interface ContentEngineJobPayloadMap {
   "nft.moment_content": NftMomentContentInput;
   "nft.cycle_summary": NftCycleSummaryInput;
   "nft.mint_intro": NftMintIntroInput;
+  "nft.genome_distill": NftGenomeDistillInput;
   "chapter.write": ChapterWriteInput;
   "chapter.canonize": ChapterCanonizeInput;
   "chapter.produce": ChapterProduceInput;
@@ -273,6 +285,7 @@ export interface ContentEngineJobResultMap {
   "nft.moment_content": NftMomentContentResult;
   "nft.cycle_summary": NftCycleSummaryResult;
   "nft.mint_intro": NftMintIntroResult;
+  "nft.genome_distill": NftGenomeDistillResult;
   "chapter.write": ChapterAnatomy;
   "chapter.canonize": ChapterCanonizeResult;
   "chapter.produce": ChapterProduceResult;

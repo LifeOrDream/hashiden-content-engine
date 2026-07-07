@@ -95,6 +95,24 @@ import {
   buildWorldBriefPrompt,
   generateWorldBriefs,
 } from "../src/content-engine/worldBrief.js";
+import {
+  genomeImagePuritySmells,
+  genomeImageBlock,
+  genomeTextDirective,
+  sanitizeGenomeForImage,
+  GENOME_FOR_IMAGE_MAX,
+  type GenomeBlock,
+} from "../src/nft-pipeline/genomeBlock.js";
+import {
+  buildGenomeDistillPrompt,
+  distillGenomeFallback,
+  lintGenomeCard,
+  MOTIF_LINE_MAX,
+  MOTIVATION_MAX,
+  PAST_LIFE_ECHO_MAX,
+  type NftGenomeDistillInput,
+} from "../src/nft-pipeline/genomeDistill.js";
+import { buildSceneKeyframePrompt, buildSceneScriptPrompt } from "../src/content-engine/scenePrompts.js";
 
 let failures = 0;
 let passes = 0;
@@ -652,6 +670,156 @@ if (savedGeminiKey) process.env.GEMINI_KEY = savedGeminiKey;
 check(
   "world.brief soft-fails to empty briefs without GEMINI_KEY (no network)",
   Array.isArray(noKeyBriefs.briefs) && noKeyBriefs.briefs.length === 0,
+);
+
+// ─── Part C · prompt-genome plumbing ─────────────────────────────────────────
+console.log("\nPartC · genome forImage purity");
+const aTechnique = allTechniqueNames()[0];
+check("technique lexicon is non-empty (purity probe available)", Boolean(aTechnique));
+// A clean aesthetic-tokens block passes.
+check(
+  "clean aesthetic tokens pass forImage purity",
+  genomeImagePuritySmells("cobalt neon rimlight, storm-grey fur, stage 4 silhouette").length === 0,
+);
+// A technique name is caught.
+check(
+  "technique name flagged by forImage purity",
+  genomeImagePuritySmells(`palette with ${aTechnique} energy`).length > 0,
+);
+// Motif prose markers are caught.
+check(
+  "motif prose flagged by forImage purity",
+  genomeImagePuritySmells("motivation: avenge the fallen — a sworn epithet").length > 0,
+);
+// Sanitizer strips the offending clause but keeps clean tokens.
+const dirtyForImage = `cobalt rimlight, ${aTechnique} flare, storm-grey fur, sworn epithet of the mine`;
+const cleaned = sanitizeGenomeForImage(dirtyForImage);
+check("sanitizer drops the technique clause", !cleaned.toLowerCase().includes(aTechnique.toLowerCase()));
+check("sanitizer drops the epithet clause", !/epithet/i.test(cleaned));
+check("sanitizer keeps a clean token", cleaned.toLowerCase().includes("cobalt rimlight"));
+check("sanitized forImage is itself pure", genomeImagePuritySmells(cleaned).length === 0);
+check("sanitizer caps length", sanitizeGenomeForImage("neon, ".repeat(200)).length <= GENOME_FOR_IMAGE_MAX);
+
+// forImage is pure at every IMAGE render surface (keyframe canonBlocks).
+const dirtyGenome: GenomeBlock = {
+  forText: `Driven by a sworn motivation to avenge; motif of ash and iron. Its signature move is ${aTechnique}.`,
+  forImage: `crimson warpaint, ${aTechnique} aura, motif of ash, stage 6 towering silhouette`,
+};
+const keyframePrompt = buildSceneKeyframePrompt({
+  eventFlavor: "power surge",
+  factionName: "USA",
+  breed: "shiba",
+  profession: "miner",
+  canonBlocks: ["HASHBEAST CANON\nbreed: shiba"],
+  genomeForImage: dirtyGenome.forImage,
+  scene: "low push-in",
+});
+check(
+  "keyframe image prompt never contains a technique name",
+  !keyframePrompt.toLowerCase().includes(aTechnique.toLowerCase()),
+);
+check(
+  "keyframe image prompt never contains motif prose markers",
+  genomeImagePuritySmells(keyframePrompt.split("GENOME AESTHETIC")[1] || "").length === 0 &&
+    !/GENOME AESTHETIC[^\n]*motif/i.test(keyframePrompt),
+);
+// The forImage helper block is pure even from a dirty source.
+check(
+  "genomeImageBlock output is pure from dirty source",
+  genomeImagePuritySmells(genomeImageBlock(dirtyGenome)).length === 0,
+);
+
+console.log("\nPartC · genome forText caps + placement");
+// forText carries the full lineage into text surfaces (technique names allowed).
+const textDirective = genomeTextDirective(dirtyGenome);
+check("forText directive renders the full lineage", textDirective.includes("avenge"));
+check("empty genome → empty text directive", genomeTextDirective(undefined) === "");
+// Scene SCRIPT (text surface) folds genome forText into context blocks.
+const scenePrompt = buildSceneScriptPrompt({
+  trope: "rivalry",
+  characterLine: "USA veteran",
+  protagonistCanonBlock: "CANON",
+  plotDirectives: "escalate",
+  whatHappens: "it powers up",
+  genomeForText: "motif of ash and iron; sworn to avenge Doge Japan",
+});
+check("scene script folds genome forText into context", scenePrompt.includes("PROMPT GENOME"));
+check("scene script keeps the genome motif text", scenePrompt.includes("motif of ash and iron"));
+// forText hard cap (defence in depth): a 5000-char forText is trimmed.
+const hugeText = genomeTextDirective({ forText: "x".repeat(5000), forImage: "" });
+check("forText directive caps the rendered lineage", hugeText.length < 5000);
+
+console.log("\nPartC · genome_distill fallback determinism");
+const distillInput: NftGenomeDistillInput = {
+  mint: "GenomeMint11111111111111111111111111111111",
+  previousCard: {
+    motif_line: "ash-grey veteran of the Doge Japan front",
+    motivation: "hold the northern seam no matter the cost",
+    past_life_echoes: ["once a pup who fled its first raid"],
+  },
+  newLineageEntries: [
+    { event_type: "mutation_power", summary: "its attack lane surged mid-battle", warId: 12 },
+    { event_type: "evolution", summary: "reached a scarred, certain form", warId: 13 },
+  ],
+  sealedIntents: [
+    { ref: "intent-abc", verb: "avenge", target: "Doge Japan", flavor: "for the seam it lost" },
+  ],
+};
+const fb1 = distillGenomeFallback(distillInput);
+const fb2 = distillGenomeFallback(distillInput);
+check("fallback is deterministic (same input → identical card)", JSON.stringify(fb1) === JSON.stringify(fb2));
+check("fallback source is 'fallback'", fb1.source === "fallback");
+check("fallback motif_line respects cap", fb1.motif_line.length <= MOTIF_LINE_MAX && fb1.motif_line.length > 0);
+check("fallback motivation respects cap", fb1.motivation.length <= MOTIVATION_MAX && fb1.motivation.length > 0);
+check("fallback honors the newest sealed intent (ref echoed)", fb1.honored_intent_ref === "intent-abc");
+check("fallback stays lexicon-clean", lintGenomeCard(fb1).length === 0);
+// Rebirth folds the whole prior card into one bounded echo.
+const rebirthFb = distillGenomeFallback({ ...distillInput, rebirth: true });
+check("rebirth fallback produces a past_life_echo", Boolean(rebirthFb.past_life_echo));
+check(
+  "rebirth echo respects cap",
+  (rebirthFb.past_life_echo || "").length <= PAST_LIFE_ECHO_MAX,
+);
+// A banned-lexicon token in the SOURCE material is scrubbed by the fallback.
+const dirtyDistill = distillGenomeFallback({
+  mint: "DirtyMint111",
+  previousCard: {
+    motif_line: "a revolutionary game-changing miner",
+    motivation: "supercharge the yield and skyrocket the leaderboard",
+  },
+});
+check("fallback scrubs banned lexicon from dirty source", lintGenomeCard(dirtyDistill).length === 0);
+// Empty input still yields a valid, non-empty, clean card (never fails).
+const emptyDistill = distillGenomeFallback({ mint: "EmptyMint111" });
+check(
+  "fallback never fails on empty input",
+  emptyDistill.motif_line.length > 0 &&
+    emptyDistill.motivation.length > 0 &&
+    lintGenomeCard(emptyDistill).length === 0,
+);
+
+console.log("\nPartC · genome_distill payload validation");
+// The distill prompt is self-contained (no game-state leakage: only snapshot).
+const distillPrompt = buildGenomeDistillPrompt(distillInput);
+check("distill prompt names HASHIDEN lore-keeper role", distillPrompt.includes("HASHIDEN"));
+check("distill prompt carries the sealed-intent ref", distillPrompt.includes("intent-abc"));
+check("distill prompt instructs honored_intent_ref return", distillPrompt.includes("honored_intent_ref"));
+check("distill prompt surfaces the new lineage events", distillPrompt.includes("mutation_power"));
+check("distill prompt carries the banned-lexicon guard", distillPrompt.includes("BANNED LEXICON"));
+check(
+  "distill prompt states the field caps",
+  distillPrompt.includes(String(MOTIF_LINE_MAX)) && distillPrompt.includes(String(MOTIVATION_MAX)),
+);
+const rebirthPrompt = buildGenomeDistillPrompt({ ...distillInput, rebirth: true });
+check("rebirth distill prompt asks for past_life_echo", rebirthPrompt.includes("past_life_echo"));
+check(
+  "non-rebirth distill prompt omits the rebirth past_life_echo field",
+  !distillPrompt.includes('"past_life_echo"'),
+);
+// lintGenomeCard flags a dirty card (the retry trigger).
+check(
+  "lintGenomeCard flags banned lexicon in a card",
+  lintGenomeCard({ motif_line: "a seamless empire", motivation: "supercharge the war" }).length > 0,
 );
 
 // ─── Verdict ─────────────────────────────────────────────────────────────────
