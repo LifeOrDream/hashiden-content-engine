@@ -65,13 +65,13 @@ export const COUNTRY_LOCATION_PROFILES: CountryLocationProfile[] = [
   }),
   loc("USA", "luxury_landscape", "Sunrise command plaza", {
     refKind: "landscapeLuxuryEnvironmentBoard",
-    description: "Bright heroic MineBTC plaza with voxel/cel grandeur, USA commander silhouettes, gold/cyan circuit floor, and big launch energy.",
+    description: "Bright heroic Hashiden plaza with voxel/cel grandeur, USA commander silhouettes, gold/cyan circuit floor, and big launch energy.",
     microDetails: ["sunrise rim light", "glowing circuit floor", "city-block towers", "hero lineup platforms", "soft floating light motes only if subtle"],
     bestFor: ["launch CTA", "hero lineup", "Rex power reveal", "YouTube trailer establishing shot"],
     camera: "wide center-safe hero master, slow push only if needed, readable silhouettes",
     palette: "sunrise gold, cyan, royal blue, clean white, emerald accents",
     interactionProps: ["golden pickaxe-wand", "command pedestal", "cape movement", "portal floor"],
-    dopamineUse: "L1 visual stun and L6 serial promise; makes MineBTC feel premium and alive.",
+    dopamineUse: "L1 visual stun and L6 serial promise; makes Hashiden feel premium and alive.",
     avoid: "Avoid dark grimdark, floating cube spam, or giant Bitcoin logo dependence.",
   }),
 
@@ -351,7 +351,7 @@ export const COUNTRY_LOCATION_PROFILES: CountryLocationProfile[] = [
     dopamineUse: "Reveal: the beautiful detail was the weapon all along.",
     avoid: "No real brand marks or readable fashion logos.",
   }),
-  loc("France", "luxury_landscape", "Parisian MineBTC boulevard", {
+  loc("France", "luxury_landscape", "Parisian Hashiden boulevard", {
     refKind: "landscapeLuxuryEnvironmentBoard",
     description: "Bright boulevard/atelier/museum-like landscape with cream stone, wrought iron, and arcade-cel luxury.",
     microDetails: ["cream stone apartments", "wrought balcony", "metro tile", "soft overcast", "gold trim"],
@@ -385,7 +385,7 @@ export const COUNTRY_LOCATION_PROFILES: CountryLocationProfile[] = [
   }),
   loc("Brazil", "luxury_landscape", "Solar city-river arena", {
     refKind: "landscapeLuxuryEnvironmentBoard",
-    description: "Bright landscape blending hillside city, river/forest energy, and luxury MineBTC circuitry.",
+    description: "Bright landscape blending hillside city, river/forest energy, and luxury Hashiden circuitry.",
     microDetails: ["colorful hillside", "river reflection", "stadium tunnel", "solar flare", "green circuitry"],
     bestFor: ["Sol hero kick", "Mato green bridge", "Brazil faction flex"],
     camera: "wide action/establishing shot with strong vector path",

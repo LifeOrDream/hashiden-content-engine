@@ -100,7 +100,7 @@ all 12), plus an internal `sourceNote` naming the real-world hook. RPC-fast (< 3
 no real armed-conflict references — rivalries are arena/mining competition only; the show's
 Iran–Israel rivalry stays strictly game-world. Soft-fails to `{ briefs: [] }` without
 `GEMINI_KEY` — the backend keeps its previous briefs and persists rows
-(`mineBTC_country_world_brief`) on its own schedule. Briefs feed back into chapters as
+(`hashiden_country_world_brief`) on its own schedule. Briefs feed back into chapters as
 `ChapterCycleFacts.worldContext`.
 
 ## Acceptance simulation

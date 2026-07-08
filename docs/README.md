@@ -1,6 +1,6 @@
 # HASHIDEN AI Content Engine Docs
 
-Start here if you are trying to understand or contribute to the open-source engine behind HASHIDEN, the show written by MineBTC gameplay.
+Start here if you are trying to understand or contribute to the open-source engine behind HASHIDEN, the show written by Hashiden gameplay.
 
 ## Read In This Order
 
@@ -25,7 +25,7 @@ Start here if you are trying to understand or contribute to the open-source engi
 
 ## Contributor Promise
 
-You should be able to improve the engine without access to MineBTC production secrets.
+You should be able to improve the engine without access to Hashiden production secrets.
 
 The no-key path is:
 

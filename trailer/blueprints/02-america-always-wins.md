@@ -4,7 +4,7 @@ title: America Always Wins. Not This Time.
 targetSeconds: 55
 minSeconds: 24
 countdown: 18:00:00
-cta: Pick your country — minebtc.fun
+cta: Pick your country — hashiden.tv
 logline: Rex explains the Country Race the only way he can — by assuming the USA has already won — until a cold voice from the dark suggests otherwise.
 cast: Rex, Volkov
 ---

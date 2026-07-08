@@ -18,7 +18,7 @@
  *   montage    : REAL product footage (seq 5) — built from FE screen capture
  *                by `--stage montage` (cuts.json) and treated as a cached clip
  *   end card   : scripts/render_card.py (real end-card machinery) with the
- *                Hashiden mark + "minebtc.fun / JULY 10"
+ *                Hashiden mark + "hashiden.tv / JULY 10"
  *   assembly   : concat → segmented score + VO mixed over ducked native audio
  *                → brandVideo badge → loudnorm → final.mp4
  *
@@ -62,7 +62,7 @@ const IMG_RES = (process.env.TRAILER_IMAGE_RES as "1K" | "2K") || "2K";
 const mref = (...p: string[]) => path.join(REF, "moonshot", ...p);
 const LOOK =
   "Premium 2D arcade-cel animation with pixel-art DNA, cinematic aerospace lighting, deep blacks, " +
-  "fog and volumetric strobe light, orange dBTC-glow accents, vertical 9:16 composition, " +
+  "fog and volumetric strobe light, orange ore-glow accents, vertical 9:16 composition, " +
   "no photorealism, no generic 3D CGI.";
 const NO_TEXT =
   "No readable text, captions, numbers, logos, tickers, watermarks, speech bubbles, or UI anywhere in the image. " +
@@ -152,12 +152,12 @@ const SHOTS: ShotSpec[] = [
     ],
     framePrompt:
       "A vast open-pit mining dig beneath a distant launch pad on the horizon (rocket visible small, fog, strobes). " +
-      "Twelve country dog-beast characters mine in a furious frenzy with pickaxes, carving veins of glowing orange dBTC. " +
+      "Twelve country dog-beast characters mine in a furious frenzy with pickaxes, carving veins of glowing orange ore. " +
       "FOREGROUND HERO: the USA golden retriever in his red-and-gold hero armor, mid-pickaxe-swing, not looking up, " +
       "exactly on-model to the reference. Around him: the Japan beast, China beast, Russia beast, India beast, Brazil beast " +
       "and other nations' beasts, each matching their reference design, all swinging hard. " +
-      "Chunks of raw dBTC are being pressed into GLOWING FUEL CELLS — canister-shaped cells of orange light — " +
-      "stacked onto a mine-rail conveyor running toward the distant launch pad. Sparks, dust, dBTC-glow underlighting.",
+      "Chunks of raw ore are being pressed into GLOWING FUEL CELLS — canister-shaped cells of orange light — " +
+      "stacked onto a mine-rail conveyor running toward the distant launch pad. Sparks, dust, ore-glow underlighting.",
     timelinePrompt:
       "GLOBAL: a frantic heroic mining operation feeding a rocket launch; gritty, fast, percussive. " +
       "Dog-beast characters stay exactly on-model to the start frame. " +
@@ -166,7 +166,7 @@ const SHOTS: ShotSpec[] = [
       "the foreground USA golden retriever in red-gold armor keeps swinging hard, never looking up at camera; " +
       "at 2.40-3.20s he barks a quick two-word answer mid-swing without breaking rhythm. " +
       "Handheld energy, whip-fast micro-pans between swings. " +
-      "SOUND: relentless pickaxe impacts on stone, dBTC crackle, conveyor rumble, distant pad klaxon. No music, no narration.",
+      "SOUND: relentless pickaxe impacts on stone, ore crackle, conveyor rumble, distant pad klaxon. No music, no narration.",
     generateAudio: true,
   },
   {
@@ -202,7 +202,7 @@ const SHOTS: ShotSpec[] = [
       "pillar of fire, fog blasted outward from the pad, smoke columns lit orange. " +
       "In the foreground on a dark ridge of the mine, the USA golden retriever in red-and-gold hero armor — " +
       "exactly on-model to the reference — leans on his pickaxe with his back half-turned to us, watching the launch. " +
-      "Veins of glowing orange dBTC light him from below. One distant beast keeps mining at the far edge.",
+      "Veins of glowing orange ore light him from below. One distant beast keeps mining at the far edge.",
     timelinePrompt:
       "GLOBAL: the payoff — the rocket leaves, the work continues. Quiet, dry, a little noble. " +
       "Characters stay exactly on-model to the start frame. " +
@@ -234,7 +234,7 @@ const VO_LINES: VoLine[] = [
     id: "montage_explainer",
     voice: "gravel",
     text:
-      "Pick your country. Bet SOL. Sixty seconds a round. Win, your beast mines degenBTC — " +
+      "Pick your country. Bet SOL. Sixty seconds a round. Win, your beast mines $DEN — " +
       "and the war writes a show with your character in it.",
     at: { seq: 5, offset: 0.1 }, // starts right on the silence→arcade cut
     speed: 1.18, // plain speech, fast
@@ -275,7 +275,7 @@ const MONTAGE_CAPTIONS = [
   { text: "PICK YOUR COUNTRY", start: 0.0, end: 1.6 },
   { text: "BET SOL", start: 1.6, end: 3.2 },
   { text: "60 SECONDS A ROUND", start: 3.2, end: 4.8 },
-  { text: "WIN → MINE degenBTC", start: 4.8, end: 6.4 },
+  { text: "WIN → MINE $DEN", start: 4.8, end: 6.4 },
   // ≤ ~37 chars at fontsize 46 / 1080w — the full "WITH YOUR CHARACTER" suffix clips
   { text: "THE WAR WRITES A SHOW — YOU'RE IN IT", start: 6.4, end: 8.0 },
 ];
@@ -545,7 +545,7 @@ async function stageAssemble(ffmpeg: typeof import("./ffmpeg.js")) {
         "--mode", "endcard", "--out", cardPng,
         "--width", String(W), "--height", String(H), "--font", FONT,
         "--badge", markPng, // the Hashiden mark rides the badge slot, upper-center
-        "--cta1", "", "--cta2", "minebtc.fun", "--cta3", "JULY 10",
+        "--cta1", "", "--cta2", "hashiden.tv", "--cta3", "JULY 10",
       ], { maxBuffer: 1 << 26 });
       const clip = await ffmpeg.stillToClip(fs.readFileSync(cardPng), 4);
       fs.writeFileSync(endCardFile, await ffmpeg.normalizeAndCaption(clip));

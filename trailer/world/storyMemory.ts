@@ -112,7 +112,7 @@ function defaultCharacters(): CharacterMemory[] {
     breed: c.breed,
     // Role = the character's show function (first clause of the locked look), not their gear list.
     role: compact(c.look.split(/[.:]/)[0], 90),
-    wants: c.id === "rex" ? "Keep the MineBTC show alive by selling the war before the lights go out." : "Win status for their country without exposing the fear underneath.",
+    wants: c.id === "rex" ? "Keep the Hashiden show alive by selling the war before the lights go out." : "Win status for their country without exposing the fear underneath.",
     flaw: c.secret,
     powerPath: c.gear,
     currentState: "default",
@@ -193,7 +193,7 @@ function defaultMemory(): StoryMemory {
     version: 1,
     updatedAt: nowIso(),
     currentVideoNo: 0,
-    worldSoFar: "MineBTC is entering launch: Bitcoin is framed as tired, degenBTC is the new mined war, and the hidden HashBeast world is starting to surface through country factions.",
+    worldSoFar: "Hashiden is entering launch: Bitcoin is framed as tired, $DEN is the new mined war, and the hidden HashBeast world is starting to surface through country factions.",
     characters: defaultCharacters(),
     arcs: defaultArcs(),
     videos: [],
@@ -279,7 +279,7 @@ function touchedArcsFor(sp: Screenplay, chars: string[], memory: StoryMemory): s
   for (const arc of memory.arcs) {
     const charOverlap = arc.involvedCharacters.filter((id) => chars.includes(id)).length;
     if (charOverlap >= 2) touched.add(arc.id);
-    if (arc.type === "launch" && /launch|live|countdown|minebtc\.fun/.test(text)) touched.add(arc.id);
+    if (arc.type === "launch" && /launch|live|countdown|hashiden\.tv/.test(text)) touched.add(arc.id);
     if (arc.type === "economy" && /emission|price|treasury|buyback|fed|market/.test(text)) touched.add(arc.id);
     if (arc.type === "suspense" && /hidden|surface|human|world|attention|visible|signal/.test(text)) touched.add(arc.id);
   }

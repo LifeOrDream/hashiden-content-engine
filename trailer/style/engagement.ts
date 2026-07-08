@@ -1,5 +1,5 @@
 /**
- * ENGAGEMENT CANON — the dopamine ladder, distilled for 24-90s MineBTC trailers.
+ * ENGAGEMENT CANON — the dopamine ladder, distilled for 24-90s Hashiden trailers.
  *
  * Source framework: six escalating dopamine releases in a viewer's brain —
  * stimulation → captivation → anticipation → validation → affection → revelation.
@@ -35,7 +35,7 @@ L4 VALIDATION (the payoff — close the loop, non-obviously):
 
 L5 AFFECTION (like the messenger, not just the message):
 - At least one beat per video exists purely to make the POV character likable: charm, vulnerability, a self-aware joke, an act that costs them something. Likability compounds across episodes — it buys longer leashes on every future video.
-- Likability tells for MineBTC: Rex's fear leaking through a joke, Raja grinning through doubt, Pip asking the question nobody answers. Sincerity lands harder than swagger.
+- Likability tells for Hashiden: Rex's fear leaking through a joke, Raja grinning through doubt, Pip asking the question nobody answers. Sincerity lands harder than swagger.
 
 L6 REVELATION (train the Pavlovian bell — the serial promise):
 - The ending must teach: "every one of these pays off." Close this episode's loop, open next episode's loop, stamp the countdown. Same world, same faces, escalating war — so seeing a HashBeast in the feed eventually IS the dopamine hit.
@@ -53,7 +53,7 @@ ESCALATION + PROGRESS MARKERS (the middle must grow, and promise more):
 
 STAKES (asymmetry — the teller risks, the viewer gains):
 - Every video states (in story, not narration) what the POV character stands to LOSE and what the viewer stands to GAIN. Stakes the audience can feel beat abstract danger.
-- MineBTC's native cheat code: the HashBeasts' EXISTENCE is the stake — no attention → no degenBTC → no more episodes → no more THEM. The strongest card in the deck; play it sincerely, not in every shot.
+- Hashiden's native cheat code: the HashBeasts' EXISTENCE is the stake — no attention → no $DEN → no more episodes → no more THEM. The strongest card in the deck; play it sincerely, not in every shot.
 
 HOOK LINE FORMULAS (for the hook + captions — real value + an emotional root in ONE line):
 - Target a concrete value AND hit an emotion in the same line ("Give me 60 seconds and your competitors will hate you" = fast value + rivalry).

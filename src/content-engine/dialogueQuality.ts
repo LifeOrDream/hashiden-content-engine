@@ -68,6 +68,13 @@ export const BANNED_DIALOGUE_PATTERNS: Array<[RegExp, string]> = [
   [/\b4[- ]?hour\b/i, "mechanic phrase: 4-hour"],
   [/\bleaderboard\b/i, "UI/mechanic phrase: leaderboard"],
   [/\bmine your destiny\b/i, "generic mining slogan"],
+  // Token/mechanic words never belong in show prose. Ban the ticker ($DEN) and
+  // the "DEN token" phrasing — but NOT the bare word "den", which is legitimate
+  // lore vocabulary (the pack's home turf / vault).
+  [/\$den\b/i, "token/mechanic word: $DEN"],
+  [/\bden token\b/i, "token/mechanic word: DEN token"],
+  // Retired brand + token names — must never resurface on any show surface.
+  [/\b(minebtc|degenbtc|dbtc|mdoge|mdogewifbtc|dogebtc)\b/i, "retired brand name"],
 ];
 
 export const NAMED_EMOTION_PATTERN =

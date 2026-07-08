@@ -22,6 +22,8 @@ const CAST_DIR = path.resolve(__dirname, "..", "cast");
 const VOICES_FILE = path.join(CAST_DIR, "voices.json");
 const REF_RES = (process.env.TRAILER_REF_RES as "1K" | "2K") || "1K";
 
+// TODO(rebrand-infra): live CDN host for mint-example seeds, not renamed by the
+// rebrand sweep. Repoint to assets.hashiden.tv once the CDN is cut over.
 const SEED = (faction: number, file: string) => `https://assets.minebtc.fun/mint_examples/faction_${faction}/${file}`;
 
 export interface CharacterDef {
@@ -56,7 +58,7 @@ const RENDER_CONFIG: Record<
   rex: {
     styleSeedUrl: SEED(0, "golden_retriever_run1_dp.png"),
     localReferencePaths: [
-      referencePath("usa-logo", "minebtc-usa-hashbeast-logo.png"),
+      referencePath("usa-logo", "hashiden-usa-hashbeast-logo.png"),
       referencePath("usa-wand-tech", "dp.png"),
       referencePath("usa-wand-tech", "full_body.png"),
       referencePath("usa-wand-tech", "winning.png"),
@@ -153,7 +155,7 @@ export async function ensureCharacterRef(def: CharacterDef): Promise<Buffer> {
       `Keep the EXACT identity anchor from the seed image where relevant: dog breed feel, pixel-art linework, flat cel shading, arcade palette, readable face and silhouette.`,
       def.design,
       PROGRESSION_AND_POWER_CANON,
-      `This reference should feel like a premium MineBTC collectible operator with country-specific clothing, power equipment, and signature gear, but not overcluttered.`,
+      `This reference should feel like a premium Hashiden collectible operator with country-specific clothing, power equipment, and signature gear, but not overcluttered.`,
       `No text, no logos, no watermark, no photorealism, no realistic fur, no 3D render, no cinematic CGI.`,
     ].join("\n"),
     [{ buffer: seed, mime: "image/png" }],

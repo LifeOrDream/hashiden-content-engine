@@ -211,6 +211,8 @@ const BANNED_LEXICON_LINE = [
   "leaderboard",
   "APY",
   "dividend",
+  "$DEN",
+  "DEN token",
 ].join(", ");
 
 export function buildGenomeDistillPrompt(input: NftGenomeDistillInput): string {

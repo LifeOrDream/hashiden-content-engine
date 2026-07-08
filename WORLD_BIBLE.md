@@ -1,4 +1,4 @@
-# The MineBTC World Bible
+# The Hashiden World Bible
 
 **Single source of truth for the Mining Wars canon.** The typed version every
 pipeline imports is [`src/world/bible.ts`](src/world/bible.ts). This document is
@@ -15,7 +15,7 @@ Before 2026-06, the canon was forked three ways:
 
 1. `trailer/world/countryCastRegistry.ts` — the show cast (Rex Goldpaw Sterling, Volkov Frostline, …)
 2. `src/prompts/factions/*.prompts.ts` — the NFT faction prompts (General George Woofington III, Grand Master Long Wei, …)
-3. `DESIGN.md` + the `minebtc-artwork` skill — the shipped docs/marketing art (Marshal Viktor Volkov, Shogun Hachiko IX, …)
+3. `DESIGN.md` + the `hashiden-artwork` skill — the shipped docs/marketing art (Marshal Viktor Volkov, Shogun Hachiko IX, …)
 
 Ten of twelve countries had two different leaders depending on which file you
 read, and USA's Rex was a Golden Retriever in the renderer but a husky pilot in
@@ -62,7 +62,7 @@ One decision per country. "Retired" names must never appear on a new surface;
 | 8 | North Korea | Marshal Bonepaw | Dark Pungsan | Eternal Chairman of the Revolutionary HashBeast Committee | Comrade Button · Choir Frost · Paektu Static |
 | 9 | France | Madame Mint | French Bulldog | Grande Couturière of the European Treasury | Professor Croissant · Fleur Flash · Luc Barricade |
 | 10 | Brazil | Sol Caramelo | Caramelo Vira-Lata | Supreme Malandro of the South American Network | Dona Vaulta · Luma Loop · Mato Verde |
-| 11 | Israel | Mira Lock | Israel Pointer | Director of the $degenBTC Defence Forces (DDF) | Yalla Zero · Shuk Ember · Negev Bloom |
+| 11 | Israel | Mira Lock | Israel Pointer | Director of the $DEN Defence Forces (DDF) | Yalla Zero · Shuk Ember · Negev Bloom |
 
 Every leader and lieutenant has a full dramatic sheet (mask, hidden want, flaw,
 voice, comedy/suspense loops, action-wow, power style, taboos) in
@@ -259,7 +259,7 @@ a cue id. `rarityTierForStage()` maps the 8-stage ladder onto the 5 tiers
 | `trailer/style/castCanon.ts` | `CAST_CANON` (re-export) |
 | `trailer/world/countryCastRegistry.ts` | `COUNTRY_CHARACTER_PROFILES` (re-export) |
 | `trailer/generate/cast.ts` | show-cast looks, gear, voices (render config stays local) |
-| `~/.claude/skills/minebtc-artwork` | roster section points here |
+| `~/.claude/skills/hashiden-artwork` | roster section points here |
 
 ## Editing rules
 
