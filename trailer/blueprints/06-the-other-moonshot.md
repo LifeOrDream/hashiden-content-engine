@@ -26,7 +26,7 @@ renders exactly as written. No rewrites, no line doctoring, no alternate hooks.
 - 0:20-0:25 beasts gathered under a giant stock ticker; music cuts to silence. Composited text card (use the real text/end-card machinery, NOT generated-in-image text): "SPACEX IPO'D THE ROCKET." (beat) "WE'RE IPO-ING THE FUEL."
 - 0:25-0:33 rapid game montage: arena board, 60s countdown, win FX, evolution burst — REAL PRODUCT FOOTAGE preferred: capture screen recordings/screenshots from the live frontend (npm run dev in mdogeWifBtcFE with the dummy FX harness in hooks/config.ts flipped on for capture, ALWAYS reverted after; or use generated keyframes of the real UI as fallback). VO, plain speech, fast: "Pick your country. Bet SOL. Sixty seconds a round. Win, your beast mines $DEN — and the war writes a show with your character in it." Captions mirror the beats.
 - 0:33-0:38 the rocket lifts; one beast watches from the dig site, then goes back to swinging. VO, dry: "Ten years of 'to the moon.' Somebody had to build the dogs."
-- 0:38-0:42 end card, single pickaxe strike ringing like a bell: hashiden.tv · JULY 10 + the Hashiden mark (mdogeWifBtcFE/public/assets/brand/hashiden/hashiden-mark.webp).
+- 0:38-0:42 end card, single pickaxe strike ringing like a bell: hashiden.tv · JULY 10 + the Hashiden mark (hashiden-game/public/assets/brand/hashiden/hashiden-mark.webp).
 
 ## CASTING CORRECTIONS LOCKED BY THE APPROVED SCRIPT
 

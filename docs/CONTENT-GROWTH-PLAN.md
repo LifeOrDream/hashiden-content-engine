@@ -17,7 +17,7 @@ for music/SFX, Claude/Gemini for writing):
 | Line | Where | Output | State |
 |---|---|---|---|
 | **Trailer pipeline** | `ai-content-engine/trailer/` | 16:9 launch trailers, ~80s, 6-pass screenplay → Seedance timeline → assemble | Strongest writing system; manual blueprints; 16:9 only |
-| **Showrunner** | `MineBtcBackend/src/services/showrunner/` | Auto story reels (9:16 ~90s), feature videos (16:9/1:1 ~150s), episode scenes, cycle recaps, chapters | Live, budget-gated, weakest screenplay prompts |
+| **Showrunner** | `hashiden-backend/src/services/showrunner/` | Auto story reels (9:16 ~90s), feature videos (16:9/1:1 ~150s), episode scenes, cycle recaps, chapters | Live, budget-gated, weakest screenplay prompts |
 | **NFT pipeline** | `ai-content-engine/src/nft-pipeline/` + backend services | Mint art, state-loop APNGs, mutation clips + voiced one-liners | Live (recently hardened) |
 
 Supporting systems: dialogue quality linter (2.3 w/s budget, banned pitch-deck phrases,

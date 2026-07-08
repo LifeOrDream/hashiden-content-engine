@@ -133,7 +133,7 @@ import {
   generateMomentContent,
   generateCycleSummary,
   InlineArtifactStore,
-} from "@lifeordream/ai-content-engine";
+} from "@lifeordream/hashiden-content-engine";
 
 const result = await generateMintAssets(
   { mint, dna, factionId, categoryValue, regionValue, referenceImageUrl },

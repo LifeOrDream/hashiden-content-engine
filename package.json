@@ -29,9 +29,9 @@
     "service:worker": "tsx src/service/worker.ts",
     "chapter:produce": "tsx scripts/produce_chapter.ts",
     "chapter:replay": "tsx scripts/replay_chapter.ts",
-    "webui": "npm --workspace @lifeordream/ai-content-engine-webui run dev",
-    "webui:build": "npm --workspace @lifeordream/ai-content-engine-webui run build",
-    "webui:typecheck": "npm --workspace @lifeordream/ai-content-engine-webui run typecheck",
+    "webui": "npm --workspace @lifeordream/hashiden-content-engine-webui run dev",
+    "webui:build": "npm --workspace @lifeordream/hashiden-content-engine-webui run build",
+    "webui:typecheck": "npm --workspace @lifeordream/hashiden-content-engine-webui run typecheck",
     "trailer:script": "tsx trailer/pipeline/run.ts",
     "trailer:canonize": "tsx trailer/pipeline/canonize.ts",
     "trailer:generate": "tsx trailer/generate/run.ts"

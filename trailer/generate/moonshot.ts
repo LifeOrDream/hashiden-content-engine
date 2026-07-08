@@ -533,7 +533,7 @@ async function stageAssemble(ffmpeg: typeof import("./ffmpeg.js")) {
   const endCardFile = path.join(SEQS, "seq_07.mp4");
   if (!fs.existsSync(endCardFile) || REGEN) {
     process.stdout.write("   end card (render_card.py + Hashiden mark)… ");
-    const markWebp = path.resolve(ROOT, "..", "..", "mdogeWifBtcFE", "public", "assets", "brand", "hashiden", "hashiden-mark.webp");
+    const markWebp = path.resolve(ROOT, "..", "..", "hashiden-game", "public", "assets", "brand", "hashiden", "hashiden-mark.webp");
     const dir = ffmpeg.tmpDir("endcard");
     try {
       const markPng = path.join(dir, "hashiden-mark.png");
