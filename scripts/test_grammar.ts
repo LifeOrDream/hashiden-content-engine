@@ -827,7 +827,7 @@ console.log("\nLint · token + retired-brand bans");
 check("$DEN ticker is banned on show surfaces", dialogueSmells("we pulled 500 $DEN out of the wall").length > 0);
 check('"DEN token" phrasing is banned', dialogueSmells("the DEN token is pumping again").length > 0);
 check("bare word 'den' stays legal lore vocabulary", dialogueSmells("she slipped back into the den before dawn").length === 0);
-check("retired brand 'MineBTC' is banned", dialogueSmells("welcome to MineBTC, soldier").length > 0);
+check("retired brand 'Hashiden' is banned", dialogueSmells("welcome to Hashiden, soldier").length > 0);
 check("retired token 'degenBTC' is banned", dialogueSmells("stack that degenBTC high").length > 0);
 check("retired ore 'dBTC' is banned", dialogueSmells("crack the dBTC seam").length > 0);
 check("generic 'bitcoin' reference stays allowed", dialogueSmells("bitcoin burns electricity to mint blocks").length === 0);

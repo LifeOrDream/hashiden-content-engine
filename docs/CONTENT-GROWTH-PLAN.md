@@ -4,7 +4,7 @@
 > showrunner reels, NFT mutation content, sound, captions, dashboard) and the macro
 > plan to turn it from "one good story format" into a multi-format social growth
 > machine. Written 2026-06-11 after a full code audit of `ai-content-engine` and
-> `MineBtcBackend`.
+> `HashidenBackend`.
 
 ---
 
