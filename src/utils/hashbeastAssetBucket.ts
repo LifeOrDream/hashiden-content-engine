@@ -13,7 +13,7 @@ export function getHashBeastAssetBucketName(): string {
     // TODO(rebrand-infra): real S3 bucket, not renamed by the rebrand sweep.
     // Migrate the bucket (or add a hashiden-assets-prod alias) before flipping
     // this literal; renaming the string alone would break asset resolution.
-    return "minebtc-assets-prod";
+    return "hashiden-assets-prod";
   }
 
   return bucketName;
