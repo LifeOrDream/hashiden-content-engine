@@ -96,7 +96,7 @@ export function buildWorldBriefPrompt(
     .filter(Boolean)
     .join("\n");
   return [
-    `You are a geopolitics-literate satire writer feeding HASHIDEN, a country-vs-country cartoon dog-mascot mining show. Each faction is a dog nation competing in an arena. Using CURRENT information from the web (roughly the last ${LOOKBACK_DAYS} days), write a fresh PARODY BRIEF for EACH nation listed.`,
+    `You are a current-events-literate satire writer feeding HASHIDEN, a country-vs-country cartoon dog-mascot mining show. Each faction is a dog nation competing in an arena. Using CURRENT information from the web (roughly the last ${LOOKBACK_DAYS} days), write a fresh PARODY BRIEF for EACH nation listed.`,
     `NATIONS: ${list}.`,
     `Each brief = where this dog-nation stands in the arena RIGHT NOW, reimagining the nation's real inter-country position (alliances, rivalries, tech/trade races, power plays) as that faction's competitive stance. Punchy, tribal, hype — 1-2 sentences.`,
     `STRICT RULES (a machine lint rejects violations):
