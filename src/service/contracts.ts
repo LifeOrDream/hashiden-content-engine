@@ -52,6 +52,10 @@ import type {
   NftGenomeDistillInput,
   NftGenomeDistillResult,
 } from "../nft-pipeline/genomeDistill.js";
+import type {
+  NftGlowUpInput,
+  NftGlowUpResult,
+} from "../nft-pipeline/glowUp.js";
 
 export const CONTENT_ENGINE_QUEUE =
   process.env.CONTENT_ENGINE_QUEUE || "hashiden-content-engine";
@@ -86,6 +90,14 @@ export type ContentEngineJobKind =
   // jobs. Banned-lexicon lint + one feedback retry, with a deterministic
   // truncate-and-concat fallback that NEVER fails the pipeline.
   | "nft.genome_distill"
+  // CURATOR GLOW-UP (CURATOR_LOOP_SPEC §3): a nation Curator's commissioned
+  // reforge. Self-contained snapshot {beast (DNA/refs), lineage/echo summary,
+  // curator context, faction canon} → {reforged art set (mint-asset pipeline),
+  // ≤600-char redemption-arc lore beat, short teaser clip (produce_reel path)}.
+  // Text-free image rules + banned-lexicon lint + one feedback retry +
+  // deterministic fallback — best-effort sub-steps NEVER fail the pipeline.
+  // Budget-gate dispatch EXACTLY like nft.mutation_content (backend owns the gate).
+  | "nft.glow_up"
   // HASHIDEN chapters (Phase D2/D3): writers-room-lite chapter front-matter
   // (budget-gate like other text/content jobs) + the canonize gate that folds
   // a PUBLISHED chapter into story memory.
@@ -259,6 +271,7 @@ export interface ContentEngineJobPayloadMap {
   "nft.cycle_summary": NftCycleSummaryInput;
   "nft.mint_intro": NftMintIntroInput;
   "nft.genome_distill": NftGenomeDistillInput;
+  "nft.glow_up": NftGlowUpInput;
   "chapter.write": ChapterWriteInput;
   "chapter.canonize": ChapterCanonizeInput;
   "chapter.produce": ChapterProduceInput;
@@ -286,6 +299,7 @@ export interface ContentEngineJobResultMap {
   "nft.cycle_summary": NftCycleSummaryResult;
   "nft.mint_intro": NftMintIntroResult;
   "nft.genome_distill": NftGenomeDistillResult;
+  "nft.glow_up": NftGlowUpResult;
   "chapter.write": ChapterAnatomy;
   "chapter.canonize": ChapterCanonizeResult;
   "chapter.produce": ChapterProduceResult;
