@@ -126,6 +126,13 @@ import {
   PAST_LIFE_ECHO_MAX,
   type NftGenomeDistillInput,
 } from "../src/nft-pipeline/genomeDistill.js";
+import {
+  buildCuratorReasonPrompt,
+  curatorReasonFallback,
+  lintCuratorPicks,
+  RATIONALE_MAX,
+  type CuratorReasonInput,
+} from "../src/nft-pipeline/curatorReason.js";
 import { buildSceneKeyframePrompt, buildSceneScriptPrompt } from "../src/content-engine/scenePrompts.js";
 
 let failures = 0;
@@ -1016,6 +1023,126 @@ check("commission without a teaser still renders the segment",
   noTeaseChapter.curatorCall?.beats.length === 1);
 check("commission without a teaser does NOT take the Button",
   !noTeaseChapter.curatorCall?.dropTease && !/boxes at dawn/.test(noTeaseChapter.cliffhanger));
+
+// ─── CURATOR_LOOP_SPEC · roster call (curator.reason) ────────────────────────
+console.log("\nCurator · roster-call pass (caps + lint + fallback posture)");
+const curatorReasonInput: CuratorReasonInput = {
+  warId: 42,
+  factionId: 4,
+  factionName: "Japan",
+  curator: {
+    mint: "JpMvpMint111111111111111111111111111111111",
+    callsign: "Kiro",
+    motifLine: "ash-grey veteran of the northern seam",
+    motivation: "hold the northern seam no matter the cost",
+    pastLifeEchoes: ["once a pup who fled its first raid and never lived it down"],
+  },
+  ownerNotes: "lean into the comeback story",
+  war: { rank: 1, prevRank: 3, nationCount: 8, queueDepth: 2, verbsAvailable: ["release", "commission"] },
+  treasury: {
+    warChestLamports: 12_500_000_000,
+    heldBeasts: [
+      { mint: "JpHeld1Mint11111111111111111111111111111111", name: "Shino", multiplier: 4, echoCount: 1, motifLine: "a blade that outlived its wielder" },
+      { mint: "JpHeld2Mint11111111111111111111111111111111", name: "Momo", multiplier: 2 },
+    ],
+  },
+  market: { floorAnchorLamports: 900_000_000 },
+  show: { recentBeats: ["Shino stepped off the shelf and into the fight."] },
+};
+
+// The deterministic fallback returns EMPTY picks on purpose — the caller owns
+// a rule-based picker for that case (an engine-side pick would duplicate it).
+const curatorFb1 = curatorReasonFallback(curatorReasonInput);
+const curatorFb2 = curatorReasonFallback(curatorReasonInput);
+check(
+  "curator fallback is deterministic (same input → identical result)",
+  JSON.stringify(curatorFb1) === JSON.stringify(curatorFb2),
+);
+check(
+  "curator fallback yields EMPTY picks with source \"fallback\"",
+  curatorFb1.picks.length === 0 && curatorFb1.source === "fallback",
+);
+check(
+  "rationale cap is exported and sane",
+  RATIONALE_MAX === 280 && Number.isInteger(RATIONALE_MAX),
+);
+
+const curatorPrompt = buildCuratorReasonPrompt(curatorReasonInput);
+check("curator prompt carries the banned-lexicon guard", curatorPrompt.includes("BANNED LEXICON"));
+check(
+  "curator prompt menus ONLY the verbs still available",
+  curatorPrompt.includes("release — move ONE held beast") &&
+    curatorPrompt.includes("commission — order a content glow-up") &&
+    !curatorPrompt.includes("showcase — nominate ONE beast") &&
+    !curatorPrompt.includes("relist — send ONE held beast"),
+);
+// Relist rides the same held-vault bounds as release/commission.
+const curatorRelistPrompt = buildCuratorReasonPrompt({
+  ...curatorReasonInput,
+  war: { ...curatorReasonInput.war, verbsAvailable: ["relist"] },
+});
+check(
+  "an open relist verb menus the market call (treasury return spelled out)",
+  curatorRelistPrompt.includes("relist — send ONE held beast") &&
+    curatorRelistPrompt.includes("proceeds return to the nation's treasury"),
+);
+check(
+  "relist targets are bounded to the held vault mints",
+  /release\/commission\/relist may target ONLY these mints/.test(curatorRelistPrompt),
+);
+// The strict-JSON schema line mirrors the verbs still available — every open
+// verb (relist included) is a legal "verb" value, and spent verbs are not.
+check(
+  "schema line offers exactly the available verbs (base prompt)",
+  curatorPrompt.includes('"verb": "release" | "commission"') &&
+    !curatorPrompt.includes('"verb": "release" | "commission" | "showcase"'),
+);
+check(
+  "schema line includes relist when relist is available",
+  curatorRelistPrompt.includes('"verb": "relist"'),
+);
+check("curator prompt states the rationale cap", curatorPrompt.includes(String(RATIONALE_MAX)));
+check(
+  "curator prompt speaks in the curator's card (motif + echo color the voice)",
+  curatorPrompt.includes("northern seam") && curatorPrompt.includes("fled its first raid"),
+);
+check(
+  "curator prompt frames owner notes as coaching it may decline",
+  curatorPrompt.includes("lean into the comeback story") && /may decline/i.test(curatorPrompt),
+);
+check(
+  "curator prompt lists held mints as the only release/commission targets",
+  curatorPrompt.includes("JpHeld1Mint11111111111111111111111111111111") &&
+    /ONLY these mints/.test(curatorPrompt),
+);
+check("curator prompt demands strict JSON", curatorPrompt.includes("STRICT JSON"));
+// Rank denominator comes from the payload, never a hardcoded roster size.
+check(
+  "rank denominator derives from war.nationCount",
+  curatorPrompt.includes("stands rank 2 of 8") && !curatorPrompt.includes("of 12"),
+);
+const curatorNoCountPrompt = buildCuratorReasonPrompt({
+  ...curatorReasonInput,
+  war: { ...curatorReasonInput.war, nationCount: undefined },
+});
+check(
+  "without nationCount the rank renders bare (no invented denominator)",
+  curatorNoCountPrompt.includes("stands rank 2 (last war: rank 4)") &&
+    !/stands rank 2 of \d/.test(curatorNoCountPrompt),
+);
+
+// A dirty rationale is caught by the pick lint (same lexicon as dialogue).
+const dirtyPickFlags = lintCuratorPicks([
+  { verb: "release", mint: "JpHeld1Mint11111111111111111111111111111111", rationale: "This game-changing release will supercharge our yield." },
+]);
+check("a dirty rationale is caught by lintCuratorPicks", dirtyPickFlags.length > 0);
+check(
+  "a clean rationale passes lintCuratorPicks",
+  lintCuratorPicks([
+    { verb: "release", mint: "JpHeld1Mint11111111111111111111111111111111", rationale: "The boxes run two deep — Shino goes back on the shelf where Japan can win it." },
+    { verb: "relist", mint: "JpHeld2Mint11111111111111111111111111111111", rationale: "Momo goes to market — the sale feeds Japan's treasury for the next sweep." },
+  ]).length === 0,
+);
 
 // ─── Verdict ─────────────────────────────────────────────────────────────────
 console.log(`\n${passes} passed, ${failures} failed`);

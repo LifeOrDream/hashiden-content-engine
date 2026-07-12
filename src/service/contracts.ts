@@ -56,6 +56,10 @@ import type {
   NftGlowUpInput,
   NftGlowUpResult,
 } from "../nft-pipeline/glowUp.js";
+import type {
+  CuratorReasonInput,
+  CuratorReasonResult,
+} from "../nft-pipeline/curatorReason.js";
 
 export const CONTENT_ENGINE_QUEUE =
   process.env.CONTENT_ENGINE_QUEUE || "hashiden-content-engine";
@@ -98,6 +102,15 @@ export type ContentEngineJobKind =
   // deterministic fallback — best-effort sub-steps NEVER fail the pipeline.
   // Budget-gate dispatch EXACTLY like nft.mutation_content (backend owns the gate).
   | "nft.glow_up"
+  // CURATOR ROSTER CALL (CURATOR_LOOP_SPEC): a nation Curator's in-character
+  // pick pass over its bounded once-per-war verbs (release / commission /
+  // showcase). Self-contained snapshot {curator card, war standing, vault,
+  // recent show beats} → bounded {verb, mint, rationale} proposals the backend
+  // re-validates; the owner still signs any move. RPC-await like other
+  // creative-text jobs. Banned-lexicon lint + one feedback retry; the
+  // deterministic fallback returns EMPTY picks on purpose (the backend owns a
+  // rule-based picker for that case).
+  | "curator.reason"
   // HASHIDEN chapters (Phase D2/D3): writers-room-lite chapter front-matter
   // (budget-gate like other text/content jobs) + the canonize gate that folds
   // a PUBLISHED chapter into story memory.
@@ -272,6 +285,7 @@ export interface ContentEngineJobPayloadMap {
   "nft.mint_intro": NftMintIntroInput;
   "nft.genome_distill": NftGenomeDistillInput;
   "nft.glow_up": NftGlowUpInput;
+  "curator.reason": CuratorReasonInput;
   "chapter.write": ChapterWriteInput;
   "chapter.canonize": ChapterCanonizeInput;
   "chapter.produce": ChapterProduceInput;
@@ -300,6 +314,7 @@ export interface ContentEngineJobResultMap {
   "nft.mint_intro": NftMintIntroResult;
   "nft.genome_distill": NftGenomeDistillResult;
   "nft.glow_up": NftGlowUpResult;
+  "curator.reason": CuratorReasonResult;
   "chapter.write": ChapterAnatomy;
   "chapter.canonize": ChapterCanonizeResult;
   "chapter.produce": ChapterProduceResult;

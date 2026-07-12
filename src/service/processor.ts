@@ -29,6 +29,7 @@ import { generateCycleSummary } from "../nft-pipeline/cycleSummary.js";
 import { generateMintIntro } from "../nft-pipeline/mintIntro.js";
 import { distillGenome } from "../nft-pipeline/genomeDistill.js";
 import { generateGlowUp } from "../nft-pipeline/glowUp.js";
+import { reasonCurator } from "../nft-pipeline/curatorReason.js";
 import {
   generateClaimRollCeremony,
   generateLootboxRevealRitual,
@@ -224,6 +225,10 @@ export async function processContentEngineJob<K extends ContentEngineJobKind>(
     case "nft.glow_up": {
       const input = payload.input as ContentEngineJobPayload<"nft.glow_up">["input"];
       return (await generateGlowUp(input)) as ContentEngineJobResultMap[K];
+    }
+    case "curator.reason": {
+      const input = payload.input as ContentEngineJobPayload<"curator.reason">["input"];
+      return (await reasonCurator(input)) as ContentEngineJobResultMap[K];
     }
     case "chapter.write": {
       const input = payload.input as ContentEngineJobPayload<"chapter.write">["input"];
