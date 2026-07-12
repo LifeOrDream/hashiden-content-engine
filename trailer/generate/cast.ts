@@ -24,7 +24,7 @@ const REF_RES = (process.env.TRAILER_REF_RES as "1K" | "2K") || "1K";
 
 // TODO(rebrand-infra): live CDN host for mint-example seeds, not renamed by the
 // rebrand sweep. Repoint to assets.hashiden.tv once the CDN is cut over.
-const SEED = (faction: number, file: string) => `https://assets.minebtc.fun/mint_examples/faction_${faction}/${file}`;
+const SEED = (faction: number, file: string) => `https://assets.hashiden.tv/mint_examples/faction_${faction}/${file}`;
 
 export interface CharacterDef {
   id: string;

@@ -74,7 +74,7 @@ export const BANNED_DIALOGUE_PATTERNS: Array<[RegExp, string]> = [
   [/\$den\b/i, "token/mechanic word: $DEN"],
   [/\bden token\b/i, "token/mechanic word: DEN token"],
   // Retired brand + token names — must never resurface on any show surface.
-  [/\b(minebtc|degenbtc|dbtc|mdoge|mdogewifbtc|dogebtc)\b/i, "retired brand name"],
+  [/\b(hashiden|degenbtc|dbtc|mdoge|mdogewifbtc|dogebtc)\b/i, "retired brand name"],
 ];
 
 export const NAMED_EMOTION_PATTERN =

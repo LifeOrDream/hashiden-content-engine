@@ -3,13 +3,13 @@
    font files are mirrored. */
 @font-face {
   font-family: "Press Start 2P";
-  src: url("https://assets.minebtc.fun/frontend/fonts/PressStart2P-Regular.ttf") format("truetype");
+  src: url("https://assets.hashiden.tv/frontend/fonts/PressStart2P-Regular.ttf") format("truetype");
   font-display: swap;
 }
 
 @font-face {
   font-family: "Space Mono";
-  src: url("https://assets.minebtc.fun/frontend/fonts/SpaceMono-Regular.ttf") format("truetype");
+  src: url("https://assets.hashiden.tv/frontend/fonts/SpaceMono-Regular.ttf") format("truetype");
   font-display: swap;
 }
 

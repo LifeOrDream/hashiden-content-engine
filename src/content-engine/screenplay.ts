@@ -82,7 +82,7 @@ function craftBlock(g: StoryGrounding, format: VideoFormat): string {
   const crops = format.defaultOutputs.filter((a) => a !== format.aspectRatio);
   const frameRule = `FRAME ${format.aspectRatio}${crops.length ? ` (also cropped to ${crops.join("/")} — KEEP the main subject/action CENTERED so the crops still frame it)` : ""}. Each shot needs a CAPTION (punchy on-screen text) for sound-off viewing.`;
   const shared = [
-    `4. SHOW, DON'T TELL: reveal economy/geopolitics THROUGH behavior, rivalry, fear, status games, props, and on-screen facts — not narration. Hard numbers belong in captions/visuals unless a character is weaponizing that number in a natural argument.`,
+    `4. SHOW, DON'T TELL: reveal economy/current-events THROUGH behavior, rivalry, fear, status games, props, and on-screen facts — not narration. Hard numbers belong in captions/visuals unless a character is weaponizing that number in a natural argument.`,
     `5. CHARACTER: every line must have a want + tactic: recruit, threaten, bluff, confess, deflect, bait, mourn, dare, reassure, or taunt. If the line could be moved to a landing page, caption, or mechanic tooltip, rewrite it.`,
     `6. DIALOGUE TIMING: do not write tiny taglines for long shots. A speaking shot should carry enough words for its duration unless the action explicitly spends time on silence, interruption, reaction, or physical comedy.`,
     `7. ${frameRule}`,
@@ -119,10 +119,10 @@ export function buildScreenplayPrompt(
 
 ═══════════ THE WORLD (canon — never contradict) ═══════════
 • 12 nations (USA, China, Russia, South Korea, India, Japan, Iran, UK, North Korea, France, Brazil, Israel) are at WAR to mine the most $DEN — this world's Bitcoin, on Solana.
-• Their soldiers are HashBeasts: stylized dog-warrior mascots. Each nation fields up to 3,000 of them (36,000 total). Real humans recruit them and play.
+• Their soldiers are HashBeasts: stylized dog-warrior mascots — a genesis cast of 16,200 (15,000 public + 1,200 reserve). Real humans own and play them.
 • The war runs in 4-hour "COUNTRY RACE" cycles. Each cycle a country wins. Between cycles the economy shifts: $DEN's price moves, EMISSIONS ($DEN minted per second) adjust, a mining MULTIPLIER changes the rewards, staking APR fluctuates.
 • HashBeasts are WIZARDS (Wall Street Sorcerers, Pentagon Battle Mages, Juche Sorcerers…) or MUGGLES (the President's dog, a tycoon's pet…). They EVOLVE through stages, MUTATE new traits, and grow more powerful — and they trash-talk rival nations relentlessly.
-• It is a PARODY grounded in REAL current geopolitics: rivalries mirror the real world (USA↔Iran, China↔Taiwan, Russia↔Ukraine, NK posturing, US↔China tech race…), framed as the doge mining war. Country-level satire only — never depict real named individuals.
+• It is a PARODY grounded in REAL current world events: rivalries mirror the real world (USA↔Iran, China↔Taiwan, Russia↔Ukraine, NK posturing, US↔China tech race…), framed as the doge mining war. Country-level satire only — never depict real named individuals.
 
 ═══════════ THIS EPISODE — LIVE STATE (ground every beat in these real facts) ═══════════
 ECONOMY: ${economyBlock(g)}

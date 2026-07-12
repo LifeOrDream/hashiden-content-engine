@@ -24,7 +24,7 @@ renders exactly as written. No rewrites, no line doctoring, no alternate hooks.
 - 0:10-0:15 astronaut helmet fills frame, orange bitcoin sun reflected in visor; visor clears: it is the KOREA JINDO (real game character), chewing gum, gum pop. No line — the pop is the joke.
 - 0:15-0:20 smash cut: twelve country beasts mining in a frenzy, raw ore becoming glowing fuel cells loaded toward the pad. Control VO: "Fuel status?" USA shiba, mid-swing, not looking up: "Mining it."
 - 0:20-0:25 beasts gathered under a giant stock ticker; music cuts to silence. Composited text card (use the real text/end-card machinery, NOT generated-in-image text): "SPACEX IPO'D THE ROCKET." (beat) "WE'RE IPO-ING THE FUEL."
-- 0:25-0:33 rapid game montage: arena board, 60s countdown, win FX, evolution burst — REAL PRODUCT FOOTAGE preferred: capture screen recordings/screenshots from the live frontend (npm run dev in mdogeWifBtcFE with the dummy FX harness in hooks/config.ts flipped on for capture, ALWAYS reverted after; or use generated keyframes of the real UI as fallback). VO, plain speech, fast: "Pick your country. Bet SOL. Sixty seconds a round. Win, your beast mines $DEN — and the war writes a show with your character in it." Captions mirror the beats.
+- 0:25-0:33 rapid game montage: arena board, 60s countdown, win FX, evolution burst — REAL PRODUCT FOOTAGE preferred: capture screen recordings/screenshots from the live frontend (npm run dev in hashiden-game with the dummy FX harness in hooks/config.ts flipped on for capture, ALWAYS reverted after; or use generated keyframes of the real UI as fallback). VO, plain speech, fast: "Pick your country. Bet SOL. Sixty seconds a round. Win, your beast mines $DEN — and the war writes a show with your character in it." Captions mirror the beats.
 - 0:33-0:38 the rocket lifts; one beast watches from the dig site, then goes back to swinging. VO, dry: "Ten years of 'to the moon.' Somebody had to build the dogs."
 - 0:38-0:42 end card, single pickaxe strike ringing like a bell: hashiden.tv · JULY 10 + the Hashiden mark (hashiden-game/public/assets/brand/hashiden/hashiden-mark.webp).
 
@@ -50,11 +50,11 @@ reference images, checked into `trailer/reference/moonshot/`:
 
 - `asset:moonshot/chars/{southkorea,usa,japan,china,russia,india,uk,brazil,iran,israel,northkorea,france}.png`
   — clean frames extracted from the live game character GIFs at
-  `https://assets.minebtc.fun/frontend/gameAssets/chars/<country>.gif?v=2`.
+  `https://assets.hashiden.tv/frontend/gameAssets/chars/<country>.gif?v=2`.
 - `asset:moonshot/minted/hashbeast1_usa_golden_retriever.png` and
   `asset:moonshot/minted/hashbeast3_southkorea_white_jindo.png` — the real
   minted portraits resolved from
-  `https://assets.minebtc.fun/hashbeasts/3RcBXFng5minophzhYdMNNaePnpdDCpq1hAHRYwnihs3.json`
+  `https://assets.hashiden.tv/hashbeasts/3RcBXFng5minophzhYdMNNaePnpdDCpq1hAHRYwnihs3.json`
   and `…/6Gy8SGiFLnGGu8HiH19FC5kTWa9DueZ6K4Fm8RXuiuj6.json` -> `.image`
   (byte-verified against the live CDN).
 
