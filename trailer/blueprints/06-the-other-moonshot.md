@@ -50,11 +50,11 @@ reference images, checked into `trailer/reference/moonshot/`:
 
 - `asset:moonshot/chars/{southkorea,usa,japan,china,russia,india,uk,brazil,iran,israel,northkorea,france}.png`
   — clean frames extracted from the live game character GIFs at
-  `https://assets.minebtc.fun/frontend/gameAssets/chars/<country>.gif?v=2`.
+  `https://assets.hashiden.tv/frontend/gameAssets/chars/<country>.gif?v=2`.
 - `asset:moonshot/minted/hashbeast1_usa_golden_retriever.png` and
   `asset:moonshot/minted/hashbeast3_southkorea_white_jindo.png` — the real
   minted portraits resolved from
-  `https://assets.minebtc.fun/hashbeasts/3RcBXFng5minophzhYdMNNaePnpdDCpq1hAHRYwnihs3.json`
+  `https://assets.hashiden.tv/hashbeasts/3RcBXFng5minophzhYdMNNaePnpdDCpq1hAHRYwnihs3.json`
   and `…/6Gy8SGiFLnGGu8HiH19FC5kTWa9DueZ6K4Fm8RXuiuj6.json` -> `.image`
   (byte-verified against the live CDN).
 

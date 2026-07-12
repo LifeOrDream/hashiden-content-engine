@@ -3,8 +3,8 @@
 > Producer-level audit of the full video/content generation system (trailer pipeline,
 > showrunner reels, NFT mutation content, sound, captions, dashboard) and the macro
 > plan to turn it from "one good story format" into a multi-format social growth
-> machine. Written 2026-06-11 after a full code audit of `hashiden-content-engine` and
-> `hashiden-backend`.
+> machine. Written 2026-06-11 after a full code audit of `ai-content-engine` and
+> `HashidenBackend`.
 
 ---
 
