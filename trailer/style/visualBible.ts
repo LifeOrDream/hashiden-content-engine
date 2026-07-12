@@ -681,7 +681,7 @@ export const HASHIDEN_CAVEATS = `
 - Do not over-index on comedy. Hashiden needs bingeable tonal range: absurd rivalry, sports hype, economic satire, menace, underdog sincerity, hidden-world wonder, and country-war suspense.
 - Do not over-index on game mechanics. The game creates events, but episodes should feel like characters living inside a country-war mining world.
 - Do not over-index on pixel art. The NFT DNA matters, but video assets should feel premium high-resolution arcade-cel, readable on TikTok/YouTube/X, not tiny raw sprites.
-- Do not over-index on real geopolitics. Use country-level fictional satire and topical energy; avoid real named leaders, literal news screenshots, real slogans, or hateful caricature.
+- Do not over-index on real-world politics/current events. Use country-level fictional satire and topical energy; avoid real named leaders, literal news screenshots, real slogans, or hateful caricature.
 - Generated video models tend to mutate characters. Every prompt must restate identity continuity and every motion prompt must forbid new costumes/species/logos/powers unless the shot is explicitly an evolution reveal.
 - If a shot starts looking like a generic crypto ad, reject it. If it starts looking like a regular animated show scene that could only happen in Hashiden, keep pushing.
 `.trim();

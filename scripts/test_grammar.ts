@@ -87,10 +87,24 @@ import {
   resolveEpisodeTier,
 } from "../src/service/chapterVideo.js";
 import {
+  buildChapterAnatomyFallback,
   buildChapterWriterPrompt,
+  buildCuratorCallSegment,
+  chapterTextSmells,
   chapterWorldContextHooks,
+  lintChapterAnatomy,
+  mergeChapterDraft,
   type ChapterCycleFacts,
 } from "../src/content-engine/chapterWriter.js";
+import {
+  buildGlowUpLorePrompt,
+  buildGlowUpMintInput,
+  buildGlowUpTeaserSpec,
+  glowUpLoreFallback,
+  lintGlowUpLore,
+  LORE_BEAT_MAX,
+  type NftGlowUpInput,
+} from "../src/nft-pipeline/glowUp.js";
 import {
   buildWorldBriefPrompt,
   generateWorldBriefs,
@@ -831,6 +845,177 @@ check("retired brand 'Hashiden' is banned", dialogueSmells("welcome to Hashiden,
 check("retired token 'degenBTC' is banned", dialogueSmells("stack that degenBTC high").length > 0);
 check("retired ore 'dBTC' is banned", dialogueSmells("crack the dBTC seam").length > 0);
 check("generic 'bitcoin' reference stays allowed", dialogueSmells("bitcoin burns electricity to mint blocks").length === 0);
+
+// ─── CURATOR_LOOP_SPEC §3 · glow-up (nft.glow_up) ────────────────────────────
+console.log("\nCurator §3 · glow-up lore (caps + lint + determinism)");
+const glowUpInput: NftGlowUpInput = {
+  beast: {
+    mint: "GlowMint1111111111111111111111111111111111",
+    name: "Ember-9",
+    dna: "0x" + "ab".repeat(32),
+    factionId: 4, // Japan
+    assetUrls: {
+      fullBody: "https://example.invalid/fb.png",
+      dp: "https://example.invalid/dp.png",
+    },
+    personality: { archetype: "scarred veteran", tone: "quiet", motivation: "hold the line" },
+  },
+  factionId: 4,
+  categoryValue: 3,
+  regionValue: 7,
+  lineage: {
+    pastLifeEcho: "once a pup who fled its first raid and never lived it down",
+    motifLine: "ash-grey veteran of the northern seam",
+    motivation: "hold the northern seam no matter the cost",
+    lineageBullets: ["its attack lane surged mid-battle", "reached a scarred, certain form"],
+  },
+  curator: { warId: 42, curatorCallsign: "JadeHands", directive: "lean into the comeback" },
+};
+
+const glowFb1 = glowUpLoreFallback(glowUpInput);
+const glowFb2 = glowUpLoreFallback(glowUpInput);
+check("glow-up lore fallback is deterministic (same input → identical beat)", glowFb1 === glowFb2);
+check(
+  "glow-up lore fallback respects the 600-char cap",
+  glowFb1.length > 0 && glowFb1.length <= LORE_BEAT_MAX,
+);
+check(
+  "glow-up lore fallback links the past-life echo to the reforged form",
+  /forge|anvil|remade|reforged|harder/i.test(glowFb1) && /Japan/.test(glowFb1),
+);
+check("glow-up lore fallback stays lexicon-clean", lintGlowUpLore(glowFb1).length === 0);
+// A banned-lexicon token + retired brand in the SOURCE is scrubbed by the fallback.
+const dirtyGlow = glowUpLoreFallback({
+  beast: { mint: "DirtyGlow1111111111111111111111111111111111", name: "MineBTC Reject", factionId: 0 },
+  categoryValue: 0,
+  regionValue: 0,
+  lineage: {
+    pastLifeEcho: "a revolutionary game-changing miner that chased yield",
+    motifLine: "supercharge the leaderboard",
+  },
+});
+check("glow-up lore fallback scrubs banned lexicon + retired brands from a dirty source",
+  lintGlowUpLore(dirtyGlow).length === 0 && dirtyGlow.length > 0);
+// Empty input still yields a valid, clean, non-empty beat (never fails the pipeline).
+const emptyGlow = glowUpLoreFallback({
+  beast: { mint: "EmptyGlow1111111111111111111111111111111111" },
+  categoryValue: 0,
+  regionValue: 0,
+});
+check("glow-up lore fallback never fails on empty input",
+  emptyGlow.length > 0 && lintGlowUpLore(emptyGlow).length === 0);
+
+console.log("\nCurator §3 · glow-up lore prompt (self-contained)");
+const glowPrompt = buildGlowUpLorePrompt(glowUpInput);
+check("glow-up lore prompt names the HASHIDEN lore-keeper role", glowPrompt.includes("HASHIDEN"));
+check("glow-up lore prompt carries the past-life echo", glowPrompt.includes("fled its first raid"));
+check(
+  "glow-up lore prompt carries the curator context (callsign + war)",
+  glowPrompt.includes("JadeHands") && glowPrompt.includes("war cycle 42"),
+);
+check("glow-up lore prompt carries the banned-lexicon guard", glowPrompt.includes("BANNED LEXICON"));
+check("glow-up lore prompt states the 600-char cap", glowPrompt.includes(String(LORE_BEAT_MAX)));
+check("glow-up lore prompt demands plain prose (no JSON surface)", /plain prose/i.test(glowPrompt));
+
+console.log("\nCurator §3 · reforge forImage purity (text-free image rule)");
+const glowMintInput = buildGlowUpMintInput(glowUpInput);
+const glowMintJson = JSON.stringify(glowMintInput);
+check("reforge input carries the beast's DNA", glowMintInput.dna === glowUpInput.beast.dna);
+check(
+  "reforge input reuses the beast's existing full-body ref",
+  glowMintInput.referenceImageUrl === glowUpInput.beast.assetUrls!.fullBody,
+);
+check(
+  "reforge input NEVER carries the past-life echo into the image pipeline",
+  !glowMintJson.includes("fled its first raid"),
+);
+check(
+  "reforge input NEVER carries motif/motivation prose into the image pipeline",
+  !glowMintJson.includes("northern seam") && !glowMintJson.includes("ash-grey veteran"),
+);
+check(
+  "reforge input NEVER carries the curator directive into the image pipeline",
+  !glowMintJson.includes("lean into the comeback"),
+);
+
+console.log("\nCurator §3 · teaser spec (produce_reel path, short + clean)");
+const teaserSpec = buildGlowUpTeaserSpec(glowUpInput, glowFb1);
+check("teaser id is keyed to the mint", teaserSpec.id === `glowup-${glowUpInput.beast.mint}`);
+check(
+  "teaser is a SHORT clip (6-15s)",
+  (teaserSpec.targetSeconds ?? 0) >= 6 && (teaserSpec.targetSeconds ?? 0) <= 15,
+);
+check(
+  "teaser copy stays lexicon-clean (title + logline + body)",
+  dialogueSmells(teaserSpec.title).length === 0 &&
+    dialogueSmells(teaserSpec.logline || "").length === 0 &&
+    chapterTextSmells(teaserSpec.body).length === 0,
+);
+
+console.log("\nCurator §3 · The Curator's Call (curatorBeats rendering + Button)");
+const curatorFacts: ChapterCycleFacts = {
+  warId: 77,
+  winnerFactionId: 4, // Japan
+  finalRanks: [2, 3, 4, 1, 5, 6, 7, 8, 9, 10, 11, 12], // runner-up = USA (rank 2)
+  mvps: [{ factionId: 4, beastName: "Kiro", mint: "JpMvpMint" }],
+  computeSpentUsd: 12,
+  curatorBeats: [
+    { kind: "release", factionId: 4, curatorCallsign: "JadeHands", beastName: "Shino", mint: "JpHeld1Mint", queueDepthAfter: 3 },
+    { kind: "commission", factionId: 4, curatorCallsign: "JadeHands", beastName: "Ember-9", mint: "JpHeld2Mint", loreBeat: glowFb1, hasTeaser: true },
+    { kind: "showcase", factionId: 4, beastName: "Momo", mint: "JpShowMint" },
+  ],
+};
+const curatorChapter = buildChapterAnatomyFallback(curatorFacts);
+check("curator segment renders under the 'The Curator's Call' heading",
+  curatorChapter.curatorCall?.heading === "The Curator's Call");
+check("curator segment renders one Desk-commentary line per beat",
+  curatorChapter.curatorCall?.beats.length === 3 &&
+    curatorChapter.curatorCall!.beats.every((l) => l.startsWith("From the desk")));
+check("release beat surfaces the queue depth after release",
+  curatorChapter.curatorCall!.beats.some((l) => l.includes("3 deep")));
+check("commission beat folds in the glow-up redemption lore",
+  curatorChapter.curatorCall!.beats.some((l) => /forge/.test(l)));
+check("drop-tease appears when a commission produced a teaser",
+  Boolean(curatorChapter.curatorCall?.dropTease) &&
+    /enters Japan's boxes at dawn/.test(curatorChapter.curatorCall!.dropTease!));
+check("drop-tease takes the chapter Button (cliffhanger) per the 4-beat grammar",
+  curatorChapter.cliffhanger === curatorChapter.curatorCall!.dropTease);
+check("curator chapter passes the anatomy lint (segment + Button clean)",
+  lintChapterAnatomy(curatorChapter).length === 0);
+check("curator segment is deterministic (same facts → identical segment)",
+  JSON.stringify(buildCuratorCallSegment(curatorFacts)) ===
+    JSON.stringify(buildCuratorCallSegment(curatorFacts)));
+// The LLM (merge) path also cliffhangs on the drop-tease Button + keeps the segment.
+const mergedCurator = mergeChapterDraft(curatorFacts, {
+  title: "Japan Holds the Northern Seam",
+  recap: [
+    { beat: "Kiro carried Japan through the closing rounds.", callouts: ["Kiro"] },
+    { beat: "Shino stepped off the shelf and into the fight.", callouts: ["Shino"] },
+    { beat: "The forge glowed all cycle long.", callouts: [] },
+  ],
+  cliffhanger: "Some unrelated cliffhanger the model wrote about the next war.",
+});
+check("merged (LLM) chapter still cliffhangs on the curator drop-tease (Button wins)",
+  mergedCurator!.cliffhanger === curatorChapter.curatorCall!.dropTease);
+check("merged (LLM) chapter keeps the canon-built Curator's Call segment",
+  mergedCurator!.curatorCall?.heading === "The Curator's Call");
+// Honest zero state: no curator beats → no segment, and the Button stays the rivalry loop.
+const noCuratorChapter = buildChapterAnatomyFallback({ warId: 78, winnerFactionId: 0 });
+check("no curator beats → no Curator's Call segment (honest zero state)",
+  noCuratorChapter.curatorCall === undefined);
+check("no curator beats → Button stays the rivalry loop (not a drop-tease)",
+  !/boxes at dawn/.test(noCuratorChapter.cliffhanger));
+// A commission WITHOUT a teaser renders the segment but does NOT hijack the Button.
+const noTeaseChapter = buildChapterAnatomyFallback({
+  warId: 79,
+  winnerFactionId: 4,
+  finalRanks: [2, 3, 4, 1, 5, 6, 7, 8, 9, 10, 11, 12],
+  curatorBeats: [{ kind: "commission", factionId: 4, beastName: "Kiro", mint: "JpKiroMint", loreBeat: glowFb1 }],
+});
+check("commission without a teaser still renders the segment",
+  noTeaseChapter.curatorCall?.beats.length === 1);
+check("commission without a teaser does NOT take the Button",
+  !noTeaseChapter.curatorCall?.dropTease && !/boxes at dawn/.test(noTeaseChapter.cliffhanger));
 
 // ─── Verdict ─────────────────────────────────────────────────────────────────
 console.log(`\n${passes} passed, ${failures} failed`);

@@ -8,6 +8,6 @@ export function GET() {
   return NextResponse.json({
     ok: true,
     repoRoot: REPO_ROOT,
-    service: "hashiden-ai-content-engine-webui",
+    service: "hashiden-content-engine-webui",
   });
 }

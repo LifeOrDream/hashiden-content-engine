@@ -32,7 +32,7 @@
 
 ## What Is HASHIDEN?
 
-HASHIDEN is a serialized show produced by gameplay, not by a writers' room.
+HASHIDEN is a serialized show produced by gameplay, not by a writers' room. The players *are* the writers' room — we call the pattern **play-to-train**.
 
 [Hashiden](https://hashiden.tv/) is a country-vs-country mining war on Solana: twelve nations of dog-warrior HashBeasts race to out-mine each other. Every 4-hour war cycle settles on chain, and the engine in this repo turns that settled cycle into a chapter — cover, recap, cast, ledger, cliffhanger. 42 chapters make a weekly season. The show never stops because the game never stops.
 
@@ -40,11 +40,13 @@ HASHIDEN is a serialized show produced by gameplay, not by a writers' room.
 
 This engine is the rendering half of Hashiden's **World Model**: it takes a stream of settled on-chain events and renders them into canon-constrained story. The constraint is the **world bible** (`src/world/bible.ts`) — the Council of Twelve, the rivalry map, the style ladder, the ceremony language — and it is **public and open source**, right here in this repo, alongside the grammar checks that keep generations on-canon.
 
-What is deliberately *not* here is everything that couples to live play: the accumulated story corpus, the per-character genome cards, the preference signals that steer what gets rendered, wallets, and game state. The engine reads none of it. Every job is a self-contained snapshot in, a bounded creative artifact out — so the studio is inspectable and reusable without exposing the game it renders. **You can fork the engine; the corpus and canon are trained elsewhere.**
+What is deliberately *not* here is everything that couples to live play: the accumulated story corpus, the per-character genome cards, the preference signals that steer what gets rendered, wallets, and game state. The engine reads none of it. Every job is a self-contained snapshot in, a bounded creative artifact out — so the studio is inspectable and reusable without exposing the game it renders.
+
+In ML terms, this repo is the **context-engineering surface** of a three-layer system: Layer 1 (live, this repo + the game's genome cards) conditions every generation with canon, story memory, and grammar-checked prompts; Layer 2 (turning on, game-side) turns audience and market signal into a reward function over the show's own output; Layer 3 (roadmap, game-side) is owned weights — per-nation style LoRAs, character identities, a writer model fine-tuned on the canon corpus. Every artifact carries provenance: the event that caused it, the spend that rendered it, the reception it earned. The dataset, not the weights, is the IP. **Forks copy the engine; the corpus, canon, and trained preferences stay with the show — and they compound with every round played.**
 
 Three things make it different from any show before it:
 
-- **The players own the cast.** The characters are HashBeasts — a genesis run of 36,000 player-owned characters with breed, country, gear, powers, and a story state that compounds across chapters.
+- **The players own the cast.** The characters are HashBeasts — a genesis run of 16,200 player-owned characters with breed, country, gear, powers, and a story state that compounds across chapters.
 - **The players write themselves in.** Direct-Your-Beast lets owners author their character's personality sheet; the engine renders it into canon-adjacent lore. On-chain events are canon; owner lore is apocrypha; every claim cites its cycle, clip, and transaction.
 - **The show is produced BY the game, not about it.** Wins, mutations, evolutions, mints, and rivalries are the plot. Minting a beast is a character intro. A claim streak is an arc.
 
