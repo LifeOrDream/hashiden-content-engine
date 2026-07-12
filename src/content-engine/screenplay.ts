@@ -23,12 +23,12 @@ function economyBlock(g: StoryGrounding): string {
   bits.push(`Country Race cycle #${g.cycle || "?"} (a 4-hour cycle).`);
   if (e.priceSol != null) {
     bits.push(
-      `$degenBTC price ${e.priceSol.toPrecision(3)} SOL (${pct(e.priceChangePct)} this cycle).`,
+      `$DEN price ${e.priceSol.toPrecision(3)} SOL (${pct(e.priceChangePct)} this cycle).`,
     );
   }
   if (e.emissionRateEnd != null) {
     bits.push(
-      `Emissions ${Math.round(e.emissionRateEnd).toLocaleString()} dBTC/sec (${pct(e.emissionChangePct)} — emissions move inversely-ish with price each cycle).`,
+      `Emissions ${Math.round(e.emissionRateEnd).toLocaleString()} $DEN/sec (${pct(e.emissionChangePct)} — emissions move inversely-ish with price each cycle).`,
     );
   }
   if (e.miningMultiplier != null) {
@@ -37,7 +37,7 @@ function economyBlock(g: StoryGrounding): string {
     );
   }
   if (e.winningFaction) bits.push(`Currently winning the race: ${e.winningFaction}.`);
-  if (e.stakingAprPct) bits.push(`dBTC staking APR ~${e.stakingAprPct.toFixed(0)}%.`);
+  if (e.stakingAprPct) bits.push(`$DEN staking APR ~${e.stakingAprPct.toFixed(0)}%.`);
   return bits.join(" ");
 }
 
@@ -51,7 +51,7 @@ function standingsBlock(standings: FactionStanding[]): string {
       if (s.mutationScore) parts.push(`${s.mutationScore} mutations`);
       if (s.usersDelta) parts.push(`${s.usersDelta >= 0 ? "+" : ""}${s.usersDelta} recruits`);
       if (s.minted != null && s.target) parts.push(`${s.minted}/${s.target} minted`);
-      if (s.dbtcAprPct) parts.push(`${s.dbtcAprPct.toFixed(0)}% APR`);
+      if (s.denAprPct) parts.push(`${s.denAprPct.toFixed(0)}% APR`);
       let line = parts.join(" · ");
       if (s.geopolitics) line += `\n     real-world: ${s.geopolitics}`;
       return `  ${line}`;
@@ -82,7 +82,7 @@ function craftBlock(g: StoryGrounding, format: VideoFormat): string {
   const crops = format.defaultOutputs.filter((a) => a !== format.aspectRatio);
   const frameRule = `FRAME ${format.aspectRatio}${crops.length ? ` (also cropped to ${crops.join("/")} — KEEP the main subject/action CENTERED so the crops still frame it)` : ""}. Each shot needs a CAPTION (punchy on-screen text) for sound-off viewing.`;
   const shared = [
-    `4. SHOW, DON'T TELL: reveal economy/geopolitics THROUGH behavior, rivalry, fear, status games, props, and on-screen facts — not narration. Hard numbers belong in captions/visuals unless a character is weaponizing that number in a natural argument.`,
+    `4. SHOW, DON'T TELL: reveal economy/current-events THROUGH behavior, rivalry, fear, status games, props, and on-screen facts — not narration. Hard numbers belong in captions/visuals unless a character is weaponizing that number in a natural argument.`,
     `5. CHARACTER: every line must have a want + tactic: recruit, threaten, bluff, confess, deflect, bait, mourn, dare, reassure, or taunt. If the line could be moved to a landing page, caption, or mechanic tooltip, rewrite it.`,
     `6. DIALOGUE TIMING: do not write tiny taglines for long shots. A speaking shot should carry enough words for its duration unless the action explicitly spends time on silence, interruption, reaction, or physical comedy.`,
     `7. ${frameRule}`,
@@ -94,7 +94,7 @@ function craftBlock(g: StoryGrounding, format: VideoFormat): string {
       `2. PACING: a developed ${Math.round(format.targetSeconds / 60 * 10) / 10}-min video — shots 4–8s, room to breathe between hits but NEVER boring. ≈ ${format.targetSeconds}s across ${format.minShots}–${format.maxShots} shots. Build in mini-beats (almost chapters): intro → stakes → escalation → the turn → payoff → outro.`,
       `3. SPINE: tell a COMPLETE story this episode with a satisfying payoff (this plays on YouTube/Twitter/IG, not a Shorts feed — earn the watch-through), while still teasing what's next.`,
       ...shared,
-      `8. OUTRO/CTA: the LAST shot is an outro — the cast rallying viewers to pick a country + mine $degenBTC at minebtc.fun.`,
+      `8. OUTRO/CTA: the LAST shot is an outro — the cast rallying viewers to pick a country + mine $DEN at hashiden.tv.`,
       `9. Keep it FUN, sharp, a little unhinged — degen energy, meme-aware, grounded in our world's aesthetic.`,
     ].join("\n");
   }
@@ -118,11 +118,11 @@ export function buildScreenplayPrompt(
   return `You are the SHOWRUNNER + head writer of a hit ${format.craftMode === "feature" ? "episodic video series (YouTube/Instagram/Twitter)" : "vertical short-form series"} — a satirical, hyper-engaging country-vs-country comedy set inside a crypto mining war. Write the screenplay for ONE ${format.craftMode === "feature" ? "2–3 minute episode" : "episode reel"}.
 
 ═══════════ THE WORLD (canon — never contradict) ═══════════
-• 12 nations (USA, China, Russia, South Korea, India, Japan, Iran, UK, North Korea, France, Brazil, Israel) are at WAR to mine the most $degenBTC — this world's Bitcoin, on Solana.
-• Their soldiers are HashBeasts: stylized dog-warrior mascots. Each nation fields up to 3,000 of them (36,000 total). Real humans recruit them and play.
-• The war runs in 4-hour "COUNTRY RACE" cycles. Each cycle a country wins. Between cycles the economy shifts: $degenBTC's price moves, EMISSIONS (dBTC minted per second) adjust, a mining MULTIPLIER changes the rewards, staking APR fluctuates.
+• 12 nations (USA, China, Russia, South Korea, India, Japan, Iran, UK, North Korea, France, Brazil, Israel) are at WAR to mine the most $DEN — this world's Bitcoin, on Solana.
+• Their soldiers are HashBeasts: stylized dog-warrior mascots — a genesis cast of 16,200 (15,000 public + 1,200 reserve). Real humans own and play them.
+• The war runs in 4-hour "COUNTRY RACE" cycles. Each cycle a country wins. Between cycles the economy shifts: $DEN's price moves, EMISSIONS ($DEN minted per second) adjust, a mining MULTIPLIER changes the rewards, staking APR fluctuates.
 • HashBeasts are WIZARDS (Wall Street Sorcerers, Pentagon Battle Mages, Juche Sorcerers…) or MUGGLES (the President's dog, a tycoon's pet…). They EVOLVE through stages, MUTATE new traits, and grow more powerful — and they trash-talk rival nations relentlessly.
-• It is a PARODY grounded in REAL current geopolitics: rivalries mirror the real world (USA↔Iran, China↔Taiwan, Russia↔Ukraine, NK posturing, US↔China tech race…), framed as the doge mining war. Country-level satire only — never depict real named individuals.
+• It is a PARODY grounded in REAL current world events: rivalries mirror the real world (USA↔Iran, China↔Taiwan, Russia↔Ukraine, NK posturing, US↔China tech race…), framed as the doge mining war. Country-level satire only — never depict real named individuals.
 
 ═══════════ THIS EPISODE — LIVE STATE (ground every beat in these real facts) ═══════════
 ECONOMY: ${economyBlock(g)}
@@ -162,7 +162,7 @@ If any answer fails, rewrite the line before output. A character almost never na
   "hook": "the exact cold-open line/moment (first 1-2s)",
   "cliffhanger": "the open loop carried into the next episode",
   "caption": "the social caption (<150 chars, punchy, 1-2 emoji)",
-  "hashtags": ["#degenBTC", "..."],
+  "hashtags": ["#DEN", "..."],
   "shots": [
     {
       "n": 1,
@@ -245,7 +245,7 @@ export function normalizeScreenplay(
     caption: String(sp.caption || "").slice(0, 200),
     hashtags: Array.isArray(sp.hashtags)
       ? sp.hashtags.slice(0, 8).map((h: any) => String(h))
-      : ["#degenBTC"],
+      : ["#DEN"],
     shots,
     storySoFarNext: String(sp.storySoFarNext || g.series.storySoFar || "").slice(0, 1500),
   };

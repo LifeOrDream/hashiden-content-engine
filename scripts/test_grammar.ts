@@ -81,6 +81,52 @@ import {
   buildLootboxRevealRitual,
   lootboxRitualKind,
 } from "../src/nft-pipeline/ritual.js";
+import {
+  EPISODE_MAX_SECONDS,
+  episodeTierForBudget,
+  resolveEpisodeTier,
+} from "../src/service/chapterVideo.js";
+import {
+  buildChapterAnatomyFallback,
+  buildChapterWriterPrompt,
+  buildCuratorCallSegment,
+  chapterTextSmells,
+  chapterWorldContextHooks,
+  lintChapterAnatomy,
+  mergeChapterDraft,
+  type ChapterCycleFacts,
+} from "../src/content-engine/chapterWriter.js";
+import {
+  buildGlowUpLorePrompt,
+  buildGlowUpMintInput,
+  buildGlowUpTeaserSpec,
+  glowUpLoreFallback,
+  lintGlowUpLore,
+  LORE_BEAT_MAX,
+  type NftGlowUpInput,
+} from "../src/nft-pipeline/glowUp.js";
+import {
+  buildWorldBriefPrompt,
+  generateWorldBriefs,
+} from "../src/content-engine/worldBrief.js";
+import {
+  genomeImagePuritySmells,
+  genomeImageBlock,
+  genomeTextDirective,
+  sanitizeGenomeForImage,
+  GENOME_FOR_IMAGE_MAX,
+  type GenomeBlock,
+} from "../src/nft-pipeline/genomeBlock.js";
+import {
+  buildGenomeDistillPrompt,
+  distillGenomeFallback,
+  lintGenomeCard,
+  MOTIF_LINE_MAX,
+  MOTIVATION_MAX,
+  PAST_LIFE_ECHO_MAX,
+  type NftGenomeDistillInput,
+} from "../src/nft-pipeline/genomeDistill.js";
+import { buildSceneKeyframePrompt, buildSceneScriptPrompt } from "../src/content-engine/scenePrompts.js";
 
 let failures = 0;
 let passes = 0;
@@ -289,7 +335,7 @@ check("mutation dialogue also picks up the rivalry", mutPrompt.includes("CANON R
 
 // ─── C2 · emotional arc gating ───────────────────────────────────────────────
 console.log("\nC2 · emotional arc");
-const arc = "starts dejected, spots the dBTC vein, ends determined";
+const arc = "starts dejected, spots the ore vein, ends determined";
 check("arc suppressed for low-stage beasts", emotionalArcDirective(arc, 2) === "");
 check("arc active for stage 5", emotionalArcDirective(arc, 5).includes(arc));
 check("arc lands frame-by-frame", emotionalArcDirective(arc, 7).includes("final frame lands it"));
@@ -538,6 +584,438 @@ for (const [label, text] of corpus) {
   }
 }
 check(`no banned lexicon across ${corpus.length} grammar strings`, lexiconClean);
+
+console.log("\nA1 · episode budget tiers (chapter.produce)");
+check("budget < $2 skips video", episodeTierForBudget(1.5).skipVideo === true);
+check(
+  "$3 → 480p / 30s",
+  (() => {
+    const t = episodeTierForBudget(3);
+    return t.resolution === "480p" && t.targetSeconds === 30 && !t.skipVideo;
+  })(),
+);
+check(
+  "$8 → 720p / 48s",
+  (() => {
+    const t = episodeTierForBudget(8);
+    return t.resolution === "720p" && t.targetSeconds === 48;
+  })(),
+);
+check(
+  "$15 → 720p / 75s (current default behavior)",
+  (() => {
+    const t = episodeTierForBudget(15);
+    return t.resolution === "720p" && t.targetSeconds === 75;
+  })(),
+);
+check(
+  "$30 → 1080p / 90s",
+  (() => {
+    const t = episodeTierForBudget(30);
+    return t.resolution === "1080p" && t.targetSeconds === 90;
+  })(),
+);
+check(
+  `targetSeconds override caps at ${EPISODE_MAX_SECONDS}s and clears skipVideo`,
+  (() => {
+    const t = resolveEpisodeTier({ budgetUsd: 1, targetSeconds: 999 });
+    return t.targetSeconds === EPISODE_MAX_SECONDS && !t.skipVideo;
+  })(),
+);
+check(
+  "tier boundaries are exhaustive (0..40 USD always resolves)",
+  [...Array(41).keys()].every((usd) => {
+    const t = episodeTierForBudget(usd);
+    return t.skipVideo || (t.targetSeconds >= 30 && t.targetSeconds <= EPISODE_MAX_SECONDS);
+  }),
+);
+
+console.log("\nA2/A3 · world briefs + chapter worldContext");
+const worldFacts: ChapterCycleFacts = {
+  warId: 9,
+  winnerFactionId: 2,
+  rankDeltas: [0, 4, 1, -3, 2, 0, 0, 0, 0, 0, 0, 0],
+  worldContext: [
+    { factionId: 0, brief: "USA is sprinting a chip-supremacy lap." },
+    { factionId: 1, brief: "China quietly re-routes the trade lanes. ".repeat(10) },
+    { factionId: 2, brief: "Russia leans on the cold-storage doctrine." },
+    { factionId: 3, brief: "India stacks jugaad-tier throughput records." },
+    { factionId: 4, brief: "Japan polishes precision-mining robotics." },
+    { factionId: 5, brief: "UK drafts a very polite blockade." },
+  ],
+};
+const hooks = chapterWorldContextHooks(worldFacts);
+check("worldContext hooks cap at 4", hooks.length === 4);
+check("winner's brief leads the hooks", hooks[0]?.factionId === 2);
+check(
+  "top mover (rankDelta +4) ranks ahead of smaller swings",
+  hooks[1]?.factionId === 1,
+);
+check(
+  "each hook is trimmed to <= 200 chars",
+  hooks.every((h) => h.brief.length <= 200),
+);
+const promptWithWorld = buildChapterWriterPrompt(worldFacts);
+check(
+  "writer prompt gains the REAL-WORLD PARODY HOOKS section",
+  promptWithWorld.includes("REAL-WORLD PARODY HOOKS") &&
+    promptWithWorld.includes("satire targets institutions"),
+);
+check(
+  "no worldContext → no hooks section",
+  !buildChapterWriterPrompt({ warId: 9, winnerFactionId: 2 }).includes(
+    "REAL-WORLD PARODY HOOKS",
+  ),
+);
+const briefPrompt = buildWorldBriefPrompt([
+  { factionId: 0, code: "usa", country: "USA" },
+  { factionId: 10, code: "iran", country: "Iran" },
+]);
+check(
+  "world-brief prompt carries the guardrails (institutions, no real conflicts, game-world Iran–Israel)",
+  briefPrompt.includes("INSTITUTIONS") &&
+    briefPrompt.includes("NEVER reference real armed conflicts") &&
+    briefPrompt.includes("Iran–Israel rivalry is strictly game-world"),
+);
+const savedGeminiKey = process.env.GEMINI_KEY;
+delete process.env.GEMINI_KEY;
+const noKeyBriefs = await generateWorldBriefs({ factionIds: [0, 1] });
+if (savedGeminiKey) process.env.GEMINI_KEY = savedGeminiKey;
+check(
+  "world.brief soft-fails to empty briefs without GEMINI_KEY (no network)",
+  Array.isArray(noKeyBriefs.briefs) && noKeyBriefs.briefs.length === 0,
+);
+
+// ─── Part C · prompt-genome plumbing ─────────────────────────────────────────
+console.log("\nPartC · genome forImage purity");
+const aTechnique = allTechniqueNames()[0];
+check("technique lexicon is non-empty (purity probe available)", Boolean(aTechnique));
+// A clean aesthetic-tokens block passes.
+check(
+  "clean aesthetic tokens pass forImage purity",
+  genomeImagePuritySmells("cobalt neon rimlight, storm-grey fur, stage 4 silhouette").length === 0,
+);
+// A technique name is caught.
+check(
+  "technique name flagged by forImage purity",
+  genomeImagePuritySmells(`palette with ${aTechnique} energy`).length > 0,
+);
+// Motif prose markers are caught.
+check(
+  "motif prose flagged by forImage purity",
+  genomeImagePuritySmells("motivation: avenge the fallen — a sworn epithet").length > 0,
+);
+// Sanitizer strips the offending clause but keeps clean tokens.
+const dirtyForImage = `cobalt rimlight, ${aTechnique} flare, storm-grey fur, sworn epithet of the mine`;
+const cleaned = sanitizeGenomeForImage(dirtyForImage);
+check("sanitizer drops the technique clause", !cleaned.toLowerCase().includes(aTechnique.toLowerCase()));
+check("sanitizer drops the epithet clause", !/epithet/i.test(cleaned));
+check("sanitizer keeps a clean token", cleaned.toLowerCase().includes("cobalt rimlight"));
+check("sanitized forImage is itself pure", genomeImagePuritySmells(cleaned).length === 0);
+check("sanitizer caps length", sanitizeGenomeForImage("neon, ".repeat(200)).length <= GENOME_FOR_IMAGE_MAX);
+
+// forImage is pure at every IMAGE render surface (keyframe canonBlocks).
+const dirtyGenome: GenomeBlock = {
+  forText: `Driven by a sworn motivation to avenge; motif of ash and iron. Its signature move is ${aTechnique}.`,
+  forImage: `crimson warpaint, ${aTechnique} aura, motif of ash, stage 6 towering silhouette`,
+};
+const keyframePrompt = buildSceneKeyframePrompt({
+  eventFlavor: "power surge",
+  factionName: "USA",
+  breed: "shiba",
+  profession: "miner",
+  canonBlocks: ["HASHBEAST CANON\nbreed: shiba"],
+  genomeForImage: dirtyGenome.forImage,
+  scene: "low push-in",
+});
+check(
+  "keyframe image prompt never contains a technique name",
+  !keyframePrompt.toLowerCase().includes(aTechnique.toLowerCase()),
+);
+check(
+  "keyframe image prompt never contains motif prose markers",
+  genomeImagePuritySmells(keyframePrompt.split("GENOME AESTHETIC")[1] || "").length === 0 &&
+    !/GENOME AESTHETIC[^\n]*motif/i.test(keyframePrompt),
+);
+// The forImage helper block is pure even from a dirty source.
+check(
+  "genomeImageBlock output is pure from dirty source",
+  genomeImagePuritySmells(genomeImageBlock(dirtyGenome)).length === 0,
+);
+
+console.log("\nPartC · genome forText caps + placement");
+// forText carries the full lineage into text surfaces (technique names allowed).
+const textDirective = genomeTextDirective(dirtyGenome);
+check("forText directive renders the full lineage", textDirective.includes("avenge"));
+check("empty genome → empty text directive", genomeTextDirective(undefined) === "");
+// Scene SCRIPT (text surface) folds genome forText into context blocks.
+const scenePrompt = buildSceneScriptPrompt({
+  trope: "rivalry",
+  characterLine: "USA veteran",
+  protagonistCanonBlock: "CANON",
+  plotDirectives: "escalate",
+  whatHappens: "it powers up",
+  genomeForText: "motif of ash and iron; sworn to avenge Doge Japan",
+});
+check("scene script folds genome forText into context", scenePrompt.includes("PROMPT GENOME"));
+check("scene script keeps the genome motif text", scenePrompt.includes("motif of ash and iron"));
+// forText hard cap (defence in depth): a 5000-char forText is trimmed.
+const hugeText = genomeTextDirective({ forText: "x".repeat(5000), forImage: "" });
+check("forText directive caps the rendered lineage", hugeText.length < 5000);
+
+console.log("\nPartC · genome_distill fallback determinism");
+const distillInput: NftGenomeDistillInput = {
+  mint: "GenomeMint11111111111111111111111111111111",
+  previousCard: {
+    motif_line: "ash-grey veteran of the Doge Japan front",
+    motivation: "hold the northern seam no matter the cost",
+    past_life_echoes: ["once a pup who fled its first raid"],
+  },
+  newLineageEntries: [
+    { event_type: "mutation_power", summary: "its attack lane surged mid-battle", warId: 12 },
+    { event_type: "evolution", summary: "reached a scarred, certain form", warId: 13 },
+  ],
+  sealedIntents: [
+    { ref: "intent-abc", verb: "avenge", target: "Doge Japan", flavor: "for the seam it lost" },
+  ],
+};
+const fb1 = distillGenomeFallback(distillInput);
+const fb2 = distillGenomeFallback(distillInput);
+check("fallback is deterministic (same input → identical card)", JSON.stringify(fb1) === JSON.stringify(fb2));
+check("fallback source is 'fallback'", fb1.source === "fallback");
+check("fallback motif_line respects cap", fb1.motif_line.length <= MOTIF_LINE_MAX && fb1.motif_line.length > 0);
+check("fallback motivation respects cap", fb1.motivation.length <= MOTIVATION_MAX && fb1.motivation.length > 0);
+check("fallback honors the newest sealed intent (ref echoed)", fb1.honored_intent_ref === "intent-abc");
+check("fallback stays lexicon-clean", lintGenomeCard(fb1).length === 0);
+// Rebirth folds the whole prior card into one bounded echo.
+const rebirthFb = distillGenomeFallback({ ...distillInput, rebirth: true });
+check("rebirth fallback produces a past_life_echo", Boolean(rebirthFb.past_life_echo));
+check(
+  "rebirth echo respects cap",
+  (rebirthFb.past_life_echo || "").length <= PAST_LIFE_ECHO_MAX,
+);
+// A banned-lexicon token in the SOURCE material is scrubbed by the fallback.
+const dirtyDistill = distillGenomeFallback({
+  mint: "DirtyMint111",
+  previousCard: {
+    motif_line: "a revolutionary game-changing miner",
+    motivation: "supercharge the yield and skyrocket the leaderboard",
+  },
+});
+check("fallback scrubs banned lexicon from dirty source", lintGenomeCard(dirtyDistill).length === 0);
+// Empty input still yields a valid, non-empty, clean card (never fails).
+const emptyDistill = distillGenomeFallback({ mint: "EmptyMint111" });
+check(
+  "fallback never fails on empty input",
+  emptyDistill.motif_line.length > 0 &&
+    emptyDistill.motivation.length > 0 &&
+    lintGenomeCard(emptyDistill).length === 0,
+);
+
+console.log("\nPartC · genome_distill payload validation");
+// The distill prompt is self-contained (no game-state leakage: only snapshot).
+const distillPrompt = buildGenomeDistillPrompt(distillInput);
+check("distill prompt names HASHIDEN lore-keeper role", distillPrompt.includes("HASHIDEN"));
+check("distill prompt carries the sealed-intent ref", distillPrompt.includes("intent-abc"));
+check("distill prompt instructs honored_intent_ref return", distillPrompt.includes("honored_intent_ref"));
+check("distill prompt surfaces the new lineage events", distillPrompt.includes("mutation_power"));
+check("distill prompt carries the banned-lexicon guard", distillPrompt.includes("BANNED LEXICON"));
+check(
+  "distill prompt states the field caps",
+  distillPrompt.includes(String(MOTIF_LINE_MAX)) && distillPrompt.includes(String(MOTIVATION_MAX)),
+);
+const rebirthPrompt = buildGenomeDistillPrompt({ ...distillInput, rebirth: true });
+check("rebirth distill prompt asks for past_life_echo", rebirthPrompt.includes("past_life_echo"));
+check(
+  "non-rebirth distill prompt omits the rebirth past_life_echo field",
+  !distillPrompt.includes('"past_life_echo"'),
+);
+// lintGenomeCard flags a dirty card (the retry trigger).
+check(
+  "lintGenomeCard flags banned lexicon in a card",
+  lintGenomeCard({ motif_line: "a seamless empire", motivation: "supercharge the war" }).length > 0,
+);
+
+// ─── Show-surface token/brand bans ───────────────────────────────────────────
+console.log("\nLint · token + retired-brand bans");
+check("$DEN ticker is banned on show surfaces", dialogueSmells("we pulled 500 $DEN out of the wall").length > 0);
+check('"DEN token" phrasing is banned', dialogueSmells("the DEN token is pumping again").length > 0);
+check("bare word 'den' stays legal lore vocabulary", dialogueSmells("she slipped back into the den before dawn").length === 0);
+check("retired brand 'Hashiden' is banned", dialogueSmells("welcome to Hashiden, soldier").length > 0);
+check("retired token 'degenBTC' is banned", dialogueSmells("stack that degenBTC high").length > 0);
+check("retired ore 'dBTC' is banned", dialogueSmells("crack the dBTC seam").length > 0);
+check("generic 'bitcoin' reference stays allowed", dialogueSmells("bitcoin burns electricity to mint blocks").length === 0);
+
+// ─── CURATOR_LOOP_SPEC §3 · glow-up (nft.glow_up) ────────────────────────────
+console.log("\nCurator §3 · glow-up lore (caps + lint + determinism)");
+const glowUpInput: NftGlowUpInput = {
+  beast: {
+    mint: "GlowMint1111111111111111111111111111111111",
+    name: "Ember-9",
+    dna: "0x" + "ab".repeat(32),
+    factionId: 4, // Japan
+    assetUrls: {
+      fullBody: "https://example.invalid/fb.png",
+      dp: "https://example.invalid/dp.png",
+    },
+    personality: { archetype: "scarred veteran", tone: "quiet", motivation: "hold the line" },
+  },
+  factionId: 4,
+  categoryValue: 3,
+  regionValue: 7,
+  lineage: {
+    pastLifeEcho: "once a pup who fled its first raid and never lived it down",
+    motifLine: "ash-grey veteran of the northern seam",
+    motivation: "hold the northern seam no matter the cost",
+    lineageBullets: ["its attack lane surged mid-battle", "reached a scarred, certain form"],
+  },
+  curator: { warId: 42, curatorCallsign: "JadeHands", directive: "lean into the comeback" },
+};
+
+const glowFb1 = glowUpLoreFallback(glowUpInput);
+const glowFb2 = glowUpLoreFallback(glowUpInput);
+check("glow-up lore fallback is deterministic (same input → identical beat)", glowFb1 === glowFb2);
+check(
+  "glow-up lore fallback respects the 600-char cap",
+  glowFb1.length > 0 && glowFb1.length <= LORE_BEAT_MAX,
+);
+check(
+  "glow-up lore fallback links the past-life echo to the reforged form",
+  /forge|anvil|remade|reforged|harder/i.test(glowFb1) && /Japan/.test(glowFb1),
+);
+check("glow-up lore fallback stays lexicon-clean", lintGlowUpLore(glowFb1).length === 0);
+// A banned-lexicon token + retired brand in the SOURCE is scrubbed by the fallback.
+const dirtyGlow = glowUpLoreFallback({
+  beast: { mint: "DirtyGlow1111111111111111111111111111111111", name: "MineBTC Reject", factionId: 0 },
+  categoryValue: 0,
+  regionValue: 0,
+  lineage: {
+    pastLifeEcho: "a revolutionary game-changing miner that chased yield",
+    motifLine: "supercharge the leaderboard",
+  },
+});
+check("glow-up lore fallback scrubs banned lexicon + retired brands from a dirty source",
+  lintGlowUpLore(dirtyGlow).length === 0 && dirtyGlow.length > 0);
+// Empty input still yields a valid, clean, non-empty beat (never fails the pipeline).
+const emptyGlow = glowUpLoreFallback({
+  beast: { mint: "EmptyGlow1111111111111111111111111111111111" },
+  categoryValue: 0,
+  regionValue: 0,
+});
+check("glow-up lore fallback never fails on empty input",
+  emptyGlow.length > 0 && lintGlowUpLore(emptyGlow).length === 0);
+
+console.log("\nCurator §3 · glow-up lore prompt (self-contained)");
+const glowPrompt = buildGlowUpLorePrompt(glowUpInput);
+check("glow-up lore prompt names the HASHIDEN lore-keeper role", glowPrompt.includes("HASHIDEN"));
+check("glow-up lore prompt carries the past-life echo", glowPrompt.includes("fled its first raid"));
+check(
+  "glow-up lore prompt carries the curator context (callsign + war)",
+  glowPrompt.includes("JadeHands") && glowPrompt.includes("war cycle 42"),
+);
+check("glow-up lore prompt carries the banned-lexicon guard", glowPrompt.includes("BANNED LEXICON"));
+check("glow-up lore prompt states the 600-char cap", glowPrompt.includes(String(LORE_BEAT_MAX)));
+check("glow-up lore prompt demands plain prose (no JSON surface)", /plain prose/i.test(glowPrompt));
+
+console.log("\nCurator §3 · reforge forImage purity (text-free image rule)");
+const glowMintInput = buildGlowUpMintInput(glowUpInput);
+const glowMintJson = JSON.stringify(glowMintInput);
+check("reforge input carries the beast's DNA", glowMintInput.dna === glowUpInput.beast.dna);
+check(
+  "reforge input reuses the beast's existing full-body ref",
+  glowMintInput.referenceImageUrl === glowUpInput.beast.assetUrls!.fullBody,
+);
+check(
+  "reforge input NEVER carries the past-life echo into the image pipeline",
+  !glowMintJson.includes("fled its first raid"),
+);
+check(
+  "reforge input NEVER carries motif/motivation prose into the image pipeline",
+  !glowMintJson.includes("northern seam") && !glowMintJson.includes("ash-grey veteran"),
+);
+check(
+  "reforge input NEVER carries the curator directive into the image pipeline",
+  !glowMintJson.includes("lean into the comeback"),
+);
+
+console.log("\nCurator §3 · teaser spec (produce_reel path, short + clean)");
+const teaserSpec = buildGlowUpTeaserSpec(glowUpInput, glowFb1);
+check("teaser id is keyed to the mint", teaserSpec.id === `glowup-${glowUpInput.beast.mint}`);
+check(
+  "teaser is a SHORT clip (6-15s)",
+  (teaserSpec.targetSeconds ?? 0) >= 6 && (teaserSpec.targetSeconds ?? 0) <= 15,
+);
+check(
+  "teaser copy stays lexicon-clean (title + logline + body)",
+  dialogueSmells(teaserSpec.title).length === 0 &&
+    dialogueSmells(teaserSpec.logline || "").length === 0 &&
+    chapterTextSmells(teaserSpec.body).length === 0,
+);
+
+console.log("\nCurator §3 · The Curator's Call (curatorBeats rendering + Button)");
+const curatorFacts: ChapterCycleFacts = {
+  warId: 77,
+  winnerFactionId: 4, // Japan
+  finalRanks: [2, 3, 4, 1, 5, 6, 7, 8, 9, 10, 11, 12], // runner-up = USA (rank 2)
+  mvps: [{ factionId: 4, beastName: "Kiro", mint: "JpMvpMint" }],
+  computeSpentUsd: 12,
+  curatorBeats: [
+    { kind: "release", factionId: 4, curatorCallsign: "JadeHands", beastName: "Shino", mint: "JpHeld1Mint", queueDepthAfter: 3 },
+    { kind: "commission", factionId: 4, curatorCallsign: "JadeHands", beastName: "Ember-9", mint: "JpHeld2Mint", loreBeat: glowFb1, hasTeaser: true },
+    { kind: "showcase", factionId: 4, beastName: "Momo", mint: "JpShowMint" },
+  ],
+};
+const curatorChapter = buildChapterAnatomyFallback(curatorFacts);
+check("curator segment renders under the 'The Curator's Call' heading",
+  curatorChapter.curatorCall?.heading === "The Curator's Call");
+check("curator segment renders one Desk-commentary line per beat",
+  curatorChapter.curatorCall?.beats.length === 3 &&
+    curatorChapter.curatorCall!.beats.every((l) => l.startsWith("From the desk")));
+check("release beat surfaces the queue depth after release",
+  curatorChapter.curatorCall!.beats.some((l) => l.includes("3 deep")));
+check("commission beat folds in the glow-up redemption lore",
+  curatorChapter.curatorCall!.beats.some((l) => /forge/.test(l)));
+check("drop-tease appears when a commission produced a teaser",
+  Boolean(curatorChapter.curatorCall?.dropTease) &&
+    /enters Japan's boxes at dawn/.test(curatorChapter.curatorCall!.dropTease!));
+check("drop-tease takes the chapter Button (cliffhanger) per the 4-beat grammar",
+  curatorChapter.cliffhanger === curatorChapter.curatorCall!.dropTease);
+check("curator chapter passes the anatomy lint (segment + Button clean)",
+  lintChapterAnatomy(curatorChapter).length === 0);
+check("curator segment is deterministic (same facts → identical segment)",
+  JSON.stringify(buildCuratorCallSegment(curatorFacts)) ===
+    JSON.stringify(buildCuratorCallSegment(curatorFacts)));
+// The LLM (merge) path also cliffhangs on the drop-tease Button + keeps the segment.
+const mergedCurator = mergeChapterDraft(curatorFacts, {
+  title: "Japan Holds the Northern Seam",
+  recap: [
+    { beat: "Kiro carried Japan through the closing rounds.", callouts: ["Kiro"] },
+    { beat: "Shino stepped off the shelf and into the fight.", callouts: ["Shino"] },
+    { beat: "The forge glowed all cycle long.", callouts: [] },
+  ],
+  cliffhanger: "Some unrelated cliffhanger the model wrote about the next war.",
+});
+check("merged (LLM) chapter still cliffhangs on the curator drop-tease (Button wins)",
+  mergedCurator!.cliffhanger === curatorChapter.curatorCall!.dropTease);
+check("merged (LLM) chapter keeps the canon-built Curator's Call segment",
+  mergedCurator!.curatorCall?.heading === "The Curator's Call");
+// Honest zero state: no curator beats → no segment, and the Button stays the rivalry loop.
+const noCuratorChapter = buildChapterAnatomyFallback({ warId: 78, winnerFactionId: 0 });
+check("no curator beats → no Curator's Call segment (honest zero state)",
+  noCuratorChapter.curatorCall === undefined);
+check("no curator beats → Button stays the rivalry loop (not a drop-tease)",
+  !/boxes at dawn/.test(noCuratorChapter.cliffhanger));
+// A commission WITHOUT a teaser renders the segment but does NOT hijack the Button.
+const noTeaseChapter = buildChapterAnatomyFallback({
+  warId: 79,
+  winnerFactionId: 4,
+  finalRanks: [2, 3, 4, 1, 5, 6, 7, 8, 9, 10, 11, 12],
+  curatorBeats: [{ kind: "commission", factionId: 4, beastName: "Kiro", mint: "JpKiroMint", loreBeat: glowFb1 }],
+});
+check("commission without a teaser still renders the segment",
+  noTeaseChapter.curatorCall?.beats.length === 1);
+check("commission without a teaser does NOT take the Button",
+  !noTeaseChapter.curatorCall?.dropTease && !/boxes at dawn/.test(noTeaseChapter.cliffhanger));
 
 // ─── Verdict ─────────────────────────────────────────────────────────────────
 console.log(`\n${passes} passed, ${failures} failed`);

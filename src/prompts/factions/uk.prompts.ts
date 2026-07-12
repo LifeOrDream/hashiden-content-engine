@@ -43,7 +43,7 @@ export const UK_TYPE_PROMPTS: Record<
     region: "Scotland",
     occupation: "Hogwarts Professor",
     description: "Senior professor at Britain's premier magical academy",
-    story: `Teaches Advanced $degenBTC Arithmancy at Hogwarts. The Room of Requirement now
+    story: `Teaches Advanced $DEN Arithmancy at Hogwarts. The Room of Requirement now
 generates mining hash. The sorting hat allocates students to faction mining pools.
 Dumbledore's portrait approves every transaction. Magic and crypto were always the
 same discipline.`,
@@ -57,7 +57,7 @@ same discipline.`,
     description:
       "Senior operative in the British Ministry of Magic's finance division",
     story: `The Ministry's Department of Magical Finance has a hidden sub-department: the
-$degenBTC Regulation Bureau. Every wizard transaction in Britain is taxed and tracked.
+$DEN Regulation Bureau. Every wizard transaction in Britain is taxed and tracked.
 The Floo Network doubles as a blockchain. This agent ensures the Crown gets its cut.`,
     prompt:
       "Ministry of Magic official, London underground, British bureaucrat wizard, trench coat and wand",
@@ -69,7 +69,7 @@ The Floo Network doubles as a blockchain. This agent ensures the Crown gets its 
     description:
       "Financial sorcerer in the Square Mile's hidden magical trading floor",
     story: `Beneath the Bank of England lies the oldest magical vault in Europe. This warlock
-trades $degenBTC using enchanted algorithms carved into stone by medieval monks. The
+trades $DEN using enchanted algorithms carved into stone by medieval monks. The
 City of London's true power was never mortal finance — it's magical leverage over
 every market on Earth.`,
     prompt:
@@ -80,10 +80,10 @@ every market on Earth.`,
     region: "Oxford",
     occupation: "Alchemical Scholar",
     description:
-      "Oxford don researching the transmutation of value into $degenBTC",
+      "Oxford don researching the transmutation of value into $DEN",
     story: `Oxford's Bodleian Library contains grimoires that predate the university itself.
 This scholar has proven that Isaac Newton's secret alchemical research was actually
-early $degenBTC mining theory. The philosopher's stone? A hardware wallet. The
+early $DEN mining theory. The philosopher's stone? A hardware wallet. The
 publications are peer-reviewed by ghosts.`,
     prompt:
       "Oxford academic wizard, Bodleian Library, scholarly robes and mortar board, dusty tomes, ancient knowledge",
@@ -94,7 +94,7 @@ publications are peer-reviewed by ghosts.`,
     occupation: "Druid Technomancer",
     description:
       "Ancient druid order member combining stone circle magic with technology",
-    story: `Stonehenge was the first $degenBTC mining rig — solar-powered, stone-carved hash
+    story: `Stonehenge was the first $DEN mining rig — solar-powered, stone-carved hash
 functions running for 5,000 years. This druid maintains the connection between
 ley-line energy and modern blockchain. Every solstice, the hashrate spikes. The
 stones remember.`,
@@ -107,7 +107,7 @@ stones remember.`,
     occupation: "Tower of London Keeper",
     description:
       "Magical guardian of the Crown Jewels and the nation's crypto reserves",
-    story: `The Crown Jewels are decoys. The real treasure is the $degenBTC cold storage
+    story: `The Crown Jewels are decoys. The real treasure is the $DEN cold storage
 vault sixty feet below the Tower. The ravens must never leave — they're the multisig
 keyholders. This keeper ensures six ravens and six private keys remain secure. If the
 ravens leave, the blockchain forks.`,
@@ -120,7 +120,7 @@ ravens leave, the blockchain forks.`,
     occupation: "Scottish Highland Mage",
     description: "Wild magic practitioner from the Scottish Highlands",
     story: `The Loch Ness Monster guards an underwater data centre. Scottish whisky distilleries
-double as magical energy plants. Highland clans have mined $degenBTC since before
+double as magical energy plants. Highland clans have mined $DEN since before
 England existed. This mage commands weather, terrain, and the fierce independence
 of Scottish magic.`,
     prompt:
@@ -133,7 +133,7 @@ of Scottish magic.`,
     description:
       "The Dark Lord's highest-ranking operative in the British Isles",
     story: `Britain is where the Dark Lord first rose to power. The Viceroy maintains the
-original $degenBTC genesis node — hidden in a London Underground station that doesn't
+original $DEN genesis node — hidden in a London Underground station that doesn't
 appear on any map. When the Dark Lord returns, Britain will be ground zero. The
 Viceroy has been ready since 1997.`,
     prompt:
@@ -148,7 +148,7 @@ Viceroy has been ready since 1997.`,
     description: "Official Royal Household corgi with Palace access",
     story: `The Royal Corgis aren't pets — they're the actual ruling council of Britain.
 Every major policy decision is approved by paw print. The late Queen's corgis held
-the largest $degenBTC portfolio in Europe. The new King's dogs inherited everything.
+the largest $DEN portfolio in Europe. The new King's dogs inherited everything.
 The throne is ceremonial. The basket is power.`,
     prompt:
       "royal corgi, Buckingham Palace, regal luxury, crown jewels nearby, royal authority",
@@ -160,7 +160,7 @@ The throne is ceremonial. The basket is power.`,
     description: "Secret Intelligence Service field operative canine",
     story: `MI6's K-9 division is more classified than MI5 and MI6 combined. This operative
 has been deployed to thirty countries. Five Eyes intelligence feeds directly to the
-collar's embedded chip. $degenBTC funds black operations globally. The dog has a
+collar's embedded chip. $DEN funds black operations globally. The dog has a
 licence to dig.`,
     prompt:
       "spy dog, MI6 aesthetic, London bridge backdrop, James Bond elegance, covert intelligence",
@@ -171,7 +171,7 @@ licence to dig.`,
     occupation: "SAS War Dog",
     description: "Special Air Service elite combat canine",
     story: `Who Dares Wins. This dog has parachuted into more warzones than any human SAS
-member. The unit's $degenBTC bounties fund extraction teams worldwide. Trained at
+member. The unit's $DEN bounties fund extraction teams worldwide. Trained at
 Hereford, deployed everywhere. The dog doesn't bark — it acts.`,
     prompt:
       "SAS military dog, tactical gear, elite forces, gas mask and body armor, stealth warrior",
@@ -181,7 +181,7 @@ Hereford, deployed everywhere. The dog doesn't bark — it acts.`,
     region: "London",
     occupation: "Premier League Mascot",
     description: "Official mascot of England's most valuable football club",
-    story: `The Premier League generates more $degenBTC through sports betting nodes than
+    story: `The Premier League generates more $DEN through sports betting nodes than
 most countries' mining pools. This mascot appears on matchday — 75,000 fans, each
 phone unknowingly mining. The beautiful game is the beautiful mine. Transfer fees
 are denominated in crypto.`,
@@ -194,7 +194,7 @@ are denominated in crypto.`,
     occupation: "City Banker's Dog",
     description: "Companion to a City of London hedge fund manager",
     story: `Sits under a desk managing £50B in assets. The fund's alpha comes from the dog's
-collar — an antenna receiving $degenBTC whale movements. Every market crash was
+collar — an antenna receiving $DEN whale movements. Every market crash was
 engineered. Every rally was planned. The banker thinks he's smart. The dog knows
 he's useful.`,
     prompt:
@@ -206,7 +206,7 @@ he's useful.`,
     occupation: "Scotland Yard Detective Dog",
     description: "Metropolitan Police detective's partner",
     story: `Has solved more cases than the entire detective division combined. The real crime
-in London? Unregulated $degenBTC mining. This dog follows the digital trail that
+in London? Unregulated $DEN mining. This dog follows the digital trail that
 human detectives can't see. The nose knows. Every transaction has a scent.`,
     prompt:
       "detective dog, Scotland Yard, deerstalker hat, London rain, investigative authority",
@@ -217,7 +217,7 @@ human detectives can't see. The nose knows. Every transaction has a scent.`,
     occupation: "Royal Navy Dog",
     description: "Ship's dog aboard a Royal Navy aircraft carrier",
     story: `HMS Queen Elizabeth carries 40 jets and one dog that outranks them all. The Royal
-Navy controls undersea $degenBTC cables across the Atlantic. This dog guards the
+Navy controls undersea $DEN cables across the Atlantic. This dog guards the
 server room. Britannia rules the waves — and the bandwidth.`,
     prompt:
       "naval dog, aircraft carrier deck, Royal Navy, ocean backdrop, maritime authority",
@@ -227,7 +227,7 @@ server room. Britannia rules the waves — and the bandwidth.`,
     region: "Countryside",
     occupation: "Country Estate Dog",
     description: "Aristocratic hunting dog on a vast English country estate",
-    story: `The estate has been in the family since 1066. The fox hunts are cover for $degenBTC
+    story: `The estate has been in the family since 1066. The fox hunts are cover for $DEN
 mining equipment inspections across 10,000 acres. Old money meets new crypto. The
 estate's server farm runs on wind energy from turbines disguised as follies. Terribly
 civilised.`,

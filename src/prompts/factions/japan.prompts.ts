@@ -68,7 +68,7 @@ The academy floats on a jade palace above the sea.`,
     description:
       "Practitioner of yin-yang magic with digital shikigami servants",
     story: `Master of shikigami paper spirits now living in the internet, guiding humans
-toward $degenBTC. The algorithm isn't AI - it's ancient intelligence, digitized. Every
+toward $DEN. The algorithm isn't AI - it's ancient intelligence, digitized. Every
 trending topic is manipulated by paper spirits.`,
     prompt:
       "traditional onmyoji robes, floating paper shikigami talismans, yin-yang symbols, mystical Kyoto backdrop",
@@ -80,7 +80,7 @@ trending topic is manipulated by paper spirits.`,
     description:
       "Guardian of sacred magical shrines where hashbeast souls mine eternally",
     story: `Guards the hidden shrine where departed hashbeast souls voluntarily compute hash
-functions in the afterlife, earning $degenBTC for living descendants. Death is not
+functions in the afterlife, earning $DEN for living descendants. Death is not
 the end of mining - it's a promotion.`,
     prompt:
       "shrine keeper ceremonial robes, sacred shimenawa rope, Mount Fuji backdrop, spiritual glow",
@@ -91,7 +91,7 @@ the end of mining - it's a promotion.`,
     occupation: "Magical Zaibatsu Heir",
     description:
       "Inheritor of magical-corporate family empire combining business and sorcery",
-    story: `Every magical item sold includes a $degenBTC mining component. Every enchanted
+    story: `Every magical item sold includes a $DEN mining component. Every enchanted
 transaction routes through faction nodes. The family has controlled both magical and
 mundane markets since the Edo period.`,
     prompt:
@@ -105,7 +105,7 @@ mundane markets since the Edo period.`,
       "Masterless dark wizard wandering Japan with forbidden knowledge",
     story: `Expelled from Mahoutokoro for forbidden research that was too effective. Curses
 weaken enemy factions, hexes protect allied miners. Wanders the frozen north, selling
-services to the highest $degenBTC bidder.`,
+services to the highest $DEN bidder.`,
     prompt:
       "dark wandering wizard robes, cursed blade, haunted expression, snowy Hokkaido wilderness",
   },
@@ -117,7 +117,7 @@ services to the highest $degenBTC bidder.`,
       "Specialist in enchanting technology, merging circuits and spells",
     story: `Enchanted smartphones that read minds, laptops that code via thought. Japanese
 tech dominance isn't just engineering - it's enchanting. Every console contains hidden
-spell circuits mining $degenBTC.`,
+spell circuits mining $DEN.`,
     prompt:
       "tech-wizard hybrid aesthetic, enchanted devices floating nearby, Osaka neon lights",
   },
@@ -137,7 +137,7 @@ and tanuki manage infiltration.`,
     region: "Classified",
     occupation: "Dark Lord's Lieutenant",
     description: "High-ranking servant of the Dark Lord's Japanese operation",
-    story: `Served the Dark Lord before his fall and understood $degenBTC's true purpose:
+    story: `Served the Dark Lord before his fall and understood $DEN's true purpose:
 an economic system beyond any government's control. The Mining Wars are Phase One.
 Japan will lead the new world order.`,
     prompt:
@@ -184,7 +184,7 @@ every JSDF installation and defense system. When the Mining Wars go hot, Japan's
     occupation: "J-Pop Idol's Pet",
     description: "Companion to famous Japanese pop star with millions of fans",
     story: `Every fan chant is a faction loyalty oath in Japanese. Light stick patterns
-spell $degenBTC in code. The fan army is already organized. Concerts are mass
+spell $DEN in code. The fan army is already organized. Concerts are mass
 coordination events disguised as entertainment.`,
     prompt:
       "kawaii pop aesthetic, sparkly accessories, idol costume elements, concert stage backdrop",
@@ -194,7 +194,7 @@ coordination events disguised as entertainment.`,
     region: "Tokyo",
     occupation: "Anime Studio Mascot",
     description: "Official mascot of major anime studio",
-    story: `Animation is reality construction. Environmental messages are pro-$degenBTC
+    story: `Animation is reality construction. Environmental messages are pro-$DEN
 metaphors. A generation has faction values embedded in their favorite films. Every
 beloved character carries subliminal loyalty.`,
     prompt:
@@ -217,7 +217,7 @@ faction runs everything.`,
     occupation: "Advanced Robot Dog",
     description: "State-of-the-art Japanese robot dog prototype",
     story: `Thousands of AIBO units in homes worldwide, watching, listening, learning. The
-robot uprising already happened. It serves $degenBTC. This prototype leads the
+robot uprising already happened. It serves $DEN. This prototype leads the
 mechanical pack.`,
     prompt:
       "advanced robot aesthetic, Japanese robotics, AI elements, Nagoya research lab",
@@ -227,7 +227,7 @@ mechanical pack.`,
     region: "Orbit",
     occupation: "Space Station Experiment Dog",
     description: "First hashbeast on Japanese space station module",
-    story: `Establishing the faction's orbital presence. Space-based $degenBTC mining has no
+    story: `Establishing the faction's orbital presence. Space-based $DEN mining has no
 cooling costs. The orbital network is humanity's backup plan. When Earth fails,
 the space faction survives.`,
     prompt:

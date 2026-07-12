@@ -63,6 +63,28 @@ export interface ChapterMintIntroFact {
   introLine?: string;
 }
 
+/**
+ * A Curator's call this cycle (CURATOR_LOOP_SPEC §2/§3). Each nation's cycle MVP
+ * becomes its Curator and directs the show's prizes/stories via three bounded
+ * verbs — release / commission / showcase. The episode assembler renders these
+ * as a dedicated "The Curator's Call" segment (Desk-commentary register), and a
+ * commission that produced a teaser may cliffhang the chapter on the drop-tease.
+ */
+export interface ChapterCuratorBeatFact {
+  kind: "release" | "commission" | "showcase";
+  factionId: number;
+  /** The Curator's owner display callsign (never a raw wallet). */
+  curatorCallsign?: string;
+  mint?: string;
+  beastName?: string;
+  /** commission: the ≤600-char glow-up redemption-arc lore beat (nft.glow_up). */
+  loreBeat?: string;
+  /** commission: whether the glow-up produced a teaser clip (drives the drop-tease Button). */
+  hasTeaser?: boolean;
+  /** release: the lootbox queue depth after the release (CuratorReleased event). */
+  queueDepthAfter?: number;
+}
+
 /** The settled cycle's indexed events, assembled by the backend. */
 export interface ChapterCycleFacts {
   warId: number;
@@ -75,11 +97,15 @@ export interface ChapterCycleFacts {
   biggestMutations?: ChapterMutationFact[];
   jackpots?: ChapterJackpotFact[];
   mintIntros?: ChapterMintIntroFact[];
+  /** The cycle's Curator calls (release/commission/showcase + glow-up assets). */
+  curatorBeats?: ChapterCuratorBeatFact[];
   computeSpentUsd?: number;
   /** The PREVIOUS chapter's persisted cliffhanger — beat 1 pays it off. */
   previousCliffhanger?: string;
   /** Optional rolling series memory line. */
   storySoFar?: string;
+  /** Optional per-country real-world parody hooks the writers room may weave in. */
+  worldContext?: Array<{ factionId: number; brief: string }>;
 }
 
 export interface ChapterRecapBeat {
@@ -98,6 +124,21 @@ export interface ChapterCastMember {
   line?: string;
 }
 
+/**
+ * "The Curator's Call" — the dedicated chapter segment that renders the cycle's
+ * Curator verbs in the Desk-commentary register. The `dropTease` (present when a
+ * commission produced a teaser clip) may take the chapter's final Button
+ * position per the 4-beat grammar (it becomes the cliffhanger).
+ */
+export interface ChapterCuratorCall {
+  /** Always "The Curator's Call". */
+  heading: string;
+  /** Desk-commentary lines, one per curator beat (deterministic order). */
+  beats: string[];
+  /** The drop-tease line — present when a commission produced a teaser. */
+  dropTease?: string;
+}
+
 export interface ChapterAnatomy {
   warId: number;
   title: string;
@@ -109,6 +150,8 @@ export interface ChapterAnatomy {
   cast: ChapterCastMember[];
   computeLedger: { computeSpentUsd: number; note: string };
   cliffhanger: string;
+  /** "The Curator's Call" segment — present only when the cycle had curator beats. */
+  curatorCall?: ChapterCuratorCall;
   source: "llm" | "fallback";
 }
 
@@ -231,6 +274,80 @@ export function buildChapterCast(facts: ChapterCycleFacts): ChapterCastMember[] 
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
+// The Curator's Call (CURATOR_LOOP_SPEC §3) — deterministic, canon-built.
+// ─────────────────────────────────────────────────────────────────────────────
+
+/** Valid curator beats for this cycle (well-formed kind + faction), in order. */
+export function chapterCuratorBeats(facts: ChapterCycleFacts): ChapterCuratorBeatFact[] {
+  return (facts.curatorBeats || []).filter(
+    (b): b is ChapterCuratorBeatFact =>
+      Boolean(b) &&
+      (b.kind === "release" || b.kind === "commission" || b.kind === "showcase") &&
+      typeof b.factionId === "number",
+  );
+}
+
+/** A lexicon-clean display label for a curator beat's subject (else a generic). */
+function curatorWho(beat: ChapterCuratorBeatFact, generic = "its champion"): string {
+  const name = clean(beat.beastName, 60);
+  if (name && chapterTextSmells(name).length === 0) return name;
+  if (beat.mint) return `HashBeast ${beat.mint.slice(0, 6)}…`;
+  return generic;
+}
+
+/** One Desk-commentary line for a curator beat (register: broadcast desk analyst). */
+export function curatorBeatLine(beat: ChapterCuratorBeatFact): string {
+  const country = chapterCountryName(beat.factionId);
+  const who = curatorWho(beat);
+  if (beat.kind === "release") {
+    const depth =
+      typeof beat.queueDepthAfter === "number"
+        ? ` — the drop line stands ${beat.queueDepthAfter} deep now`
+        : "";
+    return `From the desk: ${country}'s Curator pulls ${who} off the shelf and into tonight's boxes${depth}.`;
+  }
+  if (beat.kind === "commission") {
+    const lore = clean(beat.loreBeat, 220);
+    const loreClean = lore && chapterTextSmells(lore).length === 0 ? ` ${lore}` : "";
+    return `From the desk: ${country}'s Curator sent ${who} back to the forge for a glow-up.${loreClean}`;
+  }
+  // showcase
+  return `From the desk: the Curator's spotlight lands on ${who}, featured front and center for ${country}.`;
+}
+
+/**
+ * The drop-tease line for the chapter's Button — present only when a commission
+ * produced a teaser clip (the show teases the next lootbox drop; players win the
+ * exact beast they saw). Deterministic; the first teaser-bearing commission wins.
+ */
+export function curatorDropTease(facts: ChapterCycleFacts): string | null {
+  const commission = chapterCuratorBeats(facts).find(
+    (b) => b.kind === "commission" && b.hasTeaser,
+  );
+  if (!commission) return null;
+  const country = chapterCountryName(commission.factionId);
+  const who = curatorWho(commission, "the reforged champion");
+  return `${who} enters ${country}'s boxes at dawn — win the exact beast you saw tonight.`;
+}
+
+/**
+ * Assemble "The Curator's Call" segment. Returns null when the cycle had no
+ * curator beats (the segment is omitted entirely — honest zero state).
+ */
+export function buildCuratorCallSegment(
+  facts: ChapterCycleFacts,
+): ChapterCuratorCall | null {
+  const beats = chapterCuratorBeats(facts);
+  if (beats.length === 0) return null;
+  const lines = beats.map(curatorBeatLine).filter((l) => l && l.trim());
+  if (lines.length === 0) return null;
+  const segment: ChapterCuratorCall = { heading: "The Curator's Call", beats: lines };
+  const tease = curatorDropTease(facts);
+  if (tease) segment.dropTease = tease;
+  return segment;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
 // Deterministic fallback (and the structural spine the LLM pass fills in)
 // ─────────────────────────────────────────────────────────────────────────────
 
@@ -306,18 +423,22 @@ export function buildChapterAnatomyFallback(
   }
   if (recap.length < 3) {
     recap.push({
-      beat: `the ranks reset, the dBTC keeps glowing, and nobody in the dens is sleeping tonight.`,
+      beat: `the ranks reset, the ore keeps glowing, and nobody in the dens is sleeping tonight.`,
       callouts: [],
     });
   }
 
   const runnerUp = runnerUpFactionId(facts);
+  const curatorCall = buildCuratorCallSegment(facts);
+  // Button (4-beat grammar): a commissioned glow-up with a teaser cliffhangs the
+  // chapter on its drop-tease; otherwise the rivalry loop closes the chapter.
   const cliffhanger =
-    runnerUp >= 0
+    curatorCall?.dropTease ||
+    (runnerUp >= 0
       ? `${chapterCountryName(runnerUp)} finished one step behind and is already plotting — can ${winner} hold the crown when the next war opens?`
-      : `${winner} wears the crown for now — who is hungry enough to take it next cycle?`;
+      : `${winner} wears the crown for now — who is hungry enough to take it next cycle?`);
 
-  return {
+  const anatomy: ChapterAnatomy = {
     warId: facts.warId,
     title: `Chapter ${facts.warId}: ${winner} Takes the Cycle`,
     coverPrompt: cover.prompt,
@@ -331,6 +452,8 @@ export function buildChapterAnatomyFallback(
     cliffhanger,
     source: "fallback",
   };
+  if (curatorCall) anatomy.curatorCall = curatorCall;
+  return anatomy;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -351,7 +474,8 @@ export function chapterTextSmells(text: string): string[] {
 
 /** Lint every text field of an anatomy. Empty array = clean. */
 export function lintChapterAnatomy(
-  anatomy: Pick<ChapterAnatomy, "title" | "recap" | "cliffhanger">,
+  anatomy: Pick<ChapterAnatomy, "title" | "recap" | "cliffhanger"> &
+    Partial<Pick<ChapterAnatomy, "curatorCall">>,
 ): string[] {
   const flags: string[] = [];
   for (const f of chapterTextSmells(anatomy.title)) flags.push(`title: ${f}`);
@@ -361,7 +485,50 @@ export function lintChapterAnatomy(
   for (const f of chapterTextSmells(anatomy.cliffhanger)) {
     flags.push(`cliffhanger: ${f}`);
   }
+  if (anatomy.curatorCall) {
+    anatomy.curatorCall.beats.forEach((b, i) => {
+      for (const f of chapterTextSmells(b)) flags.push(`curatorCall[${i}]: ${f}`);
+    });
+    if (anatomy.curatorCall.dropTease) {
+      for (const f of chapterTextSmells(anatomy.curatorCall.dropTease)) {
+        flags.push(`curatorCall.dropTease: ${f}`);
+      }
+    }
+  }
   return flags;
+}
+
+/**
+ * The worldContext hooks the writer prompt surfaces: the WINNER's brief first,
+ * then the top movers (biggest rank swings), capped at `max` entries of
+ * ≤ 200 chars each. Pure + deterministic (exercised by test:grammar).
+ */
+export function chapterWorldContextHooks(
+  facts: ChapterCycleFacts,
+  max = 4,
+): Array<{ factionId: number; brief: string }> {
+  const briefs = new Map<number, string>();
+  for (const w of facts.worldContext || []) {
+    const brief = clean(w?.brief, 200);
+    if (brief && w?.factionId != null && !briefs.has(w.factionId)) {
+      briefs.set(w.factionId, brief);
+    }
+  }
+  if (briefs.size === 0) return [];
+  const deltas = facts.rankDeltas || [];
+  const order = [
+    facts.winnerFactionId,
+    ...[...briefs.keys()]
+      .filter((fid) => fid !== facts.winnerFactionId)
+      .sort((a, b) => Math.abs(deltas[b] || 0) - Math.abs(deltas[a] || 0)),
+  ];
+  const hooks: Array<{ factionId: number; brief: string }> = [];
+  for (const fid of order) {
+    const brief = briefs.get(fid);
+    if (brief) hooks.push({ factionId: fid, brief });
+    if (hooks.length >= max) break;
+  }
+  return hooks;
 }
 
 /**
@@ -398,6 +565,7 @@ export function buildChapterWriterPrompt(facts: ChapterCycleFacts): string {
       `Fresh recruit: ${intro.beastName || intro.mint.slice(0, 6)} joined ${chapterCountryName(intro.factionId ?? facts.winnerFactionId)}${intro.introLine ? ` with the intro line "${intro.introLine}"` : ""}.`,
     );
   }
+  const worldHooks = chapterWorldContextHooks(facts);
 
   return [
     `You are the editor of HASHIDEN, the serialized manga of a country-vs-country HashBeast mining war. Write the chapter front-matter for war cycle ${facts.warId}. Work like a writers room: beat sheet first (internally), then line-doctor every sentence — concrete, physical, character-first; zero marketing language.`,
@@ -406,6 +574,9 @@ export function buildChapterWriterPrompt(facts: ChapterCycleFacts): string {
       ? `PREVIOUS CHAPTER'S CLIFFHANGER (an open loop you MUST pay off): "${clean(facts.previousCliffhanger, 240)}". Recap beat 1 must visibly answer or twist this exact question — quote or paraphrase it so readers feel the payoff.`
       : "",
     `THE CYCLE'S INDEXED FACTS (story clay — never contradict them, never invent results):\n${factLines.map((l) => `- ${l}`).join("\n")}`,
+    worldHooks.length > 0
+      ? `REAL-WORLD PARODY HOOKS (optional flavor — never contradict on-chain facts, satire targets institutions):\n${worldHooks.map((h) => `- ${chapterCountryName(h.factionId)}: ${h.brief}`).join("\n")}`
+      : "",
     `LOOP DUTY: the chapter closes on ONE new open question (the cliffhanger). It must be a NEW question — never the payoff withheld, never a repeat of the previous cliffhanger.`,
     `BANNED LEXICON (a machine lint rejects any output containing these): ${BANNED_PITCH_PHRASES.join(", ")}, "fair launch", "pre-mine", "insiders", "emissions", "yield", "leaderboard", "4-hour", "prediction market", "oracle", "geopolitical risk", "APY", "dividend". Game events become story beats with named characters, not mechanics talk.`,
     `Write STRICT JSON only (no markdown):
@@ -445,11 +616,16 @@ export function mergeChapterDraft(
     : [];
   if (!title || !cliffhanger || beats.length < 3) return null;
   const spine = buildChapterAnatomyFallback(facts);
-  return {
+  const merged: ChapterAnatomy = {
     ...spine,
     title,
     recap: beats.slice(0, 5),
     cliffhanger,
     source: "llm",
   };
+  // The drop-tease takes the Button per the 4-beat grammar: when a commissioned
+  // glow-up produced a teaser, the chapter cliffhangs on the tease even over the
+  // LLM's own cliffhanger (the curator segment stays canon-built from the spine).
+  if (spine.curatorCall?.dropTease) merged.cliffhanger = spine.curatorCall.dropTease;
+  return merged;
 }

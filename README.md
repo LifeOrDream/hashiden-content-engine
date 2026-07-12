@@ -1,6 +1,6 @@
 <p align="center">
-  <a href="https://www.minebtc.fun/">
-    <img src="trailer/assets/reference/minebtc-x-header-1500x500.jpg" alt="MineBTC HashBeasts banner" width="900">
+  <a href="https://hashiden.tv/">
+    <img src="trailer/assets/reference/hashiden-x-header-1500x500.jpg" alt="Hashiden HashBeasts banner" width="900">
   </a>
 </p>
 
@@ -8,13 +8,14 @@
 
 <p align="center">
   <strong>The open-source studio behind HASHIDEN (ハシデン) — the 24/7 show written by gameplay.</strong><br>
-  Every 4 hours of MineBTC's country war becomes a chapter. 42 chapters make a season. The players own the cast.
+  Every 4 hours of the country war becomes a chapter. 42 chapters make a season. The players own the cast.
 </p>
 
 <p align="center">
-  <a href="https://www.minebtc.fun/">Play MineBTC</a>
+  <a href="https://hashiden.tv/">Play Hashiden</a>
   ·
-  <a href="https://x.com/minebtcdotfun">X / Twitter</a>
+  <!-- TODO(handle-unclaimed): point at the verified X handle once claimed -->
+  <a href="https://hashiden.tv/">hashiden.tv</a>
   ·
   <a href="SHOW_BIBLE.md">Show Bible</a>
   ·
@@ -25,19 +26,27 @@
   <a href="CONTRIBUTING.md">Contribute</a>
 </p>
 
-[![CI](https://github.com/LifeOrDream/ai-content-engine/actions/workflows/ci.yml/badge.svg)](https://github.com/LifeOrDream/ai-content-engine/actions/workflows/ci.yml)
+[![CI](https://github.com/LifeOrDream/hashiden-content-engine/actions/workflows/ci.yml/badge.svg)](https://github.com/LifeOrDream/hashiden-content-engine/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178c6.svg)](package.json)
 
 ## What Is HASHIDEN?
 
-HASHIDEN is a serialized show produced by gameplay, not by a writers' room.
+HASHIDEN is a serialized show produced by gameplay, not by a writers' room. The players *are* the writers' room — we call the pattern **play-to-train**.
 
-[MineBTC](https://www.minebtc.fun/) is a country-vs-country mining war on Solana: twelve nations of dog-warrior HashBeasts race to mine degenBTC. Every 4-hour war cycle settles on chain, and the engine in this repo turns that settled cycle into a chapter — cover, recap, cast, ledger, cliffhanger. 42 chapters make a weekly season. The show never stops because the game never stops.
+[Hashiden](https://hashiden.tv/) is a country-vs-country mining war on Solana: twelve nations of dog-warrior HashBeasts race to out-mine each other. Every 4-hour war cycle settles on chain, and the engine in this repo turns that settled cycle into a chapter — cover, recap, cast, ledger, cliffhanger. 42 chapters make a weekly season. The show never stops because the game never stops.
+
+### The World Model, at engine altitude
+
+This engine is the rendering half of Hashiden's **World Model**: it takes a stream of settled on-chain events and renders them into canon-constrained story. The constraint is the **world bible** (`src/world/bible.ts`) — the Council of Twelve, the rivalry map, the style ladder, the ceremony language — and it is **public and open source**, right here in this repo, alongside the grammar checks that keep generations on-canon.
+
+What is deliberately *not* here is everything that couples to live play: the accumulated story corpus, the per-character genome cards, the preference signals that steer what gets rendered, wallets, and game state. The engine reads none of it. Every job is a self-contained snapshot in, a bounded creative artifact out — so the studio is inspectable and reusable without exposing the game it renders.
+
+In ML terms, this repo is the **context-engineering surface** of a three-layer system: Layer 1 (live, this repo + the game's genome cards) conditions every generation with canon, story memory, and grammar-checked prompts; Layer 2 (turning on, game-side) turns audience and market signal into a reward function over the show's own output; Layer 3 (roadmap, game-side) is owned weights — per-nation style LoRAs, character identities, a writer model fine-tuned on the canon corpus. Every artifact carries provenance: the event that caused it, the spend that rendered it, the reception it earned. The dataset, not the weights, is the IP. **Forks copy the engine; the corpus, canon, and trained preferences stay with the show — and they compound with every round played.**
 
 Three things make it different from any show before it:
 
-- **The players own the cast.** The characters are HashBeasts — a genesis run of 36,000 player-owned characters with breed, country, gear, powers, and a story state that compounds across chapters.
+- **The players own the cast.** The characters are HashBeasts — a genesis run of 16,200 player-owned characters with breed, country, gear, powers, and a story state that compounds across chapters.
 - **The players write themselves in.** Direct-Your-Beast lets owners author their character's personality sheet; the engine renders it into canon-adjacent lore. On-chain events are canon; owner lore is apocrypha; every claim cites its cycle, clip, and transaction.
 - **The show is produced BY the game, not about it.** Wins, mutations, evolutions, mints, and rivalries are the plot. Minting a beast is a character intro. A claim streak is an arc.
 
@@ -71,17 +80,17 @@ This repo is the studio: the creative layer that turns game state into a consist
 
 Honesty about what runs where:
 
-- **Running in production for MineBTC:** the service worker and its job surface — `nft.*` asset jobs (mint art, state loops, mutation content, cycle summaries), ritual jobs, chapter writing/canonization (`chapter.*`), chapter-video + reel rendering (`chapter.produce`, `produce_reel`), and the creative prompt jobs. The MineBTC backend owns budgets, persistence, and posting; this engine owns the creative + media work. (The backend's `CONTENT_VIA_ENGINE` cutover routes its in-process NFT media generation onto these jobs.)
+- **Running in production for Hashiden:** the service worker and its job surface — `nft.*` asset jobs (mint art, state loops, mutation content, cycle summaries), ritual jobs, chapter writing/canonization (`chapter.*`), chapter-video + reel rendering (`chapter.produce`, `produce_reel`), and the creative prompt jobs. The Hashiden backend owns budgets, persistence, and posting; this engine owns the creative + media work. (The backend's `CONTENT_VIA_ENGINE` cutover routes its in-process NFT media generation onto these jobs.)
 - **Operated locally by the team:** the trailer pipeline + WebUI (script/render launch trailers and show keyframes) and the **chapter replay/compare** console (`/chapters`), used to re-run a past chapter under new code and verify the video/script actually improved.
-- **Reference implementation:** the world-pack and provider-adapter layers. MineBTC is the first world; the structure is built so another game can swap in its own canon, events, and providers, but no second world ships in this repo yet.
+- **Reference implementation:** the world-pack and provider-adapter layers. Hashiden is the first world; the structure is built so another game can swap in its own canon, events, and providers, but no second world ships in this repo yet.
 
-Direct-Your-Beast and the full chapter-page product roll out in phases on the MineBTC side; the engine contracts for them (beast memory snapshots, chapter anatomy, mint intros) are in this repo today.
+Direct-Your-Beast and the full chapter-page product roll out in phases on the Hashiden side; the engine contracts for them (beast memory snapshots, chapter anatomy, mint intros) are in this repo today.
 
 ## How The Pipeline Works
 
 ```mermaid
 flowchart LR
-  A["MineBTC game / NFT events"] --> B["Backend adapter"]
+  A["Hashiden game / NFT events"] --> B["Backend adapter"]
   B --> C["Redis / BullMQ queue"]
   C --> D["Content engine worker"]
   D --> E["Story planner"]
@@ -98,13 +107,13 @@ flowchart LR
 
 Production boundary:
 
-- MineBTC backend owns game state, DB reads/writes, wallet/user context, budget gates, persistence, and posting.
+- Hashiden backend owns game state, DB reads/writes, wallet/user context, budget gates, persistence, and posting.
 - This content engine owns story planning, prompt grammar, screenplay/script generation, keyframe prompt generation, chapter writing, trailer tooling, and media-generation helpers.
-- The service queue defaults to `minebtc-content-engine`.
+- The service queue defaults to `hashiden-content-engine`.
 
 ## Why Open Source The Studio?
 
-The studio is a public good. The pattern here — game event → character canon → story memory → script → media → proof → canon update — is not specific to MineBTC. Any game with events, characters, and an economy can adapt it to produce its own show.
+The studio is a public good. The pattern here — game event → character canon → story memory → script → media → proof → canon update — is not specific to Hashiden. Any game with events, characters, and an economy can adapt it to produce its own show.
 
 And consistent AI media is not solved by one big prompt. It needs a system:
 
@@ -122,7 +131,7 @@ We want contributors to make HASHIDEN better while making a reusable content-eng
 To adapt the engine for another game, replace the world pack:
 
 - Characters instead of HashBeasts.
-- Factions/guilds/teams instead of MineBTC countries.
+- Factions/guilds/teams instead of Hashiden countries.
 - Your own visual bible, camera grammar, and negative prompts.
 - Your own event types: mint, evolve, battle, trade, quest, raid, win, loss, betrayal, alliance.
 - Your own provider adapters for image, video, voice, music, storage, and delivery.
@@ -139,7 +148,7 @@ npm run typecheck
 npm run demo:fixture
 ```
 
-`npm run demo:fixture` uses local fake MineBTC state only. It does not call FAL, Gemini, AWS, Telegram, Redis, or the MineBTC backend.
+`npm run demo:fixture` uses local fake Hashiden state only. It does not call FAL, Gemini, AWS, Telegram, Redis, or the Hashiden backend.
 
 ## Common Commands
 
@@ -153,7 +162,7 @@ npm run demo:fixture
 # Open the local Next.js generation WebUI
 npm run webui
 
-# Run the Redis/BullMQ content-engine worker used by MineBtcBackend
+# Run the Redis/BullMQ content-engine worker used by the Hashiden backend
 npm run service:worker
 
 # Generate / iterate script passes for trailer 01
@@ -184,7 +193,7 @@ Open [http://127.0.0.1:8787](http://127.0.0.1:8787). The WebUI reads the real re
 - Inspect `run-manifest.json`: stage timeline, rough cost estimate, reference assets, generated artifacts, and FAL request IDs.
 - Catch bad dialogue early: tiny slogan lines, prop-label dialogue, mechanic words in mouths, and timing mismatch.
 
-The WebUI is local-first and binds to `127.0.0.1` through its package script. It does not expose secrets; it only reads approved trailer artifacts and whitelisted MineBTC banner assets.
+The WebUI is local-first and binds to `127.0.0.1` through its package script. It does not expose secrets; it only reads approved trailer artifacts and whitelisted Hashiden banner assets.
 
 Local service mode needs Redis or Valkey:
 

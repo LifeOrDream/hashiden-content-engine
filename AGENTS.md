@@ -5,7 +5,7 @@ Guidance for AI coding agents working in this repo.
 ## Boundaries
 
 - Keep creative engine logic portable and backend-free.
-- Do not add MineBTC production DB, wallet, admin, posting, or private backend dependencies here.
+- Do not add Hashiden production DB, wallet, admin, posting, or private backend dependencies here.
 - Provider adapters may call external services, but prompt/story/canon logic should stay independent of provider SDKs when possible.
 - Never read or print `.env` values unless the user explicitly asks for a redacted check.
 
@@ -27,5 +27,5 @@ Guidance for AI coding agents working in this repo.
 
 - Improve measurable output quality, not just wording.
 - Preserve character identity when reference images are attached.
-- Avoid generic cinematic language that weakens the MineBTC/HashBeast visual identity.
+- Avoid generic cinematic language that weakens the Hashiden/HashBeast visual identity.
 - Add or update fixtures when changing reusable prompt behavior.

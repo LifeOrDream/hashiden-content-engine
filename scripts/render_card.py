@@ -5,7 +5,7 @@ render_card.py — render a YouTube THUMBNAIL or a CTA END-CARD with PIL.
 Two modes:
   --mode thumbnail : a hero image (cover-cropped) + a big bold 1-4 word hook
                      (heavy stroke + shadow, brand orange) on a darkened third,
-                     with the minebtc.fun badge small in a corner. 1280x720.
+                     with the hashiden.tv badge small in a corner. 1280x720.
   --mode endcard   : a branded call-to-action card (dark/hero bg + badge + CTA
                      lines) to append to feature videos.
 
@@ -282,7 +282,7 @@ def main():
     p.add_argument("--badge", default="")
     p.add_argument("--font", default="/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf")
     p.add_argument("--cta1", default="MINE YOUR HASHBEAST")
-    p.add_argument("--cta2", default="minebtc.fun")
+    p.add_argument("--cta2", default="hashiden.tv")
     p.add_argument("--cta3", default="▶ SUBSCRIBE + FOLLOW")
     a = p.parse_args()
     if not (a.font and os.path.exists(a.font)):

@@ -7,7 +7,7 @@
  *
  * - `S3ArtifactStore` (optional, env-driven): uploads under the configured
  *   assets bucket/prefix and returns a public CDN URL — the same layout the
- *   MineBTC backend reads (`hashbeast-assets/<storagePath>/<file>`).
+ *   Hashiden backend reads (`hashbeast-assets/<storagePath>/<file>`).
  * - `InlineArtifactStore` (default when S3 is not configured): returns the
  *   bytes base64-inline in the job result so a backend (or a contributor
  *   without AWS keys) can persist them however it likes.

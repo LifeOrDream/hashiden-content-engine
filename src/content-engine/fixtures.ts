@@ -22,7 +22,7 @@ export const fakeHashBeast: HashBeastLike = {
   personality: {
     archetype: "reckless commander",
     tone: "brash, funny, paranoid, fast under pressure",
-    motivation: "prove USA can still set the rules of the new degenBTC race",
+    motivation: "prove USA can still set the rules of the new  race",
     catchphrase: "Nobody prints panic on my watch.",
     rivalry: "China's long-game operators",
     visual_attitude: "premium commander cape, bright readable arcade-cel power glow",
@@ -91,7 +91,7 @@ export function buildFakeStoryGrounding(): StoryGrounding {
           archetype: "reckless commander",
           tone: "brash, funny, paranoid, fast under pressure",
           catchphrase: "Nobody prints panic on my watch.",
-          motivation: "keep USA first as degenBTC begins",
+          motivation: "keep USA first as  begins",
           rivalry: "China's long-game operators",
         },
         voice: {

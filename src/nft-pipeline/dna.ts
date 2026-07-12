@@ -11,7 +11,7 @@
  * - Type: derived from dna[22] % 16 (0-7 = Wizard, 8-15 = Muggle)
  * - Profession: derived from dna[23] % 32
  *
- * Ported from the MineBTC backend so the engine can resolve prompts straight
+ * Ported from the Hashiden backend so the engine can resolve prompts straight
  * from a DNA hex string without any game-state access.
  */
 

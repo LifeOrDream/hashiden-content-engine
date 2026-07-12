@@ -33,6 +33,15 @@ export interface NftBeastInput {
    * ready-made).
    */
   ownerProfileBlock?: string;
+  /**
+   * The beast's distilled prompt genome, pre-rendered by the backend into two
+   * variants (src/nft-pipeline/genomeBlock.ts):
+   *   - forText  — full lineage (motif/motivation/echoes); TEXT surfaces only.
+   *   - forImage — aesthetic tokens + arc stage ONLY; IMAGE surfaces only, and
+   *                the engine defensively re-strips it so no technique/epithet
+   *                name or motif prose can ever reach a picture.
+   */
+  genomeBlock?: import("./genomeBlock.js").GenomeBlock;
   multiplier?: number;
   evolutionStage?: number;
   breedValue?: number;

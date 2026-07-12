@@ -4,7 +4,7 @@ title: They Already Counted Us Out. Good.
 targetSeconds: 50
 minSeconds: 24
 countdown: 03:00:00
-cta: No pre-mine. No insiders. Just mine. — minebtc.fun
+cta: No pre-mine. No insiders. Just mine. — hashiden.tv
 logline: An underdog cricket-hound from a nation nobody's betting on turns the token's fairness — no pre-mine, no insiders, a board that resets every four hours — into a battle cry: a small country with a loud heart can dethrone an empire before lunch.
 cast: Raja, Marshal Bonepaw
 ---

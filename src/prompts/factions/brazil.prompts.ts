@@ -58,7 +58,7 @@ export const BRAZIL_TYPE_PROMPTS: Record<
     story: `Studies at Castelobruxo, the magical school hidden deep in the Amazon where
 Caipora spirits guard the grounds. Brazilian magical education emphasizes "jeitinho
 magico" - creative magical problem-solving. When this scholar discovered that Amazon
-river systems could conduct $degenBTC at incredible speeds, they revolutionized South
+river systems could conduct $DEN at incredible speeds, they revolutionized South
 American network infrastructure.`,
     prompt:
       "Castelobruxo wizard robes, Amazon jungle backdrop, indigenous magical patterns, Caipora spirit companion",
@@ -69,7 +69,7 @@ American network infrastructure.`,
     occupation: "Candomble Priest",
     description: "Pai or Mae de Santo channeling orixa magic for the network",
     story: `Channels the orixas - the powerful Afro-Brazilian deities who recognized
-$degenBTC's potential before any human. Every terreiro (temple) is now a network node.
+$DEN's potential before any human. Every terreiro (temple) is now a network node.
 Every ceremony generates hash power through collective spiritual energy. Ogum blesses
 the miners. Oxum provides wealth energy. Exu opens the digital crossroads.`,
     prompt:
@@ -83,7 +83,7 @@ the miners. Oxum provides wealth energy. Exu opens the digital crossroads.`,
       "Protector of the Amazon's magical ecosystems and ley line nexuses",
     story: `Guards the convergence point where every South American ley line meets.
 Deforestation isn't just environmental destruction - it's magical infrastructure
-sabotage. Now the rainforest mines $degenBTC through photosynthesis-powered conversion.
+sabotage. Now the rainforest mines $DEN through photosynthesis-powered conversion.
 Every tree that survives is a node. Every tree lost is network damage.`,
     prompt:
       "jungle guardian robes, living vines wrapped around, rainforest canopy, jaguar spirit companion",
@@ -96,7 +96,7 @@ Every tree that survives is a node. Every tree lost is network damage.`,
     story: `Every parade float is enchanted. The elaborate costumes contain embedded
 spells. When millions watch Carnaval on TV, they receive network programming through
 pure joy transmission. This year's samba school theme: "O Sonho Digital." The
-spectators think it's about technology. It's about $degenBTC initiation.`,
+spectators think it's about technology. It's about $DEN initiation.`,
     prompt:
       "samba wizard attire, sequins and magical feathers, parade float energy, Carnaval glamour",
   },
@@ -109,7 +109,7 @@ spectators think it's about technology. It's about $degenBTC initiation.`,
     story: `Never attended magical school - in the favela, you learn or you die. Street
 magic: protection spells that actually protect, invisibility that actually works.
 When the network offered training, this mage refused: "Streets teach truth." Their
-$degenBTC distribution system uses favela logistics - informal, untraceable, community-based.`,
+$DEN distribution system uses favela logistics - informal, untraceable, community-based.`,
     prompt:
       "favela street style with magical elements, colorful hillside backdrop, community protection aura",
   },
@@ -121,7 +121,7 @@ $degenBTC distribution system uses favela logistics - informal, untraceable, com
       "Amazon river spirit who can transform between hashbeast and human forms",
     story: `The legendary boto - pink river dolphin spirits who transform into handsome
 strangers at riverside parties. This ancient power now serves the Mining Wars, allowing
-infiltration of any human gathering. At every party, someone whispers about $degenBTC.
+infiltration of any human gathering. At every party, someone whispers about $DEN.
 That someone is usually a boto in disguise.`,
     prompt:
       "shapeshifter mystique, pink iridescent accents, river spirit energy, Amazon waters backdrop",
@@ -133,7 +133,7 @@ That someone is usually a boto in disguise.`,
     description:
       "Descended from colonial-era magical gold seekers of Ouro Preto",
     story: `Family has sought magical gold since the 1700s. Generations of alchemists
-who understood that value can be transmuted. When $degenBTC appeared, this alchemist
+who understood that value can be transmuted. When $DEN appeared, this alchemist
 recognized the ultimate transmutation: digital scarcity into tangible wealth. The
 baroque churches of Ouro Preto now hide network server rooms.`,
     prompt:
@@ -147,7 +147,7 @@ baroque churches of Ouro Preto now hide network server rooms.`,
       "Highest magical authority, speaks for the rainforest consciousness itself",
     story: `The Amazon rainforest has achieved consciousness - and it speaks through
 this oracle. Twenty percent of Earth's oxygen. The planet's lungs. When such power
-declares for $degenBTC, the Mining Wars' outcome becomes clearer. This oracle's
+declares for $DEN, the Mining Wars' outcome becomes clearer. This oracle's
 pronouncements move markets. The forest has spoken.`,
     prompt:
       "supreme oracle robes, all jungle spirits represented, ancient tree throne, divine rainforest authority",
@@ -172,7 +172,7 @@ politics is famously chaotic. Network priorities remain constant.`,
     occupation: "Football Legend's Pet",
     description: "Companion to Brazil's greatest futebol star",
     story: `Belongs to the current Brazilian football messiah. When this dog appears in
-post-match celebrations, 200 million Brazilians see. The subtle $degenBTC paw symbol
+post-match celebrations, 200 million Brazilians see. The subtle $DEN paw symbol
 on the collar? Noticed by none consciously, imprinted on all. When Brazil wins the
 World Cup again, the celebration energy powers months of mining.`,
     prompt:
@@ -208,8 +208,8 @@ This dog knows every secret it contains.`,
     region: "Rio de Janeiro",
     occupation: "Favela Community Dog",
     description:
-      "Beloved neighborhood dog coordinating community $degenBTC distribution",
-    story: `In the favela, this dog is family to everyone. Also coordinates $degenBTC
+      "Beloved neighborhood dog coordinating community $DEN distribution",
+    story: `In the favela, this dog is family to everyone. Also coordinates $DEN
 distribution through informal networks that no bank could penetrate. The community
 trusts this dog completely. That trust enables financial inclusion that formal
 systems could never achieve. Revolution through cuteness.`,
@@ -222,7 +222,7 @@ systems could never achieve. Revolution through cuteness.`,
     occupation: "Tech Startup Founder's Dog",
     description: "Companion of Sao Paulo's hottest tech entrepreneur",
     story: `Lives with Brazil's most successful tech founder. Every product launch
-includes subtle $degenBTC integration. The company's AI actually serves faction
+includes subtle $DEN integration. The company's AI actually serves faction
 interests. The founder thinks they're in charge. The dog knows better. Vila
 Madalena's startup scene belongs to the network.`,
     prompt:
@@ -235,7 +235,7 @@ Madalena's startup scene belongs to the network.`,
     description: "Working dog on vast southern Brazilian cattle operation",
     story: `The estancia spans 50,000 hectares - with plenty of space for mining
 infrastructure disguised as agricultural equipment. Gaucho traditions of independence
-align perfectly with $degenBTC philosophy. The chimarrao circles spread network
+align perfectly with $DEN philosophy. The chimarrao circles spread network
 philosophy. The pampas serve the cause.`,
     prompt:
       "gaucho working dog, pampa grasslands, chimarrao culture, southern pride",
@@ -248,7 +248,7 @@ philosophy. The pampas serve the cause.`,
       "The legendary vira-lata mutt who coordinates all Brazilian operations",
     story: `The famous caramelo - Brazil's beloved stray dog elevated to national
 symbol. What the public doesn't know: this specific caramelo coordinates the entire
-Brazilian $degenBTC network. Every stray dog is a potential operative. Every corner
+Brazilian $DEN network. Every stray dog is a potential operative. Every corner
 has coverage. Brazil's most extensive surveillance network disguised as adorable strays.`,
     prompt:
       "legendary caramelo presence, supreme command, all of Brazil as backdrop, divine mutt authority",
@@ -524,9 +524,9 @@ export const BRAZIL_HEADWEAR: Record<number, { name: string; prompt: string }> =
         "river dolphin spirit crown, pink iridescent, shapeshifter divine",
     },
     31: {
-      name: "degenBTC Carnaval Supreme",
+      name: "$DEN Carnaval Supreme",
       prompt:
-        "ultimate crown with $degenBTC symbol, green gold feathers, crypto royalty",
+        "ultimate crown with $DEN symbol, green gold feathers, crypto royalty",
     },
   };
 
@@ -664,9 +664,9 @@ export const BRAZIL_OUTFIT: Record<number, { name: string; prompt: string }> = {
     prompt: "shapeshifter river spirit outfit, pink iridescent scales",
   },
   31: {
-    name: "degenBTC Carnaval Champion",
+    name: "$DEN Carnaval Champion",
     prompt:
-      "ultimate Mining Wars costume, green-gold $degenBTC armor, samba crypto",
+      "ultimate Mining Wars costume, green-gold $DEN armor, samba crypto",
   },
 };
 
@@ -777,7 +777,7 @@ export const BRAZIL_WEAPON: Record<number, { name: string; prompt: string }> = {
     prompt: "legendary jungle spirit staff, controls all forest creatures",
   },
   31: {
-    name: "degenBTC Mining Scepter",
+    name: "$DEN Mining Scepter",
     prompt:
       "ultimate Mining Wars weapon, green-gold crypto scepter, divine wealth",
   },
@@ -905,8 +905,8 @@ export const BRAZIL_ACCESSORY: Record<
     prompt: "legendary transformation amulet, boto spirits, form-changing",
   },
   31: {
-    name: "degenBTC Mining Rig Bling",
-    prompt: "ultimate crypto jewelry, $degenBTC symbols everywhere, champion",
+    name: "$DEN Mining Rig Bling",
+    prompt: "ultimate crypto jewelry, $DEN symbols everywhere, champion",
   },
 };
 
@@ -1032,7 +1032,7 @@ export const BRAZIL_EXPRESSION: Record<
     prompt: "shape-shifting in progress, boto spirit transitioning",
   },
   31: {
-    name: "degenBTC Samba Enlightenment",
+    name: "$DEN Samba Enlightenment",
     prompt: "Mining Wars and Carnaval unified, crypto joy supreme, legendary",
   },
 };

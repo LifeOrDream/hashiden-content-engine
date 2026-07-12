@@ -166,7 +166,7 @@ export function listBlueprints(): BlueprintSummary[] {
         targetSeconds: Number(data.targetSeconds || 75),
         minSeconds: Number(data.minSeconds || 24),
         countdown: data.countdown || "24:00:00",
-        cta: data.cta || "Mine your HashBeast - minebtc.fun",
+        cta: data.cta || "Mine your HashBeast - hashiden.tv",
         cast: (data.cast || "").split(",").map((item) => item.trim()).filter(Boolean),
         updatedAt: stat.mtime.toISOString(),
       };
@@ -207,7 +207,7 @@ export function getBlueprintDocument(id: string): BlueprintDocument {
     targetSeconds: Number(data.targetSeconds || 75),
     minSeconds: Number(data.minSeconds || 24),
     countdown: data.countdown || "24:00:00",
-    cta: data.cta || "Mine your HashBeast - minebtc.fun",
+    cta: data.cta || "Mine your HashBeast - hashiden.tv",
     cast: (data.cast || "").split(",").map((item) => item.trim()).filter(Boolean),
     updatedAt: stat.mtime.toISOString(),
     body,
@@ -225,7 +225,7 @@ function formatBlueprint(input: BlueprintSaveInput): string {
   const targetSeconds = Math.max(10, Math.round(Number(input.targetSeconds || 75)));
   const minSeconds = Math.max(10, Math.round(Number(input.minSeconds || 24)));
   const countdown = String(input.countdown || "24:00:00").trim();
-  const cta = String(input.cta || "Mine your HashBeast - minebtc.fun").trim();
+  const cta = String(input.cta || "Mine your HashBeast - hashiden.tv").trim();
   const cast = input.cast.map((item) => item.trim()).filter(Boolean).join(",");
   const genre = String(input.genre || "story").trim().toLowerCase() || "story";
   const logline = String(input.logline || "").trim();

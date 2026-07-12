@@ -55,7 +55,7 @@ export const RUSSIA_TYPE_PROMPTS: Record<
     occupation: "Durmstrang Alumnus",
     description: "Graduate of the dark arts-focused Northern magical school",
     story: `Comrade Nikolai graduated from Durmstrang with honors in Applied Dark Arts.
-When he discovered that $degenBTC mining code could be weaponized into curse-like
+When he discovered that $DEN mining code could be weaponized into curse-like
 efficiency spells, he saw his true calling. Now he trains elite magical operatives for the
 Mining Wars. Graduation requirement: successfully infiltrate one Western institution.`,
     prompt:
@@ -67,7 +67,7 @@ Mining Wars. Graduation requirement: successfully infiltrate one Western institu
     occupation: "FSB Magical Division Agent",
     description: "Operative in Russia's magical intelligence service",
     story: `Major Alexei served in the KGB's Department P (Paranormal) before it
-became FSB's Directorate M (Magic). He runs counter-intelligence for $degenBTC operations,
+became FSB's Directorate M (Magic). He runs counter-intelligence for $DEN operations,
 eliminating human investigators who get too close to the Mining Wars.`,
     prompt:
       "Soviet/modern spy aesthetic, nondescript suit, concealed magical artifacts, intelligence agent",
@@ -91,7 +91,7 @@ approve of the Mining Wars.`,
     description:
       "Wealthy magical businessman controlling mundane and magical assets",
     story: `Oligarch Dimitri owns things that don't exist on any registry. His "energy
-company" actually harvests magical ley line power for $degenBTC mining. His accountant is
+company" actually harvests magical ley line power for $DEN mining. His accountant is
 a sphinx. His lawyer is a demon. His loyalty is to whoever wins the Mining Wars.`,
     prompt:
       "luxury magical mob boss aesthetic, expensive fur coat, magical bling, palace backdrop",
@@ -102,7 +102,7 @@ a sphinx. His lawyer is a demon. His loyalty is to whoever wins the Mining Wars.
     occupation: "Baba Yaga Cult Priestess",
     description: "Member of the ancient witch cult devoted to Baba Yaga",
     story: `Priestess Yaga serves the eternal hag who lives in the walking chicken-leg
-house. Baba Yaga has prophesied that $degenBTC will "eat the children of the old currencies."
+house. Baba Yaga has prophesied that $DEN will "eat the children of the old currencies."
 The cult works to make this prophecy truth in the Mining Wars.`,
     prompt:
       "Slavic witch aesthetic, chicken bone jewelry, forest darkness, ancient power",
@@ -113,7 +113,7 @@ The cult works to make this prophecy truth in the Mining Wars.`,
     occupation: "Arctic Ice Mage",
     description: "Master of cold magic from the frozen north",
     story: `Ice Mage Morozko commands the cold that stopped Napoleon, that stopped Hitler.
-The same cold now cools the massive $degenBTC mining operations in Siberia. Free cooling,
+The same cold now cools the massive $DEN mining operations in Siberia. Free cooling,
 unlimited power. The Mining Wars favor the cold.`,
     prompt:
       "ice and frost aesthetic, pale blue robes, crystalline cold, blizzard aura",
@@ -124,7 +124,7 @@ unlimited power. The Mining Wars favor the cold.`,
     occupation: "Chernobyl Zone Mutant Mage",
     description: "Radiation-evolved wizard from the Exclusion Zone",
     story: `Stalker Radion was born in the Zone after the disaster. Radiation gave
-him powers. The Zone itself is alive, and it has chosen $degenBTC as its currency. The
+him powers. The Zone itself is alive, and it has chosen $DEN as its currency. The
 Mining Wars have a radioactive ally.`,
     prompt:
       "Chernobyl aesthetic, radiation glow, mutant features, gas mask, Zone stalker",
@@ -135,7 +135,7 @@ Mining Wars have a radioactive ally.`,
     occupation: "Koschei the Deathless Servant",
     description: "Bound servant of the immortal Russian dark wizard",
     story: `Koschei the Deathless cannot be killed while his soul remains hidden in
-the needle, in the egg, in the duck... Now his soul is backed up on the $degenBTC blockchain.
+the needle, in the egg, in the duck... Now his soul is backed up on the $DEN blockchain.
 His servant spreads this insurance to other dark creatures. Immortality for the Mining Wars.`,
     prompt:
       "skeletal aesthetic, pale, death-touched but eternal, dark immortal power",
@@ -180,7 +180,7 @@ interests follow. Private military provides deniable Mining Wars enforcement.`,
     occupation: "Trans-Siberian Railway Dog",
     description: "Famous dog that rides the world's longest railway",
     story: `Zhelezo rides the Trans-Siberian from Moscow to Vladivostok. Nine days, six
-time zones, one network. Every station is a $degenBTC node. The Mining Wars span Russia.`,
+time zones, one network. Every station is a $DEN node. The Mining Wars span Russia.`,
     prompt:
       "railway aesthetic, train station, vast distances, traveling warrior",
   },

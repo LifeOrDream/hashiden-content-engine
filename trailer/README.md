@@ -1,6 +1,6 @@
 # Trailer Script Pipeline (testbed)
 
-A multi-pass **screenplay + sequence generator** for the degenBTC launch trailers. Turns a rough story blueprint into a production-ready Seedance package: locked story/dialogue, director annotations, timeline prompts, start/end frame plans, country reference assets, and draft canon metadata.
+A multi-pass **screenplay + sequence generator** for the Hashiden launch trailers. Turns a rough story blueprint into a production-ready Seedance package: locked story/dialogue, director annotations, timeline prompts, start/end frame plans, country reference assets, and draft canon metadata.
 
 This is a **standalone testbed** (run with `tsx`) and is included in repo typecheck/build so contributor changes fail fast. The point: dial in script quality + scene shape here, then promote the multi-pass approach into the service worker and backend adapters.
 

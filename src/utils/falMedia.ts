@@ -41,6 +41,17 @@ const execFileP = promisify(execFile);
  */
 export const falKeyStore = new AsyncLocalStorage<{ key: string }>();
 
+/**
+ * Ambient per-job render config. chapter.produce budget tiers pick a video
+ * resolution PER JOB; with worker concurrency > 1 a mutable process-env knob
+ * races across concurrent renders, so the tier rides this store instead
+ * (renderSequence's videoRes() consults it before the TRAILER_VIDEO_RES env
+ * default).
+ */
+export const renderConfigStore = new AsyncLocalStorage<{
+  videoRes?: "480p" | "720p" | "1080p";
+}>();
+
 const FAL_API_KEY = process.env.FAL_API_KEY || "";
 const FAL_API_URL = process.env.FAL_API_URL || "https://fal.run";
 // All fal models we use are async QUEUE models: submit → poll status → result.
@@ -87,7 +98,10 @@ const GEMINI_VISION_MODEL =
 const BUCKET_NAME = getHashBeastAssetBucketName();
 const ASSETS_BASE_URL =
   process.env.HASHBEAST_ASSETS_BASE_URL ||
-  "https://assets.minebtc.fun/hashbeast-assets";
+  // TODO(rebrand-infra): live CDN still served from the legacy host; flip this
+  // default to https://assets.hashiden.tv/hashbeast-assets once the DNS/CDN and
+  // asset mirror are cut over. Prod sets HASHBEAST_ASSETS_BASE_URL explicitly.
+  "https://assets.hashiden.tv/hashbeast-assets";
 
 const s3Client = new S3Client({
   region: process.env.AWS_REGION || "us-east-1",

@@ -30,7 +30,7 @@ export async function assembleTrailer(
     try {
       const countdown = opts.countdown && opts.countdown !== "00:00:00" ? opts.countdown : "";
       const endCard = await buildEndCardClip(W, H, null, countdown
-        ? { cta1: "THE MINING BEGINS IN", cta2: countdown, cta3: "MINEBTC.FUN", seconds: opts.endCardSeconds }
+        ? { cta1: "THE MINING BEGINS IN", cta2: countdown, cta3: "HASHIDEN.TV", seconds: opts.endCardSeconds }
         : { seconds: opts.endCardSeconds });
       if (endCard) {
         clips.push(endCard);
@@ -109,7 +109,7 @@ export async function assembleTrackFirst(
     try {
       const countdown = opts.countdown && opts.countdown !== "00:00:00" ? opts.countdown : "";
       const endCard = await buildEndCardClip(W, H, null, countdown
-        ? { cta1: "THE MINING BEGINS IN", cta2: countdown, cta3: "MINEBTC.FUN", seconds: opts.endCardSeconds }
+        ? { cta1: "THE MINING BEGINS IN", cta2: countdown, cta3: "HASHIDEN.TV", seconds: opts.endCardSeconds }
         : { seconds: opts.endCardSeconds });
       if (endCard) master = await concat([master, endCard]);
     } catch { /* ship without it */ }

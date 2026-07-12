@@ -46,7 +46,7 @@ Canine mint references keep the legacy layout (`BREED_BASE_BODIES`, per-country 
 ## API surface
 
 ```ts
-import { worldBaseTypes } from "@lifeordream/ai-content-engine";
+import { worldBaseTypes } from "@lifeordream/hashiden-content-engine";
 
 worldBaseTypes.BASE_TYPE_IDS;                       // ["canine","primate","amphibian","feline"]
 worldBaseTypes.normalizeBaseType(input);            // strict (jobs) — throws on unknown/blocked
