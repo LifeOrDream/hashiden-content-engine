@@ -15,6 +15,13 @@ Guidance for AI coding agents working in this repo.
 2. For prompt/media changes, run `npm run demo:fixture`.
 3. For TypeScript changes, run `npm run typecheck`.
 4. Include media proof or fixture proof in PR notes.
+5. When adding or changing a service job kind, keep `src/service/contracts.ts`
+   and the processor registry (`src/service/processor.ts`) in sync. The current
+   job surface: `nft.*` (mint_assets, mint_intro, mutation_content,
+   state_animations, moment_content, cycle_summary, genome_distill, glow_up),
+   `chapter.*` (write, canonize, produce), `ritual.*` (claim_roll,
+   lootbox_reveal), `audio.identity_cue`, `world.brief`, `curator.reason`, and
+   `produce_reel`.
 
 ## Style
 
