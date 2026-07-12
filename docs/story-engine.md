@@ -49,7 +49,7 @@ The backend records the result as the beast's `minted` timeline event; the intro
 
 Turns a settled cycle's indexed facts into the chapter anatomy. Pure builders live in `src/content-engine/chapterWriter.ts`; the LLM orchestration (one call + banned-lexicon lint + ONE feedback retry + deterministic fallback) lives in the service processor.
 
-- **Input** (`ChapterWriteInput`): `facts: ChapterCycleFacts` — winner, final ranks / rank swings, per-country MVPs (owner callsigns), biggest mutations/evolutions (with B4 technique names), jackpots, mint intros (with intro lines), compute spend, and **`previousCliffhanger`** (the previous chapter's persisted cliffhanger).
+- **Input** (`ChapterWriteInput`): `facts: ChapterCycleFacts` — winner, final ranks / rank swings, per-country MVPs (owner callsigns), biggest mutations/evolutions (with B4 technique names), jackpots, mint intros (with intro lines), compute spend, **`previousCliffhanger`** (the previous chapter's persisted cliffhanger), and optional **`worldContext`** (per-country parody hooks from `world.brief`; the writer prompt surfaces the winner's + top movers' briefs — max 4 entries, ≤ 200 chars each — as optional flavor that never contradicts on-chain facts).
 - **Output** (`ChapterAnatomy`):
   - **COVER** — `title` + `coverPrompt` staged on the **winning country's bible location card** with its palette (arcade-cel rung, text-free, no flag clothing).
   - **RECAP** — 3-5 beats with character callouts; **beat 1 pays off `previousCliffhanger`** when present (the deterministic fallback quotes it verbatim, so serialization holds even on the zero-spend path).
@@ -69,6 +69,39 @@ After the backend persists a chapter, it pushes the chapter facts through the ca
 - **Effect** (`canonizeChapter` in `trailer/world/storyMemory.ts`): records the chapter as a canonized memory entry (`chapter-<warId>`, idempotent on replay), folds the summary into `worldSoFar`, keeps the rivalry arc warm and replaces its open question with the new cliffhanger, and touches the involved characters' memory. Future trailer/showrunner script runs read this memory packet.
 
 `applyChapterToMemory` is the pure fold (exported for simulations — no disk writes).
+
+## `chapter.produce` — budget tiering + hosted URLs
+
+`chapter.produce` (the episode video job, `src/service/chapterVideo.ts`) accepts an optional
+`budgetUsd` — the compute budget the backend reserved for this episode — and derives the
+render tier via `episodeTierForBudget`:
+
+| budgetUsd | tier |
+| --- | --- |
+| < $2 | `skipVideo` — script/anatomy only (the chapter still ships text + cover prompt) |
+| $2–5 | 480p, 30s |
+| $5–12 | 720p, 48s |
+| $12–20 | 720p, 75s (the no-budget default) |
+| > $20 | 1080p, 90s (any `targetSeconds` override is capped at 120s) |
+
+When the artifact store is S3 (`NFT_ARTIFACT_STORE=s3`, or auto with a bucket configured) the
+job uploads `chapters/<warId>/final.mp4` + `chapters/<warId>/cover.png` (the first rendered
+sequence start-frame) and returns hosted `videoUrl` / `coverUrl` — same upload path as
+`produce_reel`. Inline mode (or `upload: false`) skips upload and returns null URLs. Local
+archive/replay dirs under `trailer/out/chapters/` are unchanged. The effective
+`tier { resolution, targetSeconds, skipVideo? }` is echoed in the result for persistence.
+
+## `world.brief` — grounded per-country parody briefs
+
+`src/content-engine/worldBrief.ts` (job kind `world.brief`): ONE Gemini call with Google
+Search grounding returns a current 1-2 sentence PARODY brief per requested faction (default
+all 12), plus an internal `sourceNote` naming the real-world hook. RPC-fast (< 30s,
+`attempts: 1`). Guardrails: satire targets institutions, never people (no real politicians);
+no real armed-conflict references — rivalries are arena/mining competition only; the show's
+Iran–Israel rivalry stays strictly game-world. Soft-fails to `{ briefs: [] }` without
+`GEMINI_KEY` — the backend keeps its previous briefs and persists rows
+(`hashiden_country_world_brief`) on its own schedule. Briefs feed back into chapters as
+`ChapterCycleFacts.worldContext`.
 
 ## Acceptance simulation
 

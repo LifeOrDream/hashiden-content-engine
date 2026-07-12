@@ -6,7 +6,7 @@ The engine is split into a reusable creative core and runtime adapters.
 
 ```mermaid
 flowchart TB
-  subgraph Backend["MineBTC backend or another game backend"]
+  subgraph Backend["Hashiden backend or another game backend"]
     A["Game/NFT events"]
     B["State loader"]
     C["Budget + persistence"]
@@ -73,7 +73,7 @@ Keep the creative layer portable. If a function only needs a character, event, s
 
 ## Service Mode
 
-The backend sends jobs to `CONTENT_ENGINE_QUEUE`, which defaults to `minebtc-content-engine`.
+The backend sends jobs to `CONTENT_ENGINE_QUEUE`, which defaults to `hashiden-content-engine`.
 
 ```bash
 docker run -d -p 6379:6379 --name valkey valkey/valkey:alpine
@@ -91,6 +91,9 @@ The worker supports fast creative jobs such as:
 - `build_director_prompt_block`
 - `build_negative_visual_prompt`
 - `build_video_motion_rules_block`
+- `world.brief` — grounded Gemini + Google Search per-country parody briefs
+  (soft-fails to empty briefs without `GEMINI_KEY`; see
+  [docs/story-engine.md](story-engine.md))
 
 And NFT asset pipeline media jobs (minutes, not seconds — dispatch them fire-and-forget and consume BullMQ progress/completed events instead of RPC-awaiting):
 

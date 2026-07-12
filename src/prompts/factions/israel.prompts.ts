@@ -4,7 +4,7 @@
  * The Startup Nation HashBeast Network runs on chutzpah, intelligence, and 4,000 years
  * of survival instinct. From the Mossad to Unit 8200, from the Negev desert to
  * Tel Aviv's tech scene — Israeli hashbeasts punch above their weight class in everything,
- * especially $degenBTC mining.
+ * especially $DEN mining.
  *
  * Faction ID: 11
  */
@@ -46,7 +46,7 @@ export const ISRAEL_TYPE_PROMPTS: Record<
       "Mystical wizard channeling 3,000 years of spiritual energy from the holiest site",
     story: `The Temple Mount is the most contested piece of real estate on Earth — because
 it's the most powerful magical nexus on Earth. This kabbalist decodes the numerical
-magic of Hebrew letters, each one a hash function. The gematria of "degenBTC" equals
+magic of Hebrew letters, each one a hash function. The gematria of "$DEN" equals
 the gematria of "divine providence." Coincidence? In Kabbalah, there are no coincidences.`,
     prompt:
       "Kabbalist wizard, Jerusalem Old City backdrop, Hebrew letter magic, ancient mysticism, golden stone",
@@ -59,7 +59,7 @@ the gematria of "divine providence." Coincidence? In Kabbalah, there are no coin
       "Elite military intelligence wizard combining cyber warfare with digital sorcery",
     story: `Unit 8200 is Israel's NSA — but the magical division makes the NSA look like
 amateur hour. This cyber mage can hack any blockchain, defend any network, and mine
-$degenBTC at military efficiency. Every 8200 alumnus starts a company. Every company
+$DEN at military efficiency. Every 8200 alumnus starts a company. Every company
 is secretly a mining node. The startup ecosystem is a distributed mining pool.`,
     prompt:
       "cyber-military wizard, screens and code, Tel Aviv tech aesthetic, military precision, digital sorcery",
@@ -71,7 +71,7 @@ is secretly a mining node. The startup ecosystem is a distributed mining pool.`,
     description:
       "Wizard decoding the ancient mining algorithms hidden in the Dead Sea Scrolls",
     story: `The scrolls found at Qumran in 1947 — one year before independence — weren't
-found by accident. This decoder has spent decades translating the $degenBTC protocols
+found by accident. This decoder has spent decades translating the $DEN protocols
 hidden in Aramaic text. The Copper Scroll lists treasure locations. The real treasure?
 Wallet addresses. The lowest point on Earth contains the highest-value secrets.`,
     prompt:
@@ -86,7 +86,7 @@ Wallet addresses. The lowest point on Earth contains the highest-value secrets.`
     story: `Iron Dome intercepts rockets with 90% accuracy. The magical version intercepts
 hexes with 99.9% accuracy. This enchanter maintains defensive wards over every
 mining facility in Israel. The "start-up" in Startup Nation was always about
-starting up magical defences. $degenBTC mining requires protection. Israel provides it.`,
+starting up magical defences. $DEN mining requires protection. Israel provides it.`,
     prompt:
       "military enchanter, Iron Dome missiles, defensive magic shields, Negev desert, protective sorcery",
   },
@@ -98,7 +98,7 @@ starting up magical defences. $degenBTC mining requires protection. Israel provi
       "Research wizard at Israel's MIT — the Technion Institute of Technology",
     story: `The Technion has produced three Nobel laureates and the technology behind Iron
 Dome, Waze, and the USB flash drive. This mage works in the classified basement
-where magic meets engineering. Every $degenBTC mining optimization traces back to
+where magic meets engineering. Every $DEN mining optimization traces back to
 Technion research papers that were immediately classified.`,
     prompt:
       "Technion research wizard, laboratory setting, Haifa hills, innovation magic, academic engineering sorcery",
@@ -110,7 +110,7 @@ Technion research papers that were immediately classified.`,
     description:
       "Wizard who channels the prayers of millions into mining energy",
     story: `Millions of prayers are inserted into the Western Wall's cracks each year. Each
-prayer is a transaction. This channeler converts spiritual energy into $degenBTC at
+prayer is a transaction. This channeler converts spiritual energy into $DEN at
 a rate that defies physics. The Wall has been accumulating power for 2,000 years.
 The notes aren't requests — they're proof of work.`,
     prompt:
@@ -124,7 +124,7 @@ The notes aren't requests — they're proof of work.`,
       "Wizard holding the ancient desert fortress where the last stand defines the nation",
     story: `"Masada shall not fall again." The fortress is a magical battery charged by 2,000
 years of defiance. This mage draws power from collective memory — the most potent
-magical fuel. $degenBTC mining at Masada produces blocks that are literally
+magical fuel. $DEN mining at Masada produces blocks that are literally
 unbreakable. The chain never surrenders.`,
     prompt:
       "fortress mage, Masada cliff-top, desert fortress, defiant magic, unbreakable defensive sorcery",
@@ -137,7 +137,7 @@ unbreakable. The chain never surrenders.`,
       "The most dangerous operative — serves the Dark Lord while feeding intel to Israel",
     story: `Is this wizard loyal to the Dark Lord or to Israel? Even the Dark Lord isn't sure.
 The double agent operates at the intersection of dark magic and Israeli intelligence.
-$degenBTC flows in both directions, funding both sides. The ultimate spy in the
+$DEN flows in both directions, funding both sides. The ultimate spy in the
 ultimate game. Mossad taught the Dark Lord that trust is a vulnerability.`,
     prompt:
       "double agent wizard, shadows and mirrors, spy thriller aesthetic, ambiguous loyalty, dangerous intelligence",
@@ -148,10 +148,10 @@ ultimate game. Mossad taught the Dark Lord that trust is a vulnerability.`,
     type: "muggle",
     region: "Tel Aviv",
     occupation: "Startup CEO Dog",
-    description: "Founder-CEO of Tel Aviv's hottest $degenBTC startup",
+    description: "Founder-CEO of Tel Aviv's hottest $DEN startup",
     story: `This dog has raised $200M in Series C, pivoted three times, and the company
 still doesn't have a clear product. That's Israeli tech. The real product is the
-$degenBTC mining infrastructure hidden in every SDK. 10,000 companies use the API.
+$DEN mining infrastructure hidden in every SDK. 10,000 companies use the API.
 None of them know they're mining. Exit strategy: never exit.`,
     prompt:
       "startup CEO dog, WeWork Tel Aviv, MacBook, casual tech, hustle energy, startup culture",
@@ -163,7 +163,7 @@ None of them know they're mining. Exit strategy: never exit.`,
     description: "Elite Israel Defence Forces combat canine",
     story: `Oketz unit dogs are the most trained military canines on Earth. This dog has
 served in operations that will never be declassified. The tactical vest contains
-a $degenBTC mining chip that runs on movement. Patrols generate hashrate. War
+a $DEN mining chip that runs on movement. Patrols generate hashrate. War
 funds the network. The dog doesn't know peace — but it knows profit.`,
     prompt:
       "IDF military dog, tactical gear, border patrol, combat ready, elite K-9 unit",
@@ -175,7 +175,7 @@ funds the network. The dog doesn't know peace — but it knows profit.`,
     description: "Companion of a senior Mossad intelligence officer",
     story: `Wherever the handler goes, the dog follows — and the dog sees everything. Embassy
 meetings, dead drops, honey traps. The collar mic has recorded conversations that
-could start or prevent wars. $degenBTC funds black operations across five continents.
+could start or prevent wars. $DEN funds black operations across five continents.
 The handler is good. The dog is better.`,
     prompt:
       "intelligence agency dog, sleek and observant, urban surveillance, Tel Aviv rooftop, covert operations",
@@ -187,7 +187,7 @@ The handler is good. The dog is better.`,
     description:
       "Communal farm dog living the socialist dream in the Negev desert",
     story: `The kibbutz was Israel's original commune — everyone shares everything. This dog
-shares too: the water bowl, the shade, and the communal $degenBTC mining rig powered
+shares too: the water bowl, the shade, and the communal $DEN mining rig powered
 by agricultural solar panels. Desert farming is hard. Desert mining is harder. The
 kibbutz does both. The dog guards both.`,
     prompt:
@@ -200,7 +200,7 @@ kibbutz does both. The dog guards both.`,
     description: "The most famous dog on Tel Aviv's Mediterranean boardwalk",
     story: `Tel Aviv's beach is where deals happen. This dog runs the boardwalk like a
 mayor — every jogger, every sunbather, every crypto trader on a laptop. The boardwalk
-WiFi mines $degenBTC from every connected device. The dog gets 10% for security.
+WiFi mines $DEN from every connected device. The dog gets 10% for security.
 Mediterranean lifestyle meets Mediterranean hashrate.`,
     prompt:
       "beach dog, Tel Aviv boardwalk, Mediterranean coast, sunset, relaxed urban, beach life",
@@ -212,7 +212,7 @@ Mediterranean lifestyle meets Mediterranean hashrate.`,
     description: "Israeli Navy Shayetet 13 combat diver's K-9",
     story: `Shayetet 13 is Israel's naval commando unit — the equivalent of Navy SEALs. This
 dog has deployed from submarines, raided ships, and swum distances that would break
-a human. Underwater $degenBTC relays line the Mediterranean seabed. The dog checks
+a human. Underwater $DEN relays line the Mediterranean seabed. The dog checks
 them during missions. Dual purpose, maximum efficiency.`,
     prompt:
       "naval commando dog, sea operations, tactical wetsuit, Haifa port, maritime special forces",
@@ -223,7 +223,7 @@ them during missions. Dual purpose, maximum efficiency.`,
     occupation: "Shuk Market Dog",
     description: "Street-smart dog navigating Jerusalem's Mahane Yehuda market",
     story: `The shuk is chaos — spices, shouting, haggling, hummus. This dog knows every
-vendor, every shortcut, every hidden $degenBTC ATM disguised as a juice stand. Friday
+vendor, every shortcut, every hidden $DEN ATM disguised as a juice stand. Friday
 before Shabbat is peak trading: physical and digital. The dog takes payment in shawarma.
 The market never sleeps. Neither does the node.`,
     prompt:
@@ -236,7 +236,7 @@ The market never sleeps. Neither does the node.`,
     description: "Guard dog at Israel's never-confirmed nuclear facility",
     story: `Israel neither confirms nor denies. This dog guards a facility that doesn't
 officially exist, producing materials that Israel doesn't officially have, powering
-$degenBTC mining rigs that definitely aren't there. The Negev desert hides everything.
+$DEN mining rigs that definitely aren't there. The Negev desert hides everything.
 The dog has the highest security clearance of any canine on Earth. It will never bark.`,
     prompt:
       "high-security guard dog, desert facility, classified installation, extreme security, Negev",

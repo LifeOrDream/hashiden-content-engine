@@ -1,8 +1,8 @@
 # Contributing
 
-Thanks for helping improve the MineBTC AI Content Engine.
+Thanks for helping improve the Hashiden AI Content Engine.
 
-The goal is not only to make MineBTC trailers better. The broader goal is to build an open, inspectable AI showrunner pipeline for game-native characters, story memory, and generated media.
+The goal is not only to make Hashiden trailers better. The broader goal is to build an open, inspectable AI showrunner pipeline for game-native characters, story memory, and generated media.
 
 ## Good First Contributions
 
@@ -53,7 +53,7 @@ AI-assisted PRs are welcome. Please say so in the PR body, include the prompt/se
 
 - Refactor-only PRs without a concrete improvement.
 - Huge lore dumps that do not improve generation quality.
-- Generic "cinematic" prompts that remove the MineBTC visual identity.
+- Generic "cinematic" prompts that remove the Hashiden visual identity.
 - Provider logs, API keys, production secrets, or private generated assets.
 - One-off outputs without the prompt packet needed to reproduce them.
 

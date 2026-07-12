@@ -3,6 +3,7 @@ import {
   buildDirectorPromptBlock,
   buildNegativeVisualPrompt,
 } from "./directorGrammar.js";
+import { sanitizeGenomeForImage } from "../nft-pipeline/genomeBlock.js";
 
 export interface SceneScriptPromptInput {
   storySoFar?: string;
@@ -17,6 +18,13 @@ export interface SceneScriptPromptInput {
   catchphrase?: string;
   speaks?: string;
   contextPromptBlocks?: string;
+  /**
+   * The protagonist's distilled prompt-genome forText variant. A TEXT surface:
+   * folded into the scene's context blocks so the written line honors the
+   * beast's motif/motivation. Full lineage is allowed here (this is not an
+   * image prompt).
+   */
+  genomeForText?: string;
   plotDirectives: string;
   pulseBlock?: string;
   costarNames?: string;
@@ -29,6 +37,12 @@ export function buildSceneScriptPrompt(input: SceneScriptPromptInput): string {
     ? `\nCO-STARS IN FRAME: ${input.costarNames}. Play the multi-way rivalry — the protagonist above is the one who SPEAKS; the co-stars react.`
     : "";
   const pulse = input.pulseBlock ? `\n${input.pulseBlock}\n` : "";
+  // Genome forText folds into the scene's context blocks (text surface — full
+  // lineage allowed). It rides alongside any pre-built contextPromptBlocks.
+  const genomeText = String(input.genomeForText || "").trim().slice(0, 900);
+  const contextBlocks = [input.contextPromptBlocks, genomeText ? `PROMPT GENOME: ${genomeText}` : ""]
+    .filter((b) => b && String(b).trim())
+    .join("\n");
   const duration = input.videoDurationSecs || 8;
   const minWords = duration < 5 ? 6 : Math.ceil(Math.max(0, duration - 1.4) * 2.3 * 0.58);
   const maxWords = Math.ceil(Math.max(4, duration - 0.7) * 2.4);
@@ -46,7 +60,7 @@ ${input.ownerProfileBlock ? `\n${input.ownerProfileBlock}` : ""}
 ${input.bio ? `BIO: ${input.bio}` : ""}
 ${input.catchphrase ? `CATCHPHRASE: ${input.catchphrase}` : ""}
 ${input.speaks ? `SPEAKS: ${input.speaks}` : ""}
-${input.contextPromptBlocks ? `\n${input.contextPromptBlocks}\n` : ""}
+${contextBlocks ? `\n${contextBlocks}\n` : ""}
 ${input.plotDirectives}${pulse}${costars}
 
 ${input.whatHappens}
@@ -72,6 +86,13 @@ export interface SceneKeyframePromptInput {
   breed: string;
   profession: string;
   canonBlocks: string[];
+  /**
+   * The protagonist's distilled prompt-genome forImage variant (aesthetic
+   * tokens + arc stage ONLY). An IMAGE surface: defensively re-sanitized here
+   * so no technique/epithet name or motif prose can leak into the keyframe,
+   * then appended to the canon blocks.
+   */
+  genomeForImage?: string;
   storySoFar?: string;
   cliffhanger?: string;
   scene: string;
@@ -79,11 +100,18 @@ export interface SceneKeyframePromptInput {
 }
 
 export function buildSceneKeyframePrompt(input: SceneKeyframePromptInput): string {
+  const genomeAesthetic = sanitizeGenomeForImage(input.genomeForImage);
+  const canonBlocks = [
+    ...input.canonBlocks,
+    genomeAesthetic
+      ? `GENOME AESTHETIC (visual palette + arc stage cues only — render as look, never as text): ${genomeAesthetic}`
+      : "",
+  ].filter((b) => b && String(b).trim());
   return [
     buildDirectorPromptBlock({ aspectRatio: "9:16" }),
     `Create the STARTING STORYBOARD FRAME for one 9:16 animated show scene, not a poster and not a game UI.`,
     `Event flavor: ${input.eventFlavor}. Protagonist nation: ${input.factionName}. Breed: ${input.breed}. Role: ${input.profession}.`,
-    input.canonBlocks.join("\n\n"),
+    canonBlocks.join("\n\n"),
     input.storySoFar ? `Episode continuity: ${input.storySoFar}` : "",
     input.cliffhanger ? `Carried cliffhanger: ${input.cliffhanger}` : "",
     `Scene direction to visualize: ${input.scene}`,

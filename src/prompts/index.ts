@@ -1,5 +1,5 @@
 /**
- * DegenBTC Prompts System
+ * Hashiden Prompts System
  *
  * Unified export for all faction prompts and core systems.
  * Used for NFT asset generation, content production, and lore.
@@ -784,7 +784,7 @@ export function buildImagePrompt(resolved: ResolvedHashBeastTraits): string {
   return `You are creating a character for our game world. Generate this character based on its origin, occupation, breed, and appearance traits.
 
 WORLD CONTEXT:
-After the Dark Lord's fall, his pet hashbeast - a creature with magical powers - created 'degenBTC,' a mystical token mined through a global arcade-style raffle and auto-progression RPG game. This empowers hashbeasts to transcend human dependency and exploit human greed to conquer the global economy.
+After the Dark Lord's fall, his pet hashbeast - a creature with magical powers - created ',' a mystical token mined through a global arcade-style raffle and auto-progression RPG game. This empowers hashbeasts to transcend human dependency and exploit human greed to conquer the global economy.
 
 AESTHETIC:
 A vibrant 90s arcade aesthetic overlays a world where Harry Potter-esque magical hashbeast societies coexist, often unseen, with the mundane human world. The atmosphere is one of playful rebellion and hidden power, punctuated by nostalgic arcade sounds and whimsical magic.

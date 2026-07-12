@@ -4,7 +4,7 @@ title: Whose Side Are You On?
 targetSeconds: 60
 minSeconds: 24
 countdown: 00:30:00
-cta: Mine at minebtc.fun — pick your country
+cta: Mine at hashiden.tv — pick your country
 logline: Thirty minutes out, all twelve nations' HashBeasts line up, each throwing one trash-talk line at the camera, then turn as one to force the only question left: whose side are you on?
 cast: Rex, Master Long, Volkov, Marshal Bonepaw, Raja
 ---

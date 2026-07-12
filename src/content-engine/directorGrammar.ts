@@ -4,7 +4,7 @@ const DEFAULT_ASPECT = "9:16";
 
 export function buildDirectorPromptBlock(format?: Partial<VideoFormat>): string {
   const aspect = format?.aspectRatio || DEFAULT_ASPECT;
-  return `MINEBTC DIRECTOR GRAMMAR — OBEY FOR EVERY FRAME
+  return `HASHIDEN DIRECTOR GRAMMAR — OBEY FOR EVERY FRAME
 Visual identity: premium 2D arcade-cel animation with pixel-art DNA, crisp silhouettes, bright readable lighting, expressive dog-warrior characters, upgraded gear and powers that feel earned through gameplay. Not photorealistic, not generic 3D, not muddy grimdark.
 World logic: this is a serialized HashBeast show produced by the game world. Scenes can be war rooms, streets, homes, clubs, stadium tunnels, temples, labs, ports, courts, markets, rooftops, private jets, palace corridors, or absurd political offices. Do NOT force mining equipment or floating crypto cubes into every shot.
 Camera grammar: default to locked or deliberate camera movement, level horizon, clear readable staging, medium-wide deep-focus masters for group comedy, low-angle hero shots for power, fast inserts only for punchline objects, and close-ups only for emotional/reaction beats.

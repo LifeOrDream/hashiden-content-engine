@@ -21,6 +21,7 @@ import { countryBible, type RivalryEdge } from "../world/bible.js";
 import { baseTypeMascotPhrase, safeBaseType } from "../world/baseTypes.js";
 import { performanceBand, normalizeStage } from "../world/progression.js";
 import { beastMemoryPromptBlock, type BeastMemorySnapshot } from "./beastMemory.js";
+import { genomeTextDirective, genomeHonorIntentDirective } from "./genomeBlock.js";
 import type { NftBeastInput } from "./types.js";
 import type { BeastProfile } from "./stateAnimations.js";
 
@@ -348,6 +349,8 @@ export function buildMomentDialoguePrompt(
     state.length ? `Game state: ${state.join("; ")}.` : "",
     rivalryBlock(beast.factionId ?? 0, ctx.rivalFactionId),
     beastMemoryPromptBlock(memory),
+    genomeTextDirective(beast.genomeBlock),
+    genomeHonorIntentDirective(beast.genomeBlock),
     prevLine
       ? `Its PREVIOUS line this cycle was: "${prevLine}". Continue that thread / escalate it.`
       : "",

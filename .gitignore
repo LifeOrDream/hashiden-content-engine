@@ -70,7 +70,7 @@ web_modules/
 .env.*
 !.env.example
 
-# MineBTC local generation outputs and secrets
+# Hashiden local generation outputs and secrets
 .DS_Store
 logs/
 !webui/app/api/jobs/\[id\]/logs/

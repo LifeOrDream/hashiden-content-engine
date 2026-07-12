@@ -105,7 +105,7 @@ export interface FactionStanding {
   usersDelta?: number;
   minted?: number;
   target?: number;
-  dbtcAprPct?: number;
+  denAprPct?: number;
   soldOut?: boolean;
   geopolitics?: string;
 }
@@ -120,7 +120,7 @@ export interface EconomyState {
   miningMultiplier?: number;
   winningFaction?: string;
   stakingAprPct?: number;
-  totalMinedDbtc?: string | number;
+  totalMinedDen?: string | number;
 }
 
 export interface StoryGrounding {

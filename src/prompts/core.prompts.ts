@@ -1,5 +1,5 @@
 /**
- * DegenBTC NFT Generation - Core Prompts
+ * Hashiden NFT Generation - Core Prompts
  *
  * This file contains the foundational prompts for generating HashBeast NFT assets.
  * The system uses a layered prompt approach combining:
@@ -23,20 +23,20 @@ export const WORLD_LORE = {
   origin: `In the shadows after the Dark Lord's fall, his most loyal companion - a hashbeast of
 extraordinary cunning - inherited both his ambition and his understanding of power.
 This hashbeast saw what the Dark Lord had missed: the world's true weakness was not fear,
-but greed. And so he created $degenBTC - a magical token that could never be controlled
+but greed. And so he created $DEN - a magical token that could never be controlled
 by any government, that grew stronger as humans mined it, and that would one day
 make its holders the true rulers of the financial world.`,
 
   the_mining_wars: `Now, hashbeasts from 12 great nations compete in the eternal Mining Wars.
 Every round, factions battle across 24 blocks, staking their claims and evolving their
-warriors. The goal is simple: accumulate more $degenBTC than any other faction.
-Make $degenBTC the biggest token on Earth - bigger than Bitcoin itself.
+warriors. The goal is simple: accumulate more $DEN than any other faction.
+Make $DEN the biggest token on Earth - bigger than Bitcoin itself.
 The wars never end. The competition is eternal. Only the strongest factions survive.`,
 
   wizard_world: `The Wizard World exists in parallel to the Muggle world. Magical hashbeasts
 attend their own academies hidden within human magical schools, work in enchanted
 institutions, and practice ancient hashbeast magic passed down through generations.
-They are the mystical backbone of the $degenBTC revolution, providing the magical
+They are the mystical backbone of the $DEN revolution, providing the magical
 infrastructure that makes the token truly immortal and indestructible.`,
 
   muggle_world: `In the Muggle (non-magical) world, hashbeasts have infiltrated every level
@@ -45,7 +45,7 @@ celebrities - but in truth, they are strategically positioned operatives. Every 
 rub is an opportunity to observe. Every walk is a reconnaissance mission. They report
 everything back to the faction networks, coordinating the slow accumulation of power.`,
 
-  token_magic: `$degenBTC is no ordinary token. Its liquidity pools lock automatically -
+  token_magic: `$DEN is no ordinary token. Its liquidity pools lock automatically -
 permanent liquidity that can never be removed. Its emissions self-adjust based on
 price action, ensuring stability. Protocol-owned liquidity grows with every burn.
 This is ancient magic encoded in blockchain - wealth that grows itself.`,
@@ -58,7 +58,7 @@ This is ancient magic encoded in blockchain - wealth that grows itself.`,
 export const EVOLUTION_STAGES = {
   0: {
     name: "Pup",
-    description: "Young recruit, just awakened to the $degenBTC revolution",
+    description: "Young recruit, just awakened to the $DEN revolution",
     size_prompt:
       "small puppy-sized hashbeast, big head relative to body, oversized paws",
     demeanor: "eager, curious, slightly clumsy, full of untapped potential",

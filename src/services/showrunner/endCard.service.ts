@@ -1,6 +1,6 @@
 /**
  * End-card - a short CTA closing clip appended to FEATURE videos (not reels):
- * the brand + "Mine your HashBeast / minebtc.fun / Subscribe + Follow", driving
+ * the brand + "Mine your HashBeast / hashiden.tv / Subscribe + Follow", driving
  * viewers to the game + subscribe/follow. Rendered via scripts/render_card.py
  * (PIL) -> ffmpeg still-to-clip at the format's dims (so it concats into the master
  * and shows up in every cropped output, CTA centered). Best-effort: null on
@@ -25,7 +25,7 @@ const FIXED_URL = process.env.CONTENT_ENDCARD_URL || "";
 const FONT = process.env.CONTENT_FONT || "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf";
 const SECONDS = Math.max(2, Number(process.env.CONTENT_ENDCARD_SECONDS || 3.5));
 const CTA1 = process.env.CONTENT_ENDCARD_CTA1 || "MINE YOUR HASHBEAST";
-const CTA2 = process.env.CONTENT_ENDCARD_CTA2 || "minebtc.fun";
+const CTA2 = process.env.CONTENT_ENDCARD_CTA2 || "hashiden.tv";
 const CTA3 = process.env.CONTENT_ENDCARD_CTA3 || "SUBSCRIBE + FOLLOW";
 
 export interface EndCardOptions {
@@ -203,7 +203,7 @@ function fallbackEndCardPng(width: number, height: number, options: EndCardOptio
   const red: [number, number, number, number] = [255, 46, 46, 255];
   const fitScale = (text: string, maxScale: number, maxWidth: number) =>
     Math.max(4, Math.min(maxScale, Math.floor(maxWidth / Math.max(1, textWidth(text, 1)))));
-  const brand = "MINEBTC";
+  const brand = "HASHIDEN";
   const line1 = options.cta1 || CTA1;
   const line2 = options.cta2 || CTA2;
   const line3 = options.cta3 || CTA3;

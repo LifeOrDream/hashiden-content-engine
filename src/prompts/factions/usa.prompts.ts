@@ -56,7 +56,7 @@ export const USA_TYPE_PROMPTS: Record<
     description:
       "Magical financial trader using divination and enchantments on Wall Street",
     story: `Uses divination to predict markets and enchantments to influence trades.
-The 2008 crash? A faction power play. Now all bets are on $degenBTC. The sorcerer's
+The 2008 crash? A faction power play. Now all bets are on $DEN. The sorcerer's
 portfolio is 99% magical assets, 1% mortal pretense.`,
     prompt:
       "Wall Street wizard, Manhattan skyline, expensive suit with magical accessories, financial sorcery, power broker energy",
@@ -67,7 +67,7 @@ portfolio is 99% magical assets, 1% mortal pretense.`,
     occupation: "Pentagon Battle Mage",
     description: "Military wizard serving in classified magical combat units",
     story: `Serves in the Army's 13th Arcane Division (classified). Develops combat spells
-and magical weapons. Current project: $degenBTC-powered tactical enchantments. When
+and magical weapons. Current project: $DEN-powered tactical enchantments. When
 America needs magical firepower, this mage delivers.`,
     prompt:
       "Pentagon military wizard, combat robes with army insignia, battle-ready, command authority, military brass aesthetic",
@@ -91,7 +91,7 @@ ensures America's stories serve the network.`,
     description:
       "Silicon Valley wizard combining ancient magic with cutting-edge technology",
     story: `Runs a startup creating "smart wands" with blockchain verification. Every wand
-sold mines $degenBTC through spell energy conversion. Valued at $3B by wizard VCs.
+sold mines $DEN through spell energy conversion. Valued at $3B by wizard VCs.
 The next unicorn is literally magical.`,
     prompt:
       "tech wizard hybrid, startup casual with magical elements, Silicon Valley, hoodie and wand, disruption energy",
@@ -103,7 +103,7 @@ The next unicorn is literally magical.`,
     description:
       "Agent of the Magical Congress of the USA, enforcing magical law",
     story: `Works for MACUSA's Department of Financial Sorcery. Officially fights magical
-financial crimes. Actually ensures $degenBTC operations avoid No-Maj detection. The
+financial crimes. Actually ensures $DEN operations avoid No-Maj detection. The
 badge opens every door.`,
     prompt:
       "MACUSA agent attire, American magical government, trench coat spy style, federal authority, covert magic",
@@ -115,7 +115,7 @@ badge opens every door.`,
     description:
       "Indigenous magical practitioner with ancient earth and spirit knowledge",
     story: `Preserves the true magical history of America - long before European wizards
-arrived. The land itself wants $degenBTC to succeed. The spirits have spoken. Ancient
+arrived. The land itself wants $DEN to succeed. The spirits have spoken. Ancient
 power serves modern currency.`,
     prompt:
       "native American magical aesthetic, indigenous patterns, spiritual power, desert backdrop, ancestral magic",
@@ -127,7 +127,7 @@ power serves modern currency.`,
     description:
       "Graduate of America's premier magical school, academic excellence",
     story: `Graduated top of class at Ilvermorny School of Witchcraft and Wizardry. The
-"Financial Magic" thesis proved $degenBTC is the future of all trade. Now teaches
+"Financial Magic" thesis proved $DEN is the future of all trade. Now teaches
 the next generation of American mages.`,
     prompt:
       "Ilvermorny scholar robes, American magical school, academic prestige, Massachusetts backdrop, studious power",
@@ -137,7 +137,7 @@ the next generation of American mages.`,
     region: "Classified",
     occupation: "Dark Lord's Lieutenant",
     description: "High-ranking servant of the Dark Lord's American operation",
-    story: `The Dark Lord's American operation was always the most important. When $degenBTC
+    story: `The Dark Lord's American operation was always the most important. When $DEN
 rises to dominance, America will be ground zero. The lieutenant ensures readiness.
 Shadows serve the network.`,
     prompt:
@@ -161,7 +161,7 @@ Every First Family thinks they chose this dog. They didn't.`,
     region: "California",
     occupation: "Tech CEO's HashBeast",
     description: "Pet of a Silicon Valley billionaire tech mogul",
-    story: `Lives with a tech CEO worth $200B. Every product launch includes $degenBTC
+    story: `Lives with a tech CEO worth $200B. Every product launch includes $DEN
 integration. The company's AI actually serves faction interests. The CEO thinks
 they're in charge. Adorable.`,
     prompt:
@@ -195,7 +195,7 @@ dog knows exactly what it's doing.`,
     occupation: "Wall Street Trading Dog",
     description: "Mascot of the most powerful investment bank on Wall Street",
     story: `Lives on the trading floor of the biggest bank. Every trade is influenced.
-The 2008 bailout? $degenBTC seed funding. This dog has moved more money than
+The 2008 bailout? $DEN seed funding. This dog has moved more money than
 most nations.`,
     prompt:
       "Wall Street aesthetic, financial power, trading floor energy, Manhattan finance, money moves",
@@ -205,7 +205,7 @@ most nations.`,
     region: "Texas",
     occupation: "Ranch Empire Dog",
     description: "Working dog on a vast Texas cattle and mining operation",
-    story: `The ranch is 800,000 acres - mostly $degenBTC mining facilities disguised as
+    story: `The ranch is 800,000 acres - mostly $DEN mining facilities disguised as
 cattle operations. Energy comes from "wind farms" that don't generate wind power.
 Oil money funds crypto dreams.`,
     prompt:
@@ -216,7 +216,7 @@ Oil money funds crypto dreams.`,
     region: "Florida",
     occupation: "NASA Space Dog",
     description: "Canine astronaut in the American space program",
-    story: `First dog to orbit Mars. Space-based $degenBTC mining operations now online.
+    story: `First dog to orbit Mars. Space-based $DEN mining operations now online.
 Houston has a new kind of problem - space faction expansion. The final frontier
 serves the network.`,
     prompt:
@@ -228,7 +228,7 @@ serves the network.`,
     occupation: "Area 51 Research Dog",
     description: "Canine researcher at the most classified facility on Earth",
     story: `The aliens are real. They're also faction allies. Area 51's true purpose:
-developing $degenBTC integration with extraterrestrial technology. The truth is
+developing $DEN integration with extraterrestrial technology. The truth is
 out there. It's crypto.`,
     prompt:
       "Area 51 aesthetic, classified research, alien tech hints, desert mystery, government secrets",

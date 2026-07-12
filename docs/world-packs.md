@@ -1,6 +1,6 @@
 # World Packs
 
-MineBTC is the reference world, but the engine should support other game worlds over time.
+Hashiden is the reference world, but the engine should support other game worlds over time.
 
 ## What A World Pack Contains
 
@@ -13,9 +13,9 @@ MineBTC is the reference world, but the engine should support other game worlds 
 - Voice profiles.
 - Example fixtures and proof outputs.
 
-## MineBTC Reference World
+## Hashiden Reference World
 
-MineBTC's world is a country-vs-country mining war where HashBeasts are dog-warrior characters whose appearance, power, and story evolve through gameplay.
+Hashiden's world is a country-vs-country mining war where HashBeasts are dog-warrior characters whose appearance, power, and story evolve through gameplay.
 
 **Canon source of truth: `src/world/bible.ts`** (human-readable companion with
 the name-conflict decision log: `WORLD_BIBLE.md` at the repo root). All leader

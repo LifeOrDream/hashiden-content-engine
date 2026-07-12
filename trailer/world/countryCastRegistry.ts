@@ -47,7 +47,7 @@ export function buildCountryCastPromptBlock(): string {
 
   return [
     "COUNTRY CHARACTER REGISTRY:",
-    "These are reusable MineBTC show archetypes grounded in country-level institutions, cultural production, economics, sport, technology, and geopolitical posture. They are fictional HashBeasts, not real people.",
+    "These are reusable Hashiden show archetypes grounded in country-level institutions, cultural production, economics, sport, technology, and current-events standing. They are fictional HashBeasts, not real people.",
     "Use them for story ideas, dialogue POV, relationship arcs, and frame refs. Until a dedicated individual sheet exists, @profile refs resolve to that country's character board; add the board ref in startFrame.refs for consistency.",
     "Safety: satire institutions and faction behavior, never real named politicians, real hate symbols, real slogans, or ethnicity as the joke.",
     ...countryBlocks,

@@ -19,7 +19,7 @@ export async function POST(request: NextRequest) {
       targetSeconds: Number(body.targetSeconds || 75),
       minSeconds: Number(body.minSeconds || 24),
       countdown: String(body.countdown || "24:00:00"),
-      cta: String(body.cta || "Mine your HashBeast - minebtc.fun"),
+      cta: String(body.cta || "Mine your HashBeast - hashiden.tv"),
       cast: Array.isArray(body.cast) ? body.cast.map(String) : String(body.cast || "").split(","),
       body: String(body.body || ""),
     }, { create: true });
