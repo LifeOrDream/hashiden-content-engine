@@ -4,7 +4,7 @@ title: The War Room They Don't Want You To See.
 targetSeconds: 60
 minSeconds: 24
 countdown: 12:00:00
-cta: The race is closer than they think — minebtc.fun
+cta: The race is closer than they think — hashiden.tv
 logline: China, Russia and North Korea scheme in a bunker to let America mine first and steal the cycle in the final hour — until they realize the camera is rolling.
 cast: Master Long, Volkov, Marshal Bonepaw
 ---

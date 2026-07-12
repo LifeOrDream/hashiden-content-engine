@@ -62,7 +62,7 @@ function toBlueprint(input: ReelInput): Blueprint {
     targetSeconds: input.targetSeconds ?? 30,
     minSeconds: input.minSeconds ?? 12,
     countdown: input.countdown || "24:00:00",
-    cta: input.cta || "Mine your HashBeast — minebtc.fun",
+    cta: input.cta || "Mine your HashBeast — hashiden.tv",
     logline: input.logline || "",
     cast: input.cast || [],
     body: input.body,

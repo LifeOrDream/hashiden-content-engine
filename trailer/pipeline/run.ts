@@ -83,7 +83,7 @@ function parseBlueprint(file: string): Blueprint {
     targetSeconds: Number(fm.targetSeconds || defaultTarget),
     minSeconds: Number(fm.minSeconds || defaultMin),
     countdown: fm.countdown || "24:00:00",
-    cta: fm.cta || "Mine your HashBeast — minebtc.fun",
+    cta: fm.cta || "Mine your HashBeast — hashiden.tv",
     logline: fm.logline || "",
     cast: (fm.cast || "").split(",").map((s) => s.trim()).filter(Boolean),
     body,

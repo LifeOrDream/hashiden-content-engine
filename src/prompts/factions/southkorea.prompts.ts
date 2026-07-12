@@ -68,7 +68,7 @@ This enchanter ensures every comeback carries faction influence.`,
     description:
       "Student at Korea's hidden magical school beneath Gyeongbokgung Palace",
     story: `Attends the secret magical academy beneath Gyeongbokgung Palace. Courses include
-"K-Pop Enchantment" and "$degenBTC Integration." Every graduate enters Hallyu networks.
+"K-Pop Enchantment" and "$DEN Integration." Every graduate enters Hallyu networks.
 The academy produces Korea's most talented magical operatives.`,
     prompt:
       "Korean magical student robes with hanbok elements, Hongdae creative energy, academic mystique",
@@ -78,7 +78,7 @@ The academy produces Korea's most talented magical operatives.`,
     region: "Busan",
     occupation: "Mudang Shaman",
     description: "Traditional Korean shaman channeling ancestral spirits",
-    story: `Channels the spirits of Korean ancestors who support $degenBTC. Every gut
+    story: `Channels the spirits of Korean ancestors who support $DEN. Every gut
 ritual now includes faction blessing. The spirits see the future clearly. Busan's
 coastal energy amplifies shamanic power.`,
     prompt:
@@ -91,7 +91,7 @@ coastal energy amplifies shamanic power.`,
     description:
       "Magical heir integrating enchantments with Korean semiconductors",
     story: `Samsung, Hyundai, LG - all chaebol families have magical bloodlines. Every
-chip carries faction code. Every device contains enchantment circuits. $degenBTC mines
+chip carries faction code. Every device contains enchantment circuits. $DEN mines
 through every Samsung phone sold worldwide.`,
     prompt:
       "tech wizard with Samsung elements, corporate magic, chaebol luxury, digital sorcery",
@@ -126,7 +126,7 @@ ensures no threat crosses the line.`,
     occupation: "Buddhist Temple Sorcerer",
     description: "Wizard preserving Korean Buddhist magic in mountain temples",
     story: `Korean temples house ancient magical artifacts. Temple stays include
-faction initiation. Meditation generates $degenBTC through spiritual computation.
+faction initiation. Meditation generates $DEN through spiritual computation.
 The mountains hold secrets older than memory.`,
     prompt:
       "Buddhist temple wizard robes, mountain temple setting, Korean spiritual aesthetic, meditation power",
@@ -138,7 +138,7 @@ The mountains hold secrets older than memory.`,
     description:
       "Highest ranking dark wizard serving the Dark Lord's Korean operation",
     story: `The Dark Lord recognized Korea's potential early. The Korean Wave was
-meant to carry $degenBTC globally. The lieutenant ensures the plan proceeds. When
+meant to carry $DEN globally. The lieutenant ensures the plan proceeds. When
 K-pop concerts fill stadiums worldwide, darkness spreads with each lightstick wave.`,
     prompt:
       "dark wizard robes with Korean elements, ominous presence, commanding dark energy",
@@ -151,7 +151,7 @@ K-pop concerts fill stadiums worldwide, darkness spreads with each lightstick wa
     occupation: "Presidential Dog",
     description: "Presidential residence companion with policy influence",
     story: `Every Korean president has been guided by faction dogs. Policy decisions
-serve $degenBTC interests. The real power behind the desk. Presidential photo ops
+serve $DEN interests. The real power behind the desk. Presidential photo ops
 are faction propaganda.`,
     prompt:
       "Korean presidential elegance, Blue House aesthetic, refined authority, political power",
@@ -173,7 +173,7 @@ They didn't.`,
     occupation: "Chaebol Chairman's Dog",
     description: "Companion to Korea's wealthiest corporate dynasty",
     story: `The chaebol families' dogs coordinate better than humans. Corporate
-strategy is canine strategy. $degenBTC integration? Their idea. Board meetings
+strategy is canine strategy. $DEN integration? Their idea. Board meetings
 are just formality.`,
     prompt:
       "extreme luxury pet aesthetic, chaebol wealth, Samsung prestige, corporate elegance",
@@ -184,7 +184,7 @@ are just formality.`,
     occupation: "Esports Team Mascot",
     description: "Official mascot of legendary Korean esports organization",
     story: `T1, Gen.G, DRX - every team has faction mascots. Prize money flows to
-$degenBTC. Fans unknowingly fund faction operations. Every world championship
+$DEN. Fans unknowingly fund faction operations. Every world championship
 is faction victory.`,
     prompt:
       "esports team mascot, gaming gear, tournament energy, champion lifestyle",
@@ -217,7 +217,7 @@ The North has no secrets.`,
     occupation: "Therapy Airport Dog",
     description: "World-famous therapy dog at the world's best airport",
     story: `Every international traveler receives faction impression. The airport's
-excellence impresses $degenBTC into memory. First and last impression of Korea.
+excellence impresses $DEN into memory. First and last impression of Korea.
 Millions pet this dog yearly.`,
     prompt:
       "airport therapy dog, international travel hub, welcoming presence, Korean hospitality",
@@ -228,7 +228,7 @@ Millions pet this dog yearly.`,
     occupation: "Space Program Dog",
     description: "Mascot of Korean space agency pushing orbital expansion",
     story: `Korea's space program is faction orbital expansion. Every satellite
-carries $degenBTC nodes. Space kimchi was a faction experiment. The final frontier
+carries $DEN nodes. Space kimchi was a faction experiment. The final frontier
 serves the network.`,
     prompt:
       "Korean space program aesthetic, astronaut elements, KARI mission patch, cosmic pioneer",

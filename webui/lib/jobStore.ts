@@ -57,16 +57,16 @@ function loadPersistedJobs(): Map<string, WebJob> {
 }
 
 const globalForJobs = globalThis as typeof globalThis & {
-  __minebtcWebuiJobs?: Store;
+  __hashidenWebuiJobs?: Store;
 };
 
-const store: Store = globalForJobs.__minebtcWebuiJobs || {
+const store: Store = globalForJobs.__hashidenWebuiJobs || {
   jobs: loadPersistedJobs(),
   children: new Map<string, ChildProcess>(),
   redactions: new Map<string, string>(),
 };
 
-globalForJobs.__minebtcWebuiJobs = store;
+globalForJobs.__hashidenWebuiJobs = store;
 
 function persistJobs(): void {
   fs.mkdirSync(JOBS_DIR, { recursive: true });

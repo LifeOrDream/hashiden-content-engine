@@ -4,7 +4,7 @@ title: Will You Even Remember Us?
 targetSeconds: 55
 minSeconds: 24
 countdown: 06:00:00
-cta: Don't leave them in the dark — minebtc.fun
+cta: Don't leave them in the dark — hashiden.tv
 logline: Alone under one light, a stage-1 pup who has only ever performed for the lens asks the camera whether the HashBeasts stop existing when the mining stops — and quietly hopes you'll show up and pick him.
 cast: Pip
 ---

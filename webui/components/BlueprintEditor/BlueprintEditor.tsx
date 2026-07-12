@@ -13,7 +13,7 @@ const emptyBlueprint = (): BlueprintDocument => ({
   targetSeconds: 75,
   minSeconds: 24,
   countdown: "04:20:00",
-  cta: "Mine your HashBeast - minebtc.fun",
+  cta: "Mine your HashBeast - hashiden.tv",
   cast: ["rex"],
   updatedAt: new Date().toISOString(),
   body: [
@@ -21,7 +21,7 @@ const emptyBlueprint = (): BlueprintDocument => ({
     "- Open on a visual that creates instant curiosity.",
     "",
     "## Grounding facts",
-    "- What is true in the MineBTC world?",
+    "- What is true in the Hashiden world?",
     "",
     "## Beats",
     "1. Cold open:",

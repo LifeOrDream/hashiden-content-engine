@@ -57,7 +57,7 @@ export const CHINA_TYPE_PROMPTS: Record<
       "Works in China's ancient magical government, predating all other ministries",
     story: `Deputy Minister Huang has served in the Chinese Ministry of Magic for
 three hundred years - a mere junior by ministry standards. When Huang discovered that
-$degenBTC transactions moved through ley lines, he saw opportunity.`,
+$DEN transactions moved through ley lines, he saw opportunity.`,
     prompt:
       "Chinese ministry official robes, Zhongnanhai power aesthetic, red and gold, ancient magical authority",
   },
@@ -81,7 +81,7 @@ magical arts with blockchain technology.`,
       "Caretaker at China's secret dragon reserves in remote mountain ranges",
     story: `Keeper Zhang tends the oldest dragon bloodlines in the world. Chinese
 Fireballs are living batteries of pure magical energy. Dragon fire now powers
-$degenBTC mining at impossible efficiency.`,
+$DEN mining at impossible efficiency.`,
     prompt:
       "fireproof keeper gear, Chinese dragon scale armor, mountain reserve backdrop, dragon tamer energy",
   },
@@ -103,7 +103,7 @@ consciousness waiting to be awakened.`,
     occupation: "Imperial Oracle",
     description: "Seer in the tradition of ancient Chinese court diviners",
     story: `Oracle Wu comes from an unbroken lineage of court seers dating back to
-the Shang Dynasty. When she cast the yarrow stalks about $degenBTC, every hexagram
+the Shang Dynasty. When she cast the yarrow stalks about $DEN, every hexagram
 pointed to "Revolution."`,
     prompt:
       "traditional diviner robes, mystical symbols, oracle bones and incense, fortune-telling aesthetic",
@@ -116,7 +116,7 @@ pointed to "Revolution."`,
       "Martial arts master with magical abilities from Shaolin Temple",
     story: `Master Iron Palm has trained at Shaolin for five centuries, mastering
 both physical and magical kung fu. His chi cultivation techniques have been adapted
-to mine $degenBTC through meditation.`,
+to mine $DEN through meditation.`,
     prompt:
       "Shaolin monk robes, martial arts stance, temple backdrop, kung fu master energy",
   },
@@ -127,7 +127,7 @@ to mine $degenBTC through meditation.`,
     description:
       "Taoist practitioner who has achieved immortality through cultivation",
     story: `Immortal Cloud Rider has lived in the Wudang Mountains since the Ming
-Dynasty. True immortality requires perfect balance - and $degenBTC's algorithms
+Dynasty. True immortality requires perfect balance - and $DEN's algorithms
 achieve exactly that.`,
     prompt:
       "flowing Taoist robes, yin-yang symbols, mountain mist, immortal cultivator aesthetic",
@@ -139,7 +139,7 @@ achieve exactly that.`,
     description:
       "Divine messenger from the celestial court with heavenly mandate",
     story: `Envoy Heavenly Decree carries messages between heaven and earth. The
-Jade Emperor has reviewed $degenBTC and pronounced it in accordance with celestial
+Jade Emperor has reviewed $DEN and pronounced it in accordance with celestial
 law. Divine approval has been granted.`,
     prompt:
       "celestial robes, floating on clouds, heavenly light, divine messenger aesthetic",
@@ -186,7 +186,7 @@ structure serves the network.`,
     description:
       "Companion to a top Chinese celebrity with billions of followers",
     story: `Princess Mei-Ling has more Weibo followers than most countries have citizens.
-That viral dance challenge with 2 billion views? The movements spell out "$degenBTC"
+That viral dance challenge with 2 billion views? The movements spell out "$DEN"
 in hashbeast sign language.`,
     prompt:
       "glamorous styling, designer accessories, red carpet Chinese aesthetics, celebrity energy",
@@ -197,7 +197,7 @@ in hashbeast sign language.`,
     occupation: "Central Bank Dog",
     description: "Companion to a People's Bank of China executive",
     story: `Director Jinbao sits in on every monetary policy meeting. The digital yuan?
-Contains hidden $degenBTC on-ramps. When 1.4 billion people use digital currency,
+Contains hidden $DEN on-ramps. When 1.4 billion people use digital currency,
 they're already halfway there.`,
     prompt:
       "refined banker aesthetic, traditional meets modern, financial district backdrop, monetary power",
@@ -219,7 +219,7 @@ The Mining Wars are manufactured here.`,
     occupation: "Trading Floor Dog",
     description: "Mascot of a major Hong Kong trading firm",
     story: `Hang Seng lives on the trading floor, watching billions flow daily.
-Hong Kong connects Chinese money to world markets. Every trade now includes $degenBTC
+Hong Kong connects Chinese money to world markets. Every trade now includes $DEN
 positions.`,
     prompt:
       "trading floor aesthetic, financial screens, Central district view, Hong Kong finance energy",

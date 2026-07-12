@@ -4,7 +4,7 @@ How this repo uses `bytedance/seedance-2.0/image-to-video` to its full
 capability set: multi-scene prompting (in-prompt cuts), start + end frame
 control, native synced audio, 4-15s / `auto` durations, seeds, and chaining
 beyond the 15s cap. The shared primitive is
-`generateSceneSequence()` in `src/utils/falMedia.ts` (mirrored in the MineBTC
+`generateSceneSequence()` in `src/utils/falMedia.ts` (mirrored in the Hashiden
 backend's `src/utils/falMedia.ts`).
 
 ## Why this beats the v1 mental model

@@ -1,5 +1,5 @@
 /**
- * Video branding - burns the minebtc.fun badge (token coin + wordmark) into the
+ * Video branding - burns the hashiden.tv badge (token coin + wordmark) into the
  * top-center of every rendered clip so reposts/downloads carry attribution and
  * drive viewers back to the site.
  *
@@ -60,7 +60,7 @@ function resolveBadgePath(): string {
 const BADGE_PATH = resolveBadgePath();
 
 /**
- * Overlay the minebtc.fun badge onto the top-center of an mp4 buffer.
+ * Overlay the hashiden.tv badge onto the top-center of an mp4 buffer.
  * Returns a new branded buffer, or the original buffer if branding is disabled
  * or fails for any reason.
  */

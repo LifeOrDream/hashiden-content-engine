@@ -48,6 +48,11 @@ import {
 } from "../world/progression.js";
 import { rivalryBlock, type MomentContext } from "./moments.js";
 import { beastMemoryPromptBlock, type BeastMemorySnapshot } from "./beastMemory.js";
+import {
+  genomeTextDirective,
+  genomeHonorIntentDirective,
+  honoredIntentRefOf,
+} from "./genomeBlock.js";
 import type { NftBeastInput } from "./types.js";
 import {
   generateStrip,
@@ -201,6 +206,8 @@ export function buildDialoguePrompt(
     state.length ? `Game state: ${state.join("; ")}.` : "",
     rivalryBlock(beast.factionId ?? 0, gs.rivalFactionId),
     beastMemoryPromptBlock(memory),
+    genomeTextDirective(beast.genomeBlock),
+    genomeHonorIntentDirective(beast.genomeBlock),
     prevLine ? `Its PREVIOUS line this cycle was: "${prevLine}". Continue that thread / escalate it.` : "",
     `Make it punchy, trash-talky, patriotic, country-vs-country energy. May include ONE short native-language word. Output ONLY the line, no quotes, no narration.`,
   ]
@@ -216,6 +223,12 @@ export interface DialogueResult {
   /** Newly designed voice profile (persist backend-side), when one was created. */
   voiceProfile?: import("./voice.js").VoiceProfile;
   voiceId?: string;
+  /**
+   * When the line was driven by a sealed whisper intent (genomeBlock carried
+   * an honoredIntentRef), echo it back so the backend can attach the quill mark
+   * on the dialogue payload. Absent when no intent was honored.
+   */
+  honoredIntentRef?: string;
 }
 
 /**
@@ -240,6 +253,8 @@ export async function writeAndVoiceFromPrompt(
   if (!line) return null;
 
   const result: DialogueResult = { line, soundId };
+  const honoredIntentRef = honoredIntentRefOf(beast.genomeBlock);
+  if (honoredIntentRef) result.honoredIntentRef = honoredIntentRef;
   try {
     let voiceId = opts.voiceId;
     if (!voiceId) {
