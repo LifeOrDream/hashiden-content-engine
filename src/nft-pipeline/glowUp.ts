@@ -4,22 +4,22 @@
  * A nation's cycle MVP becomes its Curator; when the Curator commissions a
  * held/queued beast for a content glow-up, the backend dispatches this job. It
  * is a SELF-CONTAINED snapshot job — the engine reads NO game state: the beast
- * snapshot (DNA + canonical refs + personality + genome), the lineage/echo
+ * snapshot (TRAIT_SEED + canonical refs + personality + trait_map), the lineage/echo
  * summary, the curator context, and the faction anchor all arrive in the
  * payload (faction canon is read from the engine's own world bible, which is
  * public canon; the payload may override display fields).
  *
  * It produces three things, reusing existing pipelines:
  *   1. a REFORGED ART SET — the mint-asset pipeline re-run against the beast's
- *      existing DNA/refs (text-free image rules already enforced by that path;
+ *      existing TRAIT_SEED/refs (text-free image rules already enforced by that path;
  *      NO lore/motif text is ever fed into an image prompt here, by construction);
  *   2. a ≤600-char REDEMPTION-ARC LORE BEAT linking the beast's past-life echo
  *      to its reforged form — LLM + banned-lexicon lint + ONE feedback retry,
  *      with a DETERMINISTIC fallback that NEVER fails the pipeline
- *      (cloned from nft.genome_distill);
+ *      (cloned from nft.trait_map_distill);
  *   3. a short TEASER CLIP via the produce_reel path (the show teases the drop).
  *
- * Best-effort sub-steps (cloned from nft.mutation_content): a failed art regen
+ * Best-effort sub-steps (cloned from nft.reroll_content): a failed art regen
  * or a failed teaser never fails the job — the lore beat always ships, and the
  * lore beat itself always ships via the deterministic fallback.
  */
@@ -51,14 +51,14 @@ const TEASER_DEFAULT_SECONDS = 8;
 /**
  * Lineage/echo summary — the past life the redemption arc links FROM. Every
  * field is backend-pre-summarized (display-safe; no game-state coupling); the
- * `pastLifeEcho` is typically the distilled genome's `past_life_echo`.
+ * `pastLifeEcho` is typically the distilled trait_map's `past_life_echo`.
  */
 export interface GlowUpLineageSummary {
   /** The prior life folded to one line — the thing the reforge redeems. */
   pastLifeEcho?: string;
-  /** The beast's current distilled motif line (genome card). */
+  /** The beast's current distilled motif line (trait_map card). */
   motifLine?: string;
-  /** The beast's current distilled motivation (genome card). */
+  /** The beast's current distilled motivation (trait_map card). */
   motivation?: string;
   /** Short pre-summarized lineage bullets (newest last). */
   lineageBullets?: string[];
@@ -81,13 +81,13 @@ export interface GlowUpFactionCanonOverride {
 }
 
 export interface NftGlowUpInput {
-  /** Self-contained beast snapshot (DNA, canonical refs, personality, genome). */
+  /** Self-contained beast snapshot (TRAIT_SEED, canonical refs, personality, trait_map). */
   beast: NftBeastInput;
   /** Faction anchor (defaults to the beast snapshot's factionId). */
   factionId?: number;
-  /** DNA-derived storage-path coordinate the mint-asset pipeline needs (0-31). */
+  /** TRAIT_SEED-derived storage-path coordinate the mint-asset pipeline needs (0-31). */
   categoryValue: number;
-  /** DNA-derived storage-path coordinate the mint-asset pipeline needs (0-31). */
+  /** TRAIT_SEED-derived storage-path coordinate the mint-asset pipeline needs (0-31). */
   regionValue: number;
   /**
    * Breed/style reference for the reforge. Defaults to the beast's existing
@@ -192,12 +192,12 @@ function beastLabel(beast: NftBeastInput, generic = "the reforged champion"): st
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Reforged art — reuse the mint-asset pipeline with the beast's DNA/refs.
+// Reforged art — reuse the mint-asset pipeline with the beast's TRAIT_SEED/refs.
 // ─────────────────────────────────────────────────────────────────────────────
 
 /**
  * Build the mint-asset job input for the reforge from the beast snapshot. PURE.
- * Carries ONLY identity coordinates (DNA + faction + storage coords + reference
+ * Carries ONLY identity coordinates (TRAIT_SEED + faction + storage coords + reference
  * art) — NEVER any lore/motif/curator text, so the text-free image rule holds by
  * construction (nothing lore-shaped can reach an image prompt through here).
  */
@@ -208,7 +208,7 @@ export function buildGlowUpMintInput(input: NftGlowUpInput): NftMintAssetsInput 
     mint: beast.mint,
     name: beast.name,
     owner: undefined,
-    dna: beast.dna || "",
+    trait_seed: beast.trait_seed || "",
     factionId: canon.factionId,
     categoryValue: input.categoryValue,
     regionValue: input.regionValue,
@@ -332,7 +332,7 @@ export function buildGlowUpLorePrompt(input: NftGlowUpInput): string {
   if (input.curator?.directive) curatorLines.push(`- owner steer (flavor only): ${clip(input.curator.directive, 160)}`);
 
   return [
-    `You are the lore-keeper of HASHIDEN, a serialized country-vs-country HashBeast mining war. A nation's cycle MVP became its CURATOR and has commissioned a content GLOW-UP: a protocol-owned beast is being reforged from its own DNA into a sharper form, and the show needs ONE redemption-arc lore beat.`,
+    `You are the lore-keeper of HASHIDEN, a serialized country-vs-country HashBeast mining war. A nation's cycle MVP became its CURATOR and has commissioned a content GLOW-UP: a protocol-owned beast is being reforged from its own TRAIT_SEED into a sharper form, and the show needs ONE redemption-arc lore beat.`,
     `SUBJECT: ${who}, of ${canon.country}${bible ? ` — ${clip(bible.lore?.origin, 200)}` : ""}.`,
     lineageLines.length
       ? `LINEAGE / PAST-LIFE MATERIAL (the arc must link the PAST-LIFE ECHO to the reforged NEW FORM — redemption, not a reset):\n${lineageLines.join("\n")}`
@@ -444,7 +444,7 @@ export async function generateGlowUp(
   const beast = input.beast;
   const artifacts: NftArtifact[] = [];
 
-  // 1. Reforged art set — mint-asset pipeline against the beast's DNA/refs.
+  // 1. Reforged art set — mint-asset pipeline against the beast's TRAIT_SEED/refs.
   //    Text-free image rules are enforced by that pipeline; no lore text is fed
   //    in here (buildGlowUpMintInput carries identity coords only).
   let reforgedArt: NftMintAssetsResult | null = null;

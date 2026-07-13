@@ -1,13 +1,13 @@
 /**
  * ═══════════════════════════════════════════════════════════════════════════
- * PROGRESSION GRAMMAR — the canonical 8-stage evolution ladder.
+ * PROGRESSION GRAMMAR — the canonical 8-stage ascension ladder.
  * ═══════════════════════════════════════════════════════════════════════════
  *
- * Phase B of the content plan: every surface that renders growth (evolution
+ * Phase B of the content plan: every surface that renders growth (ascension
  * ceremonies, state-loop performances, power techniques) reads its language
  * from HERE, modulated by the world bible's per-country powerStyle grammar.
  *
- * Stage numbering matches the on-chain DNA evolution field: 0-7 (8 stages).
+ * Stage numbering matches the on-chain TRAIT_SEED ascension field: 0-7 (8 stages).
  *
  *   0 Pup · 1 Initiate · 2 Operative · 3 Veteran ·
  *   4 Elite · 5 Commander · 6 Legend · 7 Ascended
@@ -18,7 +18,7 @@
  *   - countryAuraFlavor()                     (B1: per-country modulation,
  *     reusing the registry powerStyle language — USA gold ticker-ribbons,
  *     China jade rings, Russia frost pressure…)
- *   - evolutionCeremony()                     (B2: CHARGE → BURST → REVEAL)
+ *   - ascensionCeremony()                     (B2: CHARGE → BURST → REVEAL)
  *   - performanceBand() / stagePerformance()  (B3: stage-aware acting)
  *   - techniqueFor() / TECHNIQUES             (B4: named country × lane moves)
  *
@@ -50,7 +50,7 @@ export interface StageAura {
 }
 
 export interface ProgressionStage {
-  /** DNA evolution value, 0-7. */
+  /** TRAIT_SEED ascension value, 0-7. */
   stage: number;
   /** Canonical stage name — the ONLY valid name on any surface. */
   name: string;
@@ -254,7 +254,7 @@ export function countryAuraFlavor(factionId: number): string {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// B2 · EVOLUTION CEREMONY — CHARGE → BURST → REVEAL choreography.
+// B2 · ASCENSION CEREMONY — CHARGE → BURST → REVEAL choreography.
 // ─────────────────────────────────────────────────────────────────────────────
 
 export type CeremonyBeatId = "charge" | "burst" | "reveal";
@@ -266,11 +266,11 @@ export interface CeremonyBeat {
 }
 
 /**
- * The 3-beat evolution ceremony for one transition, country-modulated.
+ * The 3-beat ascension ceremony for one transition, country-modulated.
  * CHARGE = anticipation, BURST = whiteout morph (identity-readable silhouette
  * inside the light), REVEAL = signature pose + aura settle at the new stage.
  */
-export function evolutionCeremony(
+export function ascensionCeremony(
   factionId: number,
   fromStage: number,
   toStage: number,
@@ -369,7 +369,7 @@ export function stagePerformance(
 
 // ─────────────────────────────────────────────────────────────────────────────
 // B4 · NAMED TECHNIQUES — per country × lane (wizard/muggle) move table.
-// Power-mutation clips pick from this table; the NAME is for dialogue, captions
+// Power-reroll clips pick from this table; the NAME is for dialogue, captions
 // and debut records (Phase D) — only the visualGrammar enters image prompts.
 // ─────────────────────────────────────────────────────────────────────────────
 

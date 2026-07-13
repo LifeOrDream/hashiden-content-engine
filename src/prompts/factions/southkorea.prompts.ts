@@ -28,7 +28,7 @@ import { legacyFactionBlock } from "../../world/bible.js";
  * Faction identity — leader name, title, catchphrases, lore, palette, and
  * visual identity — comes from the WORLD BIBLE (src/world/bible.ts), the
  * single source of truth. This file defines ONLY the faction-specific NFT
- * trait grammar (types, traits, evolution stages, stories).
+ * trait grammar (types, traits, ascension stages, stories).
  */
 export const SOUTH_KOREA_FACTION = legacyFactionBlock(5);
 
@@ -90,7 +90,7 @@ coastal energy amplifies shamanic power.`,
     occupation: "Chaebol Tech Sorcerer",
     description:
       "Magical heir integrating enchantments with Korean semiconductors",
-    story: `Samsung, Hyundai, LG - all chaebol families have magical bloodlines. Every
+    story: `Samsung, Hyundai, LG - all chaebol families have magical lineages. Every
 chip carries faction code. Every device contains enchantment circuits. $DEN mines
 through every Samsung phone sold worldwide.`,
     prompt:
@@ -897,10 +897,10 @@ export const SOUTH_KOREA_BACKGROUND: Record<
 };
 
 // =============================================================================
-// EVOLUTION STAGES (0-7)
+// ASCENSION STAGES (0-7)
 // =============================================================================
 
-export const SOUTH_KOREA_EVOLUTION_STAGES: Record<
+export const SOUTH_KOREA_ASCENSION_STAGES: Record<
   number,
   {
     stage: number;

@@ -1,8 +1,8 @@
 /**
- * nft.genome_distill — the prompt-genome distiller (Spec Part C).
+ * nft.trait_map_distill — the prompt-trait_map distiller (Spec Part C).
  *
- * The backend owns the beast's off-chain lineage (an event ledger of mutations,
- * evolutions, rebirths, and sealed whisper intents). Periodically it hands the
+ * The backend owns the beast's off-chain lineage (an event ledger of rerolls,
+ * ascensions, prestiges, and sealed whisper intents). Periodically it hands the
  * engine a SELF-CONTAINED snapshot — the previous distilled card plus the new
  * lineage entries and any sealed intents — and asks for a fresh, bounded
  * distillation. The engine reads NO game state: everything needed is in the
@@ -12,7 +12,7 @@
  * assume):
  *   - motif_line       ≤ 200 chars  — the beast's one-line visual/emotional motif
  *   - motivation       ≤ 400 chars  — what it wants right now (drives dialogue)
- *   - past_life_echo?  ≤ 300 chars  — only on rebirth: the prior life folded to one line
+ *   - past_life_echo?  ≤ 300 chars  — only on prestige: the prior life folded to one line
  *   - honored_intent_ref? — set when the motivation was driven by a sealed intent
  *
  * Safety: the outputs pass the same banned-lexicon lint the dialogue/chapter
@@ -31,8 +31,8 @@ export const MOTIVATION_MAX = 400;
 export const PAST_LIFE_ECHO_MAX = 300;
 
 /** One lineage event the backend replayed from the beast's timeline. */
-export interface GenomeLineageEntry {
-  /** e.g. "evolution" | "mutation_power" | "mutation_visual" | "epithet" | "technique_debut" | "cycle_summary". */
+export interface TraitMapLineageEntry {
+  /** e.g. "ascension" | "reroll_power" | "reroll_visual" | "epithet" | "technique_debut" | "cycle_summary". */
   event_type: string;
   /** A short pre-summarized description (backend-built; no game-state coupling). */
   summary: string;
@@ -41,7 +41,7 @@ export interface GenomeLineageEntry {
 }
 
 /** A sealed whisper intent the owner staked, folded into the motivation. */
-export interface GenomeSealedIntent {
+export interface TraitMapSealedIntent {
   /** Opaque ref the backend attaches the quill mark to (echoed back if honored). */
   ref: string;
   /** Bounded verb (avenge | protect | covet | mourn | boast | scheme | …). */
@@ -53,25 +53,25 @@ export interface GenomeSealedIntent {
 }
 
 /** The previous distilled card (or a seed from the mint-time bio). */
-export interface GenomePreviousCard {
+export interface TraitMapPreviousCard {
   motif_line?: string;
   motivation?: string;
   past_life_echoes?: string[];
 }
 
-export interface NftGenomeDistillInput {
+export interface NftTraitMapDistillInput {
   mint: string;
-  previousCard?: GenomePreviousCard;
-  newLineageEntries?: GenomeLineageEntry[];
-  sealedIntents?: GenomeSealedIntent[];
-  /** Rebirth pass: fold the WHOLE previous card into one past-life echo. */
-  rebirth?: boolean;
+  previousCard?: TraitMapPreviousCard;
+  newLineageEntries?: TraitMapLineageEntry[];
+  sealedIntents?: TraitMapSealedIntent[];
+  /** Prestige pass: fold the WHOLE previous card into one past-life echo. */
+  prestige?: boolean;
 }
 
-export interface NftGenomeDistillResult {
+export interface NftTraitMapDistillResult {
   motif_line: string;
   motivation: string;
-  /** Only present on rebirth (or when the fallback folds a prior life). */
+  /** Only present on prestige (or when the fallback folds a prior life). */
   past_life_echo?: string;
   /** Set when the motivation was driven by a sealed intent (newest wins). */
   honored_intent_ref?: string;
@@ -88,8 +88,8 @@ function clip(input: unknown, max: number): string {
 }
 
 /** Lint a distilled card's text fields; [] = clean. */
-export function lintGenomeCard(
-  card: Pick<NftGenomeDistillResult, "motif_line" | "motivation" | "past_life_echo">,
+export function lintTraitMapCard(
+  card: Pick<NftTraitMapDistillResult, "motif_line" | "motivation" | "past_life_echo">,
 ): string[] {
   const flags: string[] = [];
   for (const f of dialogueSmells(card.motif_line)) flags.push(`motif_line: ${f}`);
@@ -107,7 +107,7 @@ export function lintGenomeCard(
  * determinism). Any banned-lexicon token in the SOURCE material is stripped
  * token-wise so the fallback itself stays lexicon-clean.
  */
-export function distillGenomeFallback(input: NftGenomeDistillInput): NftGenomeDistillResult {
+export function distillTraitMapFallback(input: NftTraitMapDistillInput): NftTraitMapDistillResult {
   const prev = input.previousCard || {};
   const entries = (input.newLineageEntries || []).filter((e) => e && e.summary);
   const intents = (input.sealedIntents || []).filter((i) => i && i.ref && i.verb);
@@ -149,20 +149,20 @@ export function distillGenomeFallback(input: NftGenomeDistillInput): NftGenomeDi
     motivation = "Win status for its country without exposing the fear underneath.";
   }
 
-  // past_life_echo: on rebirth fold the whole previous card into one line.
+  // past_life_echo: on prestige fold the whole previous card into one line.
   let past_life_echo: string | undefined;
-  if (input.rebirth) {
+  if (input.prestige) {
     const priorEcho = (prev.past_life_echoes || [])[0];
     const echoSource =
       [clip(prev.motif_line, PAST_LIFE_ECHO_MAX), clip(prev.motivation, PAST_LIFE_ECHO_MAX)]
         .filter(Boolean)
         .join(" — ") ||
       priorEcho ||
-      "A prior life, ended and reforged from fresh DNA.";
+      "A prior life, ended and reforged from fresh TRAIT_SEED.";
     past_life_echo = scrubBanned(clip(echoSource, PAST_LIFE_ECHO_MAX));
   }
 
-  const result: NftGenomeDistillResult = { motif_line, motivation, source: "fallback" };
+  const result: NftTraitMapDistillResult = { motif_line, motivation, source: "fallback" };
   if (past_life_echo) result.past_life_echo = past_life_echo;
   if (honored_intent_ref) result.honored_intent_ref = honored_intent_ref;
   return result;
@@ -215,7 +215,7 @@ const BANNED_LEXICON_LINE = [
   "DEN token",
 ].join(", ");
 
-export function buildGenomeDistillPrompt(input: NftGenomeDistillInput): string {
+export function buildTraitMapDistillPrompt(input: NftTraitMapDistillInput): string {
   const prev = input.previousCard || {};
   const entries = (input.newLineageEntries || []).filter((e) => e && e.summary).slice(-8);
   const intents = (input.sealedIntents || []).filter((i) => i && i.ref && i.verb).slice(-3);
@@ -237,20 +237,20 @@ export function buildGenomeDistillPrompt(input: NftGenomeDistillInput): string {
   );
 
   return [
-    `You are the lore-keeper of HASHIDEN, a serialized country-vs-country HashBeast mining war. Distill ONE beast's lineage into a tight prompt genome that later drives its dialogue and art. Character-first, concrete, physical — ZERO marketing language.`,
+    `You are the lore-keeper of HASHIDEN, a serialized country-vs-country HashBeast mining war. Distill ONE beast's lineage into a tight prompt trait_map that later drives its dialogue and art. Character-first, concrete, physical — ZERO marketing language.`,
     prevLines.length ? `PREVIOUS CARD (carry forward what still fits; let old motivations decay into motif texture):\n${prevLines.join("\n")}` : `NO PREVIOUS CARD — this beast is early in its story.`,
     entryLines.length ? `NEW LINEAGE EVENTS (newest last — the fresh material to fold in):\n${entryLines.join("\n")}` : "",
     intentLines.length
       ? `SEALED WHISPER INTENTS (owner-sworn; NEWEST WINS conflicts — the motivation MUST honor the newest, and you MUST return its ref as honored_intent_ref; older intents decay into motif texture; never quote the owner verbatim):\n${intentLines.join("\n")}`
       : "",
-    input.rebirth
-      ? `REBIRTH PASS: this beast just died and reformed. Fold its ENTIRE prior life into ONE past_life_echo line (<= ${PAST_LIFE_ECHO_MAX} chars); the motif/motivation start fresh from the reborn form.`
+    input.prestige
+      ? `PRESTIGE PASS: this beast just died and reformed. Fold its ENTIRE prior life into ONE past_life_echo line (<= ${PAST_LIFE_ECHO_MAX} chars); the motif/motivation start fresh from the prestiged form.`
       : "",
     `BANNED LEXICON (a machine lint rejects any output containing these): ${BANNED_LEXICON_LINE}. Also avoid single-word prop labels and stating emotions directly ("I'm scared") — show them through behavior.`,
     `Write STRICT JSON only (no markdown):
 {
   "motif_line": "the beast's one-line visual/emotional motif, <= ${MOTIF_LINE_MAX} chars",
-  "motivation": "what it wants RIGHT NOW, drives its next lines, <= ${MOTIVATION_MAX} chars",${input.rebirth ? `\n  "past_life_echo": "its prior life folded to one line, <= ${PAST_LIFE_ECHO_MAX} chars",` : ""}
+  "motivation": "what it wants RIGHT NOW, drives its next lines, <= ${MOTIVATION_MAX} chars",${input.prestige ? `\n  "past_life_echo": "its prior life folded to one line, <= ${PAST_LIFE_ECHO_MAX} chars",` : ""}
   "honored_intent_ref": ${intentLines.length ? `"the ref of the sealed intent that drove the motivation (from the list above)"` : `null`}
 }`,
   ]
@@ -260,13 +260,13 @@ export function buildGenomeDistillPrompt(input: NftGenomeDistillInput): string {
 
 function coerceCard(
   raw: any,
-  input: NftGenomeDistillInput,
-): NftGenomeDistillResult | null {
+  input: NftTraitMapDistillInput,
+): NftTraitMapDistillResult | null {
   if (!raw || typeof raw !== "object") return null;
   const motif_line = clip(raw.motif_line, MOTIF_LINE_MAX);
   const motivation = clip(raw.motivation, MOTIVATION_MAX);
   if (!motif_line || !motivation) return null;
-  const result: NftGenomeDistillResult = { motif_line, motivation, source: "llm" };
+  const result: NftTraitMapDistillResult = { motif_line, motivation, source: "llm" };
   const echo = clip(raw.past_life_echo, PAST_LIFE_ECHO_MAX);
   if (echo) result.past_life_echo = echo;
   // Only accept an honored_intent_ref that matches a supplied sealed intent.
@@ -280,14 +280,14 @@ function coerceCard(
 // Orchestration — LLM + one lint retry, deterministic fallback on any failure
 // ─────────────────────────────────────────────────────────────────────────────
 
-export async function distillGenome(
-  input: NftGenomeDistillInput,
-): Promise<NftGenomeDistillResult> {
-  if (process.env.GENOME_DISTILL_DISABLE_LLM === "true") {
-    return distillGenomeFallback(input);
+export async function distillTraitMap(
+  input: NftTraitMapDistillInput,
+): Promise<NftTraitMapDistillResult> {
+  if (process.env.TRAIT_MAP_DISTILL_DISABLE_LLM === "true") {
+    return distillTraitMapFallback(input);
   }
-  const prompt = buildGenomeDistillPrompt(input);
-  const attemptOnce = async (feedback?: string): Promise<NftGenomeDistillResult | null> => {
+  const prompt = buildTraitMapDistillPrompt(input);
+  const attemptOnce = async (feedback?: string): Promise<NftTraitMapDistillResult | null> => {
     const raw = await generateText(feedback ? `${prompt}\n\n${feedback}` : prompt, {
       temperature: 0.8,
       json: true,
@@ -296,13 +296,13 @@ export async function distillGenome(
   };
   try {
     let card = await attemptOnce();
-    let flags = card ? lintGenomeCard(card) : ["structurally invalid draft"];
+    let flags = card ? lintTraitMapCard(card) : ["structurally invalid draft"];
     if (flags.length > 0) {
       const feedback =
         `REVISION PASS — your previous draft failed the lexicon lint. Fix EVERY flag below (keep the structure, repair only the flagged text):\n` +
         flags.slice(0, 10).map((f) => `- ${f}`).join("\n");
       const second = await attemptOnce(feedback);
-      const secondFlags = second ? lintGenomeCard(second) : ["structurally invalid draft"];
+      const secondFlags = second ? lintTraitMapCard(second) : ["structurally invalid draft"];
       if (secondFlags.length === 0) {
         card = second;
         flags = secondFlags;
@@ -310,7 +310,7 @@ export async function distillGenome(
     }
     if (card && flags.length === 0) return card;
   } catch (e: any) {
-    logger.warning(`genome distill: LLM path failed (${e?.message || e}) — deterministic fallback`);
+    logger.warning(`trait_map distill: LLM path failed (${e?.message || e}) — deterministic fallback`);
   }
-  return distillGenomeFallback(input);
+  return distillTraitMapFallback(input);
 }

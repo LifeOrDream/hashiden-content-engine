@@ -4,7 +4,7 @@
  * One spec, four families:
  *   1. COUNTRY LEITMOTIFS  — one short ownable instrumental motif per country
  *      (12). Plays under that country's wins, reveals and chapter callouts.
- *   2. EVOLUTION STINGS    — one sting per performance band (pup / soldier /
+ *   2. ASCENSION STINGS    — one sting per performance band (pup / soldier /
  *      elite / ascendant), escalating in scale with the stage ladder.
  *   3. STORY THEMES        — the chapter-settled theme + the losing-streak
  *      motif (the "drought" sound that makes a comeback land harder).
@@ -18,7 +18,7 @@
  * engine-side and budget-gated backend-side EXACTLY like other media jobs.
  * Do NOT mass-generate: cues are generated once, stored, and referenced by id.
  *
- * soundId wiring: the frontend's existing SFX ids are "mutation" and
+ * soundId wiring: the frontend's existing SFX ids are "reroll" and
  * "jackpot". Every cue carries `fallbackSoundId` from that legacy set so any
  * surface can play TODAY's sound until the cue's generated asset ships —
  * new ids extend the existing mapping, they never break it.
@@ -33,12 +33,12 @@ import { generateMusic, generateSfx, type GeneratedMedia } from "../utils/falMed
 
 export type AudioCueCategory =
   | "leitmotif"
-  | "evolution_sting"
+  | "ascension_sting"
   | "story_theme"
   | "ritual_sfx";
 
 /** The frontend's EXISTING SFX ids — every cue must fall back to one of these. */
-export const LEGACY_SOUND_IDS = ["mutation", "jackpot"] as const;
+export const LEGACY_SOUND_IDS = ["reroll", "jackpot"] as const;
 export type LegacySoundId = (typeof LEGACY_SOUND_IDS)[number];
 
 export interface AudioCueDef {
@@ -57,7 +57,7 @@ export interface AudioCueDef {
   fallbackSoundId: LegacySoundId;
   /** Leitmotifs only: the country this motif belongs to. */
   factionId?: number;
-  /** Evolution stings only: the stage band this sting belongs to. */
+  /** Ascension stings only: the stage band this sting belongs to. */
   band?: PerformanceBand;
 }
 
@@ -113,48 +113,48 @@ export function countryLeitmotif(factionId: number): AudioCueDef {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// 2 · Evolution stings — escalate per stage band (B3 performance bands).
+// 2 · Ascension stings — escalate per stage band (B3 performance bands).
 // ─────────────────────────────────────────────────────────────────────────────
 
-const EVOLUTION_STING_GRAMMAR: Record<PerformanceBand, { seconds: number; prompt: string }> = {
+const ASCENSION_STING_GRAMMAR: Record<PerformanceBand, { seconds: number; prompt: string }> = {
   pup: {
     seconds: 4,
     prompt:
-      "Tiny bright evolution sting: toy glockenspiel sparkle, one small chime and a quick fizz of fairy-dust shimmer, eager and adorable",
+      "Tiny bright ascension sting: toy glockenspiel sparkle, one small chime and a quick fizz of fairy-dust shimmer, eager and adorable",
   },
   soldier: {
     seconds: 5,
     prompt:
-      "Mid-rank evolution sting: tight snare build into a confident two-note brass hit with a metallic shing, earned and proud",
+      "Mid-rank ascension sting: tight snare build into a confident two-note brass hit with a metallic shing, earned and proud",
   },
   elite: {
     seconds: 6,
     prompt:
-      "Heroic evolution sting: full orchestral riser detonating into a shockwave impact with choir-less synth halo and slow ember decay, commanding",
+      "Heroic ascension sting: full orchestral riser detonating into a shockwave impact with choir-less synth halo and slow ember decay, commanding",
   },
   ascendant: {
     seconds: 8,
     prompt:
-      "Transcendent evolution sting: vast serene swell, sub-bass bloom and a single weightless bell over shimmering overtones, godlike calm instead of noise",
+      "Transcendent ascension sting: vast serene swell, sub-bass bloom and a single weightless bell over shimmering overtones, godlike calm instead of noise",
   },
 };
 
-export const EVOLUTION_STINGS: AudioCueDef[] = (
+export const ASCENSION_STINGS: AudioCueDef[] = (
   ["pup", "soldier", "elite", "ascendant"] as PerformanceBand[]
 ).map((band) => ({
-  id: `evolution_sting_${band}`,
-  title: `Evolution sting — ${band} band`,
-  category: "evolution_sting",
-  seconds: EVOLUTION_STING_GRAMMAR[band].seconds,
-  prompt: `${EVOLUTION_STING_GRAMMAR[band].prompt}. ${INSTRUMENTAL_RULE}`,
+  id: `ascension_sting_${band}`,
+  title: `Ascension sting — ${band} band`,
+  category: "ascension_sting",
+  seconds: ASCENSION_STING_GRAMMAR[band].seconds,
+  prompt: `${ASCENSION_STING_GRAMMAR[band].prompt}. ${INSTRUMENTAL_RULE}`,
   fallbackSoundId: "jackpot",
   band,
 }));
 
-/** The sting for the stage a beast is evolving INTO. */
-export function evolutionSting(toStage: number | undefined | null): AudioCueDef {
+/** The sting for the stage a beast is ascending INTO. */
+export function ascensionSting(toStage: number | undefined | null): AudioCueDef {
   const band = performanceBand(toStage);
-  return EVOLUTION_STINGS.find((s) => s.band === band) || EVOLUTION_STINGS[0];
+  return ASCENSION_STINGS.find((s) => s.band === band) || ASCENSION_STINGS[0];
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -176,7 +176,7 @@ export const STORY_THEMES: AudioCueDef[] = [
     category: "story_theme",
     seconds: 8,
     prompt: `Comic-melancholy losing-streak motif: a descending three-note minor phrase on muted trombone and detuned piano, a deflating slide, small and wry rather than tragic — the sound of a drought that makes the comeback hit harder. ${INSTRUMENTAL_RULE}`,
-    fallbackSoundId: "mutation",
+    fallbackSoundId: "reroll",
   },
 ];
 
@@ -191,7 +191,7 @@ export const RITUAL_SFX: AudioCueDef[] = [
     category: "ritual_sfx",
     seconds: 4,
     prompt: `Anticipation riser: a heavy crate rattling and straining, deep heartbeat thumps accelerating under a tense string riser, energy building to a verge. ${INSTRUMENTAL_RULE}`,
-    fallbackSoundId: "mutation",
+    fallbackSoundId: "reroll",
   },
   {
     id: "ritual_lootbox_crack",
@@ -199,7 +199,7 @@ export const RITUAL_SFX: AudioCueDef[] = [
     category: "ritual_sfx",
     seconds: 3,
     prompt: `Stone-and-metal crack: a deep fracture split with escaping pressurized energy hiss and bright light-leak shimmer, sharp transient then airy glow. ${INSTRUMENTAL_RULE}`,
-    fallbackSoundId: "mutation",
+    fallbackSoundId: "reroll",
   },
   {
     id: "ritual_fanfare_minor",
@@ -231,7 +231,7 @@ export const RITUAL_SFX: AudioCueDef[] = [
     category: "ritual_sfx",
     seconds: 5,
     prompt: `Near-miss sting: a rising tumbler-lock click-click-click that catches and strains, then a detuned drop as the mechanism re-seats with a hollow clunk and the glow drains away — agonizingly close, not defeated. ${INSTRUMENTAL_RULE}`,
-    fallbackSoundId: "mutation",
+    fallbackSoundId: "reroll",
   },
   {
     id: "ritual_claim_anticipation",
@@ -239,7 +239,7 @@ export const RITUAL_SFX: AudioCueDef[] = [
     category: "ritual_sfx",
     seconds: 3,
     prompt: `Quick gacha anticipation: dice rattling in a metal cup over a tight snare-and-synth riser, two seconds of held breath. ${INSTRUMENTAL_RULE}`,
-    fallbackSoundId: "mutation",
+    fallbackSoundId: "reroll",
   },
   {
     id: "ritual_claim_resolve_win",
@@ -255,7 +255,7 @@ export const RITUAL_SFX: AudioCueDef[] = [
     category: "ritual_sfx",
     seconds: 3,
     prompt: `Soft no-hit resolve: a gentle air whiff and one sympathetic low piano note with a tiny upward chime at the tail — neutral, never punishing. ${INSTRUMENTAL_RULE}`,
-    fallbackSoundId: "mutation",
+    fallbackSoundId: "reroll",
   },
 ];
 
@@ -270,7 +270,7 @@ export function fanfareCueIdFor(tier: RarityTier): string {
 
 export const AUDIO_IDENTITY_CUES: AudioCueDef[] = [
   ...COUNTRY_LEITMOTIFS,
-  ...EVOLUTION_STINGS,
+  ...ASCENSION_STINGS,
   ...STORY_THEMES,
   ...RITUAL_SFX,
 ];
@@ -292,7 +292,7 @@ export function legacyPlayableSoundId(soundId: string): LegacySoundId {
   if ((LEGACY_SOUND_IDS as readonly string[]).includes(soundId)) {
     return soundId as LegacySoundId;
   }
-  return audioCue(soundId)?.fallbackSoundId || "mutation";
+  return audioCue(soundId)?.fallbackSoundId || "reroll";
 }
 
 // ─────────────────────────────────────────────────────────────────────────────

@@ -1,7 +1,7 @@
 /**
  * Breed Registry - Maps faction ID + breed value to breed data
  *
- * Each faction has 4 breeds (determined by 2 bits in DNA, values 0-3).
+ * Each faction has 4 breeds (determined by 2 bits in TRAIT_SEED, values 0-3).
  * The breed defines the dog's physical body type and silhouette.
  *
  * 12 factions × 4 breeds = 48 total breed types
@@ -160,7 +160,7 @@ export const BREED_REGISTRY: Record<number, Record<number, BreedData>> = {
       name: "Indian Pariah",
       description: "Ancient natural landrace dog, resilient and intelligent",
       bodyPrompt:
-        "An Indian Pariah dog body — medium well-balanced athletic build, short smooth coat in tan/brown, wedge-shaped head with alert erect ears, curled or sickle tail, lean and agile proportions, bright intelligent eyes, naturally evolved hardy physique",
+        "An Indian Pariah dog body — medium well-balanced athletic build, short smooth coat in tan/brown, wedge-shaped head with alert erect ears, curled or sickle tail, lean and agile proportions, bright intelligent eyes, naturally ascended hardy physique",
       silhouette:
         "Medium athletic dog with wedge head, erect ears, curled tail, short coat",
     },

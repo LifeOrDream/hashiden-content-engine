@@ -9,7 +9,7 @@
  *
  * Runs as the `nft.mint_intro` job kind. Stays in the backend: the budget
  * gate that decides whether this job is dispatched at all (gate it exactly
- * like nft.mutation_content), the `minted` timeline row, DDB persistence and
+ * like nft.reroll_content), the `minted` timeline row, DDB persistence and
  * socket emission.
  *
  * Canon rules enforced here:
@@ -30,8 +30,8 @@ import {
   safeBaseType,
 } from "../world/baseTypes.js";
 import { beastMemoryPromptBlock, type BeastMemorySnapshot } from "./beastMemory.js";
-import { writeAndVoiceFromPrompt, type DialogueResult } from "./mutationContent.js";
-import { genomeTextDirective, genomeImageBlock } from "./genomeBlock.js";
+import { writeAndVoiceFromPrompt, type DialogueResult } from "./rerollContent.js";
+import { traitMapTextDirective, traitMapImageBlock } from "./traitMapBlock.js";
 import type { NftBeastInput } from "./types.js";
 import {
   getDefaultArtifactStore,
@@ -100,7 +100,7 @@ export function buildMintIntroPanelPrompt(
     colors
       ? `Palette discipline: ${nation} faction colors — primary ${colors.primary}, secondary ${colors.secondary}, accent ${colors.accent}, glow ${colors.glow}. National identity comes from costume style and palette only.`
       : "",
-    genomeImageBlock(beast.genomeBlock),
+    traitMapImageBlock(beast.traitMapBlock),
     rung.styleContract,
     `${rung.never} No readable text, lettering, numbers, signage, logos, or UI anywhere in the image. Never render any country flag as clothing, headwear, or fabric on a character.`,
   ]
@@ -124,7 +124,7 @@ export function buildMintIntroDialoguePrompt(
       ? `Its personality: ${[p.archetype, p.tone, p.motivation].filter(Boolean).join(", ")}.`
       : "",
     beastMemoryPromptBlock(memory),
-    genomeTextDirective(beast.genomeBlock),
+    traitMapTextDirective(beast.traitMapBlock),
     `Make it punchy, trash-talky, patriotic, country-vs-country energy. May include ONE short native-language word. Output ONLY the line, no quotes, no narration.`,
   ]
     .filter(Boolean)

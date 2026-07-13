@@ -28,7 +28,7 @@ import { legacyFactionBlock } from "../../world/bible.js";
  * Faction identity — leader name, title, catchphrases, lore, palette, and
  * visual identity — comes from the WORLD BIBLE (src/world/bible.ts), the
  * single source of truth. This file defines ONLY the faction-specific NFT
- * trait grammar (types, traits, evolution stages, stories).
+ * trait grammar (types, traits, ascension stages, stories).
  */
 export const RUSSIA_FACTION = legacyFactionBlock(2);
 
@@ -122,7 +122,7 @@ unlimited power. The Mining Wars favor the cold.`,
     type: "wizard",
     region: "Chernobyl",
     occupation: "Chernobyl Zone Mutant Mage",
-    description: "Radiation-evolved wizard from the Exclusion Zone",
+    description: "Radiation-ascended wizard from the Exclusion Zone",
     story: `Stalker Radion was born in the Zone after the disaster. Radiation gave
 him powers. The Zone itself is alive, and it has chosen $DEN as its currency. The
 Mining Wars have a radioactive ally.`,
@@ -708,7 +708,7 @@ export const RUSSIA_ACCESSORY: Record<
   },
   21: {
     name: "Romanov Ring",
-    prompt: "ring from Romanov dynasty, imperial bloodline",
+    prompt: "ring from Romanov dynasty, imperial lineage",
   },
   22: {
     name: "Shaman Amulet",
@@ -1018,10 +1018,10 @@ export const RUSSIA_BACKGROUND: Record<
 };
 
 // =============================================================================
-// EVOLUTION STAGES (0-7)
+// ASCENSION STAGES (0-7)
 // =============================================================================
 
-export const RUSSIA_EVOLUTION_STAGES: Record<
+export const RUSSIA_ASCENSION_STAGES: Record<
   number,
   {
     stage: number;

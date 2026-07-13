@@ -12,11 +12,11 @@ export * as worldBible from "./world/bible.js";
 // aura escalation, per-stage-band performance, named country × lane techniques.
 export * as worldProgression from "./world/progression.js";
 // BASE TYPES — the body-plan layer above breed ("forms are fluid"): canine
-// genesis default + lootbox/rebirth-gated primate, amphibian, feline forms
+// genesis default + lootbox/prestige-gated primate, amphibian, feline forms
 // with silhouette language, movement grammar, voice timbre modifiers,
 // per-country skinning, and starter breed packs.
 export * as worldBaseTypes from "./world/baseTypes.js";
-// AUDIO IDENTITY — the ownable sound spec: 12 country leitmotifs, evolution
+// AUDIO IDENTITY — the ownable sound spec: 12 country leitmotifs, ascension
 // stings per stage band, story themes, and the casino-ritual SFX catalog,
 // all generated through the stable-audio path and referenced by cue id.
 export * as worldAudioIdentity from "./world/audioIdentity.js";

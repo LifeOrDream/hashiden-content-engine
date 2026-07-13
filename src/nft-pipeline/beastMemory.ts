@@ -19,7 +19,7 @@
  * deriveEpithetTriggers is the reference implementation):
  *   first_claim        → the beast's owner claims their FIRST winning round
  *   win_streak_5       → a claimed win extends the streak to >= 5
- *   evolution_stage_4  → the beast evolves to stage >= 4 (elite band)
+ *   ascension_stage_4  → the beast ascends to stage >= 4 (elite band)
  *   country_mvp        → the beast's owner is crowned a cycle's country MVP
  *
  * Titles never enter generated images (no-readable-text rule) — they are text
@@ -34,12 +34,12 @@ import { countryBible } from "../world/bible.js";
 export type EpithetTriggerId =
   | "first_claim"
   | "win_streak_5"
-  | "evolution_stage_4"
+  | "ascension_stage_4"
   | "country_mvp";
 
 /** Tunable thresholds behind the trigger rules. */
 export const EPITHET_WIN_STREAK_THRESHOLD = 5;
-export const EPITHET_EVOLUTION_STAGE_THRESHOLD = 4;
+export const EPITHET_ASCENSION_STAGE_THRESHOLD = 4;
 
 /** Canon titles. `{nation}` is replaced with the beast's country name. */
 export const EPITHET_CATALOG: Record<
@@ -54,9 +54,9 @@ export const EPITHET_CATALOG: Record<
     title: "The Unbroken",
     rule: `a claimed win extends the owner's streak to >= ${EPITHET_WIN_STREAK_THRESHOLD}`,
   },
-  evolution_stage_4: {
+  ascension_stage_4: {
     title: "Ascendant",
-    rule: `the beast evolves to stage >= ${EPITHET_EVOLUTION_STAGE_THRESHOLD}`,
+    rule: `the beast ascends to stage >= ${EPITHET_ASCENSION_STAGE_THRESHOLD}`,
   },
   country_mvp: {
     title: "Pride of {nation}",
@@ -88,7 +88,7 @@ export interface EpithetTriggerStats {
   totalWins?: number;
   /** Owner's win streak AFTER this claim. */
   winStreak?: number;
-  /** Evolution target stage (evolution context). */
+  /** Ascension target stage (ascension context). */
   newStage?: number;
   /** This beast's owner was crowned a country MVP this cycle. */
   isCountryMvp?: boolean;
@@ -96,7 +96,7 @@ export interface EpithetTriggerStats {
 
 /**
  * Reference implementation of the trigger rules. Pure + deterministic — the
- * backend mirrors this exact logic at its claim / evolution / settle handlers.
+ * backend mirrors this exact logic at its claim / ascension / settle handlers.
  */
 export function deriveEpithetTriggers(
   stats: EpithetTriggerStats,
@@ -109,8 +109,8 @@ export function deriveEpithetTriggers(
   ) {
     out.push("win_streak_5");
   }
-  if ((stats.newStage ?? 0) >= EPITHET_EVOLUTION_STAGE_THRESHOLD) {
-    out.push("evolution_stage_4");
+  if ((stats.newStage ?? 0) >= EPITHET_ASCENSION_STAGE_THRESHOLD) {
+    out.push("ascension_stage_4");
   }
   if (stats.isCountryMvp === true) out.push("country_mvp");
   return out;

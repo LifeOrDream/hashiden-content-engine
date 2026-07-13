@@ -1,11 +1,11 @@
 /**
- * Mint asset generation — DNA → prompt grammar → full_body.png / dp.png
+ * Mint asset generation — TRAIT_SEED → prompt grammar → full_body.png / dp.png
  * (+ optional cinematic.png) with identity validation and bounded regen.
  *
  * Ported from the Hashiden backend's asset generation worker. The engine half
  * is everything creative + generative:
  *
- *   1. Decode DNA → faction × category × region × breed traits.
+ *   1. Decode TRAIT_SEED → faction × category × region × breed traits.
  *   2. Build the faction-grammar full-body prompt (style-locked to a breed
  *      base-body reference image).
  *   3. Generate full body (3:4) with the mint image model, Gemini-validate
@@ -43,7 +43,7 @@ import {
   DEFAULT_BASE_TYPE,
   type BaseTypeId,
 } from "../world/baseTypes.js";
-import { decodeDNA } from "./dna.js";
+import { decodeTraitSeed } from "./trait_seed.js";
 import { compareImageWithReference, type ValidationResult } from "./identity.js";
 import {
   getDefaultArtifactStore,
@@ -98,12 +98,12 @@ export const BASE_BODIES_DIR = process.env.HASHBEAST_BASE_BODIES_DIR || "";
 const BASE_BODIES_BASE_URL = process.env.HASHBEAST_BASE_BODIES_BASE_URL || "";
 
 // ---------------------------------------------------------------------------
-// DNA → trait view used by the prompt builders
+// TRAIT_SEED → trait view used by the prompt builders
 // ---------------------------------------------------------------------------
 
 export interface DecodedTraits {
   factionId: number;
-  evolutionStage: number;
+  ascensionStage: number;
   type: number; // 0-7 = Wizard, 8-15 = Muggle
   breedValue: number; // 0-3 breed within faction
   furColor: number;
@@ -117,9 +117,9 @@ export interface DecodedTraits {
   visiblePowers: number[];
 }
 
-/** Decode DNA and flatten to the trait view the mint prompts consume. */
-export function decodeMintTraits(dnaHex: string): DecodedTraits {
-  const decoded = decodeDNA(dnaHex);
+/** Decode TRAIT_SEED and flatten to the trait view the mint prompts consume. */
+export function decodeMintTraits(traitSeedHex: string): DecodedTraits {
+  const decoded = decodeTraitSeed(traitSeedHex);
   const rawTraits = decoded.appearance.map((group) => group[0]);
   const traits = [
     rawTraits[0],
@@ -132,7 +132,7 @@ export function decodeMintTraits(dnaHex: string): DecodedTraits {
   ];
   return {
     factionId: decoded.faction,
-    evolutionStage: decoded.evolution,
+    ascensionStage: decoded.ascension,
     type: decoded.type,
     breedValue: decoded.breed,
     furColor: traits[0],
@@ -201,7 +201,7 @@ export function buildFullBodyPrompt(
 ): string {
   const hashbeastPrompt = buildHashBeastPrompt(
     decodedTraits.factionId,
-    decodedTraits.evolutionStage,
+    decodedTraits.ascensionStage,
     decodedTraits.type,
     decodedTraits.traits,
     decodedTraits.breedValue,
@@ -261,10 +261,10 @@ export function buildCinematicPrompt(
   decodedTraits: DecodedTraits,
   baseType: BaseTypeId = DEFAULT_BASE_TYPE,
 ): string {
-  const { factionId, evolutionStage, traits, breedValue } = decodedTraits;
+  const { factionId, ascensionStage, traits, breedValue } = decodedTraits;
   const resolved = resolveHashBeastTraits(
     factionId,
-    evolutionStage,
+    ascensionStage,
     decodedTraits.type ?? 0,
     traits,
     breedValue,
@@ -274,12 +274,12 @@ export function buildCinematicPrompt(
     FACTION_CINEMATIC_ENVIRONMENTS[factionId] || FACTION_CINEMATIC_ENVIRONMENTS[0];
   const { breed, faction, type } = resolved;
 
-  const evolutionDesc =
-    evolutionStage >= 5
+  const ascensionDesc =
+    ascensionStage >= 5
       ? "Legendary presence, battle-scarred veteran, aura of power and authority"
-      : evolutionStage >= 3
+      : ascensionStage >= 3
         ? "Experienced operative, confident bearing, well-worn equipment"
-        : evolutionStage >= 1
+        : ascensionStage >= 1
           ? "Young but determined, fresh equipment, eager posture"
           : "Rookie recruit, basic gear, wide-eyed but resolute";
 
@@ -302,7 +302,7 @@ Role: ${type.occupation} (${type.isWizard ? "Wizard — magical elements in desi
 FACTION ENVIRONMENT: ${factionEnv.bg}
 COLOR DIRECTION: ${factionEnv.colors}
 
-EVOLUTION STAGE ${evolutionStage}/7: ${evolutionDesc}
+ASCENSION STAGE ${ascensionStage}/7: ${ascensionDesc}
 
 APPEARANCE:
 ${traitLines.join("\n")}
@@ -368,8 +368,8 @@ export interface NftMintAssetsInput {
   mint: string;
   name?: string;
   owner?: string;
-  /** 256-bit DNA hex (with or without 0x). */
-  dna: string;
+  /** 256-bit TRAIT_SEED hex (with or without 0x). */
+  trait_seed: string;
   factionId: number;
   /** Category value (0-31, wizard/muggle role) — used for the storage path. */
   categoryValue: number;
@@ -383,7 +383,7 @@ export interface NftMintAssetsInput {
    * Body-plan layer above breed ("forms are fluid"). Defaults to "canine"
    * (the genesis form). Non-canine values ("primate" | "amphibian" |
    * "feline") are only legitimate for beasts that earned them through the
-   * lootbox/rebirth path — the BACKEND enforces that gate before dispatch;
+   * lootbox/prestige path — the BACKEND enforces that gate before dispatch;
    * the engine validates against the deployment allowlist
    * (HASHBEAST_BASE_TYPE_ALLOWLIST) and throws on anything else.
    */
@@ -468,8 +468,8 @@ export async function generateMintAssets(
   // 0. Validate the base type (strict: unknown/non-allowlisted values throw).
   const baseType = normalizeBaseType(input.baseType);
 
-  // 1. Decode DNA + storage path.
-  const decodedTraits = decodeMintTraits(input.dna);
+  // 1. Decode TRAIT_SEED + storage path.
+  const decodedTraits = decodeMintTraits(input.trait_seed);
   const storagePath = getStoragePath(
     input.factionId,
     input.categoryValue,

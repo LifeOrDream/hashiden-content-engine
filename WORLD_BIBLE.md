@@ -117,8 +117,8 @@ Three rungs, one identity. Typed version: `STYLE_ELEVATION_LADDER`.
 
 | Rung | Name | Surfaces | Contract |
 |------|------|----------|----------|
-| 1 | **Pixel Sprite** | NFT mint assets (full_body/dp), state loops (mining/win/lose/power), mutation transitions, in-game sprites | Chunky retro pixel art, hard outlines, flat fills, magenta-keyed strips, game-card readability |
-| 2 | **Arcade-Cel Key Art** | Trailers, show keyframes, Hashiden chapter covers + recap panels, social cards, docs heroes | High-res 2D arcade-cel with pixel-art DNA, bold outlines, cel shading, premium bright key-art light |
+| 1 | **Pixel Sprite** | NFT mint assets (full_body/dp), state loops (mining/win/lose/power), reroll transitions, in-game sprites | Chunky retro pixel art, hard outlines, flat fills, magenta-keyed strips, game-card readability |
+| 2 | **Arcade-Cel Key Art** | Trailers, show keyframes, Hashiden chapter covers + recap panels, social cards, docs heroes | High-res 2D arcade-cel with pixel-art TRAIT SEED, bold outlines, cel shading, premium bright key-art light |
 | 3 | **Cinematic Portrait** | Optional mint cinematic PFP (`includeCinematic`), posters, deck splash, season key visuals | Pixar/DreamWorks-grade semi-realistic render with faction environment; same character, same gear |
 
 **Ladder rules:**
@@ -129,7 +129,7 @@ Three rungs, one identity. Typed version: `STYLE_ELEVATION_LADDER`.
    breed, markings, gear lineage, or silhouette.
 3. Every character carries **identity anchors** (in the bible per leader, in
    `visualDesign` per lieutenant): *markings* (fur/face), *gear lineage*
-   (signature equipment that persists across evolutions), and *silhouette*
+   (signature equipment that persists across ascensions), and *silhouette*
    (the one-glance read). A viewer who owns the pixel sprite must instantly
    recognize the same beast in a trailer frame and on a movie poster.
 4. Never on any rung: readable text in image, flag-print clothing, real
@@ -145,15 +145,15 @@ engine docs: `docs/base-types.md`.
 | Base type | Availability | One-glance read |
 |-----------|--------------|-----------------|
 | **Canine** | Genesis default — every minted beast | The classic HashBeast dog; 48 per-country breeds |
-| **Primate** | Lootbox / rebirth only | Long-armed climb-and-swing acrobat (Macaque, Capuchin, Gibbon, Gorilla) |
-| **Amphibian** | Lootbox / rebirth only | Springy low-slung wide-mouthed meme-frog (Tree Frog, Bullfrog, Axolotl, Toad) |
-| **Feline** | Lootbox / rebirth only | Silent-precision cat-ninja (Shadow Cat, Siamese, Maine Coon, Sand Cat) |
+| **Primate** | Lootbox / prestige only | Long-armed climb-and-swing acrobat (Macaque, Capuchin, Gibbon, Gorilla) |
+| **Amphibian** | Lootbox / prestige only | Springy low-slung wide-mouthed meme-frog (Tree Frog, Bullfrog, Axolotl, Toad) |
+| **Feline** | Lootbox / prestige only | Silent-precision cat-ninja (Shadow Cat, Siamese, Maine Coon, Sand Cat) |
 
 **Base-type rules:**
 
 1. Canine is canon for genesis and for the entire show cast (the Council of
    Twelve and all lieutenants are dogs). Non-canine forms exist only through
-   the lootbox/rebirth path — the game backend grants them, never the engine.
+   the lootbox/prestige path — the game backend grants them, never the engine.
 2. Country style modulates the base type: a Brazil primate (carnival blaze,
    capoeira-flow swings) reads nothing like a Japan primate (onsen-macaque
    calm, tech-ronin layers). Per-country skins live in the typed registry.
@@ -189,7 +189,7 @@ locations stays in `trailer/world/locationRegistry.ts`.
 
 ## Progression grammar (`src/world/progression.ts`)
 
-The canonical 8-stage growth ladder (DNA evolution 0-7):
+The canonical 8-stage growth ladder (TRAIT SEED ascension 0-7):
 
 **Pup · Initiate · Operative · Veteran · Elite · Commander · Legend · Ascended**
 
@@ -207,7 +207,7 @@ never rename on any surface:
 | 6 Legend | The Myth Forging |
 | 7 Ascended | The Ascension |
 
-Evolution renders as a 3-beat ceremony — **CHARGE → BURST → REVEAL**
+Ascension renders as a 3-beat ceremony — **CHARGE → BURST → REVEAL**
 (anticipation / whiteout-morph / signature-pose + aura-settle) — modulated by
 the country's powerStyle grammar (USA gold ticker-ribbons, China jade rings,
 Russia frost pressure…). Performance bands (`pup` 0-1, `soldier` 2-3, `elite`
@@ -253,7 +253,7 @@ a cue id. `rarityTierForStage()` maps the 8-stage ladder onto the 5 tiers
 | `src/nft-pipeline/voice.ts` | `FACTION_VOICE_HINTS`, leader catchphrase previews, country codes |
 | `src/nft-pipeline/stateAnimations.ts` | `MINING_TOOL_BY_CODE`, country names/codes; stage performance + named techniques via `progression.ts` |
 | `src/nft-pipeline/mintAssets.ts` | `FACTION_CINEMATIC_ENVIRONMENTS` (ladder rung 3), country codes |
-| `src/nft-pipeline/mutationContent.ts` | country names; evolution ceremony + techniques via `progression.ts` |
+| `src/nft-pipeline/mutationContent.ts` | country names; ascension ceremony + techniques via `progression.ts` |
 | `src/nft-pipeline/moments.ts` | rivalry map (`rivals` edges), country names; performance bands via `progression.ts` |
 | `src/content-engine/fixtures.ts` | USA leader name + catchphrase |
 | `trailer/style/castCanon.ts` | `CAST_CANON` (re-export) |

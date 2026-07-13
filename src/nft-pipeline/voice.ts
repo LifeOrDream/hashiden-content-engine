@@ -2,8 +2,8 @@
  * HashBeast voice layer.
  *
  * Voices are SHARED, not unique per NFT: keyed by (faction, breed, stage-band)
- * so every NFT of the same breed/country sounds consistent, and an evolved
- * beast (higher band) carries a deeper "evolved" timbre.
+ * so every NFT of the same breed/country sounds consistent, and an ascended
+ * beast (higher band) carries a deeper "ascended" timbre.
  *
  * Voices are designed lazily on first use (MiniMax Voice Design via fal →
  * reusable voice id). PERSISTENCE IS A PORT: the engine ships an in-memory
@@ -58,8 +58,8 @@ export function setVoiceRegistry(r: VoiceRegistry): void {
   registry = r;
 }
 
-// Evolution-stage bands → one voice variant per band. Default: two bands
-// ("young" 0-3, "evolved" 4-7). Format: comma-separated inclusive ranges.
+// Ascension-stage bands → one voice variant per band. Default: two bands
+// ("young" 0-3, "ascended" 4-7). Format: comma-separated inclusive ranges.
 const STAGE_BANDS: Array<[number, number]> = parseBands(
   process.env.HASHBEAST_VOICE_STAGE_BANDS || "0-3,4-7",
 );

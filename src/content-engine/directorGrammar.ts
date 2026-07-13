@@ -5,11 +5,11 @@ const DEFAULT_ASPECT = "9:16";
 export function buildDirectorPromptBlock(format?: Partial<VideoFormat>): string {
   const aspect = format?.aspectRatio || DEFAULT_ASPECT;
   return `HASHIDEN DIRECTOR GRAMMAR — OBEY FOR EVERY FRAME
-Visual identity: premium 2D arcade-cel animation with pixel-art DNA, crisp silhouettes, bright readable lighting, expressive dog-warrior characters, upgraded gear and powers that feel earned through gameplay. Not photorealistic, not generic 3D, not muddy grimdark.
+Visual identity: premium 2D arcade-cel animation with pixel-art TRAIT_SEED, crisp silhouettes, bright readable lighting, expressive dog-warrior characters, upgraded gear and powers that feel earned through gameplay. Not photorealistic, not generic 3D, not muddy grimdark.
 World logic: this is a serialized HashBeast show produced by the game world. Scenes can be war rooms, streets, homes, clubs, stadium tunnels, temples, labs, ports, courts, markets, rooftops, private jets, palace corridors, or absurd political offices. Do NOT force mining equipment or floating crypto cubes into every shot.
 Camera grammar: default to locked or deliberate camera movement, level horizon, clear readable staging, medium-wide deep-focus masters for group comedy, low-angle hero shots for power, fast inserts only for punchline objects, and close-ups only for emotional/reaction beats.
 Comedy/thriller grammar: play the situation straight first, then break it with one absurd dog-world detail, a sharp reaction, a power reveal, or a cliffhanger. Make it bingeable like a real show, not a product tutorial.
-Reference rule: if character images are attached, they are hard identity anchors. Preserve breed, colors, face, outfit language, silhouette, gear family, and power motif. Upgrade/evolve through added details, not by redesigning the character.
+Reference rule: if character images are attached, they are hard identity anchors. Preserve breed, colors, face, outfit language, silhouette, gear family, and power motif. Upgrade/ascend through added details, not by redesigning the character.
 Frame: ${aspect}. Keep the main subject/action readable in center-safe composition for crops. No captions, readable text, watermarks, logos, or UI baked into generated frames.`;
 }
 
@@ -55,7 +55,7 @@ export function buildCharacterReferenceBlock(
     `${label} CANON`,
     hb.mint ? `mint: ${hb.mint}` : "",
     hb.breed ? `breed: ${hb.breed}` : "",
-    hb.evolution_stage != null ? `evolution stage: ${hb.evolution_stage}` : "",
+    hb.ascension_stage != null ? `ascension stage: ${hb.ascension_stage}` : "",
     hb.bio ? `bio: ${hb.bio}` : "",
     [p.archetype, p.tone, p.motivation].filter(Boolean).length
       ? `personality: ${[p.archetype, p.tone, p.motivation].filter(Boolean).join(", ")}`

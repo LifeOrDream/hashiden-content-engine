@@ -23,11 +23,11 @@ import type {
 import { generateText, parseJsonLoose } from "./llm.js";
 import { generateMintAssets, type NftProgressFn } from "../nft-pipeline/mintAssets.js";
 import { generateStateAnimations } from "../nft-pipeline/stateAnimations.js";
-import { generateMutationContent } from "../nft-pipeline/mutationContent.js";
+import { generateRerollContent } from "../nft-pipeline/rerollContent.js";
 import { generateMomentContent } from "../nft-pipeline/momentContent.js";
 import { generateCycleSummary } from "../nft-pipeline/cycleSummary.js";
 import { generateMintIntro } from "../nft-pipeline/mintIntro.js";
-import { distillGenome } from "../nft-pipeline/genomeDistill.js";
+import { distillTraitMap } from "../nft-pipeline/traitMapDistill.js";
 import { generateGlowUp } from "../nft-pipeline/glowUp.js";
 import { reasonCurator } from "../nft-pipeline/curatorReason.js";
 import {
@@ -202,9 +202,9 @@ export async function processContentEngineJob<K extends ContentEngineJobKind>(
       const input = payload.input as ContentEngineJobPayload<"nft.state_animations">["input"];
       return (await generateStateAnimations(input)) as ContentEngineJobResultMap[K];
     }
-    case "nft.mutation_content": {
-      const input = payload.input as ContentEngineJobPayload<"nft.mutation_content">["input"];
-      return (await generateMutationContent(input)) as ContentEngineJobResultMap[K];
+    case "nft.reroll_content": {
+      const input = payload.input as ContentEngineJobPayload<"nft.reroll_content">["input"];
+      return (await generateRerollContent(input)) as ContentEngineJobResultMap[K];
     }
     case "nft.moment_content": {
       const input = payload.input as ContentEngineJobPayload<"nft.moment_content">["input"];
@@ -218,9 +218,9 @@ export async function processContentEngineJob<K extends ContentEngineJobKind>(
       const input = payload.input as ContentEngineJobPayload<"nft.mint_intro">["input"];
       return (await generateMintIntro(input)) as ContentEngineJobResultMap[K];
     }
-    case "nft.genome_distill": {
-      const input = payload.input as ContentEngineJobPayload<"nft.genome_distill">["input"];
-      return (await distillGenome(input)) as ContentEngineJobResultMap[K];
+    case "nft.trait_map_distill": {
+      const input = payload.input as ContentEngineJobPayload<"nft.trait_map_distill">["input"];
+      return (await distillTraitMap(input)) as ContentEngineJobResultMap[K];
     }
     case "nft.glow_up": {
       const input = payload.input as ContentEngineJobPayload<"nft.glow_up">["input"];

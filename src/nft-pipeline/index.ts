@@ -1,5 +1,5 @@
 /**
- * NFT asset pipeline — mint art, living-sprite state loops, mutation clips,
+ * NFT asset pipeline — mint art, living-sprite state loops, reroll clips,
  * and cycle recaps for HashBeasts. See docs/nft-pipeline.md.
  *
  * Service mode runs these as the `nft.*` job kinds (src/service/contracts.ts);
@@ -7,12 +7,12 @@
  */
 export * from "./types.js";
 export * from "./artifacts.js";
-export * from "./dna.js";
+export * from "./trait_seed.js";
 export * from "./identity.js";
 export * from "./mintAssets.js";
 export * from "./stateAnimations.js";
 export * from "./assetRefresh.js";
-export * from "./mutationContent.js";
+export * from "./rerollContent.js";
 export * from "./moments.js";
 export * from "./momentContent.js";
 export * from "./cycleSummary.js";

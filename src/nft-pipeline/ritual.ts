@@ -10,17 +10,17 @@
  *      near-miss → anticipation-shake → LOCK STRAIN ("the lock almost
  *                  turned" — dramatizes roll_value vs threshold_bps) → dim
  *                  resolve. A distant miss skips the strain beat entirely.
- *   2. CLAIM-ROLL CEREMONY (`ritual.claim_roll`): the claim-time mutation
+ *   2. CLAIM-ROLL CEREMONY (`ritual.claim_roll`): the claim-time reroll
  *      roll staged like the gacha pull it mechanically is — a short
  *      anticipation sting, then a resolve beat (hit or settle).
- *   3. EVOLUTION RITUAL (pure helper; the evolution media itself already
- *      ships via nft.mutation_content): wraps the canonical 3-beat ceremony
+ *   3. ASCENSION RITUAL (pure helper; the ascension media itself already
+ *      ships via nft.reroll_content): wraps the canonical 3-beat ceremony
  *      (CHARGE → BURST → REVEAL) as ritual acts with the stage-band sting.
  *
  * Rarity color/particle language comes from THE BIBLE (src/world/bible.ts
  * RARITY_TIERS) so the same tier reads identically on every surface. Sound
  * cue ids come from the audio identity spec (src/world/audioIdentity.ts);
- * every act also carries the legacy fallback id ("mutation" | "jackpot") so
+ * every act also carries the legacy fallback id ("reroll" | "jackpot") so
  * the FE's existing soundId mapping keeps working until cues are generated.
  *
  * Ritual definitions are DETERMINISTIC and free — no model calls. The paid
@@ -32,7 +32,7 @@
  * canonical art IS the end frame); any other beast imagery still rides
  * nft.moment_content, which keeps the Gemini identity gate on every
  * free-standing character render. Backend dispatch is flag-gated and
- * budget-gated exactly like nft.mutation_content.
+ * budget-gated exactly like nft.reroll_content.
  */
 import {
   countryBible,
@@ -44,13 +44,13 @@ import {
 import {
   auraTokens,
   countryAuraFlavor,
-  evolutionCeremony,
+  ascensionCeremony,
   normalizeStage,
   stageTransition,
 } from "../world/progression.js";
 import {
   countryLeitmotif,
-  evolutionSting,
+  ascensionSting,
   fanfareCueIdFor,
   legacyPlayableSoundId,
   type LegacySoundId,
@@ -67,8 +67,8 @@ import {
   writeAndVoiceFromPrompt,
   buildDialoguePrompt,
   type DialogueResult,
-  type MutationKind,
-} from "./mutationContent.js";
+  type RerollKind,
+} from "./rerollContent.js";
 import type { BeastMemorySnapshot } from "./beastMemory.js";
 import type { NftBeastInput } from "./types.js";
 import {
@@ -96,7 +96,7 @@ export type RitualKind =
   | "lootbox_miss"
   | "claim_roll_hit"
   | "claim_roll_settle"
-  | "evolution";
+  | "ascension";
 
 export interface RitualAct {
   /** Stable act id the FE keys animations off. */
@@ -118,7 +118,7 @@ export interface RitualAct {
 }
 
 export interface StagedRitual {
-  /** e.g. "lootbox_win@epic", "lootbox_near_miss", "evolution@stage5". */
+  /** e.g. "lootbox_win@epic", "lootbox_near_miss", "ascension@stage5". */
   ritualId: string;
   kind: RitualKind;
   rarity?: RarityTierId;
@@ -160,7 +160,7 @@ export interface LootboxRitualInput {
   factionId?: number;
   /** Explicit rarity tier; else derived from the revealed beast's stage. */
   rarity?: RarityTierId;
-  /** Evolution stage of the revealed beast (rarity derivation, wins only). */
+  /** Ascension stage of the revealed beast (rarity derivation, wins only). */
   revealStage?: number;
 }
 
@@ -281,14 +281,14 @@ export function buildLootboxRevealRitual(input: LootboxRitualInput): StagedRitua
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// F2 · Claim-roll ceremony — the claim-time mutation roll, staged.
+// F2 · Claim-roll ceremony — the claim-time reroll roll, staged.
 // ─────────────────────────────────────────────────────────────────────────────
 
 export interface ClaimRollInput {
-  /** What the roll produced: a mutation kind, or "none" for a quiet settle. */
-  result: MutationKind | "none";
+  /** What the roll produced: a reroll kind, or "none" for a quiet settle. */
+  result: RerollKind | "none";
   factionId?: number;
-  /** Evolution rolls: the stage being evolved INTO (colors the resolve). */
+  /** Ascension rolls: the stage being ascended INTO (colors the resolve). */
   newStage?: number;
 }
 
@@ -300,10 +300,10 @@ export function buildClaimRollCeremony(input: ClaimRollInput): StagedRitual {
 
   const anticipation: RitualAct = {
     act: "charge_roll",
-    title: "The genes roll",
+    title: "The traits roll",
     durationMs: 1100,
     staging:
-      `the claim crest spins up like a dice cup — the beast's DNA helix ticks through trait glyphs while the ${country} aura gathers tight around it`,
+      `the claim crest spins up like a dice cup — the beast's TRAIT_SEED helix ticks through trait glyphs while the ${country} aura gathers tight around it`,
     lightLanguage:
       "a tightening ring of country-colored light pulsing faster, particles drawn inward like a held breath",
     ...cueWithFallback("ritual_claim_anticipation"),
@@ -311,26 +311,26 @@ export function buildClaimRollCeremony(input: ClaimRollInput): StagedRitual {
 
   if (hit) {
     const resolveLight =
-      input.result === "evolution"
+      input.result === "ascension"
         ? `${flavor}; ${auraTokens(input.newStage)}`
-        : `${flavor}; a sharp bloom of fresh trait-light tracing the changed gene`;
+        : `${flavor}; a sharp bloom of fresh trait-light tracing the changed trait`;
     const resolve: RitualAct = {
       act: "roll_hit",
       title:
-        input.result === "evolution"
-          ? "Evolution unlocked"
+        input.result === "ascension"
+          ? "Ascension unlocked"
           : input.result === "power"
             ? "Power surge"
             : "New trait",
       durationMs: 1900,
       staging:
-        input.result === "evolution"
-          ? "the helix locks on a burning glyph and the whole frame inhales — the ceremony hands off to the full evolution ritual"
-          : "the helix slams onto the winning glyph; the changed gene ignites along the beast's body and the crowd ticker spikes",
+        input.result === "ascension"
+          ? "the helix locks on a burning glyph and the whole frame inhales — the ceremony hands off to the full ascension ritual"
+          : "the helix slams onto the winning glyph; the changed trait ignites along the beast's body and the crowd ticker spikes",
       lightLanguage: resolveLight,
       ...cueWithFallback(
-        input.result === "evolution"
-          ? evolutionSting(input.newStage).id
+        input.result === "ascension"
+          ? ascensionSting(input.newStage).id
           : "ritual_claim_resolve_win",
       ),
     };
@@ -341,7 +341,7 @@ export function buildClaimRollCeremony(input: ClaimRollInput): StagedRitual {
 
   const settle: RitualAct = {
     act: "roll_settle",
-    title: "The genes hold",
+    title: "The traits hold",
     durationMs: 1000,
     staging:
       "the helix slows and settles on no glyph; the aura relaxes back into its idle hum — charge kept, nothing lost",
@@ -355,21 +355,21 @@ export function buildClaimRollCeremony(input: ClaimRollInput): StagedRitual {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Evolution ritual — the canonical 3-beat ceremony in ritual clothing.
+// Ascension ritual — the canonical 3-beat ceremony in ritual clothing.
 // ─────────────────────────────────────────────────────────────────────────────
 
-export interface EvolutionRitualInput {
+export interface AscensionRitualInput {
   factionId: number;
   fromStage: number;
   toStage: number;
 }
 
-export function buildEvolutionRitual(input: EvolutionRitualInput): StagedRitual {
+export function buildAscensionRitual(input: AscensionRitualInput): StagedRitual {
   const to = normalizeStage(input.toStage);
   const from = normalizeStage(input.fromStage);
-  const beats = evolutionCeremony(input.factionId, from, to);
+  const beats = ascensionCeremony(input.factionId, from, to);
   const transition = stageTransition(to);
-  const sting = evolutionSting(to);
+  const sting = ascensionSting(to);
   const flavor = countryAuraFlavor(input.factionId);
   const acts: RitualAct[] = [
     {
@@ -398,7 +398,7 @@ export function buildEvolutionRitual(input: EvolutionRitualInput): StagedRitual 
       ...cueWithFallback(countryLeitmotif(input.factionId).id),
     },
   ];
-  return finish(`evolution@stage${to}`, "evolution", acts, {
+  return finish(`ascension@stage${to}`, "ascension", acts, {
     factionId: input.factionId,
   });
 }
@@ -580,7 +580,7 @@ export async function generateClaimRollCeremony(
       input.beast,
       buildDialoguePrompt(input.beast, input.result, { newStage: input.newStage }, input.previousLine, input.memory),
       momentGrammar(
-        input.result === "evolution" ? "evolved" : input.result === "power" ? "powered" : "mutated",
+        input.result === "ascension" ? "ascended" : input.result === "power" ? "powered" : "rerolled",
       ).soundId,
       {
         store: opts.store || getDefaultArtifactStore(),
@@ -590,7 +590,7 @@ export async function generateClaimRollCeremony(
     );
     if (dlg) {
       result.moment =
-        input.result === "evolution" ? "evolved" : input.result === "power" ? "powered" : "mutated";
+        input.result === "ascension" ? "ascended" : input.result === "power" ? "powered" : "rerolled";
       result.dialogue = dlg;
       if (dlg.audio) result.artifacts.push(dlg.audio);
     }

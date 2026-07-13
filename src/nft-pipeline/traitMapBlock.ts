@@ -1,13 +1,13 @@
 /**
- * Prompt-genome block rendering + purity gates (Spec Part C).
+ * Prompt-trait_map block rendering + purity gates (Spec Part C).
  *
- * The backend owns the beast's off-chain "prompt genome" (distilled lineage:
+ * The backend owns the beast's off-chain "prompt trait_map" (distilled lineage:
  * motif line, motivation, past-life echoes, aesthetic tokens, arc stage). It
  * hands the engine a pre-rendered pair on every snapshot:
  *
- *   genomeBlock = { forText, forImage }
+ *   traitMapBlock = { forText, forImage }
  *
- * - `forText`  — the FULL distilled genome (motif prose, motivation, epithets,
+ * - `forText`  — the FULL distilled trait_map (motif prose, motivation, epithets,
  *                technique names allowed). Renders into TEXT surfaces only:
  *                personality directives, dialogue prompts, scene-script
  *                contextPromptBlocks, keyframe canonBlocks that describe story.
@@ -18,14 +18,14 @@
  *                images being described by look, not by named lore.
  *
  * The backend is the primary author of both variants, but the engine is the
- * last line of defence: `sanitizeGenomeForImage` defensively scrubs any
+ * last line of defence: `sanitizeTraitMapForImage` defensively scrubs any
  * technique/epithet/motif contamination before an image prompt is emitted, so
  * a backend regression can never leak lore into a picture.
  */
 import { allTechniqueNames } from "../world/progression.js";
 
-export interface GenomeBlock {
-  /** Full distilled genome — text/dialogue surfaces only. */
+export interface TraitMapBlock {
+  /** Full distilled trait_map — text/dialogue surfaces only. */
   forText: string;
   /** Stripped aesthetic-tokens + stage variant — image surfaces only. */
   forImage: string;
@@ -40,8 +40,8 @@ export interface GenomeBlock {
 }
 
 /** Hard caps mirroring the backend distiller output (defence in depth). */
-export const GENOME_FOR_TEXT_MAX = 900;
-export const GENOME_FOR_IMAGE_MAX = 300;
+export const TRAIT_MAP_FOR_TEXT_MAX = 900;
+export const TRAIT_MAP_FOR_IMAGE_MAX = 300;
 
 /**
  * Motif-prose / lore markers that must never appear in an IMAGE prompt. These
@@ -78,7 +78,7 @@ function techniqueNamesLower(): string[] {
  * offending reasons ([] = clean). Used by the acceptance tests and by the
  * defensive sanitizer.
  */
-export function genomeImagePuritySmells(text: string): string[] {
+export function traitMapImagePuritySmells(text: string): string[] {
   const t = String(text || "");
   const lower = t.toLowerCase();
   const smells: string[] = [];
@@ -92,43 +92,43 @@ export function genomeImagePuritySmells(text: string): string[] {
 }
 
 /**
- * Defensive scrub of a forImage genome variant: drops any line/clause that
+ * Defensive scrub of a forImage trait_map variant: drops any line/clause that
  * carries a technique name, epithet keyword, or motif-prose marker. Never
  * throws — worst case it returns "". Applied automatically wherever the engine
- * renders a genome into an IMAGE prompt.
+ * renders a trait_map into an IMAGE prompt.
  */
-export function sanitizeGenomeForImage(forImage: string | undefined): string {
-  const raw = String(forImage || "").slice(0, GENOME_FOR_IMAGE_MAX);
+export function sanitizeTraitMapForImage(forImage: string | undefined): string {
+  const raw = String(forImage || "").slice(0, TRAIT_MAP_FOR_IMAGE_MAX);
   if (!raw.trim()) return "";
   // Split into clause-ish fragments so one bad token drops only its own clause,
   // not the whole aesthetic-token list.
   const fragments = raw.split(/[\n;,]+/);
   const clean = fragments
     .map((f) => f.trim())
-    .filter((f) => f.length > 0 && genomeImagePuritySmells(f).length === 0);
-  return clean.join(", ").slice(0, GENOME_FOR_IMAGE_MAX);
+    .filter((f) => f.length > 0 && traitMapImagePuritySmells(f).length === 0);
+  return clean.join(", ").slice(0, TRAIT_MAP_FOR_IMAGE_MAX);
 }
 
 /**
- * The forText genome directive rendered next to the owner-profile block inside
+ * The forText trait_map directive rendered next to the owner-profile block inside
  * personality directives + dialogue prompts. Returns "" when absent.
  */
-export function genomeTextDirective(block: GenomeBlock | undefined): string {
-  const forText = String(block?.forText || "").trim().slice(0, GENOME_FOR_TEXT_MAX);
+export function traitMapTextDirective(block: TraitMapBlock | undefined): string {
+  const forText = String(block?.forText || "").trim().slice(0, TRAIT_MAP_FOR_TEXT_MAX);
   if (!forText) return "";
-  return `PROMPT GENOME (this beast's distilled lineage — honor its motif, motivation and past-life echoes; never contradict hard on-chain facts): ${forText}`;
+  return `PROMPT TRAIT_MAP (this beast's distilled lineage — honor its motif, motivation and past-life echoes; never contradict hard on-chain facts): ${forText}`;
 }
 
 /**
- * The forImage genome block rendered into character-reference / keyframe IMAGE
+ * The forImage trait_map block rendered into character-reference / keyframe IMAGE
  * prompts. Aesthetic tokens + arc stage ONLY — defensively sanitized so no
  * technique/epithet name or motif prose can leak into a picture. Returns ""
  * when absent or when sanitizing leaves nothing.
  */
-export function genomeImageBlock(block: GenomeBlock | undefined): string {
-  const clean = sanitizeGenomeForImage(block?.forImage);
+export function traitMapImageBlock(block: TraitMapBlock | undefined): string {
+  const clean = sanitizeTraitMapForImage(block?.forImage);
   if (!clean) return "";
-  return `GENOME AESTHETIC (visual palette + arc stage cues only — render these as look, never as text): ${clean}`;
+  return `TRAIT_MAP AESTHETIC (visual palette + arc stage cues only — render these as look, never as text): ${clean}`;
 }
 
 /**
@@ -138,14 +138,14 @@ export function genomeImageBlock(block: GenomeBlock | undefined): string {
  * by the caller from the snapshot; this directive just keeps the line faithful
  * to the whispered intent. Returns "" when no intent is sealed.
  */
-export function genomeHonorIntentDirective(block: GenomeBlock | undefined): string {
+export function traitMapHonorIntentDirective(block: TraitMapBlock | undefined): string {
   const ref = String(block?.honoredIntentRef || "").trim();
   if (!ref) return "";
-  return `HONORED INTENT: the beast's owner sealed a whisper that now drives its motivation — let THIS line visibly honor that intent (it is already distilled into the genome motivation above; do not quote the owner verbatim). The system will attach the honoring quill mark.`;
+  return `HONORED INTENT: the beast's owner sealed a whisper that now drives its motivation — let THIS line visibly honor that intent (it is already distilled into the trait_map motivation above; do not quote the owner verbatim). The system will attach the honoring quill mark.`;
 }
 
 /** The intent ref to echo back on a dialogue result (or undefined). */
-export function honoredIntentRefOf(block: GenomeBlock | undefined): string | undefined {
+export function honoredIntentRefOf(block: TraitMapBlock | undefined): string | undefined {
   const ref = String(block?.honoredIntentRef || "").trim();
   return ref ? ref : undefined;
 }

@@ -19,10 +19,10 @@
  * a voice timbre modifier, per-country skinning rules (the country style from
  * the world bible modulates the base type — a Brazil primate reads nothing
  * like a Japan primate), and a starter breed pack (4 breeds, indexed by the
- * same DNA breed bits canine uses).
+ * same TRAIT_SEED breed bits canine uses).
  *
  * AVAILABILITY IS GATED. Non-canine base types enter the game ONLY through
- * the lootbox / rebirth path — the backend decides who is allowed to carry a
+ * the lootbox / prestige path — the backend decides who is allowed to carry a
  * `baseType` other than canine and what the allowlist is at any moment
  * (HASHBEAST_BASE_TYPE_ALLOWLIST). The engine's job is to validate the field
  * and render the form; it never grants one.
@@ -71,7 +71,7 @@ export interface BaseTypeDefinition {
   /** Per-country skin notes, factionId 0-11. Empty for canine (legacy grammar). */
   countrySkins: Record<number, string>;
   /**
-   * Starter breed pack (4 entries, indexed by DNA breed bits 0-3).
+   * Starter breed pack (4 entries, indexed by TRAIT_SEED breed bits 0-3).
    * null for canine — canine resolves through the 48-breed BREED_REGISTRY.
    */
   breeds: BaseTypeBreed[] | null;
@@ -295,7 +295,7 @@ export const BASE_TYPES: Record<BaseTypeId, BaseTypeDefinition> = {
 /**
  * The base types this deployment is willing to render. The BACKEND controls
  * this (env), exactly like every other content gate: a deployment that has
- * not shipped the lootbox/rebirth path runs with `canine` only.
+ * not shipped the lootbox/prestige path runs with `canine` only.
  * Default: all engine-known base types.
  */
 export function baseTypeAllowlist(): BaseTypeId[] {
@@ -399,7 +399,7 @@ export function baseTypeMotionDirective(id: BaseTypeId): string {
 /**
  * Breed resolution across base types. Canine routes to the per-country
  * 48-breed registry; other base types use their global starter pack
- * (indexed by the same DNA breed bits, % pack size).
+ * (indexed by the same TRAIT_SEED breed bits, % pack size).
  */
 export function getBreedForBaseType(
   id: BaseTypeId,

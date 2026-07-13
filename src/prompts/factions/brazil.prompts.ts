@@ -28,7 +28,7 @@ import { legacyFactionBlock } from "../../world/bible.js";
  * Faction identity — leader name, title, catchphrases, lore, palette, and
  * visual identity — comes from the WORLD BIBLE (src/world/bible.ts), the
  * single source of truth. This file defines ONLY the faction-specific NFT
- * trait grammar (types, traits, evolution stages, stories).
+ * trait grammar (types, traits, ascension stages, stories).
  */
 export const BRAZIL_FACTION = legacyFactionBlock(10);
 
@@ -1180,10 +1180,10 @@ export const BRAZIL_BACKGROUND: Record<
 };
 
 // =============================================================================
-// EVOLUTION STAGES (0-7)
+// ASCENSION STAGES (0-7)
 // =============================================================================
 
-export const BRAZIL_EVOLUTION_STAGES: Record<
+export const BRAZIL_ASCENSION_STAGES: Record<
   number,
   {
     stage: number;

@@ -98,10 +98,10 @@ function groundingFactLines(facts: ChapterCycleFacts): string[] {
       `Country MVP — ${chapterCountryName(mvp.factionId)}: ${mvp.beastName || mvp.ownerCallsign || "(unnamed)"}.`,
     );
   }
-  for (const mut of facts.biggestMutations || []) {
+  for (const mut of facts.biggestRerolls || []) {
     lines.push(
       `Big ${mut.kind}: ${mut.beastName || mut.mint.slice(0, 6)}` +
-        `${mut.kind === "evolution" ? ` → stage ${mut.newStage ?? "?"}` : ""}` +
+        `${mut.kind === "ascension" ? ` → stage ${mut.newStage ?? "?"}` : ""}` +
         `${mut.techniqueName ? ` debuting "${mut.techniqueName}"` : ""}.`,
     );
   }
@@ -281,7 +281,7 @@ export async function renderScenesToVideo(
     }
   }
   // Budget-tier resolution rides the ambient renderConfigStore (NOT a process
-  // env mutation — concurrent jobs on one worker would race each other's
+  // env reroll — concurrent jobs on one worker would race each other's
   // tiers). renderSequence's videoRes() consults the store per call.
   const { generateTrailer } = await import("../../trailer/generate/generate.js");
   const { renderConfigStore } = await import("../utils/falMedia.js");

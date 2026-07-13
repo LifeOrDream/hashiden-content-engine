@@ -26,7 +26,7 @@ every arc bends toward "we go up."
 
 1977 Star Wars worked because of four things; each has our analog:
 1. Mythic structure (hero's journey) -> every beast's wiki arc: Pup to
-   Ascended, epithets, technique debuts, rebirths.
+   Ascended, epithets, technique debuts, prestiges.
 2. A lived-in universe (used future) -> the mines, the scuffed gear, the
    war economy. Nothing chrome; everything earned.
 3. A technology leap that made it filmable (ILM) -> the AI content

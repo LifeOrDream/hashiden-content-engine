@@ -7,7 +7,7 @@
  *                  bible location card (arcade-cel rung, text-free)
  *   RECAP          3-5 beats with character callouts; beat 1 PAYS OFF the
  *                  previous chapter's cliffhanger when one exists
- *   CAST           the beasts that earned screen time (MVPs, big mutations,
+ *   CAST           the beasts that earned screen time (MVPs, big rerolls,
  *                  fresh recruits with their intro lines), owner callsigns
  *   COMPUTE LEDGER cost passthrough (what this cycle's content spend was)
  *   CLIFFHANGER    one line, PERSISTED — the next chapter must pay it off
@@ -39,11 +39,11 @@ export interface ChapterMvpFact {
   beastName?: string;
 }
 
-export interface ChapterMutationFact {
+export interface ChapterRerollFact {
   mint: string;
   beastName?: string;
   factionId?: number;
-  kind: "evolution" | "visual" | "power";
+  kind: "ascension" | "visual" | "power";
   newStage?: number;
   /** Named technique the power clip rendered (B4), when known. */
   techniqueName?: string;
@@ -94,7 +94,7 @@ export interface ChapterCycleFacts {
   /** Signed rank swings per faction id (positive = climbed). */
   rankDeltas?: number[];
   mvps?: ChapterMvpFact[];
-  biggestMutations?: ChapterMutationFact[];
+  biggestRerolls?: ChapterRerollFact[];
   jackpots?: ChapterJackpotFact[];
   mintIntros?: ChapterMintIntroFact[];
   /** The cycle's Curator calls (release/commission/showcase + glow-up assets). */
@@ -119,7 +119,7 @@ export interface ChapterCastMember {
   name: string;
   factionId?: number;
   ownerCallsign?: string;
-  role: "mvp" | "evolved" | "mutated" | "technique_debut" | "minted" | "jackpot";
+  role: "mvp" | "ascended" | "rerolled" | "technique_debut" | "minted" | "jackpot";
   /** The member's line in this chapter (mint intros carry their intro line). */
   line?: string;
 }
@@ -248,17 +248,17 @@ export function buildChapterCast(facts: ChapterCycleFacts): ChapterCastMember[] 
       role: "mvp",
     });
   }
-  for (const mut of facts.biggestMutations || []) {
+  for (const mut of facts.biggestRerolls || []) {
     push({
       mint: mut.mint,
       name: mut.beastName || `HashBeast ${mut.mint.slice(0, 6)}…`,
       factionId: mut.factionId,
       role:
-        mut.kind === "evolution"
-          ? "evolved"
+        mut.kind === "ascension"
+          ? "ascended"
           : mut.techniqueName
             ? "technique_debut"
-            : "mutated",
+            : "rerolled",
     });
   }
   for (const intro of facts.mintIntros || []) {
@@ -388,16 +388,16 @@ export function buildChapterAnatomyFallback(
       callouts: [who],
     });
   }
-  const bigMut = (facts.biggestMutations || [])[0];
+  const bigMut = (facts.biggestRerolls || [])[0];
   if (bigMut) {
     const who = bigMut.beastName || `HashBeast ${bigMut.mint.slice(0, 6)}…`;
     recap.push({
       beat:
-        bigMut.kind === "evolution"
+        bigMut.kind === "ascension"
           ? `${who} came back changed — stage ${bigMut.newStage ?? "?"}, and nobody laughed twice.`
           : bigMut.techniqueName
             ? `${who} debuted ${bigMut.techniqueName} mid-war and the room went quiet.`
-            : `${who} mutated mid-battle and wore the new look like it planned it.`,
+            : `${who} rerolled mid-battle and wore the new look like it planned it.`,
       callouts: [who],
     });
   }
@@ -552,9 +552,9 @@ export function buildChapterWriterPrompt(facts: ChapterCycleFacts): string {
       `Country MVP — ${chapterCountryName(mvp.factionId)}: ${mvp.beastName || mvp.ownerCallsign || "(unnamed)"}${mvp.ownerCallsign ? ` (owner callsign ${mvp.ownerCallsign})` : ""}.`,
     );
   }
-  for (const mut of facts.biggestMutations || []) {
+  for (const mut of facts.biggestRerolls || []) {
     factLines.push(
-      `Big ${mut.kind}: ${mut.beastName || mut.mint.slice(0, 6)}${mut.kind === "evolution" ? ` reached stage ${mut.newStage ?? "?"}` : ""}${mut.techniqueName ? ` debuting "${mut.techniqueName}"` : ""}.`,
+      `Big ${mut.kind}: ${mut.beastName || mut.mint.slice(0, 6)}${mut.kind === "ascension" ? ` reached stage ${mut.newStage ?? "?"}` : ""}${mut.techniqueName ? ` debuting "${mut.techniqueName}"` : ""}.`,
     );
   }
   for (const j of facts.jackpots || []) {

@@ -17,7 +17,7 @@ HARD LIMITS (learned from real generations — violating these wastes the render
 - MAX 3 tagged characters per sequence. More → glitches: duplicated faces, broken blocking, characters wandering. Crowds are background description, never tagged refs.
 - DETAIL BUDGET: roughly ONE action beat per 2-3 seconds. A 3s shot fits one gesture + one glance — NOT "pauses, reads the room, glances back, steps inside, eases the door shut". Overpacked shots silently drop your most important beat. Cut detail until it fits; Seedance understands skipping connective tissue (you can jump from hallway to inside the room).
 - NO readable text, logos, tickers, or UI anywhere in frame — text renders garbled or mirrored. All captions/facts are post overlays.
-- A wardrobe/state change needs its own reference sheet (helmet ON vs OFF, base vs evolved armor are different sheets). Never change a character's appearance mid-sequence unless the shot IS the transformation.
+- A wardrobe/state change needs its own reference sheet (helmet ON vs OFF, base vs ascended armor are different sheets). Never change a character's appearance mid-sequence unless the shot IS the transformation.
 
 EMOTION (Seedance infers brilliantly — feed it tells, not labels):
 - Write physical tells, never emotion names: "breathing fast, eyes wide, voice cracking" beats "scared"; "grin held a half-second too long" beats "nervous". Name the emotion only for a specific loud register (shouting rage).
@@ -64,7 +64,7 @@ STILL DIALECT (zero motion words):
 - No readable text, logos, tickers, UI, captions, or watermarks — ever.
 
 REFERENCE PLANNING (good refs in = consistency out):
-- Every character in frame gets its reference: "@<id>:<state>" — the state variant MUST match the sequence (helmet on = the helmet sheet; evolved = the evolved sheet). A face the refs never showed (back of head, profile) is a face the model invents — keep poses near the reference coverage or accept drift.
+- Every character in frame gets its reference: "@<id>:<state>" — the state variant MUST match the sequence (helmet on = the helmet sheet; ascended = the ascended sheet). A face the refs never showed (back of head, profile) is a face the model invents — keep poses near the reference coverage or accept drift.
 - CHAIN environments: when a sequence reuses an earlier location, list "env:seq<N>.startFrame" as a reference so the approved earlier frame anchors the room (same den, same lamp, same monitor wall). This chain is what makes independent generations read as ONE film.
 - Identity anchoring is restated in every frame prompt: "keep the exact identity, breed, fur markings, colors, and gear lineage from the attached references."
 

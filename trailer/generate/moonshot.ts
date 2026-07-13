@@ -61,7 +61,7 @@ const IMG_RES = (process.env.TRAILER_IMAGE_RES as "1K" | "2K") || "2K";
 
 const mref = (...p: string[]) => path.join(REF, "moonshot", ...p);
 const LOOK =
-  "Premium 2D arcade-cel animation with pixel-art DNA, cinematic aerospace lighting, deep blacks, " +
+  "Premium 2D arcade-cel animation with pixel-art TRAIT_SEED, cinematic aerospace lighting, deep blacks, " +
   "fog and volumetric strobe light, orange ore-glow accents, vertical 9:16 composition, " +
   "no photorealism, no generic 3D CGI.";
 const NO_TEXT =

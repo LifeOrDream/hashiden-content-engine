@@ -2,7 +2,7 @@
  * Trailer CAST — the recurring named characters (Rex, Long, …). Because they
  * aren't minted HashBeasts, we build each one ONCE:
  *   • a locked reference image (generated from a canonical country-breed seed,
- *     then upgraded into trailer-tier/evolved art direction) → cached to
+ *     then upgraded into trailer-tier/ascended art direction) → cached to
  *     trailer/cast/<id>.png and reused as the identity anchor for EVERY shot in
  *     EVERY video (that's what keeps them consistent).
  *   • a designed voice (MiniMax voice-design) → cached id in trailer/cast/voices.json.
@@ -41,7 +41,7 @@ export interface CharacterDef {
   localReferencePaths?: string[];
 }
 
-// Match the collection's breed canon and pixel-DNA, then upgrade the design into
+// Match the collection's breed canon and pixel-TRAIT_SEED, then upgrade the design into
 // trailer-tier character art. Base mint examples are seeds, not the quality cap.
 const STYLE = `${HASHBEAST_REFERENCE_STYLE} Full-body locked character reference, clean plain background, highly consistent design, game-card readable silhouette.`;
 const referencePath = (...parts: string[]) => path.resolve(__dirname, "..", "reference", ...parts);
@@ -66,7 +66,7 @@ const RENDER_CONFIG: Record<
     ],
     designNotes: [
       "Use the downloaded USA logo doge as an identity/social-DP anchor, but keep the body language in the USA breed canon. Preserve the hat/cap silhouette, golden-orange face, wide eyes, playful confident mouth shape, star-spangled clothing language, red cape/armor lineage, and collectible social-DP readability.",
-      "For show scenes, evolve Rex into a premium animated HashBeast without changing identity or breed. Do not turn him into a black corgi, pinstripe banker dog, realistic animal, anime boy, generic shiba, or generic 3D mascot.",
+      "For show scenes, ascend Rex into a premium animated HashBeast without changing identity or breed. Do not turn him into a black corgi, pinstripe banker dog, realistic animal, anime boy, generic shiba, or generic 3D mascot.",
     ],
   },
   long: { styleSeedUrl: SEED(1, "chow_chow_run1_dp.png") },
@@ -111,7 +111,7 @@ export async function ensureCharacterRefs(def: CharacterDef): Promise<Buffer[]> 
 }
 
 /**
- * Reference set for a character in a given STATE (helmet / evolved / soaked …).
+ * Reference set for a character in a given STATE (helmet / ascended / soaked …).
  * "default" = the locked base refs. Other states get a variant sheet generated
  * ONCE from the base refs and cached to trailer/cast/<id>__<state>.png — a
  * wardrobe/state change is a DIFFERENT reference sheet (Seedance craft rule).
@@ -129,7 +129,7 @@ export async function ensureStateRefs(def: CharacterDef, state?: string): Promis
   const img = await generateImageEditFromBuffers(
     [
       `Render the EXACT same character in a new state: ${state}.`,
-      `Preserve identity completely: same breed, face, fur markings, eye color, body build, colors, personality, and signature gear lineage. Apply ONLY the state change ("${state}") — e.g. helmet on, evolved armor, battle-worn, soaked fur.`,
+      `Preserve identity completely: same breed, face, fur markings, eye color, body build, colors, personality, and signature gear lineage. Apply ONLY the state change ("${state}") — e.g. helmet on, ascended armor, battle-worn, soaked fur.`,
       `Full-body locked character reference, clean plain background, highly consistent design, game-card readable silhouette.`,
       `No text, no logos, no watermark, no photorealism, no realistic fur, no 3D render, no cinematic CGI.`,
     ].join("\n"),

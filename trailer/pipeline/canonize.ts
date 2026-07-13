@@ -1,7 +1,7 @@
 /**
  * Canonize a finished trailer/video AFTER it is actually posted.
  *
- * Draft generation writes trailer/out/<id>/canon-draft.json, but does not mutate
+ * Draft generation writes trailer/out/<id>/canon-draft.json, but does not reroll
  * story memory. This command is the explicit publish gate:
  *
  *   npx tsx trailer/pipeline/canonize.ts 01 --platform x --url https://x.com/... --video-no 1

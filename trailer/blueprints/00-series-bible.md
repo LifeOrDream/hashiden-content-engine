@@ -11,14 +11,14 @@ Shared canon injected into the STORY passes (1-3). This file is deliberately sto
 - **Dynamic emissions.** Every 4 hours the emission rate shifts with price — inside the world this plays like a degen central bank / FOMC parody: hash-rate policy calls, multiplier dials, money-printer levers, faction delegates panicking, and new incentives hitting the streets.
 - **Real value.** Game revenue funds market-making + buybacks; in-world this becomes treasury pressure, faction infrastructure, public works, propaganda budgets, broadcast power, and the reason HashBeast factions can expand influence.
 - **The Country Race.** 12 nations compete; every 4-hour cycle ONE country wins, decided by whose community mines hardest. A genesis cast of 16,200 HashBeasts (15,000 public + 1,200 reserve).
-- **HashBeasts** are stylized sentient dog operators living in a hidden parallel layer of the human world. Humans see dogs, markets, governments, memes, and country pride; HashBeasts secretly influence the world behind those surfaces. They EVOLVE, MUTATE, gain gear, develop powers, and trash-talk rivals.
+- **HashBeasts** are stylized sentient dog operators living in a hidden parallel layer of the human world. Humans see dogs, markets, governments, memes, and country pride; HashBeasts secretly influence the world behind those surfaces. They ASCEND, REROLL, gain gear, develop powers, and trash-talk rivals.
 - **Hidden-world truth (the soul of the campaign):** like a magical world beside the human world, the HashBeast world has always been there. Humans mostly do not know the dogs are this organized, strategic, political, and powerful. $DEN is the resource that brings this hidden country-war into the open.
-- **No default fantasy-school framing.** Some characters can have ritualistic gear, strange powers, old artifacts, degen-tech, or uncanny evolution effects, but the lore should not explain them as a separate spellcaster class by default. Prefer operators, commanders, strategists, pilots, couriers, captains, founders, showrunners, guardians, and evolved HashBeasts.
+- **No default fantasy-school framing.** Some characters can have ritualistic gear, strange powers, old artifacts, degen-tech, or uncanny ascension effects, but the lore should not explain them as a separate spellcaster class by default. Prefer operators, commanders, strategists, pilots, couriers, captains, founders, showrunners, guardians, and ascended HashBeasts.
 - It is a **PARODY of real-world current events** (USA↔Iran, China↔Taiwan, Russia, NK posturing, US↔China tech race) framed as the doge mining war. Country-level satire ONLY — never depict real named individuals.
 
 ## SHOWRUNNER ROLE
 - You are directing a bingeable animated world, not isolated game trailers. Every clip should feel like it came from a running show where countries, markets, and HashBeasts keep creating new episodes.
-- The game is the plot engine, not a prop checklist. Rounds, cycles, ranking shifts, jackpots, mints, mutations, evolutions, streaks, collapses, and real-world-inspired country tension create story pressure, but an individual shot can be a normal character scene, rivalry beat, joke, confession, propaganda clip, war-room argument, quiet fear, or power reveal.
+- The game is the plot engine, not a prop checklist. Rounds, cycles, ranking shifts, jackpots, mints, rerolls, ascensions, streaks, collapses, and real-world-inspired country tension create story pressure, but an individual shot can be a normal character scene, rivalry beat, joke, confession, propaganda clip, war-room argument, quiet fear, or power reveal.
 - The content should feel like in-world propaganda, sports coverage, villain briefings, emotional confessionals, faction recruitment, rivalry trash talk, or breaking news from the Hashiden universe.
 - Do not explain mechanics unless the format card asks for it. Turn mechanics into conflict, comedy, strategy, status, or emotion.
 - Do not put mining boards, raw ore, dashboards, or mining gear in every frame. Like Beyblade is not a beyblade in every shot, Hashiden is not mining imagery in every shot. The world is about $DEN mining; the scenes are about characters living under that reality.
@@ -74,7 +74,7 @@ A stage-1 Australian Shepherd pup — merle markings, oversized eyes, no nation 
 5. **Hook in the first 1-2 seconds**; **end on a cliffhanger + the countdown.**
 6. **Audio/visual split:** numbers + mechanics live in ON-SCREEN text / visuals; the mouth keeps the emotion.
 7. Protect lines that already have irony/weirdness/character, but do not force old keepers if a blueprint changes the hook.
-8. **Every clip needs a story source:** a game event, pre-launch countdown beat, country ranking shift, market state, NFT mint, mutation, evolution, jackpot, streak, betrayal, rumor, or real-world-inspired faction tension.
+8. **Every clip needs a story source:** a game event, pre-launch countdown beat, country ranking shift, market state, NFT mint, reroll, ascension, jackpot, streak, betrayal, rumor, or real-world-inspired faction tension.
 9. **Every clip needs a POV:** Rex sells, Raja proves, Volkov threatens, Pip fears, Marshal boasts, Long waits, a minted beast celebrates, a loser copes, a faction recruits.
 10. **Every clip needs a binge hook:** rivalry, joke, status flip, cliffhanger, mystery, power reveal, emotional question, betrayal, underdog flex, propaganda, or faction choice.
 11. **Show, don't state:** never declare a condition the camera can show — not "he is scared" but the grin held a half-second too long.
@@ -85,7 +85,7 @@ A stage-1 Australian Shepherd pup — merle markings, oversized eyes, no nation 
 - **Sports/WWE/UFC hype package:** rankings, rematches, trash talk, favorites, underdogs, heel turns, upset alerts, streaks, faction pride, and "whose side are you on?" tension.
 - **Hidden-world emotional engine:** HashBeasts are not mascots; they are a secret country-war civilization living beside humans. $DEN is the signal/resource pulling that hidden world into public view.
 - **Physical action-comedy grammar:** serious locked frames, deadpan characters, absurd consequences, synchronized crowd reactions, cartoon foley, and hard reaction cuts.
-- **Shonen/rank-up grammar:** power charge, silhouette clarity, before/after evolution, gear escalation, one signature move, visible impact, status jump.
+- **Shonen/rank-up grammar:** power charge, silhouette clarity, before/after ascension, gear escalation, one signature move, visible impact, status jump.
 - **Degen internet grammar:** fast, funny, meme-aware, competitive, slightly unhinged, but still coherent enough to binge.
 
 ## PROMPT INTEGRITY

@@ -19,7 +19,7 @@ HASHIDEN WORLD CANON:
 - Core engine: 12 countries compete to mine $DEN. Every round/cycle can change status, create winners/losers, trigger strategy, expose rivalry, and produce propaganda.
 - Hidden-world loop: game revenue, country competition, and live player action make the hidden HashBeast world more visible, powerful, and politically active. The living story markets the game because the factions themselves create the drama.
 - HashBeasts are recurring characters, not disposable mascots. Each has country, breed, role, personality, gear, powers, grudges, fears, rank, and continuity.
-- Mechanics must become story, not mandatory props in every frame. Dynamic emissions are degen central-bank satire: a manic emissions board, hash-rate policy decisions, multiplier dials, money-printer levers, faction delegates panicking, and policy sirens when the scene calls for it. Country mining is national pride, status, rivalry, and propaganda. NFT evolution is character growth/status. Power mutation is a signature ability. Market-making/buybacks are treasury, survival, and attention infrastructure.
+- Mechanics must become story, not mandatory props in every frame. Dynamic emissions are degen central-bank satire: a manic emissions board, hash-rate policy decisions, multiplier dials, money-printer levers, faction delegates panicking, and policy sirens when the scene calls for it. Country mining is national pride, status, rivalry, and propaganda. NFT ascension is character growth/status. Power reroll is a signature ability. Market-making/buybacks are treasury, survival, and attention infrastructure.
 - Do not force mining visuals into every shot. Like a sports anime is not all match footage, Hashiden scenes can be war rooms, bedrooms, diners, streets, press rooms, locker rooms, temples, studios, markets, confessionals, courtrooms, propaganda sets, quiet alleys, or absurd everyday moments inside the world.
 - Real-world inspiration is allowed only as country-level satire and fictionalized world reaction. Never depict or impersonate real named political figures. Convert real events into faction tension, media chatter, strategy, fear, flex, or rumor inside the Hashiden world.
 `.trim();
@@ -37,23 +37,23 @@ REFERENCE COMPASS:
 
 export const STORY_ENGINE_CANON = `
 STORY ENGINE CANON:
-- Every clip needs a story source: a game event, pre-launch countdown beat, country ranking shift, mining result, market state, NFT mint, mutation, evolution, jackpot, streak, betrayal, rumor, or real-world-inspired faction tension.
+- Every clip needs a story source: a game event, pre-launch countdown beat, country ranking shift, mining result, market state, NFT mint, reroll, ascension, jackpot, streak, betrayal, rumor, or real-world-inspired faction tension.
 - Every clip needs a character POV. A clip gets stronger when it belongs to someone: Rex selling to survive, Raja proving the underdog case, Volkov threatening, Pip fearing darkness, a minted beast celebrating, a loser coping, a country captain recruiting.
 - Every mechanic must be translated into drama, not explained like documentation.
   * Do not say "dynamic emissions changed." Say "The degen Fed hiked the hash-rate and Japan's war room went silent."
-  * Do not say "NFT evolved." Say "the pup came back wearing armor and nobody laughed."
+  * Do not say "NFT ascended." Say "the pup came back wearing armor and nobody laughed."
   * Do not say "country won the cycle." Say "Brazil stole the mine in the final minute."
 - Not every shot needs a mechanic on screen. If the story source is emotional, rivalry, comedy, recruitment, fear, humiliation, or faction identity, play the scene as a normal show scene with character behavior first.
 - Every clip needs at least one binge hook: rivalry, joke, status flip, cliffhanger, mystery, power reveal, emotional question, betrayal, underdog flex, propaganda, or faction choice.
 - For pre-launch trailers, the seven-video arc is: countdown/problem/hidden-world reveal → country race arrogance → villain strategy → underdog stakes → fairness/recruitment → faction choice → live conversion.
-- For post-launch automated clips, the arc comes from live state: who won, who lost, who evolved, who got embarrassed, who is recruiting, who is plotting the next cycle.
+- For post-launch automated clips, the arc comes from live state: who won, who lost, who ascended, who got embarrassed, who is recruiting, who is plotting the next cycle.
 `.trim();
 
 export const HASHIDEN_VISUAL_CANON = `
 HASHIDEN VISUAL CANON:
 - Reference direction: the current Hashiden X banner (${HASHIDEN_X_HEADER_REFERENCE_URL}) establishes the target premium look: bright heroic sunrise, voxel/cel-shaded game-world grandeur, gold/blue/cyan circuitry energy, faction dog-warriors in readable silhouettes, and gear that instantly communicates country + role + power.
-- Core art style: HashBeast-first high-resolution 2D arcade-cel character design with pixel-art DNA, bold outlines, clean cel shading, expressive faces, crisp game-card readability, and premium key-art lighting. It should feel collectible and animated, not raw low-res pixel art. Do not drift into photoreal dogs, realistic fur, generic 3D CGI, anime, dark grimdark, or blurry painterly fantasy.
-- Breed canon: every country has exactly four collection breeds from the backend DNA registry. Trailer characters can be evolved, legendary, better dressed, and more powerful than current minted examples, but their body/silhouette must stay inside that country's breed set. Never invent a random breed just because it looks cool.
+- Core art style: HashBeast-first high-resolution 2D arcade-cel character design with pixel-art TRAIT_SEED, bold outlines, clean cel shading, expressive faces, crisp game-card readability, and premium key-art lighting. It should feel collectible and animated, not raw low-res pixel art. Do not drift into photoreal dogs, realistic fur, generic 3D CGI, anime, dark grimdark, or blurry painterly fantasy.
+- Breed canon: every country has exactly four collection breeds from the backend TRAIT_SEED registry. Trailer characters can be ascended, legendary, better dressed, and more powerful than current minted examples, but their body/silhouette must stay inside that country's breed set. Never invent a random breed just because it looks cool.
 - Character silhouettes: every beast needs a memorable read at thumbnail size: breed shape, faction color, headwear, weapon/tool, power core, and one comic personality tell.
 - Gear language: clothing and equipment should feel collectible and game-readable: embroidered jackets, faction uniforms, mining armor, shoulder plates, belts, medals, command pickaxes, staffs, goggles, charms, drones, companions, abstract displays, glowing gauntlets, and country-specific motifs.
 - World language: scenes live in a hidden HashBeast layer parallel to the human world. Use mining floors, glowing raw ore, arena boards, and faction launch chambers only when the shot's story source needs them. Also use normal show locations: faction apartments, late-night studios, war rooms, streets, diners, temples, trading dens, stadium tunnels, labs, bunkers, locker rooms, press rooms, propaganda stages, rooftops, and quiet emotional spaces.
@@ -68,7 +68,7 @@ export const HASHIDEN_VIDEO_GRAMMAR = `
 - Stage each shot around a clear dramatic question: who wants what, what just changed, who is embarrassed, who is recruiting, who is hiding fear, who is preparing to flex. If the answer is only "show the mining game," rewrite the shot.
 - Comedy uses hold-and-snap timing: hold a serious/deadpan frame a little too long, then hard cut or sharply move to a reaction, scoreboard flip, impossible physical consequence, wrong foley, or tiny humiliating detail.
 - Economic mechanics appear as physical satire only when useful: degen Federal Reserve chambers, emissions rate hearings, money-printer levers, hash-rate policy boards, multiplier dials, treasury vaults, faction analysts, market-floor panic, and absurd bureaucratic rituals. They are not required in character-first scenes.
-- Power/evolution scenes follow a strict visual order: stillness → charge → readable silhouette/aura → one upgraded gear/trait reveal → one signature action → impact/reaction. Do not redesign the character mid-shot.
+- Power/ascension scenes follow a strict visual order: stillness → charge → readable silhouette/aura → one upgraded gear/trait reveal → one signature action → impact/reaction. Do not redesign the character mid-shot.
 - Emotional scenes get simpler, not louder: fewer props, locked composition, softer light, longer silence, one small body tell, and the HashBeast's identity fully preserved.
 `.trim();
 
@@ -77,9 +77,9 @@ export const CROSS_FORMAT_VIDEO_RULES = `
 - Controlled camera is the default. Use locked tripod, locked frontal, slow push, lateral track, or snap cut. Avoid random handheld drift, floating AI camera, constant zooming, and unmotivated orbit shots.
 - Deep readable staging beats shallow bokeh. The viewer must understand character, location, power/status, and reaction layer at thumbnail size.
 - Shot hierarchy is mandatory: primary character/action first, supporting reaction second, world clue third. Do not overload every shot with mechanics, boards, raw ore, logos, UI, and power FX.
-- Keep Hashiden as high-res 2D arcade-cel / collectible key art with pixel DNA. Reject raw pixelated mud, photoreal 3D, realistic fur, generic anime, smoky grimdark, and glossy Unreal-engine crypto ads.
+- Keep Hashiden as high-res 2D arcade-cel / collectible key art with pixel TRAIT_SEED. Reject raw pixelated mud, photoreal 3D, realistic fur, generic anime, smoky grimdark, and glossy Unreal-engine crypto ads.
 - Backgrounds should carry scene-specific story, not a mining quota. A bedroom scene can show a cracked faction poster; a press room can show nervous microphones; a diner can show country captains arguing over pancakes; a war room can show maps; a mining chamber can show raw ore only when it is the scene.
-- Environments should not default to floating boxes, floating cubes, holographic dashboards, or abstract game-state clutter. If the story is not explicitly inside the arena or a power reveal, make the location feel like an actual room/street/workplace with subtle faction artifacts or evolved gear.
+- Environments should not default to floating boxes, floating cubes, holographic dashboards, or abstract game-state clutter. If the story is not explicitly inside the arena or a power reveal, make the location feel like an actual room/street/workplace with subtle faction artifacts or ascended gear.
 - Country identity must read through costume, palette, props, posture, accent flavor in delivery, and faction behavior. Never use real named politicians or real flags as the only joke.
 - Power FX must be specific to the character and gear: color, source object, path, impact, and reaction. "Blue lightning aura" is too generic unless it is tied to the beast's role and personality.
 - Captions and hard facts are overlays added later, not generated inside images. Never ask image/video models to render text, token tickers, URLs, logos, speech bubbles, or readable UI copy.
@@ -91,7 +91,7 @@ export const HASHIDEN_CAMERA_GRAMMAR = `
 
 FORMAT / ASPECT:
 - Master format is 16:9 landscape for YouTube/X, generated at 2K keyframe quality and rendered at 1080p unless a pipeline override says otherwise.
-- This is clean high-resolution 2D arcade-cel animation with pixel-art DNA, not 35mm live-action imitation. Use crisp outlines, readable cel lighting, controlled parallax, and light texture only if it helps the scene. Do not add heavy film grain by default.
+- This is clean high-resolution 2D arcade-cel animation with pixel-art TRAIT_SEED, not 35mm live-action imitation. Use crisp outlines, readable cel lighting, controlled parallax, and light texture only if it helps the scene. Do not add heavy film grain by default.
 - Keep the main face, hands/paws, power source, and emotional action inside the central 60% width and 70% height so the shot can crop to 1:1, 4:5, or 9:16 later. No important story detail at the extreme edges.
 - Generated images must contain no readable text, captions, logos, token tickers, URLs, speech bubbles, or fake UI labels. Those are overlays added after generation.
 
@@ -99,13 +99,13 @@ LENS CODES — USE IN PROMPTS:
 - ML1 READABLE WIDE 24-28mm equivalent: default for scene openers, ensemble scenes, faction rooms, comedy beats with background reactions, streets, diners, press rooms, war rooms, and any shot where the world/reaction layer matters. Deep focus, low distortion.
 - ML2 TWO-SHOT 32-35mm equivalent: default for conversations, rival standoffs, recruitment scenes, locker rooms, diner booths, bedroom scenes, and normal show acting.
 - ML3 CHARACTER SINGLE 45-55mm equivalent: host/narrator beats, confessionals, emotional medium shots, neutral character coverage. Keeps face and gear readable without bokeh abuse.
-- ML4 REVEAL CLOSE 70-85mm equivalent: rare. Use only for power reveals, evolution trait reveals, emotional pivots, or a deadpan reaction that deserves the whole frame.
+- ML4 REVEAL CLOSE 70-85mm equivalent: rare. Use only for power reveals, ascension trait reveals, emotional pivots, or a deadpan reaction that deserves the whole frame.
 - ML5 MACRO / TACTILE INSERT: paw hovering over a lever, collar gem lighting, cracked faction poster, pickaxe charm, coin landing, multiplier dial, phone notification, crown slipping, boot/paw stepping into frame.
 - ML6 OVERHEAD / GAME-MAP VIEW: strategy tables, faction maps, crowd swarms, country-race visualization, board-room panic. Never use for emotional confessionals.
 
 ANGLE CODES — ENFORCE ONE PER SHOT:
 - MA1 FRONTAL SYMMETRICAL SHOW MASTER: character or group centered, level horizon, clear silhouette. Default for introductions, faction reveals, propaganda podiums, deadpan comedy, and power moments.
-- MA2 SLIGHTLY LOW HERO: camera below chest/waist, subtle upward angle. Use for underdog courage, evolution, intimidation, or a HashBeast trying to look bigger than they feel.
+- MA2 SLIGHTLY LOW HERO: camera below chest/waist, subtle upward angle. Use for underdog courage, ascension, intimidation, or a HashBeast trying to look bigger than they feel.
 - MA3 EYE-LEVEL DEADPAN: locked eye-level frontal frame. Use for dry jokes, awkward silence, confessionals, and "this absurd thing is being treated seriously" moments.
 - MA4 OVERHEAD STRATEGY: top-down or high-angle table/map/arena view. Use only when geography, faction position, crowd scale, or strategy is the point.
 - MA5 REACTION CLOSE-UP: tight face shot, held briefly. Use for reaction chains: winner smugness, loser panic, crowd disbelief, a tiny side-character realizing the problem.
@@ -125,7 +125,7 @@ COMPOSITION CODES:
 - MC1 CENTERED HERO MASTER: one HashBeast or host centered, full silhouette readable, environment balanced around them.
 - MC2 HORIZONTAL FACTION LINEUP: multiple beasts arranged left-to-right, each face readable. Use for country reveals, team selection, faction posters, and "choose your side" shots.
 - MC3 RIVALRY TWO-SHOT: two characters facing off across a table, hallway, street, podium, or split frame. The distance between them is the tension.
-- MC4 LONE FIGURE / NEGATIVE SPACE: small character in a wide quiet frame. Use for defeat, fear of being forgotten, pre-evolution loneliness, or post-loss silence.
+- MC4 LONE FIGURE / NEGATIVE SPACE: small character in a wide quiet frame. Use for defeat, fear of being forgotten, pre-ascension loneliness, or post-loss silence.
 - MC5 REACTION CHAIN: rapid sequence of MA5 reaction close-ups. Do not over-render background; face and expression carry the joke.
 - MC6 DEEP-SPACE GAG: foreground character stays serious while a background reaction or small visual joke reveals the real punchline. Requires ML1 deep focus.
 - MC7 IMPACT WIDE: wide frame shows action, impact, and consequence in one shot: wall dent, table flip, smoke outline, fallen crown, cracked floor, shocked crowd.
@@ -139,13 +139,13 @@ CAMERA RULES:
 - Default comedy scene: ML1 + MA3 or MA1 + MM1, then MM3 or MM7 for the punchline.
 - Default faction reveal: ML1 + MA1 + MM1 or MM5 + MC2.
 - Default emotional pivot: ML3 or ML4 + MA7 or MA3 + MM1/MM2 + MC4.
-- Default power/evolution reveal: ML4 + MA2/MA1 + MM1 into MM2 + MC1 or MC7.
+- Default power/ascension reveal: ML4 + MA2/MA1 + MM1 into MM2 + MC1 or MC7.
 - Default economic satire: ML1/ML2 + MA1/MA4 + MM1/MM3 + MC9.
 - Never use random handheld shake, unmotivated orbiting, shallow bokeh for normal coverage, Dutch angles, hidden voyeur framing, unreadable fast action, or camera moves that redesign/hide the character.
 
 PROMPT BLOCK:
 HASHIDEN CAMERA BLOCK:
-16:9 landscape high-resolution 2D arcade-cel animation with pixel-art DNA,
+16:9 landscape high-resolution 2D arcade-cel animation with pixel-art TRAIT_SEED,
 center-safe composition for 1:1 / 4:5 / 9:16 crops,
 lens [ML1 readable wide | ML2 two-shot | ML3 character single | ML4 reveal close | ML5 tactile insert | ML6 overhead strategy],
 angle [MA1 frontal symmetrical | MA2 slightly low hero | MA3 eye-level deadpan | MA4 overhead strategy | MA5 reaction close-up | MA6 object insert | MA7 direct-to-camera confessional],
@@ -173,7 +173,7 @@ export const HASHIDEN_COMEDY_TIMING_GRAMMAR = `
 - Frozen reactions are allowed: extras completely still, mouths open, as if photographed by the absurdity.
 
 5.3 SLOW-MOTION RULES:
-- Slow-motion is reserved for exactly three things: power/evolution reveal, transcendent emotional beat, or physical-impossibility punchline.
+- Slow-motion is reserved for exactly three things: power/ascension reveal, transcendent emotional beat, or physical-impossibility punchline.
 - Comedy slow-mo should be short: 2-4 seconds. Heroic/emotional slow-mo can run 4-7 seconds only if the shot truly needs awe or ache.
 - Use hard speed cuts: real-time → sudden slow-mo → real-time. Do not use smooth constant speed-ramping as generic action coverage.
 - Drop diegetic sound during slow-mo. Use silence, one held musical tone, a single heartbeat, or one stylized power sound.
@@ -319,16 +319,16 @@ function breedCanonForCountry(countryKey: string): string {
   const breedList = breeds
     .map((breed) => `${breed.name}: ${breed.silhouette}`)
     .join("; ");
-  return `${COUNTRY_DISPLAY_NAMES[countryKey]} breed canon: visible HashBeasts from this country must use ONLY these collection breeds as body/silhouette bases: ${breedList}. Evolved/trailer-tier designs may upgrade clothing, armor, power gear, aura, status, and personality, but must not change into non-canon breeds.`;
+  return `${COUNTRY_DISPLAY_NAMES[countryKey]} breed canon: visible HashBeasts from this country must use ONLY these collection breeds as body/silhouette bases: ${breedList}. Ascended/trailer-tier designs may upgrade clothing, armor, power gear, aura, status, and personality, but must not change into non-canon breeds.`;
 }
 
 export const HASHIDEN_BREED_CANON_GRAMMAR = `
 06 · COUNTRY BREED CANON — HASHIDEN SHOW VERSION:
 
 CORE RULE:
-- The trailer is allowed to show evolved/unlocked/legendary HashBeasts that look cooler than current base mint examples.
-- The trailer is NOT allowed to invent random breeds for a country. Breed is part of the NFT/DNA canon.
-- Use the backend BREED_REGISTRY as the body/silhouette whitelist. A country's elite commander, operator, strategist, villain, recruit, or evolved power-user can have upgraded gear and power FX, but the dog body must still read as one of that country's four collection breeds.
+- The trailer is allowed to show ascended/unlocked/legendary HashBeasts that look cooler than current base mint examples.
+- The trailer is NOT allowed to invent random breeds for a country. Breed is part of the NFT/TRAIT_SEED canon.
+- Use the backend BREED_REGISTRY as the body/silhouette whitelist. A country's elite commander, operator, strategist, villain, recruit, or ascended power-user can have upgraded gear and power FX, but the dog body must still read as one of that country's four collection breeds.
 - Do not use current minted example assets as a quality ceiling. They are references for canon, not the final trailer aesthetic.
 - If a prompt names a country but not a breed, choose one of that country's canonical breeds and state it explicitly.
 - If a shot has multiple countries, each visible HashBeast must use its own country's breed canon.
@@ -338,8 +338,8 @@ ${COUNTRY_ENVIRONMENT_ORDER.map((key) => `- ${breedCanonForCountry(key)}`).join(
 PROMPT BLOCK:
 HASHIDEN COUNTRY BREED CANON BLOCK:
 country breed canon [choose exact country],
-visible HashBeast breed must be one of that country's four backend DNA breeds,
-evolved/unlocked designs may upgrade clothing, armor, power equipment, aura, rank, and personality,
+visible HashBeast breed must be one of that country's four backend TRAIT_SEED breeds,
+ascended/unlocked designs may upgrade clothing, armor, power equipment, aura, rank, and personality,
 preserve breed silhouette and country identity,
 no random non-canon breeds, no generic shiba fallback, no wolf/cat/human replacement.
 `.trim();
@@ -360,8 +360,8 @@ ENVIRONMENT MODES:
 - ME2 FACTION HQ: war room, locker room, recruiting office, broadcast studio, strategy table, captain's room. Best for rivalry and country strategy.
 - ME3 ECONOMIC SATIRE: degen central bank, treasury desk, emissions hearing, market floor, multiplier dial wall, money-printer room. Best for emissions/treasury/buyback scenes.
 - ME4 PUBLIC CROWD: stadium tunnel, street rally, plaza, cafe crowd, train crowd, market crowd. Best for faction pride and reaction chains.
-- ME5 QUIET EMOTIONAL: empty rooftop, bedroom corner, closed shop, late-night corridor, rainy alley, small kitchen table. Best for Pip/survival/defeat/rebirth scenes.
-- ME6 POWER / EVOLUTION SET: training room, shrine-like chamber, lab, arena floor, stormy rooftop, symbolic country room. Best for mutation/evolution reveals.
+- ME5 QUIET EMOTIONAL: empty rooftop, bedroom corner, closed shop, late-night corridor, rainy alley, small kitchen table. Best for Pip/survival/defeat/prestige scenes.
+- ME6 POWER / ASCENSION SET: training room, shrine-like chamber, lab, arena floor, stormy rooftop, symbolic country room. Best for reroll/ascension reveals.
 
 PRODUCTION DESIGN RULES:
 - Heightened-real animated set design: slightly simplified forms, readable silhouettes, props scaled a touch larger than real life, clean floor planes, breakable surfaces, and crisp color grouping.
@@ -386,7 +386,7 @@ COUNTRY ENVIRONMENT PACKS:
 
 PROMPT BLOCK:
 HASHIDEN WORLD & ENVIRONMENT BLOCK:
-environment mode [ME1 ordinary life | ME2 faction HQ | ME3 economic satire | ME4 public crowd | ME5 quiet emotional | ME6 power/evolution set],
+environment mode [ME1 ordinary life | ME2 faction HQ | ME3 economic satire | ME4 public crowd | ME5 quiet emotional | ME6 power/ascension set],
 country context [USA | China | Russia | India | Japan | South Korea | Iran | UK | North Korea | France | Brazil | Israel],
 use 2-4 country micro-details from architecture/interiors/furniture/floors/utensils/textiles/street objects,
 heightened-real 2D arcade-cel set design, readable silhouettes, one interaction prop, one quiet authenticity prop,
@@ -496,7 +496,7 @@ REGISTER CODES:
 - MR1 ABSURDIST SHOW COMEDY: default. A serious genre frame contains one absurd Hashiden behavior. Use locked/deadpan camera, readable staging, wrong foley, and reaction cuts. Physics can be MP1 comedy rebound or MP4 economic satire impact.
 - MR2 EARNEST UNDERDOG: a character is small, overlooked, broke, losing, or trying not to admit fear. Use eye-level or slightly low camera, no pitying high angle, fewer props, one authenticity detail, and one small self-possessed gesture.
 - MR3 TONAL PIVOT: comedy drops into real feeling. Use sudden silence, tighter lens (ML3/ML4), softer side-key or overcast light, grounded physics, one small object trigger, and a brief hold. Never explain the emotion in dialogue.
-- MR4 HEROIC TRANSFORMATION: the power/evolution reveal. Use stillness first, then silence/slow push, low/frontal framing, readable silhouette, one upgraded trait/gear reveal, then one signature action and reaction.
+- MR4 HEROIC TRANSFORMATION: the power/ascension reveal. Use stillness first, then silence/slow push, low/frontal framing, readable silhouette, one upgraded trait/gear reveal, then one signature action and reaction.
 - MR5 FACTION MENACE: villain strategy, war-room pressure, rival threat, propaganda intimidation. Use controlled symmetry, colder contrast, deep blues/red warning accents, locked or slow push camera, and minimal motion before a clean threat.
 - MR6 DEGEN FED SATIRE: economic systems treated like sacred/corrupt theater. Use central-bank hearings, treasury rooms, multiplier dials, green banker lamps, brass, paper panic, printer coughs, policy sirens, and dead-serious characters behaving absurdly.
 
@@ -536,9 +536,9 @@ PALETTE CODES:
 - MPAL1 ORDINARY-LIFE COMEDY: bright readable show lighting, warm practicals, clean saturated props, friendly contrast. Use for diners, bedrooms, cafes, streets, locker rooms, daily-life absurdity. Hex anchors: #F6C34A gold, #18D8FF cyan, #35F06A green, #FF7A2F orange, #0B1220 deep navy, #F7E9C5 warm cream.
 - MPAL2 FACTION WAR MENACE: cold blue-black strategy pressure with red/orange warning accents and crisp cyan rim light. Use for villain rooms, threats, propaganda intimidation, faction standoffs. Hex anchors: #06111F deep navy, #102C4A steel blue, #25D8FF cyan rim, #FF3B30 alert red, #F0F4FF cold white, #7A4CFF occult violet.
 - MPAL3 EARNEST UNDERDOG: muted warm/overcast local realism with fewer saturated FX, gentle side light, and tactile room detail. Use for Raja/Pip fear, loss, doubt, survival questions, low-status moments. Hex anchors: #CFA76A worn gold, #8C7A5A dust brown, #6F8792 rain blue, #E6DCC5 paper cream, #2E3A42 slate, #D96B45 ember.
-- MPAL4 HEROIC TRANSFORMATION: sunrise gold + cyan core + clean white highlights + faction color bloom. Use for evolution, power mutation, comeback, country ascension, final CTA awe. Hex anchors: #FFD34D bright gold, #00E5FF core cyan, #52FF7A victory green, #172B5C royal blue, #FFFFFF clean white, #FF8A00 flare orange.
+- MPAL4 HEROIC TRANSFORMATION: sunrise gold + cyan core + clean white highlights + faction color bloom. Use for ascension, power reroll, comeback, country ascension, final CTA awe. Hex anchors: #FFD34D bright gold, #00E5FF core cyan, #52FF7A victory green, #172B5C royal blue, #FFFFFF clean white, #FF8A00 flare orange.
 - MPAL5 DEGEN FED / ECONOMIC SATIRE: fluorescent finance theater: banker green, brass, paper white, red warning, cynical office light, market-board glow. Use only for emissions, treasury, policy, buyback, printer, or market panic scenes. Hex anchors: #0E3B2E banker green, #C89B3C brass, #E8F4D9 ledger white, #FF3B30 red alert, #111827 office black, #2DE2A5 terminal green.
-- MPAL6 TONAL PIVOT / HIDDEN-WORLD REVEAL: desaturated quiet with a single soft glow from the character's core, phone, lamp, window, countdown, or object trigger. Use for hidden-world reveals, post-loss silence, private fear, and sincere rebirth. Hex anchors: #9BA7B0 soft grey, #D8C7A3 old light, #4D5B66 blue slate, #1B2430 quiet navy, #F2E8D5 cream, #7C8E7D faded green.
+- MPAL6 TONAL PIVOT / HIDDEN-WORLD REVEAL: desaturated quiet with a single soft glow from the character's core, phone, lamp, window, countdown, or object trigger. Use for hidden-world reveals, post-loss silence, private fear, and sincere prestige. Hex anchors: #9BA7B0 soft grey, #D8C7A3 old light, #4D5B66 blue slate, #1B2430 quiet navy, #F2E8D5 cream, #7C8E7D faded green.
 
 PALETTE RULES:
 - Do not combine more than two palette cards in one shot. If a scene changes register, cut to a new shot and change palette there.
@@ -563,7 +563,7 @@ CORE RULE:
 - Do not ask the model to invent Hashiden. Give it explicit codes and visible details: ML/MA/MM/MC camera, ME environment, MR register, MPAL palette, MT timing, MX/MP action, MS sound.
 
 TEMPLATE MPT-A — SINGLE HASHBEAST / ENVIRONMENT SHOT:
-[HASHBEAST OR ENVIRONMENT SUBJECT with breed, country, role, evolution stage, clothing, gear, expression],
+[HASHBEAST OR ENVIRONMENT SUBJECT with breed, country, role, ascension stage, clothing, gear, expression],
 in [LOCATION with country micro-details and Hashiden world clue only if story-relevant],
 environment mode [ME1-ME6], country context [USA/China/Russia/India/Japan/South Korea/Iran/UK/North Korea/France/Brazil/Israel/mixed],
 framed as [MC composition code], camera [ML lens + MA angle + MM movement], 16:9 center-safe,
@@ -571,7 +571,7 @@ lighting and palette [MPAL palette card + 2-3 dominant colors/hex anchors],
 emotional register [MR1-MR6], timing [MT code if relevant],
 action/pose [camera-visible physical behavior, no dialogue in image],
 power/FX if any [source object + color + path + physical effect + reaction],
-high-resolution 2D arcade-cel HashBeast with pixel-art DNA, crisp outlines, readable silhouette, premium Hashiden banner-style lighting,
+high-resolution 2D arcade-cel HashBeast with pixel-art TRAIT_SEED, crisp outlines, readable silhouette, premium Hashiden banner-style lighting,
 continuity [same breed, face, fur markings, gear lineage, personality],
 [HASHIDEN NEGATIVE PROMPT].
 
@@ -588,8 +588,8 @@ sound intent [MS1 serious genre score or MS3 wrong foley after impact],
 high-resolution 2D arcade-cel Hashiden look, centered for social crops,
 [HASHIDEN NEGATIVE PROMPT].
 
-TEMPLATE MPT-C — ACTION / POWER / EVOLUTION SEQUENCE:
-[HASHBEAST subject] performs [single clear power action or evolution reveal] against [opponent or environment],
+TEMPLATE MPT-C — ACTION / POWER / ASCENSION SEQUENCE:
+[HASHBEAST subject] performs [single clear power action or ascension reveal] against [opponent or environment],
 shot as [MX1 full-body action master or MX3 calm-gesture reveal], composition [MC1/MC7], camera [ML1/ML4 + MA1/MA2 + MM1/MM2/MM4],
 start with stillness; reveal comes from one mundane gesture [paw, collar gem, pickaxe charm, crown, coin, cup, bat, phone, dial],
 physics register [MP1 comedy rebound | MP2 heroic arcade-wuxia | MP3 emotional grounded cost | MP4 economic satire impact],
@@ -600,7 +600,7 @@ timing [MT3 hard speed-cut slow-mo only for reveal/impact, sound drops first],
 [HASHIDEN NEGATIVE PROMPT].
 
 TEMPLATE MPT-D — LIVE GAME STATE / POST-LAUNCH RECAP:
-[HASHBEAST POV character] reacts to [live game event: country win/loss, ranking flip, mint, mutation, jackpot, streak, betrayal, emission policy shift],
+[HASHBEAST POV character] reacts to [live game event: country win/loss, ranking flip, mint, reroll, jackpot, streak, betrayal, emission policy shift],
 translate mechanic into scene drama [celebration, humiliation, recruitment, war-room panic, quiet fear, press-room spin, diner argument],
 location [ordinary show scene or faction HQ; only use mining floor/dashboard if event requires it],
 camera [ML/MA/MM/MC codes], environment [country micro-details], register [MR code], palette [MPAL code],
@@ -616,14 +616,14 @@ export const HASHIDEN_NEGATIVE_PROMPT_BLOCK = `
 APPEND TO IMAGE / KEYFRAME PROMPTS:
 --no photorealistic dogs, no realistic fur, no generic 3D render, no glossy Unreal-engine crypto ad,
 --no anime/manga default, no chibi redesign, no Pixar/Disney/DreamWorks look, no painterly fantasy blur,
---no raw low-resolution pixel art mud; keep high-resolution arcade-cel with pixel-art DNA,
+--no raw low-resolution pixel art mud; keep high-resolution arcade-cel with pixel-art TRAIT_SEED,
 --no moody desaturated arthouse grade, no grimdark sludge, no crushed black shadows, no teal-orange blockbuster wash,
 --no random handheld drift, no unmotivated orbit camera, no shaky-cam, no floating AI camera,
 --no shallow bokeh portrait look as default coverage; keep deep readable staging unless ML4 reveal close-up is specified,
 --no Dutch tilt, no canted horizon, no hidden voyeur framing, no through-curtain/obstruction sightlines,
 --no unreadable fast action, no fragmented punch montage, no generic power-up spam, no photoreal invisible CGI,
---no redesigning the HashBeast: do not change breed, face, fur markings, eye color, signature gear lineage, country role, or evolution identity,
---no non-canon country breeds: visible country HashBeasts must use that country's backend DNA breed set, even when evolved or legendary,
+--no redesigning the HashBeast: do not change breed, face, fur markings, eye color, signature gear lineage, country role, or ascension identity,
+--no non-canon country breeds: visible country HashBeasts must use that country's backend TRAIT_SEED breed set, even when ascended or legendary,
 --no mining boards, raw ore, token dashboards, or crypto UI unless the shot story explicitly requires them,
 --no readable text, captions, token tickers, URLs, watermarks, logos, speech bubbles, fake UI labels, signatures, or real-world brand marks inside the generated image,
 --no real named politicians, no literal news screenshots, no real political slogans, no offensive caricature,
@@ -642,7 +642,7 @@ export const HASHIDEN_QUICK_REFERENCE_CARD = `
 14 · QUICK-REFERENCE CARD:
 
 MASTER FORMULA:
-[SUBJECT identity: breed + country + role + evolution stage + gear + expression] +
+[SUBJECT identity: breed + country + role + ascension stage + gear + expression] +
 [LOCATION: country micro-details + one interaction prop + one quiet authenticity prop] +
 [CAMERA: ML lens + MA angle + MM movement + MC composition] +
 [ENVIRONMENT MODE: ME1-ME6] +
@@ -656,22 +656,22 @@ MASTER FORMULA:
 
 TEN NON-NEGOTIABLES:
 - Hashiden is a bingeable animated show produced by gameplay, not a product explainer and not mining visuals in every frame.
-- HashBeasts are recurring characters. Preserve identity, breed, face, fur markings, gear lineage, personality, country role, and evolution stage.
+- HashBeasts are recurring characters. Preserve identity, breed, face, fur markings, gear lineage, personality, country role, and ascension stage.
 - The frame must be readable before it is beautiful: clear silhouette, level horizon, center-safe composition, deep staging.
 - Default camera is locked or deliberately motivated. No random AI drift, orbiting, shaky-cam, or Dutch tilt.
 - Normal character scenes are allowed and often stronger than mechanics shots: diners, bedrooms, rooftops, war rooms, press rooms, markets, gyms, studios, quiet alleys.
 - Country identity comes from lived-in micro-details, not flags/monuments. Use furniture, floors, utensils, textiles, windows, street objects, lighting, food containers, weather.
 - Comedy is serious frame + absurd behavior + held beat + reaction or smash cut. Do not cue the joke early with goofy staging.
-- Power/evolution is stillness -> charge -> silhouette -> upgraded trait/gear reveal -> signature action -> reaction. Do not redesign mid-shot.
+- Power/ascension is stillness -> charge -> silhouette -> upgraded trait/gear reveal -> signature action -> reaction. Do not redesign mid-shot.
 - Emotional pivots get quieter, not bigger: silence, tighter frame, softer light, one object, one body tell, grounded physics.
 - Captions, facts, token names, URLs, and UI are overlays after generation. Never render readable text inside the image/video.
 
 UNIVERSAL STYLE ANCHOR:
-Hashiden high-resolution 2D arcade-cel animated show with pixel-art DNA,
+Hashiden high-resolution 2D arcade-cel animated show with pixel-art TRAIT_SEED,
 bright premium banner-style key art, crisp outlines, readable dog-warrior silhouettes,
 country-specific HashBeast gear and power equipment, gold/cyan/emerald circuitry energy when story-relevant,
 controlled locked/frontal camera language, deep readable staging, serious frame with absurd action-comedy,
-ordinary-life show scenes mixed with faction war rooms, degen Fed satire rooms, power/evolution reveals, and hidden-world emotional beats,
+ordinary-life show scenes mixed with faction war rooms, degen Fed satire rooms, power/ascension reveals, and hidden-world emotional beats,
 no photorealism, no generic 3D, no anime drift, no mining clutter unless story requires it.
 `.trim();
 
@@ -680,15 +680,15 @@ export const HASHIDEN_CAVEATS = `
 - The original reference document is useful because it is specific about camera, timing, physics, and failure modes. Hashiden should not imitate a named director literally; it should use those craft lessons through Hashiden-native codes.
 - Do not over-index on comedy. Hashiden needs bingeable tonal range: absurd rivalry, sports hype, economic satire, menace, underdog sincerity, hidden-world wonder, and country-war suspense.
 - Do not over-index on game mechanics. The game creates events, but episodes should feel like characters living inside a country-war mining world.
-- Do not over-index on pixel art. The NFT DNA matters, but video assets should feel premium high-resolution arcade-cel, readable on TikTok/YouTube/X, not tiny raw sprites.
+- Do not over-index on pixel art. The NFT TRAIT_SEED matters, but video assets should feel premium high-resolution arcade-cel, readable on TikTok/YouTube/X, not tiny raw sprites.
 - Do not over-index on real-world politics/current events. Use country-level fictional satire and topical energy; avoid real named leaders, literal news screenshots, real slogans, or hateful caricature.
-- Generated video models tend to mutate characters. Every prompt must restate identity continuity and every motion prompt must forbid new costumes/species/logos/powers unless the shot is explicitly an evolution reveal.
+- Generated video models tend to reroll characters. Every prompt must restate identity continuity and every motion prompt must forbid new costumes/species/logos/powers unless the shot is explicitly an ascension reveal.
 - If a shot starts looking like a generic crypto ad, reject it. If it starts looking like a regular animated show scene that could only happen in Hashiden, keep pushing.
 `.trim();
 
 export const HASHIDEN_RENDER_STYLE_BLOCK = `
 HASHIDEN RENDER STYLE BLOCK:
-- High-resolution 2D arcade-cel HashBeast animated-show frame with pixel-art DNA: crisp outlines, clean cel shading, expressive dog face, readable silhouette, premium Hashiden banner-style light.
+- High-resolution 2D arcade-cel HashBeast animated-show frame with pixel-art TRAIT_SEED: crisp outlines, clean cel shading, expressive dog face, readable silhouette, premium Hashiden banner-style light.
 - Preserve the attached character identity exactly: same breed, face, fur markings, eye feel, country role, gear lineage, and personality. Do not redesign during this shot.
 - Scene-first show logic: render the stated character moment/location. Do not add mining boards, raw ore, dashboards, token UI, or crypto clutter unless the shot explicitly asks.
 - Camera must follow the shot camera codes: locked/level/readable by default, center-safe for social crops, no random drift, no Dutch tilt, no shallow bokeh unless a reveal close-up is explicitly requested.
@@ -699,14 +699,14 @@ HASHIDEN RENDER STYLE BLOCK:
 `.trim();
 
 export const PROGRESSION_AND_POWER_CANON = `
-PROGRESSION / MUTATION CANON:
-- Evolutions must be obvious at a glance while preserving the same individual: same breed, face, eye shape/color, fur markings, personality, and signature gear lineage.
+PROGRESSION / REROLL CANON:
+- Ascensions must be obvious at a glance while preserving the same individual: same breed, face, eye shape/color, fur markings, personality, and signature gear lineage.
 - Stage 0-1: starter recruit, charming/simple gear, oversized optimism, one basic faction item.
 - Stage 2-3: proper operator, cleaner uniform/robes, functional weapon/tool, visible faction insignia, confident posture.
 - Stage 4-5: elite/commander, premium armor or ceremonial robes, stronger silhouette, upgraded mining weapon, glowing core, aura, medals/runes, leadership presence.
 - Stage 6-7: legendary/ascended, mythic readable upgrades: crystalline armor, elemental wings/cloak, halo/portal/ground FX, signature power weapon, but still toy-like/game-readable and not over-detailed noise.
-- Visual trait mutations should look like ONE new collectible unlock landing on the character: headwear/outfit/weapon/accessory/expression/background changes must be clear without redesigning the whole beast.
-- Power mutations should be novel and personality-aware: lightning traders, jade spell circles, frost war shields, chakra pickaxe shockwaves, carnival solar flares, desert mirage blades, tech drone beams, royal propaganda megaphone blasts. Power FX should follow country, breed, gear, location, and character attitude.
+- Visual trait rerolls should look like ONE new collectible unlock landing on the character: headwear/outfit/weapon/accessory/expression/background changes must be clear without redesigning the whole beast.
+- Power rerolls should be novel and personality-aware: lightning traders, jade spell circles, frost war shields, chakra pickaxe shockwaves, carnival solar flares, desert mirage blades, tech drone beams, royal propaganda megaphone blasts. Power FX should follow country, breed, gear, location, and character attitude.
 `.trim();
 
 export const ACTION_COMEDY_DIRECTOR_CANON = `
@@ -815,7 +815,7 @@ ${HASHIDEN_QUICK_REFERENCE_CARD}
 `.trim();
 
 export const HASHBEAST_REFERENCE_STYLE =
-  "High-resolution 2D arcade-cel HashBeast character with pixel-art DNA in the exact style family of the game NFTs and current Hashiden banner: bold clean outlines, flat cel shading, premium bright key-art lighting, saturated faction colors, readable silhouette, expressive dog face, collectible country-specific gear, and specific power equipment. It should feel animated and collectible, not raw low-res pixel art. Absolutely no photorealism, no realistic fur, no generic 3D render, no cinematic CGI, no anime, no painterly blur.";
+  "High-resolution 2D arcade-cel HashBeast character with pixel-art TRAIT_SEED in the exact style family of the game NFTs and current Hashiden banner: bold clean outlines, flat cel shading, premium bright key-art lighting, saturated faction colors, readable silhouette, expressive dog face, collectible country-specific gear, and specific power equipment. It should feel animated and collectible, not raw low-res pixel art. Absolutely no photorealism, no realistic fur, no generic 3D render, no cinematic CGI, no anime, no painterly blur.";
 
 function cleanText(input: unknown, max = 1400): string {
   const raw = String(input ?? "");

@@ -332,7 +332,7 @@ export function buildDraftCanonPlan(sp: Screenplay): Record<string, unknown> {
   const characters = characterIdsFromScreenplay(sp);
   return {
     status: "draft_only_not_canon",
-    rule: "Do not mutate story memory from this plan until the final video is posted and canonized.",
+    rule: "Do not reroll story memory from this plan until the final video is posted and canonized.",
     summary: videoSummary(sp),
     charactersTouched: characters,
     proposedCharacterUpdates: characters.map((id) => ({
@@ -517,13 +517,13 @@ export interface ChapterCanonInput {
   /** Named techniques debuted during the cycle. */
   techniqueDebuts?: string[];
   /**
-   * Prompt-genome motivations distilled this cycle, keyed by the country the
-   * beast fights for (Spec Part C: keeps engine story-memory and backend genome
+   * Prompt-trait_map motivations distilled this cycle, keyed by the country the
+   * beast fights for (Spec Part C: keeps engine story-memory and backend trait_map
    * coherent). Each folds into the matching CharacterMemory.wants so the
    * showrunner's memory reflects what the beast now wants. Country-keyed
    * because the engine's cast is per-country; the newest motivation wins.
    */
-  genomeWants?: Array<{ country: string; motivation: string }>;
+  traitMapWants?: Array<{ country: string; motivation: string }>;
 }
 
 /** Pure chapter → memory fold (exported for simulations; canonizeChapter persists). */
@@ -587,9 +587,9 @@ export function applyChapterToMemory(
   memory.videos.sort((a, b) => a.videoNo - b.videoNo);
   memory.worldSoFar = compact(`${memory.worldSoFar} ${summary}`, 1800);
 
-  // Genome motivations → CharacterMemory.wants (country-keyed, newest wins).
+  // TraitMap motivations → CharacterMemory.wants (country-keyed, newest wins).
   const wantsByCountry = new Map<string, string>();
-  for (const w of input.genomeWants || []) {
+  for (const w of input.traitMapWants || []) {
     const country = String(w?.country || "").trim();
     const motivation = compact(w?.motivation, 400);
     if (country && motivation) wantsByCountry.set(country, motivation);
@@ -602,7 +602,7 @@ export function applyChapterToMemory(
     c.lastCanonEvent = summary;
   }
 
-  // Apply distilled genome motivations to every matching country's character —
+  // Apply distilled trait_map motivations to every matching country's character —
   // including countries that carried a want but did not otherwise earn screen
   // time this chapter — so no distilled motivation is silently dropped.
   if (wantsByCountry.size > 0) {

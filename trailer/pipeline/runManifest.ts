@@ -178,7 +178,7 @@ export function ensureRunManifest(outDir: string, blueprint: Pick<Blueprint, "id
   });
 }
 
-export function mutateRunManifest(outDir: string, mutator: (manifest: RunManifest) => void): RunManifest {
+export function rerollRunManifest(outDir: string, mutator: (manifest: RunManifest) => void): RunManifest {
   const existing = loadRunManifest(outDir);
   if (!existing) throw new Error(`Run manifest missing at ${manifestPath(outDir)}`);
   mutator(existing);
@@ -186,7 +186,7 @@ export function mutateRunManifest(outDir: string, mutator: (manifest: RunManifes
 }
 
 export function beginRunStage(outDir: string, stage: Omit<RunStageRecord, "status" | "startedAt" | "endedAt" | "durationMs">): void {
-  mutateRunManifest(outDir, (manifest) => {
+  rerollRunManifest(outDir, (manifest) => {
     const existing = manifest.stages.find((item) => item.id === stage.id);
     const next: RunStageRecord = {
       ...stage,
@@ -201,7 +201,7 @@ export function beginRunStage(outDir: string, stage: Omit<RunStageRecord, "statu
 }
 
 export function completeRunStage(outDir: string, id: string, patch: Partial<RunStageRecord> = {}): void {
-  mutateRunManifest(outDir, (manifest) => {
+  rerollRunManifest(outDir, (manifest) => {
     const stage = manifest.stages.find((item) => item.id === id);
     if (!stage) return;
     const endedAt = nowIso();
@@ -220,7 +220,7 @@ export function failRunStage(outDir: string, id: string, error: unknown): void {
 }
 
 export function registerRunArtifact(outDir: string, artifact: Omit<RunArtifactRecord, "createdAt" | "bytes"> & { bytes?: number }): void {
-  mutateRunManifest(outDir, (manifest) => {
+  rerollRunManifest(outDir, (manifest) => {
     const abs = path.resolve(outDir, artifact.path);
     const rel = safeRel(outDir, abs);
     const bytes = fs.existsSync(abs) ? fs.statSync(abs).size : artifact.bytes;
@@ -232,7 +232,7 @@ export function registerRunArtifact(outDir: string, artifact: Omit<RunArtifactRe
 }
 
 export function registerFalRequest(outDir: string, request: Omit<RunFalRequestRecord, "createdAt">): void {
-  mutateRunManifest(outDir, (manifest) => {
+  rerollRunManifest(outDir, (manifest) => {
     manifest.falRequests.push({ ...request, createdAt: nowIso() });
   });
 }
@@ -372,7 +372,7 @@ export function writeSubtitleArtifacts(outDir: string, screenplay: Screenplay): 
 }
 
 export function refreshRunManifestFromScreenplay(outDir: string, screenplay: Screenplay, opts: { llmCalls?: number } = {}): RunManifest {
-  return mutateRunManifest(outDir, (manifest) => {
+  return rerollRunManifest(outDir, (manifest) => {
     manifest.title = screenplay.title || manifest.title;
     manifest.logline = screenplay.logline || manifest.logline;
     const refs = (screenplay.sequences || []).flatMap((seq) => refsForSequence(outDir, seq));

@@ -12,7 +12,7 @@
  *  (iii) the cover prompt stages the WINNING country's bible location card,
  *        forbids readable text, and forbids flag-print clothing,
  *  (iv)  the epithet trigger rules (first claim, win-streak>=5, stage>=4
- *        evolution, country MVP) derive exactly as specced,
+ *        ascension, country MVP) derive exactly as specced,
  *  (v)   chapter facts compound through the canonize gate into story memory
  *        (cliffhanger becomes the rivalry arc's open question),
  *  (vi)  every static text surface passes the banned-lexicon sweep.
@@ -70,8 +70,8 @@ const facts41: ChapterCycleFacts = {
   finalRanks: [3, 1, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12],
   rankDeltas: [-2, 3, 0, 1, -1, 0, 0, 0, 0, 0, 0, 0],
   mvps: [{ factionId: 1, ownerCallsign: "JadeHands", beastName: "Long-9", mint: "ChinaMvpMint" }],
-  biggestMutations: [
-    { mint: "EvoMintAaa", beastName: "Ember", factionId: 2, kind: "evolution", newStage: 4 },
+  biggestRerolls: [
+    { mint: "EvoMintAaa", beastName: "Ember", factionId: 2, kind: "ascension", newStage: 4 },
   ],
   computeSpentUsd: 18.4,
 };
@@ -92,7 +92,7 @@ const facts42: ChapterCycleFacts = {
   finalRanks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
   rankDeltas: [2, -1, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
   mvps: [{ factionId: 0, ownerCallsign: "RustBeltRex", beastName: "Patriot-1", mint: "UsaMvpMint" }],
-  biggestMutations: [
+  biggestRerolls: [
     { mint: "PowMintBbb", beastName: "Howler", factionId: 0, kind: "power", techniqueName: "Liberty Overdrive" },
   ],
   jackpots: [{ roundId: 4012, factionId: 0 }],
@@ -154,10 +154,10 @@ check("win streak 4 does NOT trigger win_streak_5",
   !deriveEpithetTriggers({ won: true, winStreak: 4 }).includes("win_streak_5"));
 check("a LOSS never triggers claim epithets",
   deriveEpithetTriggers({ won: false, totalWins: 1, winStreak: 9 }).length === 0);
-check("evolution to stage 4 → evolution_stage_4",
-  deriveEpithetTriggers({ newStage: 4 }).includes("evolution_stage_4"));
-check("evolution to stage 3 does NOT trigger",
-  !deriveEpithetTriggers({ newStage: 3 }).includes("evolution_stage_4"));
+check("ascension to stage 4 → ascension_stage_4",
+  deriveEpithetTriggers({ newStage: 4 }).includes("ascension_stage_4"));
+check("ascension to stage 3 does NOT trigger",
+  !deriveEpithetTriggers({ newStage: 3 }).includes("ascension_stage_4"));
 check("country MVP → country_mvp",
   deriveEpithetTriggers({ isCountryMvp: true }).includes("country_mvp"));
 check("country_mvp title is country-flavored",

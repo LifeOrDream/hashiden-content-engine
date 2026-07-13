@@ -40,15 +40,15 @@ HASHIDEN is a serialized show produced by gameplay, not by a writers' room. The 
 
 This engine is the rendering half of Hashiden's **World Model**: it takes a stream of settled on-chain events and renders them into canon-constrained story. The constraint is the **world bible** (`src/world/bible.ts`) — the Council of Twelve, the rivalry map, the style ladder, the ceremony language — and it is **public and open source**, right here in this repo, alongside the grammar checks that keep generations on-canon.
 
-What is deliberately *not* here is everything that couples to live play: the accumulated story corpus, the per-character genome cards, the preference signals that steer what gets rendered, wallets, and game state. The engine reads none of it. Every job is a self-contained snapshot in, a bounded creative artifact out — so the studio is inspectable and reusable without exposing the game it renders.
+What is deliberately *not* here is everything that couples to live play: the accumulated story corpus, the per-character trait map cards, the preference signals that steer what gets rendered, wallets, and game state. The engine reads none of it. Every job is a self-contained snapshot in, a bounded creative artifact out — so the studio is inspectable and reusable without exposing the game it renders.
 
-In ML terms, this repo is the **context-engineering surface** of a three-layer system: Layer 1 (live, this repo + the game's genome cards) conditions every generation with canon, story memory, and grammar-checked prompts; Layer 2 (turning on, game-side) turns audience and market signal into a reward function over the show's own output; Layer 3 (roadmap, game-side) is owned weights — per-nation style LoRAs, character identities, a writer model fine-tuned on the canon corpus. Every artifact carries provenance: the event that caused it, the spend that rendered it, the reception it earned. The dataset, not the weights, is the IP. **Forks copy the engine; the corpus, canon, and trained preferences stay with the show — and they compound with every round played.**
+In ML terms, this repo is the **context-engineering surface** of a three-layer system: Layer 1 (live, this repo + the game's trait map cards) conditions every generation with canon, story memory, and grammar-checked prompts; Layer 2 (turning on, game-side) turns audience and market signal into a reward function over the show's own output; Layer 3 (roadmap, game-side) is owned weights — per-nation style LoRAs, character identities, a writer model fine-tuned on the canon corpus. Every artifact carries provenance: the event that caused it, the spend that rendered it, the reception it earned. The dataset, not the weights, is the IP. **Forks copy the engine; the corpus, canon, and trained preferences stay with the show — and they compound with every round played.**
 
 Three things make it different from any show before it:
 
 - **The players own the cast.** The characters are HashBeasts — a genesis run of 16,200 player-owned characters with breed, country, gear, powers, and a story state that compounds across chapters.
 - **The players write themselves in.** Direct-Your-Beast lets owners author their character's personality sheet; the engine renders it into canon-adjacent lore. On-chain events are canon; owner lore is apocrypha; every claim cites its cycle, clip, and transaction.
-- **The show is produced BY the game, not about it.** Wins, mutations, evolutions, mints, and rivalries are the plot. Minting a beast is a character intro. A claim streak is an arc.
+- **The show is produced BY the game, not about it.** Wins, rerolls, ascensions, mints, and rivalries are the plot. Minting a beast is a character intro. A claim streak is an arc.
 
 ## The Theme: Climbing The Kardashev Scale
 
@@ -70,7 +70,7 @@ This repo is the studio: the creative layer that turns game state into a consist
 - **Beast memory, epithets, technique debuts** (`src/nft-pipeline/beastMemory.ts`): per-beast story memory that compounds across cycles — milestone-minted epithets, first-use records for named techniques, per-rival win/loss ledgers.
 - **Chapter generation** (`src/content-engine/chapterWriter.ts`, `chapter.write` / `chapter.canonize` jobs): one settled war cycle in, one chapter anatomy out — cover (title + text-free cover-art prompt on the winning country's location), recap beats that pay off the previous cliffhanger, cast of the chapter, compute ledger, and a persisted cliffhanger the next chapter must answer.
 - **Chapter → video + replay/compare** (`src/service/chapterVideo.ts`, `chapter.produce` job; CLIs `chapter:produce` / `chapter:replay`; WebUI `/chapters`): turn a settled cycle's facts into a rendered episode video end-to-end — chapter anatomy → a synthesized blueprint → the trailer pipeline → `final.mp4`. Every production is archived and **versioned** so a past chapter can be **re-run after code changes** and compared old-vs-new side by side (full re-render, or render-only A/B with the script frozen), optionally billed to your own fal.ai key.
-- **NFT asset pipeline** (`nft.*` jobs): DNA-driven mint art with a Gemini identity gate and bounded regens, chroma-strip state loops assembled into transparent APNGs (mining/win/lose), mutation ceremonies with transition clips and voiced lines, and per-beast cycle recap MP4s. See [docs/nft-pipeline.md](docs/nft-pipeline.md).
+- **NFT asset pipeline** (`nft.*` jobs): TRAIT SEED-driven mint art with a Gemini identity gate and bounded regens, chroma-strip state loops assembled into transparent APNGs (mining/win/lose), reroll ceremonies with transition clips and voiced lines, and per-beast cycle recap MP4s. See [docs/nft-pipeline.md](docs/nft-pipeline.md).
 - **Casino rituals** (`src/nft-pipeline/ritual.ts`): lootbox reveals and claim rolls staged as rituals, not toasts — drawing on a canonical rarity light language so a Motherlode glow reads identically on every surface. See [docs/rituals-and-audio.md](docs/rituals-and-audio.md).
 - **Audio identity** (`src/world/audioIdentity.ts`): the ownable sound spec — fanfare tiers mapped to rarity, cue ids every ritual and ceremony pulls from.
 - **Trailer pipeline + reels** (`trailer/`, `produce_reel` job): multi-pass screenplay writing, dialogue refinement, frame planning, multi-scene video generation, lip-sync, subtitles, and assembly — exposed both as a local WebUI and as a `produce_reel` service job the backend can dispatch.
@@ -80,7 +80,7 @@ This repo is the studio: the creative layer that turns game state into a consist
 
 Honesty about what runs where:
 
-- **Running in production for Hashiden:** the service worker and its job surface — `nft.*` asset jobs (mint art, state loops, mutation content, cycle summaries), ritual jobs, chapter writing/canonization (`chapter.*`), chapter-video + reel rendering (`chapter.produce`, `produce_reel`), and the creative prompt jobs. The Hashiden backend owns budgets, persistence, and posting; this engine owns the creative + media work. (The backend's `CONTENT_VIA_ENGINE` cutover routes its in-process NFT media generation onto these jobs.)
+- **Running in production for Hashiden:** the service worker and its job surface — `nft.*` asset jobs (mint art, state loops, reroll content, cycle summaries), ritual jobs, chapter writing/canonization (`chapter.*`), chapter-video + reel rendering (`chapter.produce`, `produce_reel`), and the creative prompt jobs. The Hashiden backend owns budgets, persistence, and posting; this engine owns the creative + media work. (The backend's `CONTENT_VIA_ENGINE` cutover routes its in-process NFT media generation onto these jobs.)
 - **Operated locally by the team:** the trailer pipeline + WebUI (script/render launch trailers and show keyframes) and the **chapter replay/compare** console (`/chapters`), used to re-run a past chapter under new code and verify the video/script actually improved.
 - **Reference implementation:** the world-pack and provider-adapter layers. Hashiden is the first world; the structure is built so another game can swap in its own canon, events, and providers, but no second world ships in this repo yet.
 
@@ -133,7 +133,7 @@ To adapt the engine for another game, replace the world pack:
 - Characters instead of HashBeasts.
 - Factions/guilds/teams instead of Hashiden countries.
 - Your own visual bible, camera grammar, and negative prompts.
-- Your own event types: mint, evolve, battle, trade, quest, raid, win, loss, betrayal, alliance.
+- Your own event types: mint, ascend, battle, trade, quest, raid, win, loss, betrayal, alliance.
 - Your own provider adapters for image, video, voice, music, storage, and delivery.
 
 The core goal stays the same: generated content that feels like it comes from a living world with consistent characters. See [docs/world-packs.md](docs/world-packs.md).
@@ -207,7 +207,7 @@ npm run service:worker
 ```text
 src/world/                Typed canon: world bible, 8-stage progression grammar, base types, audio identity.
 src/content-engine/       Creative primitives: prompt grammar, chapter writer, screenplay normalization, dialogue QA.
-src/nft-pipeline/         NFT asset pipeline: mint art, state-loop APNGs, mutation ceremonies, rituals, beast memory, cycle recaps.
+src/nft-pipeline/         NFT asset pipeline: mint art, state-loop APNGs, reroll ceremonies, rituals, beast memory, cycle recaps.
 src/prompts/              HashBeast prompt grammar: world lore, 12 faction packs, breeds, trait resolution.
 src/service/              Redis/BullMQ worker contracts and job processor.
 src/utils/                Media/provider helpers, incl. the multi-scene video primitive.

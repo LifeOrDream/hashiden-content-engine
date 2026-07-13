@@ -15,7 +15,7 @@ Hashiden is the reference world, but the engine should support other game worlds
 
 ## Hashiden Reference World
 
-Hashiden's world is a country-vs-country mining war where HashBeasts are dog-warrior characters whose appearance, power, and story evolve through gameplay.
+Hashiden's world is a country-vs-country mining war where HashBeasts are dog-warrior characters whose appearance, power, and story ascend through gameplay.
 
 **Canon source of truth: `src/world/bible.ts`** (human-readable companion with
 the name-conflict decision log: `WORLD_BIBLE.md` at the repo root). All leader

@@ -94,7 +94,7 @@ export interface Shot {
   music: string;
   /** On-screen text — facts/numbers live HERE, not in the mouth (visual/VO split). */
   caption?: string;
-  /** Country/gear/evolution motif that should be visible in the frame. */
+  /** Country/gear/ascension motif that should be visible in the frame. */
   visualMotif?: string;
   /** Exact power effect, color, source gear, and physical behavior for the shot. */
   powerFx?: string;
@@ -138,7 +138,7 @@ export interface SequenceCharacter {
   name: string;
   /** Stable lowercase ref tag, e.g. "@rex" — the renderer maps it to reference images. */
   refTag: string;
-  /** Reference-sheet variant: "default" | "helmet" | "evolved" | … */
+  /** Reference-sheet variant: "default" | "helmet" | "ascended" | … */
   state?: string;
 }
 

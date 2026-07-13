@@ -48,7 +48,7 @@ function standingsBlock(standings: FactionStanding[]): string {
       const parts: string[] = [`#${(s.rank ?? i) + 1} ${s.name}`];
       if (s.rankDelta) parts.push(`(${s.rankDelta > 0 ? "▲" : "▼"}${Math.abs(s.rankDelta)})`);
       if (s.roundWins) parts.push(`${s.roundWins} wins`);
-      if (s.mutationScore) parts.push(`${s.mutationScore} mutations`);
+      if (s.rerollScore) parts.push(`${s.rerollScore} rerolls`);
       if (s.usersDelta) parts.push(`${s.usersDelta >= 0 ? "+" : ""}${s.usersDelta} recruits`);
       if (s.minted != null && s.target) parts.push(`${s.minted}/${s.target} minted`);
       if (s.denAprPct) parts.push(`${s.denAprPct.toFixed(0)}% APR`);
@@ -65,7 +65,7 @@ function castBlock(cast: CastMember[]): string {
       const p = c.personality || {};
       return [
         `• ${c.factionName} HashBeast  [mint: ${c.mint}]`,
-        `  ${c.breed || "dog"}, evolution stage "${c.stageName || "?"}", ${c.isWizard ? "WIZARD" : "MUGGLE"} — "${c.occupation || "warrior"}"${c.region ? ` (${c.region})` : ""}.`,
+        `  ${c.breed || "dog"}, ascension stage "${c.stageName || "?"}", ${c.isWizard ? "WIZARD" : "MUGGLE"} — "${c.occupation || "warrior"}"${c.region ? ` (${c.region})` : ""}.`,
         c.bio ? `  Bio: ${c.bio}` : "",
         `  Personality: ${[p.archetype, p.tone, p.motivation].filter(Boolean).join(", ") || "proud"}${p.catchphrase ? `; catchphrase "${p.catchphrase}"` : ""}${p.rivalry ? `; rivalry: ${p.rivalry}` : ""}.`,
         `  Voice: ${c.voice.accent}, ${c.voice.timbre} — ${c.voice.directive}. (speak this character's lines in this voice/language: ${c.voice.language})`,
@@ -121,7 +121,7 @@ export function buildScreenplayPrompt(
 • 12 nations (USA, China, Russia, South Korea, India, Japan, Iran, UK, North Korea, France, Brazil, Israel) are at WAR to mine the most $DEN — this world's Bitcoin, on Solana.
 • Their soldiers are HashBeasts: stylized dog-warrior mascots — a genesis cast of 16,200 (15,000 public + 1,200 reserve). Real humans own and play them.
 • The war runs in 4-hour "COUNTRY RACE" cycles. Each cycle a country wins. Between cycles the economy shifts: $DEN's price moves, EMISSIONS ($DEN minted per second) adjust, a mining MULTIPLIER changes the rewards, staking APR fluctuates.
-• HashBeasts are WIZARDS (Wall Street Sorcerers, Pentagon Battle Mages, Juche Sorcerers…) or MUGGLES (the President's dog, a tycoon's pet…). They EVOLVE through stages, MUTATE new traits, and grow more powerful — and they trash-talk rival nations relentlessly.
+• HashBeasts are WIZARDS (Wall Street Sorcerers, Pentagon Battle Mages, Juche Sorcerers…) or MUGGLES (the President's dog, a tycoon's pet…). They ASCEND through stages, REROLL new traits, and grow more powerful — and they trash-talk rival nations relentlessly.
 • It is a PARODY grounded in REAL current world events: rivalries mirror the real world (USA↔Iran, China↔Taiwan, Russia↔Ukraine, NK posturing, US↔China tech race…), framed as the doge mining war. Country-level satire only — never depict real named individuals.
 
 ═══════════ THIS EPISODE — LIVE STATE (ground every beat in these real facts) ═══════════

@@ -5,7 +5,7 @@
  * generation spend. Run via `npm run test:grammar` (part of check:oss).
  *
  * Proves:
- *  (i)   stage-2 vs stage-5 evolution ceremonies differ materially
+ *  (i)   stage-2 vs stage-5 ascension ceremonies differ materially
  *        (different canonical names, aura tokens, beat text),
  *  (ii)  two countries produce different aura language,
  *  (iii) first-win vs streak-win vs revenge-win produce different dialogue
@@ -22,7 +22,7 @@ import {
   allTechniqueNames,
   auraTokens,
   countryAuraFlavor,
-  evolutionCeremony,
+  ascensionCeremony,
   performanceBand,
   stagePerformance,
   stageTransition,
@@ -40,11 +40,11 @@ import {
   rivalryBlock,
 } from "../src/nft-pipeline/moments.js";
 import {
-  evolutionCeremonyAction,
+  ascensionCeremonyAction,
   transitionAction,
   transitionTechnique,
   buildDialoguePrompt,
-} from "../src/nft-pipeline/mutationContent.js";
+} from "../src/nft-pipeline/rerollContent.js";
 import { stateActionFor, type BeastProfile } from "../src/nft-pipeline/stateAnimations.js";
 import { dialogueSmells } from "../src/content-engine/dialogueQuality.js";
 import type { NftBeastInput } from "../src/nft-pipeline/types.js";
@@ -67,17 +67,17 @@ import {
   ALL_AUDIO_CUE_IDS,
   AUDIO_IDENTITY_CUES,
   COUNTRY_LEITMOTIFS,
-  EVOLUTION_STINGS,
+  ASCENSION_STINGS,
   LEGACY_SOUND_IDS,
   audioCue,
   countryLeitmotif,
-  evolutionSting,
+  ascensionSting,
   fanfareCueIdFor,
   legacyPlayableSoundId,
 } from "../src/world/audioIdentity.js";
 import {
   buildClaimRollCeremony,
-  buildEvolutionRitual,
+  buildAscensionRitual,
   buildLootboxRevealRitual,
   lootboxRitualKind,
 } from "../src/nft-pipeline/ritual.js";
@@ -110,22 +110,22 @@ import {
   generateWorldBriefs,
 } from "../src/content-engine/worldBrief.js";
 import {
-  genomeImagePuritySmells,
-  genomeImageBlock,
-  genomeTextDirective,
-  sanitizeGenomeForImage,
-  GENOME_FOR_IMAGE_MAX,
-  type GenomeBlock,
-} from "../src/nft-pipeline/genomeBlock.js";
+  traitMapImagePuritySmells,
+  traitMapImageBlock,
+  traitMapTextDirective,
+  sanitizeTraitMapForImage,
+  TRAIT_MAP_FOR_IMAGE_MAX,
+  type TraitMapBlock,
+} from "../src/nft-pipeline/traitMapBlock.js";
 import {
-  buildGenomeDistillPrompt,
-  distillGenomeFallback,
-  lintGenomeCard,
+  buildTraitMapDistillPrompt,
+  distillTraitMapFallback,
+  lintTraitMapCard,
   MOTIF_LINE_MAX,
   MOTIVATION_MAX,
   PAST_LIFE_ECHO_MAX,
-  type NftGenomeDistillInput,
-} from "../src/nft-pipeline/genomeDistill.js";
+  type NftTraitMapDistillInput,
+} from "../src/nft-pipeline/traitMapDistill.js";
 import {
   buildCuratorReasonPrompt,
   curatorReasonFallback,
@@ -161,7 +161,7 @@ function profileFor(stage: number, factionId = 0, isWizard = false): BeastProfil
     factionId,
     factionName,
     factionCode,
-    evolutionStage: stage,
+    ascensionStage: stage,
     baseType: "canine",
   };
 }
@@ -190,10 +190,10 @@ check(
   new Set(PROGRESSION_STAGES.map((s) => auraTokens(s.stage))).size === 8,
 );
 
-// ─── (i) stage-2 vs stage-5 evolution ceremonies differ materially ──────────
-console.log("\nB2 · evolution ceremony (stage-2 vs stage-5)");
-const evoTo2 = evolutionCeremonyAction(profileFor(1), 2, 1); // 1 → 2
-const evoTo5 = evolutionCeremonyAction(profileFor(4), 5, 4); // 4 → 5
+// ─── (i) stage-2 vs stage-5 ascension ceremonies differ materially ──────────
+console.log("\nB2 · ascension ceremony (stage-2 vs stage-5)");
+const evoTo2 = ascensionCeremonyAction(profileFor(1), 2, 1); // 1 → 2
+const evoTo5 = ascensionCeremonyAction(profileFor(4), 5, 4); // 4 → 5
 check("ceremony prompts differ", evoTo2 !== evoTo5);
 check(
   "different aura tokens (stage 2 sheath vs stage 5 banner)",
@@ -219,8 +219,8 @@ check(
   !evoTo2.includes(stageTransition(2).name) && !evoTo5.includes(stageTransition(5).name),
 );
 check(
-  "transitionAction(evolution) routes through the ceremony",
-  transitionAction("evolution", profileFor(1), 2, { fromStage: 1 }) === evoTo2,
+  "transitionAction(ascension) routes through the ceremony",
+  transitionAction("ascension", profileFor(1), 2, { fromStage: 1 }) === evoTo2,
 );
 
 // ─── (ii) two countries → different aura language ────────────────────────────
@@ -231,8 +231,8 @@ check("USA vs Russia aura language differs", usaAura !== russiaAura);
 check("USA aura speaks ticker-ribbon gold", /ticker/i.test(usaAura));
 check("Russia aura speaks frost pressure", /frost/i.test(russiaAura));
 check("China aura speaks jade rings", /jade/i.test(countryAuraFlavor(1)));
-const usaCeremony = evolutionCeremony(0, 1, 2).map((b) => b.action).join(" ");
-const ruCeremony = evolutionCeremony(2, 1, 2).map((b) => b.action).join(" ");
+const usaCeremony = ascensionCeremony(0, 1, 2).map((b) => b.action).join(" ");
+const ruCeremony = ascensionCeremony(2, 1, 2).map((b) => b.action).join(" ");
 check("same transition, different countries → different ceremonies", usaCeremony !== ruCeremony);
 
 // ─── B3 · stage-aware performance ────────────────────────────────────────────
@@ -338,7 +338,7 @@ const pRevengePrev = buildMomentDialoguePrompt(
   beast, "revenge_win", { won: true, rivalFactionId: 1, lastLossToFactionId: 1 }, "You got lucky, Long Wei!");
 check("previousLine threading survives", pRevengePrev.includes("You got lucky, Long Wei!"));
 const mutPrompt = buildDialoguePrompt(beast, "power", { rivalFactionId: 1 });
-check("mutation dialogue also picks up the rivalry", mutPrompt.includes("CANON RIVALRY"));
+check("reroll dialogue also picks up the rivalry", mutPrompt.includes("CANON RIVALRY"));
 
 // ─── C2 · emotional arc gating ───────────────────────────────────────────────
 console.log("\nC2 · emotional arc");
@@ -385,7 +385,7 @@ check(
   getBreedForBaseType("canine", 0, 1).name === "Husky",
 );
 check(
-  "primate breed pack indexes by DNA breed bits",
+  "primate breed pack indexes by TRAIT_SEED breed bits",
   getBreedForBaseType("primate", 0, 3).name === "Gorilla",
 );
 check("normalizeBaseType defaults empty → canine", normalizeBaseType("") === "canine");
@@ -455,11 +455,11 @@ console.log("\nF · audio identity");
 check("12 country leitmotifs", COUNTRY_LEITMOTIFS.length === 12);
 check("leitmotif prompts pairwise distinct",
   new Set(COUNTRY_LEITMOTIFS.map((m) => m.prompt)).size === 12);
-check("4 evolution stings (one per stage band)", EVOLUTION_STINGS.length === 4);
-check("evolution sting escalates with the band (pup ≠ ascendant)",
-  evolutionSting(0).id === "evolution_sting_pup" &&
-  evolutionSting(7).id === "evolution_sting_ascendant" &&
-  evolutionSting(0).prompt !== evolutionSting(7).prompt);
+check("4 ascension stings (one per stage band)", ASCENSION_STINGS.length === 4);
+check("ascension sting escalates with the band (pup ≠ ascendant)",
+  ascensionSting(0).id === "ascension_sting_pup" &&
+  ascensionSting(7).id === "ascension_sting_ascendant" &&
+  ascensionSting(0).prompt !== ascensionSting(7).prompt);
 check("cue ids globally unique",
   new Set(ALL_AUDIO_CUE_IDS).size === ALL_AUDIO_CUE_IDS.length);
 check("catalog covers themes + ritual sfx",
@@ -471,18 +471,18 @@ check("every cue fits stable-audio's 47s ceiling", AUDIO_IDENTITY_CUES.every((c)
 check("every cue prompt enforces instrumental/no-lyrics",
   AUDIO_IDENTITY_CUES.every((c) => /no vocals, no lyrics/i.test(c.prompt)));
 check("legacy ids pass through the playable resolver",
-  legacyPlayableSoundId("jackpot") === "jackpot" && legacyPlayableSoundId("mutation") === "mutation");
+  legacyPlayableSoundId("jackpot") === "jackpot" && legacyPlayableSoundId("reroll") === "reroll");
 check("cue ids resolve to their fallback via the existing mapping",
   legacyPlayableSoundId("leitmotif_usa") === "jackpot" &&
-  legacyPlayableSoundId("ritual_lootbox_near_miss") === "mutation");
+  legacyPlayableSoundId("ritual_lootbox_near_miss") === "reroll");
 check("USA vs Brazil leitmotifs differ", countryLeitmotif(0).prompt !== countryLeitmotif(10).prompt);
 
-// ─── Phase F · staged rituals (lootbox win / near-miss / evolution DISTINCT) ─
+// ─── Phase F · staged rituals (lootbox win / near-miss / ascension DISTINCT) ─
 console.log("\nF · staged rituals");
 const winRitual = buildLootboxRevealRitual({ rollValue: 900, thresholdBps: 1000, factionId: 0, revealStage: 7 });
 const nearMissRitual = buildLootboxRevealRitual({ rollValue: 1100, thresholdBps: 1000, factionId: 0 });
 const missRitual = buildLootboxRevealRitual({ rollValue: 9000, thresholdBps: 1000, factionId: 0 });
-const evoRitual = buildEvolutionRitual({ factionId: 0, fromStage: 4, toStage: 5 });
+const evoRitual = buildAscensionRitual({ factionId: 0, fromStage: 4, toStage: 5 });
 const claimHit = buildClaimRollCeremony({ result: "visual", factionId: 0 });
 const claimSettle = buildClaimRollCeremony({ result: "none", factionId: 0 });
 
@@ -494,7 +494,7 @@ check("win ritual stages all four acts in order",
   winRitual.acts.map((a) => a.act).join(",") === "anticipation_shake,crack,rarity_flare,reveal");
 check("near-miss ritual stages shake → lock strain → dim resolve",
   nearMissRitual.acts.map((a) => a.act).join(",") === "anticipation_shake,lock_strain,dim_resolve");
-check("evolution ritual stages charge → burst → reveal",
+check("ascension ritual stages charge → burst → reveal",
   evoRitual.acts.map((a) => a.act).join(",") === "charge,burst,reveal");
 check("the three rituals are pairwise DISTINCT staged definitions",
   new Set([winRitual, nearMissRitual, evoRitual].map((r) => `${r.ritualId}|${r.acts.map((a) => a.act).join(",")}`)).size === 3);
@@ -524,17 +524,17 @@ check("every ritual act resolves to a real audio cue + legacy fallback",
       (LEGACY_SOUND_IDS as readonly string[]).includes(a.fallbackSoundId))));
 check("win reveal lands on the country leitmotif",
   winRitual.acts[3].soundCueId === "leitmotif_usa");
-check("evolution burst rides the stage-band sting",
-  evoRitual.acts[1].soundCueId === evolutionSting(5).id);
+check("ascension burst rides the stage-band sting",
+  evoRitual.acts[1].soundCueId === ascensionSting(5).id);
 check("claim-roll ceremony is a 2-act anticipation → resolve",
   claimHit.acts.map((a) => a.act).join(",") === "charge_roll,roll_hit" &&
   claimSettle.acts.map((a) => a.act).join(",") === "charge_roll,roll_settle");
 check("claim-roll hit vs settle resolve differently",
   claimHit.acts[1].soundCueId !== claimSettle.acts[1].soundCueId &&
   claimHit.acts[1].lightLanguage !== claimSettle.acts[1].lightLanguage);
-check("claim-roll evolution hit hands off to the evolution sting",
-  buildClaimRollCeremony({ result: "evolution", factionId: 0, newStage: 7 }).acts[1].soundCueId ===
-    "evolution_sting_ascendant");
+check("claim-roll ascension hit hands off to the ascension sting",
+  buildClaimRollCeremony({ result: "ascension", factionId: 0, newStage: 7 }).acts[1].soundCueId ===
+    "ascension_sting_ascendant");
 check("ritual durations are FE-pacable (every act 0.5-3s, total under 8s)",
   [winRitual, nearMissRitual, missRitual, evoRitual, claimHit, claimSettle].every((r) =>
     r.acts.every((a) => a.durationMs >= 500 && a.durationMs <= 3000) && r.totalDurationMs <= 8000));
@@ -693,36 +693,36 @@ check(
   Array.isArray(noKeyBriefs.briefs) && noKeyBriefs.briefs.length === 0,
 );
 
-// ─── Part C · prompt-genome plumbing ─────────────────────────────────────────
-console.log("\nPartC · genome forImage purity");
+// ─── Part C · prompt-trait_map plumbing ─────────────────────────────────────────
+console.log("\nPartC · trait_map forImage purity");
 const aTechnique = allTechniqueNames()[0];
 check("technique lexicon is non-empty (purity probe available)", Boolean(aTechnique));
 // A clean aesthetic-tokens block passes.
 check(
   "clean aesthetic tokens pass forImage purity",
-  genomeImagePuritySmells("cobalt neon rimlight, storm-grey fur, stage 4 silhouette").length === 0,
+  traitMapImagePuritySmells("cobalt neon rimlight, storm-grey fur, stage 4 silhouette").length === 0,
 );
 // A technique name is caught.
 check(
   "technique name flagged by forImage purity",
-  genomeImagePuritySmells(`palette with ${aTechnique} energy`).length > 0,
+  traitMapImagePuritySmells(`palette with ${aTechnique} energy`).length > 0,
 );
 // Motif prose markers are caught.
 check(
   "motif prose flagged by forImage purity",
-  genomeImagePuritySmells("motivation: avenge the fallen — a sworn epithet").length > 0,
+  traitMapImagePuritySmells("motivation: avenge the fallen — a sworn epithet").length > 0,
 );
 // Sanitizer strips the offending clause but keeps clean tokens.
 const dirtyForImage = `cobalt rimlight, ${aTechnique} flare, storm-grey fur, sworn epithet of the mine`;
-const cleaned = sanitizeGenomeForImage(dirtyForImage);
+const cleaned = sanitizeTraitMapForImage(dirtyForImage);
 check("sanitizer drops the technique clause", !cleaned.toLowerCase().includes(aTechnique.toLowerCase()));
 check("sanitizer drops the epithet clause", !/epithet/i.test(cleaned));
 check("sanitizer keeps a clean token", cleaned.toLowerCase().includes("cobalt rimlight"));
-check("sanitized forImage is itself pure", genomeImagePuritySmells(cleaned).length === 0);
-check("sanitizer caps length", sanitizeGenomeForImage("neon, ".repeat(200)).length <= GENOME_FOR_IMAGE_MAX);
+check("sanitized forImage is itself pure", traitMapImagePuritySmells(cleaned).length === 0);
+check("sanitizer caps length", sanitizeTraitMapForImage("neon, ".repeat(200)).length <= TRAIT_MAP_FOR_IMAGE_MAX);
 
 // forImage is pure at every IMAGE render surface (keyframe canonBlocks).
-const dirtyGenome: GenomeBlock = {
+const dirtyTraitMap: TraitMapBlock = {
   forText: `Driven by a sworn motivation to avenge; motif of ash and iron. Its signature move is ${aTechnique}.`,
   forImage: `crimson warpaint, ${aTechnique} aura, motif of ash, stage 6 towering silhouette`,
 };
@@ -732,7 +732,7 @@ const keyframePrompt = buildSceneKeyframePrompt({
   breed: "shiba",
   profession: "miner",
   canonBlocks: ["HASHBEAST CANON\nbreed: shiba"],
-  genomeForImage: dirtyGenome.forImage,
+  traitMapForImage: dirtyTraitMap.forImage,
   scene: "low push-in",
 });
 check(
@@ -741,106 +741,106 @@ check(
 );
 check(
   "keyframe image prompt never contains motif prose markers",
-  genomeImagePuritySmells(keyframePrompt.split("GENOME AESTHETIC")[1] || "").length === 0 &&
-    !/GENOME AESTHETIC[^\n]*motif/i.test(keyframePrompt),
+  traitMapImagePuritySmells(keyframePrompt.split("TRAIT_MAP AESTHETIC")[1] || "").length === 0 &&
+    !/TRAIT_MAP AESTHETIC[^\n]*motif/i.test(keyframePrompt),
 );
 // The forImage helper block is pure even from a dirty source.
 check(
-  "genomeImageBlock output is pure from dirty source",
-  genomeImagePuritySmells(genomeImageBlock(dirtyGenome)).length === 0,
+  "traitMapImageBlock output is pure from dirty source",
+  traitMapImagePuritySmells(traitMapImageBlock(dirtyTraitMap)).length === 0,
 );
 
-console.log("\nPartC · genome forText caps + placement");
+console.log("\nPartC · trait_map forText caps + placement");
 // forText carries the full lineage into text surfaces (technique names allowed).
-const textDirective = genomeTextDirective(dirtyGenome);
+const textDirective = traitMapTextDirective(dirtyTraitMap);
 check("forText directive renders the full lineage", textDirective.includes("avenge"));
-check("empty genome → empty text directive", genomeTextDirective(undefined) === "");
-// Scene SCRIPT (text surface) folds genome forText into context blocks.
+check("empty trait_map → empty text directive", traitMapTextDirective(undefined) === "");
+// Scene SCRIPT (text surface) folds trait_map forText into context blocks.
 const scenePrompt = buildSceneScriptPrompt({
   trope: "rivalry",
   characterLine: "USA veteran",
   protagonistCanonBlock: "CANON",
   plotDirectives: "escalate",
   whatHappens: "it powers up",
-  genomeForText: "motif of ash and iron; sworn to avenge Doge Japan",
+  traitMapForText: "motif of ash and iron; sworn to avenge Doge Japan",
 });
-check("scene script folds genome forText into context", scenePrompt.includes("PROMPT GENOME"));
-check("scene script keeps the genome motif text", scenePrompt.includes("motif of ash and iron"));
+check("scene script folds trait_map forText into context", scenePrompt.includes("PROMPT TRAIT_MAP"));
+check("scene script keeps the trait_map motif text", scenePrompt.includes("motif of ash and iron"));
 // forText hard cap (defence in depth): a 5000-char forText is trimmed.
-const hugeText = genomeTextDirective({ forText: "x".repeat(5000), forImage: "" });
+const hugeText = traitMapTextDirective({ forText: "x".repeat(5000), forImage: "" });
 check("forText directive caps the rendered lineage", hugeText.length < 5000);
 
-console.log("\nPartC · genome_distill fallback determinism");
-const distillInput: NftGenomeDistillInput = {
-  mint: "GenomeMint11111111111111111111111111111111",
+console.log("\nPartC · trait_map_distill fallback determinism");
+const distillInput: NftTraitMapDistillInput = {
+  mint: "TraitMapMint11111111111111111111111111111111",
   previousCard: {
     motif_line: "ash-grey veteran of the Doge Japan front",
     motivation: "hold the northern seam no matter the cost",
     past_life_echoes: ["once a pup who fled its first raid"],
   },
   newLineageEntries: [
-    { event_type: "mutation_power", summary: "its attack lane surged mid-battle", warId: 12 },
-    { event_type: "evolution", summary: "reached a scarred, certain form", warId: 13 },
+    { event_type: "reroll_power", summary: "its attack lane surged mid-battle", warId: 12 },
+    { event_type: "ascension", summary: "reached a scarred, certain form", warId: 13 },
   ],
   sealedIntents: [
     { ref: "intent-abc", verb: "avenge", target: "Doge Japan", flavor: "for the seam it lost" },
   ],
 };
-const fb1 = distillGenomeFallback(distillInput);
-const fb2 = distillGenomeFallback(distillInput);
+const fb1 = distillTraitMapFallback(distillInput);
+const fb2 = distillTraitMapFallback(distillInput);
 check("fallback is deterministic (same input → identical card)", JSON.stringify(fb1) === JSON.stringify(fb2));
 check("fallback source is 'fallback'", fb1.source === "fallback");
 check("fallback motif_line respects cap", fb1.motif_line.length <= MOTIF_LINE_MAX && fb1.motif_line.length > 0);
 check("fallback motivation respects cap", fb1.motivation.length <= MOTIVATION_MAX && fb1.motivation.length > 0);
 check("fallback honors the newest sealed intent (ref echoed)", fb1.honored_intent_ref === "intent-abc");
-check("fallback stays lexicon-clean", lintGenomeCard(fb1).length === 0);
-// Rebirth folds the whole prior card into one bounded echo.
-const rebirthFb = distillGenomeFallback({ ...distillInput, rebirth: true });
-check("rebirth fallback produces a past_life_echo", Boolean(rebirthFb.past_life_echo));
+check("fallback stays lexicon-clean", lintTraitMapCard(fb1).length === 0);
+// Prestige folds the whole prior card into one bounded echo.
+const prestigeFb = distillTraitMapFallback({ ...distillInput, prestige: true });
+check("prestige fallback produces a past_life_echo", Boolean(prestigeFb.past_life_echo));
 check(
-  "rebirth echo respects cap",
-  (rebirthFb.past_life_echo || "").length <= PAST_LIFE_ECHO_MAX,
+  "prestige echo respects cap",
+  (prestigeFb.past_life_echo || "").length <= PAST_LIFE_ECHO_MAX,
 );
 // A banned-lexicon token in the SOURCE material is scrubbed by the fallback.
-const dirtyDistill = distillGenomeFallback({
+const dirtyDistill = distillTraitMapFallback({
   mint: "DirtyMint111",
   previousCard: {
     motif_line: "a revolutionary game-changing miner",
     motivation: "supercharge the yield and skyrocket the leaderboard",
   },
 });
-check("fallback scrubs banned lexicon from dirty source", lintGenomeCard(dirtyDistill).length === 0);
+check("fallback scrubs banned lexicon from dirty source", lintTraitMapCard(dirtyDistill).length === 0);
 // Empty input still yields a valid, non-empty, clean card (never fails).
-const emptyDistill = distillGenomeFallback({ mint: "EmptyMint111" });
+const emptyDistill = distillTraitMapFallback({ mint: "EmptyMint111" });
 check(
   "fallback never fails on empty input",
   emptyDistill.motif_line.length > 0 &&
     emptyDistill.motivation.length > 0 &&
-    lintGenomeCard(emptyDistill).length === 0,
+    lintTraitMapCard(emptyDistill).length === 0,
 );
 
-console.log("\nPartC · genome_distill payload validation");
+console.log("\nPartC · trait_map_distill payload validation");
 // The distill prompt is self-contained (no game-state leakage: only snapshot).
-const distillPrompt = buildGenomeDistillPrompt(distillInput);
+const distillPrompt = buildTraitMapDistillPrompt(distillInput);
 check("distill prompt names HASHIDEN lore-keeper role", distillPrompt.includes("HASHIDEN"));
 check("distill prompt carries the sealed-intent ref", distillPrompt.includes("intent-abc"));
 check("distill prompt instructs honored_intent_ref return", distillPrompt.includes("honored_intent_ref"));
-check("distill prompt surfaces the new lineage events", distillPrompt.includes("mutation_power"));
+check("distill prompt surfaces the new lineage events", distillPrompt.includes("reroll_power"));
 check("distill prompt carries the banned-lexicon guard", distillPrompt.includes("BANNED LEXICON"));
 check(
   "distill prompt states the field caps",
   distillPrompt.includes(String(MOTIF_LINE_MAX)) && distillPrompt.includes(String(MOTIVATION_MAX)),
 );
-const rebirthPrompt = buildGenomeDistillPrompt({ ...distillInput, rebirth: true });
-check("rebirth distill prompt asks for past_life_echo", rebirthPrompt.includes("past_life_echo"));
+const prestigePrompt = buildTraitMapDistillPrompt({ ...distillInput, prestige: true });
+check("prestige distill prompt asks for past_life_echo", prestigePrompt.includes("past_life_echo"));
 check(
-  "non-rebirth distill prompt omits the rebirth past_life_echo field",
+  "non-prestige distill prompt omits the prestige past_life_echo field",
   !distillPrompt.includes('"past_life_echo"'),
 );
-// lintGenomeCard flags a dirty card (the retry trigger).
+// lintTraitMapCard flags a dirty card (the retry trigger).
 check(
-  "lintGenomeCard flags banned lexicon in a card",
-  lintGenomeCard({ motif_line: "a seamless empire", motivation: "supercharge the war" }).length > 0,
+  "lintTraitMapCard flags banned lexicon in a card",
+  lintTraitMapCard({ motif_line: "a seamless empire", motivation: "supercharge the war" }).length > 0,
 );
 
 // ─── Show-surface token/brand bans ───────────────────────────────────────────
@@ -859,7 +859,7 @@ const glowUpInput: NftGlowUpInput = {
   beast: {
     mint: "GlowMint1111111111111111111111111111111111",
     name: "Ember-9",
-    dna: "0x" + "ab".repeat(32),
+    trait_seed: "0x" + "ab".repeat(32),
     factionId: 4, // Japan
     assetUrls: {
       fullBody: "https://example.invalid/fb.png",
@@ -927,7 +927,7 @@ check("glow-up lore prompt demands plain prose (no JSON surface)", /plain prose/
 console.log("\nCurator §3 · reforge forImage purity (text-free image rule)");
 const glowMintInput = buildGlowUpMintInput(glowUpInput);
 const glowMintJson = JSON.stringify(glowMintInput);
-check("reforge input carries the beast's DNA", glowMintInput.dna === glowUpInput.beast.dna);
+check("reforge input carries the beast's TRAIT_SEED", glowMintInput.trait_seed === glowUpInput.beast.trait_seed);
 check(
   "reforge input reuses the beast's existing full-body ref",
   glowMintInput.referenceImageUrl === glowUpInput.beast.assetUrls!.fullBody,

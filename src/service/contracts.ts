@@ -16,9 +16,9 @@ import type {
   NftStateAnimationsResult,
 } from "../nft-pipeline/stateAnimations.js";
 import type {
-  NftMutationContentInput,
-  NftMutationContentResult,
-} from "../nft-pipeline/mutationContent.js";
+  NftRerollContentInput,
+  NftRerollContentResult,
+} from "../nft-pipeline/rerollContent.js";
 import type {
   NftMomentContentInput,
   NftMomentContentResult,
@@ -49,9 +49,9 @@ import type {
 } from "../nft-pipeline/ritual.js";
 import type { AudioIdentityCueResult } from "../world/audioIdentity.js";
 import type {
-  NftGenomeDistillInput,
-  NftGenomeDistillResult,
-} from "../nft-pipeline/genomeDistill.js";
+  NftTraitMapDistillInput,
+  NftTraitMapDistillResult,
+} from "../nft-pipeline/traitMapDistill.js";
 import type {
   NftGlowUpInput,
   NftGlowUpResult,
@@ -79,28 +79,28 @@ export type ContentEngineJobKind =
   // RPC-awaiting; see docs/nft-pipeline.md)
   | "nft.mint_assets"
   | "nft.state_animations"
-  | "nft.mutation_content"
+  | "nft.reroll_content"
   // Extended moment vocabulary (first-win, streaks, revenge, lootbox drama…)
-  // — budget-gate dispatch EXACTLY like nft.mutation_content.
+  // — budget-gate dispatch EXACTLY like nft.reroll_content.
   | "nft.moment_content"
   | "nft.cycle_summary"
   // MINT MOMENT (Phase D1): "joined the war" intro panel + intro line —
-  // budget-gate dispatch EXACTLY like nft.mutation_content.
+  // budget-gate dispatch EXACTLY like nft.reroll_content.
   | "nft.mint_intro"
-  // PROMPT GENOME (kind #23): distill one beast's lineage (previous card + new
-  // lineage entries + sealed whisper intents) into a bounded prompt genome
+  // PROMPT TRAIT_MAP (kind #23): distill one beast's lineage (previous card + new
+  // lineage entries + sealed whisper intents) into a bounded prompt trait_map
   // (motif_line / motivation / past_life_echo? / honored_intent_ref?). Self
   // contained snapshot (no game-state coupling); RPC-await like other creative
   // jobs. Banned-lexicon lint + one feedback retry, with a deterministic
   // truncate-and-concat fallback that NEVER fails the pipeline.
-  | "nft.genome_distill"
+  | "nft.trait_map_distill"
   // CURATOR GLOW-UP (CURATOR_LOOP_SPEC §3): a nation Curator's commissioned
-  // reforge. Self-contained snapshot {beast (DNA/refs), lineage/echo summary,
+  // reforge. Self-contained snapshot {beast (TRAIT_SEED/refs), lineage/echo summary,
   // curator context, faction canon} → {reforged art set (mint-asset pipeline),
   // ≤600-char redemption-arc lore beat, short teaser clip (produce_reel path)}.
   // Text-free image rules + banned-lexicon lint + one feedback retry +
   // deterministic fallback — best-effort sub-steps NEVER fail the pipeline.
-  // Budget-gate dispatch EXACTLY like nft.mutation_content (backend owns the gate).
+  // Budget-gate dispatch EXACTLY like nft.reroll_content (backend owns the gate).
   | "nft.glow_up"
   // CURATOR ROSTER CALL (CURATOR_LOOP_SPEC): a nation Curator's in-character
   // pick pass over its bounded once-per-war verbs (release / commission /
@@ -128,7 +128,7 @@ export type ContentEngineJobKind =
   // CASINO RITUALS (Phase F1/F2): staged reveal definitions (acts + rarity
   // light language + sound ids), NOT toasts. Deterministic + free by default;
   // includeDialogue opts into the paid voice path — budget-gate dispatch
-  // EXACTLY like nft.mutation_content. See docs/rituals-and-audio.md.
+  // EXACTLY like nft.reroll_content. See docs/rituals-and-audio.md.
   | "ritual.lootbox_reveal"
   | "ritual.claim_roll"
   // AUDIO IDENTITY (Phase F4): generate ONE catalog cue via the stable-audio
@@ -279,11 +279,11 @@ export interface ContentEngineJobPayloadMap {
   build_video_motion_rules_block: BuildDirectorPromptBlockInput;
   "nft.mint_assets": NftMintAssetsInput;
   "nft.state_animations": NftStateAnimationsInput;
-  "nft.mutation_content": NftMutationContentInput;
+  "nft.reroll_content": NftRerollContentInput;
   "nft.moment_content": NftMomentContentInput;
   "nft.cycle_summary": NftCycleSummaryInput;
   "nft.mint_intro": NftMintIntroInput;
-  "nft.genome_distill": NftGenomeDistillInput;
+  "nft.trait_map_distill": NftTraitMapDistillInput;
   "nft.glow_up": NftGlowUpInput;
   "curator.reason": CuratorReasonInput;
   "chapter.write": ChapterWriteInput;
@@ -308,11 +308,11 @@ export interface ContentEngineJobResultMap {
   build_video_motion_rules_block: BuildTextBlockResult;
   "nft.mint_assets": NftMintAssetsResult;
   "nft.state_animations": NftStateAnimationsResult;
-  "nft.mutation_content": NftMutationContentResult;
+  "nft.reroll_content": NftRerollContentResult;
   "nft.moment_content": NftMomentContentResult;
   "nft.cycle_summary": NftCycleSummaryResult;
   "nft.mint_intro": NftMintIntroResult;
-  "nft.genome_distill": NftGenomeDistillResult;
+  "nft.trait_map_distill": NftTraitMapDistillResult;
   "nft.glow_up": NftGlowUpResult;
   "curator.reason": CuratorReasonResult;
   "chapter.write": ChapterAnatomy;

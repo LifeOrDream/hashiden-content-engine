@@ -1,11 +1,11 @@
 /**
  * Canonical asset refresh — keeps a HashBeast's portrait current as it
- * mutates, WITHOUT making a video/voice clip. The "collectible glow-up" layer:
+ * rerolls, WITHOUT making a video/voice clip. The "collectible glow-up" layer:
  *
- *  - refreshVisualDp:        trait mutation → regenerate the DP with ONE trait
+ *  - refreshVisualDp:        trait reroll → regenerate the DP with ONE trait
  *                            changed, identity-gated against the current DP.
- *  - refreshEvolutionAssets: evolution → regenerate the full body anchored to
- *                            the new evolution-level base body, then a new DP.
+ *  - refreshAscensionAssets: ascension → regenerate the full body anchored to
+ *                            the new ascension-level base body, then a new DP.
  *
  * Both return artifacts via the artifact store and the refreshed URLs so the
  * caller can chain loop regeneration on the new look. Persisting `asset_urls`
@@ -23,7 +23,7 @@ import {
 import { logger } from "../utils/logger.js";
 import { FACTION_REGISTRY } from "../prompts/index.js";
 import { baseTypeRenderNoun, safeBaseType } from "../world/baseTypes.js";
-import { decodeDNA } from "./dna.js";
+import { decodeTraitSeed } from "./trait_seed.js";
 import { BREED_BASE_BODIES, BASE_BODIES_DIR } from "./mintAssets.js";
 import type { NftBeastInput } from "./types.js";
 import {
@@ -51,8 +51,8 @@ function levelAspect(level: number): string {
   return level >= 6 ? "4:5" : "9:16";
 }
 
-/** Resolve the evolution-level base body PNG for (faction, breed, level). */
-export async function getEvolutionBaseBodyBuffer(
+/** Resolve the ascension-level base body PNG for (faction, breed, level). */
+export async function getAscensionBaseBodyBuffer(
   factionId: number,
   breedValue: number,
   level: number,
@@ -95,7 +95,7 @@ export interface RefreshedAssets {
 }
 
 /**
- * Trait mutation → regenerate the DP with ONE trait changed (no video).
+ * Trait reroll → regenerate the DP with ONE trait changed (no video).
  * Returns the new DP artifact, or null if references are missing / gen fails.
  */
 export async function refreshVisualDp(
@@ -142,10 +142,10 @@ export async function refreshVisualDp(
 }
 
 /**
- * Evolution → regenerate the full body (anchored to the new evolution-level
+ * Ascension → regenerate the full body (anchored to the new ascension-level
  * base body) + a new DP. Returns both artifacts, or null.
  */
-export async function refreshEvolutionAssets(
+export async function refreshAscensionAssets(
   beast: NftBeastInput,
   opts: { store?: ArtifactStore } = {},
 ): Promise<RefreshedAssets | null> {
@@ -157,27 +157,27 @@ export async function refreshEvolutionAssets(
 
   let faction = beast.factionId ?? 0;
   let breedValue = beast.breedValue ?? 0;
-  let level = beast.evolutionStage ?? 1;
+  let level = beast.ascensionStage ?? 1;
   try {
-    if (beast.dna) {
-      const d = decodeDNA(beast.dna);
+    if (beast.trait_seed) {
+      const d = decodeTraitSeed(beast.trait_seed);
       faction = d.faction;
       breedValue = d.breed;
-      level = d.evolution || 1;
+      level = d.ascension || 1;
     }
   } catch {
     /* fall through with provided values */
   }
   const stageName =
-    FACTION_REGISTRY[faction]?.evolutionStages?.[level]?.name || `Stage ${level}`;
+    FACTION_REGISTRY[faction]?.ascensionStages?.[level]?.name || `Stage ${level}`;
 
   try {
-    // Evolution-level base bodies exist for the canine genesis layout only —
-    // non-canine base types evolve anchored purely on their own current art.
+    // Ascension-level base bodies exist for the canine genesis layout only —
+    // non-canine base types ascend anchored purely on their own current art.
     const baseType = safeBaseType(beast.baseType);
     const baseBodyBuf =
       baseType === "canine"
-        ? await getEvolutionBaseBodyBuffer(faction, breedValue, level)
+        ? await getAscensionBaseBodyBuffer(faction, breedValue, level)
         : null;
     const [fullBodyBuf, dpBuf] = await Promise.all([
       fetchAsBuffer(currentFullBody),
@@ -189,13 +189,13 @@ export async function refreshEvolutionAssets(
     refs.push({ buffer: dpBuf, mime: "image/png" });
 
     const refGuide = baseBodyBuf
-      ? `THREE reference images are attached, in order: (1) the EVOLVED BASE BODY — use it ONLY for the new body form, silhouette, proportions, and intrinsic elemental features (wings/armor/aura/glowing eyes); (2) the character's CURRENT full body — this is the SOURCE OF TRUTH for identity: carry over the EXACT face, snout, eye shape/color, fur/coat colors and markings, breed, AND all gear/outfit/accessories/headwear; (3) the CURRENT display picture — match this face precisely.`
+      ? `THREE reference images are attached, in order: (1) the ASCENDED BASE BODY — use it ONLY for the new body form, silhouette, proportions, and intrinsic elemental features (wings/armor/aura/glowing eyes); (2) the character's CURRENT full body — this is the SOURCE OF TRUTH for identity: carry over the EXACT face, snout, eye shape/color, fur/coat colors and markings, breed, AND all gear/outfit/accessories/headwear; (3) the CURRENT display picture — match this face precisely.`
       : `TWO reference images are attached, in order: (1) the character's CURRENT full body — this is the SOURCE OF TRUTH for identity: carry over the EXACT face, eye shape/color, colors and markings, breed, base type (an anthropomorphic ${baseTypeRenderNoun(baseType)} — never a dog unless it IS a dog), AND all gear/outfit/accessories/headwear; (2) the CURRENT display picture — match this face precisely.`;
 
     const fbPrompt = [
-      `Render the NEW full-body sprite of THIS SAME character after EVOLVING to its "${stageName}" form. It must still be UNMISTAKABLY THE SAME individual — an upgrade of this exact character, NOT a different one.`,
+      `Render the NEW full-body sprite of THIS SAME character after ASCENDING to its "${stageName}" form. It must still be UNMISTAKABLY THE SAME individual — an upgrade of this exact character, NOT a different one.`,
       refGuide,
-      `Preserve the character's vibe and recognizability: same coloring, same facial features, same outfit/gear style — only the body grows into the more powerful "${stageName}" form (bigger, stronger, with the evolved stage's elemental flourishes). A fan must instantly recognize it as the same beast leveled up.`,
+      `Preserve the character's vibe and recognizability: same coloring, same facial features, same outfit/gear style — only the body grows into the more powerful "${stageName}" form (bigger, stronger, with the ascended stage's elemental flourishes). A fan must instantly recognize it as the same beast leveled up.`,
       `Keep the pixel-art style of the references, upright bipedal standing pose, front-facing, centered, full body head to feet, plain muted gray-blue background. No text or watermarks.`,
     ].join("\n\n");
 
@@ -213,7 +213,7 @@ export async function refreshEvolutionAssets(
     });
 
     const newDp = await generateImageEdit(
-      `Using the attached full-body image as reference, create a display picture (portrait crop) of this SAME evolved character — upper body, face slightly to the right, identical pixel-art style and colors, simple background. No text or watermarks.`,
+      `Using the attached full-body image as reference, create a display picture (portrait crop) of this SAME ascended character — upper body, face slightly to the right, identical pixel-art style and colors, simple background. No text or watermarks.`,
       newFullBody.url,
       { aspectRatio: "1:1", resolution: "1K" },
     );
@@ -227,7 +227,7 @@ export async function refreshEvolutionAssets(
     });
 
     logger.success(
-      `🦎 Evolution assets refreshed for ${String(beast.mint).slice(0, 8)}… → ${stageName}`,
+      `🦎 Ascension assets refreshed for ${String(beast.mint).slice(0, 8)}… → ${stageName}`,
     );
     return {
       fullBody: fullBodyArtifact,
@@ -238,7 +238,7 @@ export async function refreshEvolutionAssets(
       },
     };
   } catch (err: any) {
-    logger.warning(`refreshEvolutionAssets failed: ${err?.message || err}`);
+    logger.warning(`refreshAscensionAssets failed: ${err?.message || err}`);
     return null;
   }
 }
