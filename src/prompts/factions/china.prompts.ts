@@ -28,7 +28,7 @@ import { legacyFactionBlock } from "../../world/bible.js";
  * Faction identity — leader name, title, catchphrases, lore, palette, and
  * visual identity — comes from the WORLD BIBLE (src/world/bible.ts), the
  * single source of truth. This file defines ONLY the faction-specific NFT
- * trait grammar (types, traits, evolution stages, stories).
+ * trait grammar (types, traits, ascension stages, stories).
  */
 export const CHINA_FACTION = legacyFactionBlock(1);
 
@@ -79,7 +79,7 @@ magical arts with blockchain technology.`,
     occupation: "Dragon Reserve Keeper",
     description:
       "Caretaker at China's secret dragon reserves in remote mountain ranges",
-    story: `Keeper Zhang tends the oldest dragon bloodlines in the world. Chinese
+    story: `Keeper Zhang tends the oldest dragon lineages in the world. Chinese
 Fireballs are living batteries of pure magical energy. Dragon fire now powers
 $DEN mining at impossible efficiency.`,
     prompt:
@@ -284,7 +284,7 @@ export const CHINA_FUR_COLOR: Record<number, { name: string; prompt: string }> =
     // RARE (16-23)
     16: {
       name: "Pure White",
-      prompt: "pure white fur, pristine snow coloring, rare genetics",
+      prompt: "pure white fur, pristine snow coloring, rare trait_system",
     },
     17: {
       name: "Jet Black",
@@ -326,7 +326,7 @@ export const CHINA_FUR_COLOR: Record<number, { name: string; prompt: string }> =
     },
     26: {
       name: "Phoenix Fire",
-      prompt: "fur with phoenix fire patterns, rebirth colors",
+      prompt: "fur with phoenix fire patterns, prestige colors",
     },
     27: {
       name: "Jade Emperor",
@@ -831,8 +831,8 @@ export const CHINA_EXPRESSION: Record<
     prompt: "sage achieving enlightenment, truth revealed",
   },
   23: {
-    name: "Phoenix Rebirth",
-    prompt: "phoenix being reborn expression, transformation",
+    name: "Phoenix Prestige",
+    prompt: "phoenix being prestiged expression, transformation",
   },
 
   // Legendary (24-31)
@@ -992,10 +992,10 @@ export const CHINA_BACKGROUND: Record<
 };
 
 // =============================================================================
-// EVOLUTION STAGES (0-7)
+// ASCENSION STAGES (0-7)
 // =============================================================================
 
-export const CHINA_EVOLUTION_STAGES: Record<
+export const CHINA_ASCENSION_STAGES: Record<
   number,
   {
     stage: number;

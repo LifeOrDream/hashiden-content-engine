@@ -13,10 +13,10 @@
  * - a compact personality directive (archetype/tone/motivation/catchphrase +
  *   optional owner block) drives the body language so a cocky brawler's "win"
  *   reads differently from a stoic mage's "win",
- * - power animations are flavored by the mutated power-trait index.
+ * - power animations are flavored by the rerolled power-trait index.
  *
  * Phase B/C additions:
- * - EVOLUTION STAGE drives the performance (src/world/progression.ts): a Pup
+ * - ASCENSION STAGE drives the performance (src/world/progression.ts): a Pup
  *   wrestles an oversized tool and over-celebrates; an Ascended barely moves
  *   and barely acknowledges victory; losses scale puppy-despair →
  *   wounded-commander pride.
@@ -49,8 +49,8 @@ import {
   type NamedTechnique,
 } from "../world/progression.js";
 import { emotionalArcDirective } from "./moments.js";
-import { decodeDNA } from "./dna.js";
-import { genomeTextDirective } from "./genomeBlock.js";
+import { decodeTraitSeed } from "./trait_seed.js";
+import { traitMapTextDirective } from "./traitMapBlock.js";
 import type { NftBeastInput } from "./types.js";
 import {
   getDefaultArtifactStore,
@@ -85,7 +85,7 @@ export const STATE_ACTION: Record<StateLoop, string> = {
  */
 export const MINING_TOOL: Record<string, string> = MINING_TOOL_BY_CODE;
 
-// Power-move flavor by mutated trait index (Attack, Defense, Speed, Magic, Luck …).
+// Power-move flavor by rerolled trait index (Attack, Defense, Speed, Magic, Luck …).
 // Generic fallback only — power clips now prefer the NAMED country × lane
 // technique table in src/world/progression.ts (see powerMoveFor).
 const POWER_MOVES = [
@@ -128,33 +128,33 @@ export interface BeastProfile {
   factionId: number;
   factionName: string;
   factionCode: string;
-  /** Evolution stage 0-7 (DNA first, snapshot fallback) — drives performance. */
-  evolutionStage: number;
+  /** Ascension stage 0-7 (TRAIT_SEED first, snapshot fallback) — drives performance. */
+  ascensionStage: number;
   /** Body-plan layer (canine genesis default; snapshot-driven, best-effort). */
   baseType: BaseTypeId;
 }
 
-/** Resolve country + wizard/muggle + stage flavor from DNA (best-effort). */
+/** Resolve country + wizard/muggle + stage flavor from TRAIT_SEED (best-effort). */
 export function resolveBeastProfile(beast: NftBeastInput): BeastProfile {
   const fid = beast.factionId ?? 0;
   const country = countryBible(fid);
   const baseType = safeBaseType(beast.baseType);
   let isWizard = String(beast.storagePath || "").includes("/wand"); // heuristic fallback
   let occupation = "";
-  let evolutionStage = normalizeStage(beast.evolutionStage ?? 0);
+  let ascensionStage = normalizeStage(beast.ascensionStage ?? 0);
   try {
-    if (beast.dna) {
-      const d = decodeDNA(beast.dna);
+    if (beast.trait_seed) {
+      const d = decodeTraitSeed(beast.trait_seed);
       const r = resolveHashBeastTraits(
         d.faction,
-        d.evolution,
+        d.ascension,
         d.type,
         d.appearance.map((g) => g[0]),
         d.breed,
       );
       isWizard = r.type.isWizard;
       occupation = r.type.occupation;
-      evolutionStage = normalizeStage(d.evolution);
+      ascensionStage = normalizeStage(d.ascension);
     }
   } catch {
     /* keep heuristic */
@@ -165,7 +165,7 @@ export function resolveBeastProfile(beast: NftBeastInput): BeastProfile {
     factionId: fid,
     factionName: country?.country || `Faction ${fid}`,
     factionCode: country?.code || "usa",
-    evolutionStage,
+    ascensionStage,
     baseType,
   };
 }
@@ -176,7 +176,7 @@ export function resolveBeastProfile(beast: NftBeastInput): BeastProfile {
  * zoomies while an Ascended's win is a slow blink and a single aura flare.
  */
 export function stateActionFor(state: StateLoop, p: BeastProfile): string {
-  const performance = stagePerformance(p.evolutionStage, state);
+  const performance = stagePerformance(p.ascensionStage, state);
   if (state === "mining") {
     const base = p.isWizard
       ? `magically MINING glowing raw ore — channeling crackling arcane spell energy from its paws to crack the ore seam open, ${p.factionName} sorcery style, NO pickaxe`
@@ -206,8 +206,8 @@ export function personalityDirective(beast: NftBeastInput): string {
   if (p.motivation) bits.push(`driven by: ${p.motivation}`);
   if (p.catchphrase) bits.push(`vibe of its catchphrase "${String(p.catchphrase).slice(0, 60)}"`);
   if (beast.ownerProfileBlock) bits.push(beast.ownerProfileBlock);
-  const genome = genomeTextDirective(beast.genomeBlock);
-  if (genome) bits.push(genome);
+  const trait_map = traitMapTextDirective(beast.traitMapBlock);
+  if (trait_map) bits.push(trait_map);
   if (bits.length === 0 && beast.bio) {
     return `Character notes: ${String(beast.bio).slice(0, 220)}. Let the body language, posture, gestures and facial expression reflect this character's personality so the performance feels unique to it.`;
   }
@@ -347,7 +347,7 @@ export async function generateStateAnimations(
   const states = input.states && input.states.length > 0 ? input.states : STATE_LOOPS;
   const profile = resolveBeastProfile(beast);
   const basePath = beast.storagePath || `misc/${beast.mint}`;
-  const arcDirective = emotionalArcDirective(input.arc, profile.evolutionStage);
+  const arcDirective = emotionalArcDirective(input.arc, profile.ascensionStage);
 
   const artifacts: NftArtifact[] = [];
   const produced: string[] = [];

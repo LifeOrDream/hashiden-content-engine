@@ -2,7 +2,7 @@
  * Phase F fixture demo — NO network, NO spend.
  *
  * Prints the three staged ritual definitions (lootbox WIN, lootbox NEAR-MISS,
- * EVOLUTION) side by side and exits non-zero if they ever collapse into the
+ * ASCENSION) side by side and exits non-zero if they ever collapse into the
  * same shape. This is the acceptance fixture proving the casino moments
  * resolve to DISTINCT staged rituals (acts + rarity light language + sound
  * ids), not a toast.
@@ -11,7 +11,7 @@
  */
 import {
   buildClaimRollCeremony,
-  buildEvolutionRitual,
+  buildAscensionRitual,
   buildLootboxRevealRitual,
   type StagedRitual,
 } from "../src/nft-pipeline/ritual.js";
@@ -42,24 +42,24 @@ const nearMiss = buildLootboxRevealRitual({
   thresholdBps: 1000, // missed by 63 bps — the lock almost turned
   factionId: 2,
 });
-const evolution = buildEvolutionRitual({ factionId: 4, fromStage: 4, toStage: 5 });
+const ascension = buildAscensionRitual({ factionId: 4, fromStage: 4, toStage: 5 });
 const claim = buildClaimRollCeremony({ result: "power", factionId: 7 });
 
 show("LOOTBOX WIN", win);
 show("LOOTBOX NEAR-MISS", nearMiss);
-show("EVOLUTION", evolution);
+show("ASCENSION", ascension);
 show("CLAIM-ROLL CEREMONY", claim);
 
-const signatures = [win, nearMiss, evolution].map(
+const signatures = [win, nearMiss, ascension].map(
   (r) =>
     `${r.acts.map((a) => a.act).join(",")}|${r.acts.map((a) => a.lightLanguage).join("|")}|${r.acts
       .map((a) => a.soundCueId)
       .join(",")}`,
 );
 const distinct = new Set(signatures).size === 3;
-const staged = [win, nearMiss, evolution, claim].every((r) => r.acts.length >= 2);
+const staged = [win, nearMiss, ascension, claim].every((r) => r.acts.length >= 2);
 
 console.log(
-  `\n${distinct && staged ? "✓" : "✗"} lootbox-win, lootbox-near-miss and evolution resolve to DISTINCT staged rituals (acts + light language + sound ids)`,
+  `\n${distinct && staged ? "✓" : "✗"} lootbox-win, lootbox-near-miss and ascension resolve to DISTINCT staged rituals (acts + light language + sound ids)`,
 );
 if (!distinct || !staged) process.exit(1);

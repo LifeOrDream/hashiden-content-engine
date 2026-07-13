@@ -4,7 +4,7 @@
  *
  * The mint asset worker (`assetGenerationWorker.service.ts`) has its own
  * private copies of the image/S3 logic; this module is the shared surface the
- * mutation-content pipeline uses so we don't import the whole worker module
+ * reroll-content pipeline uses so we don't import the whole worker module
  * (BullMQ Worker setup et al.) just to reach a fetch helper. The two can
  * converge later — kept separate now to avoid churning live mint code.
  *
@@ -300,7 +300,7 @@ export async function generateImageEdit(
 
 /**
  * Image edit from local buffers (one or more reference images). Used by the
- * base-body evolution generator, which references previous-level PNGs on disk.
+ * base-body ascension generator, which references previous-level PNGs on disk.
  * Multiple references are supported (nano-banana-2 takes an image array) —
  * pass e.g. [prevLevel, baseBody] when you want to anchor on two inputs.
  */
@@ -427,7 +427,7 @@ export interface SceneDirection {
    * Optional fal-reachable end-frame URL (`end_image_url`). Only honored when
    * this scene ENDS a call (the last scene of a chunk) — Seedance takes one
    * end frame per generation. Use it to pull the generation toward an exact
-   * final pose (e.g. the evolved canonical art on a REVEAL beat).
+   * final pose (e.g. the ascended canonical art on a REVEAL beat).
    */
   refEndImage?: string;
   /** Seconds this scene should run. Unhinted scenes split the remaining window evenly. */

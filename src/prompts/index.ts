@@ -6,9 +6,9 @@
  *
  * NEW TRAIT SYSTEM (Type field separate from appearance):
  *
- * DNA Structure:
+ * TRAIT_SEED Structure:
  * - Faction (4 bits): 0-11 factions
- * - Evolution (3 bits): 0-7 stages
+ * - Ascension (3 bits): 0-7 stages
  * - Type (4 bits): 0-7 Wizard, 8-15 Muggle (combines occupation + region)
  *
  * 7 Appearance Traits (each 32 values, tiered):
@@ -55,7 +55,7 @@ import {
   USA_ACCESSORY,
   USA_EXPRESSION,
   USA_BACKGROUND,
-  USA_EVOLUTION_STAGES,
+  USA_ASCENSION_STAGES,
   getUSAStory,
   USA_WIZARD_CATEGORIES,
   USA_MUGGLE_CATEGORIES,
@@ -71,7 +71,7 @@ import {
   CHINA_ACCESSORY,
   CHINA_EXPRESSION,
   CHINA_BACKGROUND,
-  CHINA_EVOLUTION_STAGES,
+  CHINA_ASCENSION_STAGES,
   getChinaStory,
   CHINA_WIZARD_CATEGORIES,
   CHINA_MUGGLE_CATEGORIES,
@@ -87,7 +87,7 @@ import {
   RUSSIA_ACCESSORY,
   RUSSIA_EXPRESSION,
   RUSSIA_BACKGROUND,
-  RUSSIA_EVOLUTION_STAGES,
+  RUSSIA_ASCENSION_STAGES,
   getRussiaStory,
   RUSSIA_WIZARD_CATEGORIES,
   RUSSIA_MUGGLE_CATEGORIES,
@@ -103,7 +103,7 @@ import {
   INDIA_ACCESSORY,
   INDIA_EXPRESSION,
   INDIA_BACKGROUND,
-  INDIA_EVOLUTION_STAGES,
+  INDIA_ASCENSION_STAGES,
   getIndiaStory,
   INDIA_WIZARD_CATEGORIES,
   INDIA_MUGGLE_CATEGORIES,
@@ -119,7 +119,7 @@ import {
   JAPAN_ACCESSORY,
   JAPAN_EXPRESSION,
   JAPAN_BACKGROUND,
-  JAPAN_EVOLUTION_STAGES,
+  JAPAN_ASCENSION_STAGES,
   getJapanStory,
   JAPAN_WIZARD_CATEGORIES,
   JAPAN_MUGGLE_CATEGORIES,
@@ -135,7 +135,7 @@ import {
   SOUTH_KOREA_ACCESSORY,
   SOUTH_KOREA_EXPRESSION,
   SOUTH_KOREA_BACKGROUND,
-  SOUTH_KOREA_EVOLUTION_STAGES,
+  SOUTH_KOREA_ASCENSION_STAGES,
   getSouthKoreaStory,
   SOUTH_KOREA_WIZARD_CATEGORIES,
   SOUTH_KOREA_MUGGLE_CATEGORIES,
@@ -151,7 +151,7 @@ import {
   IRAN_ACCESSORY,
   IRAN_EXPRESSION,
   IRAN_BACKGROUND,
-  IRAN_EVOLUTION_STAGES,
+  IRAN_ASCENSION_STAGES,
   getIranStory,
   IRAN_WIZARD_CATEGORIES,
   IRAN_MUGGLE_CATEGORIES,
@@ -167,7 +167,7 @@ import {
   UK_ACCESSORY,
   UK_EXPRESSION,
   UK_BACKGROUND,
-  UK_EVOLUTION_STAGES,
+  UK_ASCENSION_STAGES,
   getUKStory,
   UK_WIZARD_CATEGORIES,
   UK_MUGGLE_CATEGORIES,
@@ -183,7 +183,7 @@ import {
   NORTH_KOREA_ACCESSORY,
   NORTH_KOREA_EXPRESSION,
   NORTH_KOREA_BACKGROUND,
-  NORTH_KOREA_EVOLUTION_STAGES,
+  NORTH_KOREA_ASCENSION_STAGES,
   getNorthKoreaStory,
   NORTH_KOREA_WIZARD_CATEGORIES,
   NORTH_KOREA_MUGGLE_CATEGORIES,
@@ -199,7 +199,7 @@ import {
   FRANCE_ACCESSORY,
   FRANCE_EXPRESSION,
   FRANCE_BACKGROUND,
-  FRANCE_EVOLUTION_STAGES,
+  FRANCE_ASCENSION_STAGES,
   getFranceStory,
   FRANCE_WIZARD_CATEGORIES,
   FRANCE_MUGGLE_CATEGORIES,
@@ -215,7 +215,7 @@ import {
   BRAZIL_ACCESSORY,
   BRAZIL_EXPRESSION,
   BRAZIL_BACKGROUND,
-  BRAZIL_EVOLUTION_STAGES,
+  BRAZIL_ASCENSION_STAGES,
   getBrazilStory,
   BRAZIL_WIZARD_CATEGORIES,
   BRAZIL_MUGGLE_CATEGORIES,
@@ -238,7 +238,7 @@ import {
   ISRAEL_ACCESSORY,
   ISRAEL_EXPRESSION,
   ISRAEL_BACKGROUND,
-  ISRAEL_EVOLUTION_STAGES,
+  ISRAEL_ASCENSION_STAGES,
   getIsraelStory,
   ISRAEL_WIZARD_CATEGORIES,
   ISRAEL_MUGGLE_CATEGORIES,
@@ -287,9 +287,9 @@ export interface TypeData {
 }
 
 /**
- * Evolution stage data
+ * Ascension stage data
  */
-export interface EvolutionData {
+export interface AscensionData {
   stage: number;
   name: string;
   size: string;
@@ -330,7 +330,7 @@ export interface ResolvedBreedData {
 
 export interface ResolvedHashBeastTraits {
   faction: FactionData;
-  evolution: EvolutionData;
+  ascension: AscensionData;
   type: TypeData;
   /** Body-plan layer above breed ("canine" genesis default). */
   baseType: BaseTypeId;
@@ -404,7 +404,7 @@ interface FactionDataRegistry {
   accessory: Record<number, { name: string; prompt: string }>;
   expression: Record<number, { name: string; prompt: string }>;
   background: Record<number, { name: string; prompt: string }>;
-  evolutionStages: Record<
+  ascensionStages: Record<
     number,
     { stage?: number; name: string; size: string; demeanor: string }
   >;
@@ -429,7 +429,7 @@ export const FACTION_DATA_REGISTRY: Record<number, FactionDataRegistry> = {
     accessory: USA_ACCESSORY,
     expression: USA_EXPRESSION,
     background: USA_BACKGROUND,
-    evolutionStages: USA_EVOLUTION_STAGES,
+    ascensionStages: USA_ASCENSION_STAGES,
     getStory: getUSAStory,
     wizardCategories: USA_WIZARD_CATEGORIES,
     muggleCategories: USA_MUGGLE_CATEGORIES,
@@ -444,7 +444,7 @@ export const FACTION_DATA_REGISTRY: Record<number, FactionDataRegistry> = {
     accessory: CHINA_ACCESSORY,
     expression: CHINA_EXPRESSION,
     background: CHINA_BACKGROUND,
-    evolutionStages: CHINA_EVOLUTION_STAGES,
+    ascensionStages: CHINA_ASCENSION_STAGES,
     getStory: getChinaStory,
     wizardCategories: CHINA_WIZARD_CATEGORIES,
     muggleCategories: CHINA_MUGGLE_CATEGORIES,
@@ -459,7 +459,7 @@ export const FACTION_DATA_REGISTRY: Record<number, FactionDataRegistry> = {
     accessory: RUSSIA_ACCESSORY,
     expression: RUSSIA_EXPRESSION,
     background: RUSSIA_BACKGROUND,
-    evolutionStages: RUSSIA_EVOLUTION_STAGES,
+    ascensionStages: RUSSIA_ASCENSION_STAGES,
     getStory: getRussiaStory,
     wizardCategories: RUSSIA_WIZARD_CATEGORIES,
     muggleCategories: RUSSIA_MUGGLE_CATEGORIES,
@@ -474,7 +474,7 @@ export const FACTION_DATA_REGISTRY: Record<number, FactionDataRegistry> = {
     accessory: INDIA_ACCESSORY,
     expression: INDIA_EXPRESSION,
     background: INDIA_BACKGROUND,
-    evolutionStages: INDIA_EVOLUTION_STAGES,
+    ascensionStages: INDIA_ASCENSION_STAGES,
     getStory: getIndiaStory,
     wizardCategories: INDIA_WIZARD_CATEGORIES,
     muggleCategories: INDIA_MUGGLE_CATEGORIES,
@@ -489,7 +489,7 @@ export const FACTION_DATA_REGISTRY: Record<number, FactionDataRegistry> = {
     accessory: JAPAN_ACCESSORY,
     expression: JAPAN_EXPRESSION,
     background: JAPAN_BACKGROUND,
-    evolutionStages: JAPAN_EVOLUTION_STAGES,
+    ascensionStages: JAPAN_ASCENSION_STAGES,
     getStory: getJapanStory,
     wizardCategories: JAPAN_WIZARD_CATEGORIES,
     muggleCategories: JAPAN_MUGGLE_CATEGORIES,
@@ -504,7 +504,7 @@ export const FACTION_DATA_REGISTRY: Record<number, FactionDataRegistry> = {
     accessory: SOUTH_KOREA_ACCESSORY,
     expression: SOUTH_KOREA_EXPRESSION,
     background: SOUTH_KOREA_BACKGROUND,
-    evolutionStages: SOUTH_KOREA_EVOLUTION_STAGES,
+    ascensionStages: SOUTH_KOREA_ASCENSION_STAGES,
     getStory: getSouthKoreaStory,
     wizardCategories: SOUTH_KOREA_WIZARD_CATEGORIES,
     muggleCategories: SOUTH_KOREA_MUGGLE_CATEGORIES,
@@ -519,7 +519,7 @@ export const FACTION_DATA_REGISTRY: Record<number, FactionDataRegistry> = {
     accessory: IRAN_ACCESSORY,
     expression: IRAN_EXPRESSION,
     background: IRAN_BACKGROUND,
-    evolutionStages: IRAN_EVOLUTION_STAGES,
+    ascensionStages: IRAN_ASCENSION_STAGES,
     getStory: getIranStory,
     wizardCategories: IRAN_WIZARD_CATEGORIES,
     muggleCategories: IRAN_MUGGLE_CATEGORIES,
@@ -534,7 +534,7 @@ export const FACTION_DATA_REGISTRY: Record<number, FactionDataRegistry> = {
     accessory: UK_ACCESSORY,
     expression: UK_EXPRESSION,
     background: UK_BACKGROUND,
-    evolutionStages: UK_EVOLUTION_STAGES,
+    ascensionStages: UK_ASCENSION_STAGES,
     getStory: getUKStory,
     wizardCategories: UK_WIZARD_CATEGORIES,
     muggleCategories: UK_MUGGLE_CATEGORIES,
@@ -549,7 +549,7 @@ export const FACTION_DATA_REGISTRY: Record<number, FactionDataRegistry> = {
     accessory: NORTH_KOREA_ACCESSORY,
     expression: NORTH_KOREA_EXPRESSION,
     background: NORTH_KOREA_BACKGROUND,
-    evolutionStages: NORTH_KOREA_EVOLUTION_STAGES,
+    ascensionStages: NORTH_KOREA_ASCENSION_STAGES,
     getStory: getNorthKoreaStory,
     wizardCategories: NORTH_KOREA_WIZARD_CATEGORIES,
     muggleCategories: NORTH_KOREA_MUGGLE_CATEGORIES,
@@ -564,7 +564,7 @@ export const FACTION_DATA_REGISTRY: Record<number, FactionDataRegistry> = {
     accessory: FRANCE_ACCESSORY,
     expression: FRANCE_EXPRESSION,
     background: FRANCE_BACKGROUND,
-    evolutionStages: FRANCE_EVOLUTION_STAGES,
+    ascensionStages: FRANCE_ASCENSION_STAGES,
     getStory: getFranceStory,
     wizardCategories: FRANCE_WIZARD_CATEGORIES,
     muggleCategories: FRANCE_MUGGLE_CATEGORIES,
@@ -579,7 +579,7 @@ export const FACTION_DATA_REGISTRY: Record<number, FactionDataRegistry> = {
     accessory: BRAZIL_ACCESSORY,
     expression: BRAZIL_EXPRESSION,
     background: BRAZIL_BACKGROUND,
-    evolutionStages: BRAZIL_EVOLUTION_STAGES,
+    ascensionStages: BRAZIL_ASCENSION_STAGES,
     getStory: getBrazilStory,
     wizardCategories: BRAZIL_WIZARD_CATEGORIES,
     muggleCategories: BRAZIL_MUGGLE_CATEGORIES,
@@ -594,7 +594,7 @@ export const FACTION_DATA_REGISTRY: Record<number, FactionDataRegistry> = {
     accessory: ISRAEL_ACCESSORY,
     expression: ISRAEL_EXPRESSION,
     background: ISRAEL_BACKGROUND,
-    evolutionStages: ISRAEL_EVOLUTION_STAGES,
+    ascensionStages: ISRAEL_ASCENSION_STAGES,
     getStory: getIsraelStory,
     wizardCategories: ISRAEL_WIZARD_CATEGORIES,
     muggleCategories: ISRAEL_MUGGLE_CATEGORIES,
@@ -646,20 +646,20 @@ function resolveTraitData(
 /**
  * Resolve all hashbeast traits to structured data
  *
- * This is the main function that takes DNA gene values and returns
+ * This is the main function that takes TRAIT_SEED trait values and returns
  * a complete structured JSON object with all resolved trait data.
  *
  * @param factionId - Faction ID (0-11)
- * @param evolutionStage - Evolution stage (0-7)
- * @param typeValue - Type value (0-7 wizard, 8-15 muggle) from DNA type field
+ * @param ascensionStage - Ascension stage (0-7)
+ * @param typeValue - Type value (0-7 wizard, 8-15 muggle) from TRAIT_SEED type field
  * @param traits - Array of 7 trait values [furColor, headwear, outfit, weapon, accessory, expression, background]
  * @param breedValue - Breed bits 0-3 (canine: per-country registry; other base types: starter pack index)
- * @param baseType - Body-plan layer above breed ("canine" genesis default; non-canine via lootbox/rebirth)
+ * @param baseType - Body-plan layer above breed ("canine" genesis default; non-canine via lootbox/prestige)
  * @returns Complete resolved trait data as structured JSON
  */
 export function resolveHashBeastTraits(
   factionId: number,
-  evolutionStage: number,
+  ascensionStage: number,
   typeValue: number,
   traits: number[],
   breedValue: number = 0,
@@ -704,14 +704,14 @@ export function resolveHashBeastTraits(
     lore: registry.faction.faction_lore,
   };
 
-  // Resolve evolution data
-  const evolutionData =
-    registry.evolutionStages[evolutionStage] || registry.evolutionStages[0];
-  const evolution: EvolutionData = {
-    stage: evolutionStage,
-    name: evolutionData.name || `Stage ${evolutionStage}`,
-    size: evolutionData.size,
-    demeanor: evolutionData.demeanor,
+  // Resolve ascension data
+  const ascensionData =
+    registry.ascensionStages[ascensionStage] || registry.ascensionStages[0];
+  const ascension: AscensionData = {
+    stage: ascensionStage,
+    name: ascensionData.name || `Stage ${ascensionStage}`,
+    size: ascensionData.size,
+    demeanor: ascensionData.demeanor,
   };
 
   // Resolve type data
@@ -751,7 +751,7 @@ export function resolveHashBeastTraits(
 
   return {
     faction,
-    evolution,
+    ascension,
     type,
     baseType,
     breed,
@@ -773,7 +773,7 @@ export function resolveHashBeastTraits(
  * @returns Complete prompt string for image generation
  */
 export function buildImagePrompt(resolved: ResolvedHashBeastTraits): string {
-  const { faction, evolution, type, breed, traits } = resolved;
+  const { faction, ascension, type, breed, traits } = resolved;
 
   const characterType = type.isWizard ? "Wizard" : "Muggle";
   // Non-canine base types inject their body-plan block (silhouette language,
@@ -803,8 +803,8 @@ Visual Style: ${type.prompt}
 BREED / BODY TYPE:
 ${breed.name} — ${breed.bodyPrompt}
 ${baseTypeBlock ? `\n${baseTypeBlock}\n` : ""}
-EVOLUTION STAGE:
-${evolution.name} - ${evolution.size}, ${evolution.demeanor}
+ASCENSION STAGE:
+${ascension.name} - ${ascension.size}, ${ascension.demeanor}
 
 APPEARANCE TRAITS:
 - Fur: ${traits.furColor.prompt}
@@ -825,22 +825,22 @@ OUTPUT: High quality character portrait, game art style, vibrant colors, detaile
 // =============================================================================
 
 /**
- * Build a complete image generation prompt from DNA traits
+ * Build a complete image generation prompt from TRAIT_SEED traits
  *
  * This is a convenience function that combines resolveHashBeastTraits and buildImagePrompt.
  * For more control, use resolveHashBeastTraits() and buildImagePrompt() separately.
  *
  * @param factionId - Faction ID (0-11)
- * @param evolutionStage - Evolution stage (0-7)
- * @param typeValue - Type value (0-7 wizard, 8-15 muggle) from DNA type field
+ * @param ascensionStage - Ascension stage (0-7)
+ * @param typeValue - Type value (0-7 wizard, 8-15 muggle) from TRAIT_SEED type field
  * @param traits - Array of 7 trait values [furColor, headwear, outfit, weapon, accessory, expression, background]
  * @param breedValue - Breed bits 0-3
- * @param baseType - Body-plan layer ("canine" default; "primate" | "amphibian" | "feline" via lootbox/rebirth)
+ * @param baseType - Body-plan layer ("canine" default; "primate" | "amphibian" | "feline" via lootbox/prestige)
  * @returns Complete prompt string for image generation
  */
 export function buildHashBeastPrompt(
   factionId: number,
-  evolutionStage: number,
+  ascensionStage: number,
   typeValue: number,
   traits: number[],
   breedValue: number = 0,
@@ -848,7 +848,7 @@ export function buildHashBeastPrompt(
 ): string {
   const resolved = resolveHashBeastTraits(
     factionId,
-    evolutionStage,
+    ascensionStage,
     typeValue,
     traits,
     breedValue,
@@ -930,7 +930,7 @@ export function getTypeName(factionId: number, typeValue: number): string {
 
 /**
  * Legacy: Get the category name for a given faction and category value
- * @deprecated Use getTypeName with DNA type field instead
+ * @deprecated Use getTypeName with TRAIT_SEED type field instead
  */
 export function getCategoryName(
   factionId: number,
@@ -991,7 +991,7 @@ export const TRAIT_NAMES = {
 
 /**
  * Type field values and their meaning
- * Type is stored in DNA separately from appearance traits
+ * Type is stored in TRAIT_SEED separately from appearance traits
  */
 export const TYPE_NAMES = {
   // Wizard types (0-7)

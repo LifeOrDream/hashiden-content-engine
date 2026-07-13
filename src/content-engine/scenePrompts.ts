@@ -3,7 +3,7 @@ import {
   buildDirectorPromptBlock,
   buildNegativeVisualPrompt,
 } from "./directorGrammar.js";
-import { sanitizeGenomeForImage } from "../nft-pipeline/genomeBlock.js";
+import { sanitizeTraitMapForImage } from "../nft-pipeline/traitMapBlock.js";
 
 export interface SceneScriptPromptInput {
   storySoFar?: string;
@@ -19,12 +19,12 @@ export interface SceneScriptPromptInput {
   speaks?: string;
   contextPromptBlocks?: string;
   /**
-   * The protagonist's distilled prompt-genome forText variant. A TEXT surface:
+   * The protagonist's distilled prompt-trait_map forText variant. A TEXT surface:
    * folded into the scene's context blocks so the written line honors the
    * beast's motif/motivation. Full lineage is allowed here (this is not an
    * image prompt).
    */
-  genomeForText?: string;
+  traitMapForText?: string;
   plotDirectives: string;
   pulseBlock?: string;
   costarNames?: string;
@@ -37,10 +37,10 @@ export function buildSceneScriptPrompt(input: SceneScriptPromptInput): string {
     ? `\nCO-STARS IN FRAME: ${input.costarNames}. Play the multi-way rivalry — the protagonist above is the one who SPEAKS; the co-stars react.`
     : "";
   const pulse = input.pulseBlock ? `\n${input.pulseBlock}\n` : "";
-  // Genome forText folds into the scene's context blocks (text surface — full
+  // TraitMap forText folds into the scene's context blocks (text surface — full
   // lineage allowed). It rides alongside any pre-built contextPromptBlocks.
-  const genomeText = String(input.genomeForText || "").trim().slice(0, 900);
-  const contextBlocks = [input.contextPromptBlocks, genomeText ? `PROMPT GENOME: ${genomeText}` : ""]
+  const traitMapText = String(input.traitMapForText || "").trim().slice(0, 900);
+  const contextBlocks = [input.contextPromptBlocks, traitMapText ? `PROMPT TRAIT_MAP: ${traitMapText}` : ""]
     .filter((b) => b && String(b).trim())
     .join("\n");
   const duration = input.videoDurationSecs || 8;
@@ -87,12 +87,12 @@ export interface SceneKeyframePromptInput {
   profession: string;
   canonBlocks: string[];
   /**
-   * The protagonist's distilled prompt-genome forImage variant (aesthetic
+   * The protagonist's distilled prompt-trait_map forImage variant (aesthetic
    * tokens + arc stage ONLY). An IMAGE surface: defensively re-sanitized here
    * so no technique/epithet name or motif prose can leak into the keyframe,
    * then appended to the canon blocks.
    */
-  genomeForImage?: string;
+  traitMapForImage?: string;
   storySoFar?: string;
   cliffhanger?: string;
   scene: string;
@@ -100,11 +100,11 @@ export interface SceneKeyframePromptInput {
 }
 
 export function buildSceneKeyframePrompt(input: SceneKeyframePromptInput): string {
-  const genomeAesthetic = sanitizeGenomeForImage(input.genomeForImage);
+  const traitMapAesthetic = sanitizeTraitMapForImage(input.traitMapForImage);
   const canonBlocks = [
     ...input.canonBlocks,
-    genomeAesthetic
-      ? `GENOME AESTHETIC (visual palette + arc stage cues only — render as look, never as text): ${genomeAesthetic}`
+    traitMapAesthetic
+      ? `TRAIT_MAP AESTHETIC (visual palette + arc stage cues only — render as look, never as text): ${traitMapAesthetic}`
       : "",
   ].filter((b) => b && String(b).trim());
   return [

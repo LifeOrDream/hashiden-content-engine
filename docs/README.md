@@ -8,7 +8,7 @@ Start here if you are trying to understand or contribute to the open-source engi
 2. [World Bible](../WORLD_BIBLE.md) — the canon roster: Council of Twelve, rivalry map, style ladder, progression grammar, editing rules.
 3. [Architecture](architecture.md) — the engine/backend boundary and the service-mode job surface.
 4. [Story Engine](story-engine.md) — beast memory, epithets, technique debuts, mint intros, and Hashiden chapter generation.
-5. [NFT Asset Pipeline](nft-pipeline.md) — mint art, state-loop APNGs, mutation content, cycle recaps.
+5. [NFT Asset Pipeline](nft-pipeline.md) — mint art, state-loop APNGs, reroll content, cycle recaps.
 6. [Base Types](base-types.md) — the body-plan layer above breed (canine, primate, amphibian, feline).
 7. [Casino Rituals + Audio Identity](rituals-and-audio.md) — lootbox reveals, claim rolls, rarity light language, sound spec.
 8. [Multi-Scene Video](video-scenes.md) — the Seedance 2.0 multi-scene primitive: in-prompt cuts, frame control, native audio, chaining.

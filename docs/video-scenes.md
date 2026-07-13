@@ -40,7 +40,7 @@ const { segments, master, totalSeconds } = await generateSceneSequence(
   [
     { direction: "the beast charges, aura swelling", refStartImage: preUrl, durationHint: 5 },
     { direction: "whiteout burst, silhouette readable inside the light", durationHint: 3 },
-    { direction: "the evolved form lands its signature pose", refEndImage: evolvedUrl, durationHint: 4 },
+    { direction: "the ascended form lands its signature pose", refEndImage: evolvedUrl, durationHint: 4 },
   ],
   {
     totalDuration: 12,          // ≤15 → ONE call; >15 → auto-chained; or "auto"
@@ -55,7 +55,7 @@ const { segments, master, totalSeconds } = await generateSceneSequence(
 
 - `scenes[0].refStartImage` is REQUIRED (i2v is start-frame anchored).
 - `refEndImage` is honored on the scene that ENDS a call (one end frame per
-  generation) — use it to land on exact canon (evolved art, product frame).
+  generation) — use it to land on exact canon (ascended art, product frame).
 - `durationHint`s drive the cut timestamps; unhinted scenes split the leftover
   of `totalDuration` evenly.
 
@@ -93,7 +93,7 @@ you can't chain it and you can't cost it precisely up front.
 
 | Consumer | Shape |
 | --- | --- |
-| Evolution ceremony (`src/nft-pipeline/mutationContent.ts`) | ONE ~12s call: CHARGE/BURST/REVEAL as cuts, pre-evolution art = start frame, evolved art = end frame, `generateAudio: true`. Budget fallback: `NFT_CEREMONY_BUDGET_MODE=true` (or `budgetMode` per job) → legacy 3-keyframe chroma-strip APNG. |
+| Ascension ceremony (`src/nft-pipeline/mutationContent.ts`) | ONE ~12s call: CHARGE/BURST/REVEAL as cuts, pre-ascension art = start frame, ascended art = end frame, `generateAudio: true`. Budget fallback: `NFT_CEREMONY_BUDGET_MODE=true` (or `budgetMode` per job) → legacy 3-keyframe chroma-strip APNG. |
 | Lootbox ritual cinematic (`src/nft-pipeline/ritual.ts`) | Opt-in (`includeCinematic`): the staged acts become one generation with cuts; won beast's canon art = reveal end frame; `generateAudio: true`. |
 | Trailer pipeline (`trailer/pipeline` + `trailer/generate/renderSequence.ts`) | The production-office pass plans scene-blocks ≤15s (breaks at location/time/cast/STYLE changes), per-block reference frames + per-block `generateAudio`; `TRAILER_VIDEO_SEED` pins takes. |
 | Cycle summary (`src/nft-pipeline/cycleSummary.ts`) | Unchanged stitcher — now accepts MP4 ceremony clips alongside APNG strips. |

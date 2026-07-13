@@ -107,7 +107,7 @@ export function buildWorldBriefPrompt(
 5. Make rivalries line up across briefs (if one nation is circling another, the other's brief reflects being circled).
 6. Display-safe: no real product names, no slurs, no wallet addresses, no mechanics jargon.`,
     prevBlock
-      ? `PREVIOUS BRIEFS (continuity — evolve these stances, don't repeat them verbatim):\n${prevBlock}`
+      ? `PREVIOUS BRIEFS (continuity — ascend these stances, don't repeat them verbatim):\n${prevBlock}`
       : "",
     `Return STRICT JSON ONLY (no markdown):
 {

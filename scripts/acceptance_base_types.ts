@@ -25,7 +25,7 @@ import { execFileSync } from "node:child_process";
 import { buildHashBeastPrompt } from "../src/prompts/index.js";
 import { styleRung } from "../src/world/bible.js";
 import { normalizeBaseType, type BaseTypeId } from "../src/world/baseTypes.js";
-import { buildDialoguePrompt } from "../src/nft-pipeline/mutationContent.js";
+import { buildDialoguePrompt } from "../src/nft-pipeline/rerollContent.js";
 import { dialogueSmells } from "../src/content-engine/dialogueQuality.js";
 import { generateText } from "../src/service/llm.js";
 

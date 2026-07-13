@@ -1,4 +1,4 @@
-export type LocationMode = "ordinary_life" | "faction_hq" | "luxury_landscape" | "economic_satire" | "power_evolution";
+export type LocationMode = "ordinary_life" | "faction_hq" | "luxury_landscape" | "economic_satire" | "power_ascension";
 
 export interface CountryLocationProfile {
   id: string;
@@ -419,7 +419,7 @@ export const COUNTRY_LOCATION_PROFILES: CountryLocationProfile[] = [
     refKind: "landscapeLuxuryEnvironmentBoard",
     description: "Bright desert-edge terrace where water-core magic, tech, and survival hope can look premium.",
     microDetails: ["limestone terrace", "olive tree", "desert edge", "water-core glow", "blue shutters"],
-    bestFor: ["Negev Bloom", "rebirth payoff", "Israel faction reveal"],
+    bestFor: ["Negev Bloom", "prestige payoff", "Israel faction reveal"],
     camera: "wide center-safe hero master, soft slow push for sincere reveal",
     palette: "sand gold, cyan water, limestone cream, olive green",
     interactionProps: ["water staff", "root circuitry", "drone light", "ceramic bowl"],

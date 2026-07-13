@@ -10,7 +10,7 @@
  *
  * Stays in the backend (same boundary as every other nft.* job): the
  * economics/budget gate that decides whether this job is dispatched at all
- * (gate it exactly like nft.mutation_content), per-cycle dialogue memory
+ * (gate it exactly like nft.reroll_content), per-cycle dialogue memory
  * (previousLine threading), DDB persistence, and socket emission.
  */
 import { logger } from "../utils/logger.js";
@@ -24,7 +24,7 @@ import {
   type MomentContext,
   type MomentType,
 } from "./moments.js";
-import { writeAndVoiceFromPrompt, type DialogueResult } from "./mutationContent.js";
+import { writeAndVoiceFromPrompt, type DialogueResult } from "./rerollContent.js";
 import { generateStrip, assembleLoop, resolveBeastProfile } from "./stateAnimations.js";
 import {
   getDefaultArtifactStore,

@@ -11,7 +11,7 @@
  *   - src/nft-pipeline/voice.ts           → FACTION_VOICE_HINTS, leader catchphrases
  *   - src/nft-pipeline/stateAnimations.ts → MINING_TOOL_BY_CODE, country names
  *   - src/nft-pipeline/mintAssets.ts      → FACTION_CINEMATIC_ENVIRONMENTS
- *   - src/nft-pipeline/mutationContent.ts → country names
+ *   - src/nft-pipeline/rerollContent.ts → country names
  *   - src/content-engine/fixtures.ts      → leader name/catchphrase
  *   - trailer/style/castCanon.ts          → CAST_CANON (re-export)
  *   - trailer/world/countryCastRegistry.ts→ COUNTRY_CHARACTER_PROFILES (re-export)
@@ -31,7 +31,7 @@
  * - Every country reads as a key player: specific, modern, funny, dangerous.
  *
  * BASE TYPES ("forms are fluid"): canine is the genesis body plan; primate,
- * amphibian, and feline forms enter ONLY through the lootbox/rebirth path.
+ * amphibian, and feline forms enter ONLY through the lootbox/prestige path.
  * The base-type layer (silhouette language, movement grammar, voice timbre,
  * per-country skinning, starter breed packs) lives in src/world/baseTypes.ts.
  */
@@ -65,7 +65,7 @@ export const STYLE_ELEVATION_LADDER: StyleElevationRung[] = [
     usedFor: [
       "NFT mint assets (full_body.png, dp.png)",
       "state animation loops (mining / win / lose / power APNGs)",
-      "mutation transition strips",
+      "reroll transition strips",
       "in-game gallery + arena sprites",
     ],
     styleContract:
@@ -84,7 +84,7 @@ export const STYLE_ELEVATION_LADDER: StyleElevationRung[] = [
       "docs hero scenes",
     ],
     styleContract:
-      "High-resolution 2D arcade-cel character art with pixel-art DNA: bold clean outlines, flat cel shading, premium bright key-art lighting, saturated faction colors, readable silhouette, expressive beast face (canine by default; rebirth base types — primate, amphibian, feline — keep their own body plan), collectible country-specific gear. Feels animated and collectible — an upgrade of the sprite, never a different character.",
+      "High-resolution 2D arcade-cel character art with pixel-art TRAIT_SEED: bold clean outlines, flat cel shading, premium bright key-art lighting, saturated faction colors, readable silhouette, expressive beast face (canine by default; prestige base types — primate, amphibian, feline — keep their own body plan), collectible country-specific gear. Feels animated and collectible — an upgrade of the sprite, never a different character.",
     never:
       "No raw low-res pixel mud, no photorealism, no generic 3D CGI, no anime defaults, no grimdark murk, no text in image, no flag-print clothing.",
   },
@@ -908,7 +908,7 @@ export const COUNTRY_CHARACTER_PROFILES: CountryCharacterProfile[] = [
     suspenseLoop: "What can Negev Bloom grow inside a dead mining zone?",
     actionWow: "A water-core staff sends cyan roots through cracked stone, turning a dead floor luminous.",
     powerStyle: "Water-core cyan, sand-gold light, root circuitry, gentle chime.",
-    engagementUse: "Use for sincere pivots, rebirth, science-wonder, hopeful payoff after thriller.",
+    engagementUse: "Use for sincere pivots, prestige, science-wonder, hopeful payoff after thriller.",
     relationshipSeeds: ["Mato Verde understands him", "Darya trades poems with him", "Yalla Zero thinks hope needs better security"],
     tabooAvoid: "No miracle-tech savior cliche; show constraints and cost.",
   },
@@ -934,7 +934,7 @@ export function profilesForCountry(country: string): CountryCharacterProfile[] {
 export interface IdentityAnchors {
   /** Fur/face markings that must survive every style rung. */
   markings: string;
-  /** Signature gear lineage that must persist across evolutions and rungs. */
+  /** Signature gear lineage that must persist across ascensions and rungs. */
   gearLineage: string;
   /** The readable one-glance silhouette. */
   silhouette: string;
@@ -954,7 +954,7 @@ export interface CountryColors {
 
 export interface LocationCard {
   name: string;
-  mode: "ordinary_life" | "faction_hq" | "luxury_landscape" | "economic_satire" | "power_evolution";
+  mode: "ordinary_life" | "faction_hq" | "luxury_landscape" | "economic_satire" | "power_ascension";
   hook: string;
 }
 
@@ -1767,7 +1767,7 @@ export interface CastCanonEntry {
   aliases: string[];
   name: string;
   country: string;
-  /** Canon breed (must stay inside the country's backend DNA breed set). */
+  /** Canon breed (must stay inside the country's backend TRAIT_SEED breed set). */
   breed: string;
   /** The visual identity for keyframe prompts — what every shot must preserve. */
   look: string;
@@ -1985,7 +1985,7 @@ export function rarityTier(id: RarityTierId): RarityTier {
 }
 
 /**
- * Canonical evolution-stage → rarity-tier mapping (8-stage ladder → 5 tiers):
+ * Canonical ascension-stage → rarity-tier mapping (8-stage ladder → 5 tiers):
  * 0-1 common, 2-3 uncommon, 4-5 rare, 6 epic, 7 mythic. Used when a reveal's
  * rarity is derived from the revealed beast rather than passed explicitly.
  */

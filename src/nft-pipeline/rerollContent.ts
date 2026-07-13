@@ -1,7 +1,7 @@
 /**
- * Mutation event content — the per-event "screenwriter + producer".
+ * Reroll event content — the per-event "screenwriter + producer".
  *
- * For each gameplay mutation it produces a TRANSITION animation (chroma-strip
+ * For each gameplay reroll it produces a TRANSITION animation (chroma-strip
  * APNG, non-looping) + a voiced in-character dialogue line, building the
  * country-vs-country live-entertainment feel. Regeneration policy (ported
  * from production):
@@ -10,13 +10,13 @@
  *     to cycle end (opt in with `refreshAssets: true` for immediate DP regen).
  *   - power          → transition + dialogue; the caller stores the clip in
  *     its power slot (1-5, derived from trait index, returned as `powerSlot`).
- *   - evolution      → IMMEDIATE full regen (base body + DP) FIRST so the
- *     transition + fresh state loops use the evolved look, then transition +
- *     dialogue. The evolution transition is the 3-beat CEREMONY
+ *   - ascension      → IMMEDIATE full regen (base body + DP) FIRST so the
+ *     transition + fresh state loops use the ascended look, then transition +
+ *     dialogue. The ascension transition is the 3-beat CEREMONY
  *     (CHARGE → BURST → REVEAL, src/world/progression.ts) rendered as ONE
  *     Seedance 2.0 multi-scene generation (~12s, in-prompt cuts, native
- *     synced impact SFX): start frame = the PRE-evolution canonical art,
- *     end frame = the evolved canonical art, so identity is anchored by
+ *     synced impact SFX): start frame = the PRE-ascension canonical art,
+ *     end frame = the ascended canonical art, so identity is anchored by
  *     construction on both sides of the whiteout. Budget mode
  *     (`budgetMode: true` or NFT_CEREMONY_BUDGET_MODE=true) falls back to
  *     the legacy 3-keyframe chroma-strip APNG choreography — which is also
@@ -41,7 +41,7 @@ import { logger } from "../utils/logger.js";
 import { countryBible } from "../world/bible.js";
 import { baseTypeMascotPhrase, safeBaseType } from "../world/baseTypes.js";
 import {
-  evolutionCeremony,
+  ascensionCeremony,
   normalizeStage,
   techniqueFor,
   type NamedTechnique,
@@ -49,10 +49,10 @@ import {
 import { rivalryBlock, type MomentContext } from "./moments.js";
 import { beastMemoryPromptBlock, type BeastMemorySnapshot } from "./beastMemory.js";
 import {
-  genomeTextDirective,
-  genomeHonorIntentDirective,
+  traitMapTextDirective,
+  traitMapHonorIntentDirective,
   honoredIntentRefOf,
-} from "./genomeBlock.js";
+} from "./traitMapBlock.js";
 import type { NftBeastInput } from "./types.js";
 import {
   generateStrip,
@@ -62,7 +62,7 @@ import {
   FRAME_COUNT,
   type BeastProfile,
 } from "./stateAnimations.js";
-import { refreshVisualDp, refreshEvolutionAssets, type RefreshedAssets } from "./assetRefresh.js";
+import { refreshVisualDp, refreshAscensionAssets, type RefreshedAssets } from "./assetRefresh.js";
 import { ensureVoiceId, synthesizeDialogue } from "./voice.js";
 import {
   getDefaultArtifactStore,
@@ -71,10 +71,10 @@ import {
   type NftArtifact,
 } from "./artifacts.js";
 
-export type MutationKind = "visual" | "power" | "evolution";
+export type RerollKind = "visual" | "power" | "ascension";
 const POWER_SLOTS = 5;
 
-// ── Evolution ceremony video (Seedance 2.0 multi-scene) ──
+// ── Ascension ceremony video (Seedance 2.0 multi-scene) ──
 // Budget mode = the legacy 3-keyframe chroma-strip APNG path (1 image call
 // instead of 1 video call). Also used automatically when the video fails.
 const CEREMONY_BUDGET_MODE = process.env.NFT_CEREMONY_BUDGET_MODE === "true";
@@ -86,30 +86,30 @@ const CEREMONY_VIDEO_RESOLUTION = process.env.NFT_CEREMONY_VIDEO_RESOLUTION || "
 const CEREMONY_VIDEO_ASPECT = process.env.NFT_CEREMONY_VIDEO_ASPECT || "1:1";
 
 // Map a gameplay moment to the frontend's existing SFX id.
-const SOUND_BY_KIND: Record<MutationKind, string> = {
-  visual: "mutation",
-  power: "mutation",
-  evolution: "jackpot", // big moment
+const SOUND_BY_KIND: Record<RerollKind, string> = {
+  visual: "reroll",
+  power: "reroll",
+  ascension: "jackpot", // big moment
 };
 
 /**
- * The evolution CEREMONY action (B2): the single-sentence evolution prompt is
+ * The ascension CEREMONY action (B2): the single-sentence ascension prompt is
  * replaced by a 3-beat CHARGE → BURST → REVEAL choreography (anticipation /
  * whiteout-morph / signature-pose + aura-settle) from the progression grammar,
  * mapped across the strip's keyframes. The whole choreographed strip passes
  * the Gemini identity gate, so every beat is identity-gated; the BURST beat
  * explicitly keeps the silhouette readable inside the light so the gate holds.
  */
-export function evolutionCeremonyAction(
+export function ascensionCeremonyAction(
   p: BeastProfile,
   newStage: number | undefined,
   fromStage?: number,
 ): string {
-  const to = normalizeStage(newStage ?? p.evolutionStage + 1);
+  const to = normalizeStage(newStage ?? p.ascensionStage + 1);
   const from = normalizeStage(
-    typeof fromStage === "number" ? fromStage : Math.min(p.evolutionStage, Math.max(0, to - 1)),
+    typeof fromStage === "number" ? fromStage : Math.min(p.ascensionStage, Math.max(0, to - 1)),
   );
-  const beats = evolutionCeremony(p.factionId, from, to);
+  const beats = ascensionCeremony(p.factionId, from, to);
 
   // Map the 3 beats onto the strip's frames: ~40% charge, middle burst, ~40% reveal.
   const n = FRAME_COUNT;
@@ -122,7 +122,7 @@ export function evolutionCeremonyAction(
   const revealStart = burstStart + burstFrames;
 
   return (
-    `dramatically EVOLVING in a 3-beat ceremony choreographed across the ${n} frames — ` +
+    `dramatically ASCENDING in a 3-beat ceremony choreographed across the ${n} frames — ` +
     `${range(1, chargeFrames)}: ${beats[0].action}; ` +
     `${range(burstStart, burstFrames)}: ${beats[1].action}; ` +
     `${range(revealStart, revealFrames)}: ${beats[2].action}`
@@ -131,7 +131,7 @@ export function evolutionCeremonyAction(
 
 /** The per-event transition "moment" action (wizard/muggle + country flavored). */
 export function transitionAction(
-  kind: MutationKind,
+  kind: RerollKind,
   p: BeastProfile,
   newStage?: number,
   extra: { fromStage?: number; traitIndex?: number } = {},
@@ -147,7 +147,7 @@ export function transitionAction(
     const technique = transitionTechnique(p, extra.traitIndex);
     return `a POWER SURGE — unleashing its signature ${p.factionName} move: ${technique.visualGrammar}`;
   }
-  return evolutionCeremonyAction(p, newStage, extra.fromStage);
+  return ascensionCeremonyAction(p, newStage, extra.fromStage);
 }
 
 /** The named technique a power transition renders (deterministic pick). */
@@ -168,7 +168,7 @@ export interface GameStateCtx extends MomentContext {
   rank?: number; // faction rank this cycle (1 = leading)
   multiplier?: number; // beast mining multiplier
   winStreak?: number; // owner recent win streak
-  newStage?: number; // evolution target stage
+  newStage?: number; // ascension target stage
   traitIndex?: number;
 }
 
@@ -178,7 +178,7 @@ function factionName(factionId: number): string {
 
 export function buildDialoguePrompt(
   beast: NftBeastInput,
-  kind: MutationKind,
+  kind: RerollKind,
   gs: GameStateCtx,
   prevLine?: string,
   memory?: BeastMemorySnapshot,
@@ -187,10 +187,10 @@ export function buildDialoguePrompt(
   const nation = factionName(beast.factionId ?? 0);
   const moment =
     kind === "visual"
-      ? "just MUTATED a new trait mid-battle"
+      ? "just REROLLED a new trait mid-battle"
       : kind === "power"
         ? "just POWERED UP (a stat surged)"
-        : `just EVOLVED to a more powerful form (stage ${gs.newStage ?? "?"})`;
+        : `just ASCENDED to a more powerful form (stage ${gs.newStage ?? "?"})`;
   const state: string[] = [];
   if (gs.rank) state.push(`${nation} is currently rank #${gs.rank} in the faction war`);
   if (gs.winStreak && gs.winStreak >= 2) state.push(`its owner is on a ${gs.winStreak}-win streak`);
@@ -206,8 +206,8 @@ export function buildDialoguePrompt(
     state.length ? `Game state: ${state.join("; ")}.` : "",
     rivalryBlock(beast.factionId ?? 0, gs.rivalFactionId),
     beastMemoryPromptBlock(memory),
-    genomeTextDirective(beast.genomeBlock),
-    genomeHonorIntentDirective(beast.genomeBlock),
+    traitMapTextDirective(beast.traitMapBlock),
+    traitMapHonorIntentDirective(beast.traitMapBlock),
     prevLine ? `Its PREVIOUS line this cycle was: "${prevLine}". Continue that thread / escalate it.` : "",
     `Make it punchy, trash-talky, patriotic, country-vs-country energy. May include ONE short native-language word. Output ONLY the line, no quotes, no narration.`,
   ]
@@ -224,7 +224,7 @@ export interface DialogueResult {
   voiceProfile?: import("./voice.js").VoiceProfile;
   voiceId?: string;
   /**
-   * When the line was driven by a sealed whisper intent (genomeBlock carried
+   * When the line was driven by a sealed whisper intent (traitMapBlock carried
    * an honoredIntentRef), echo it back so the backend can attach the quill mark
    * on the dialogue payload. Absent when no intent was honored.
    */
@@ -233,7 +233,7 @@ export interface DialogueResult {
 
 /**
  * Write + voice a dialogue line from a ready-built prompt. Shared by the
- * mutation flow and the moment-content flow (momentContent.ts).
+ * reroll flow and the moment-content flow (momentContent.ts).
  * Best-effort: line ships even if voice fails.
  */
 export async function writeAndVoiceFromPrompt(
@@ -253,7 +253,7 @@ export async function writeAndVoiceFromPrompt(
   if (!line) return null;
 
   const result: DialogueResult = { line, soundId };
-  const honoredIntentRef = honoredIntentRefOf(beast.genomeBlock);
+  const honoredIntentRef = honoredIntentRefOf(beast.traitMapBlock);
   if (honoredIntentRef) result.honoredIntentRef = honoredIntentRef;
   try {
     let voiceId = opts.voiceId;
@@ -261,7 +261,7 @@ export async function writeAndVoiceFromPrompt(
       const ensured = await ensureVoiceId(
         beast.factionId ?? 0,
         beast.breedValue ?? 0,
-        beast.evolutionStage ?? 0,
+        beast.ascensionStage ?? 0,
         beast.breedName || "",
         safeBaseType(beast.baseType),
       );
@@ -296,7 +296,7 @@ export async function writeAndVoiceFromPrompt(
 /** Write + voice a gameplay dialogue line. Best-effort: line ships even if voice fails. */
 export async function writeAndVoiceLine(
   beast: NftBeastInput,
-  kind: MutationKind,
+  kind: RerollKind,
   gs: GameStateCtx = {},
   prevLine?: string,
   opts: { store?: ArtifactStore; voiceId?: string; memory?: BeastMemorySnapshot } = {},
@@ -313,14 +313,14 @@ export async function writeAndVoiceLine(
 // Orchestration
 // ---------------------------------------------------------------------------
 
-export interface NftMutationContentInput {
+export interface NftRerollContentInput {
   beast: NftBeastInput;
-  kind: MutationKind;
-  /** Mutated trait index (visual: 0-20; power: 0-4 slot source). */
+  kind: RerollKind;
+  /** Rerolled trait index (visual: 0-20; power: 0-4 slot source). */
   traitIndex?: number;
   /** New trait display name (visual refresh prompt flavor). */
   newTraitName?: string;
-  /** Evolution target stage. */
+  /** Ascension target stage. */
   newStage?: number;
   /** Previous dialogue line this cycle (continuity); cycle memory is backend-owned. */
   previousLine?: string;
@@ -333,14 +333,14 @@ export interface NftMutationContentInput {
    * cycle end (production defers; default false).
    */
   refreshAssets?: boolean;
-  /** evolution only: also regenerate the 3 state loops from the evolved look (default true). */
+  /** ascension only: also regenerate the 3 state loops from the ascended look (default true). */
   regenerateStateLoops?: boolean;
   /**
    * power only: technique names this beast already performed (backend-owned
    * memory) — drives techniqueUsed.isDebut so Phase D can record debuts.
    */
   knownTechniques?: string[];
-  /** evolution only: the stage being evolved FROM (defaults to newStage - 1 / DNA stage). */
+  /** ascension only: the stage being ascended FROM (defaults to newStage - 1 / TRAIT_SEED stage). */
   fromStage?: number;
   /**
    * Per-beast story-memory snapshot (Phase D1) — epithets, technique debuts,
@@ -349,22 +349,22 @@ export interface NftMutationContentInput {
    */
   memory?: BeastMemorySnapshot;
   /**
-   * evolution only: force the legacy 3-keyframe chroma-strip ceremony instead
+   * ascension only: force the legacy 3-keyframe chroma-strip ceremony instead
    * of the single Seedance multi-scene generation (cheaper: 1 image call vs
    * 1 video call). Env-wide switch: NFT_CEREMONY_BUDGET_MODE=true.
    */
   budgetMode?: boolean;
 }
 
-export interface NftMutationContentResult {
+export interface NftRerollContentResult {
   mint: string;
-  kind: MutationKind;
+  kind: RerollKind;
   /** Transition clip APNG (non-looping strip assembly), when produced. */
   transition?: NftArtifact;
   dialogue?: DialogueResult;
-  /** Evolution (or opted-in visual) canonical art refresh. */
+  /** Ascension (or opted-in visual) canonical art refresh. */
   refreshedAssets?: { fullBody?: NftArtifact; dp?: NftArtifact };
-  /** Fresh state loops (evolution flow), when regenerated. */
+  /** Fresh state loops (ascension flow), when regenerated. */
   stateLoops?: NftArtifact[];
   /** power: which slot (1-5) the caller should store the transition under. */
   powerSlot?: number;
@@ -377,31 +377,31 @@ export interface NftMutationContentResult {
 }
 
 /**
- * The evolution ceremony as ONE Seedance 2.0 multi-scene generation (~12s):
+ * The ascension ceremony as ONE Seedance 2.0 multi-scene generation (~12s):
  * CHARGE → BURST → REVEAL as in-prompt cuts, native synced impact SFX, start
- * frame = the PRE-evolution canonical art, end frame = the evolved canonical
+ * frame = the PRE-ascension canonical art, end frame = the ascended canonical
  * art. Identity is anchored by construction (both frames ARE the canon), so
  * no Gemini gate is needed on the in-betweens. Returns null when either
  * canonical look is not URL-addressable (inline artifact mode) — the caller
  * then falls back to the chroma-strip path.
  */
-export async function buildEvolutionCeremonyVideo(
+export async function buildAscensionCeremonyVideo(
   beast: NftBeastInput,
   profile: BeastProfile,
   newStage: number | undefined,
   store: ArtifactStore,
-  extra: { fromStage?: number; preEvolutionLookUrl?: string } = {},
+  extra: { fromStage?: number; preAscensionLookUrl?: string } = {},
 ): Promise<NftArtifact | null> {
   const isUrl = (u?: string) => Boolean(u && /^https?:\/\//i.test(u));
-  const startUrl = extra.preEvolutionLookUrl;
-  const endUrl = beast.assetUrls?.fullBody || beast.assetUrls?.dp; // evolved (post-refresh)
+  const startUrl = extra.preAscensionLookUrl;
+  const endUrl = beast.assetUrls?.fullBody || beast.assetUrls?.dp; // ascended (post-refresh)
   if (!isUrl(startUrl) || !isUrl(endUrl)) return null;
 
-  const to = normalizeStage(newStage ?? profile.evolutionStage + 1);
+  const to = normalizeStage(newStage ?? profile.ascensionStage + 1);
   const from = normalizeStage(
     typeof extra.fromStage === "number" ? extra.fromStage : Math.max(0, to - 1),
   );
-  const beats = evolutionCeremony(profile.factionId, from, to);
+  const beats = ascensionCeremony(profile.factionId, from, to);
 
   // ~40% charge / ~25% burst / ~35% reveal of the ceremony window.
   const total = CEREMONY_VIDEO_SECS;
@@ -422,13 +422,13 @@ export async function buildEvolutionCeremonyVideo(
       // Synced impact SFX sell the whiteout — native audio is free on 2.0.
       generateAudio: true,
       globalDirection:
-        `A single ${profile.factionName} HashBeast character evolving — keep its identity, face, colors, markings, gear and pixel-art style IDENTICAL to the start frame throughout; during the whiteout the silhouette stays readable inside the light. ` +
+        `A single ${profile.factionName} HashBeast character ascending — keep its identity, face, colors, markings, gear and pixel-art style IDENTICAL to the start frame throughout; during the whiteout the silhouette stays readable inside the light. ` +
         `No text, captions, logos or UI anywhere. SOUND: rising charge hum, one huge whiteout impact, then a settling aura shimmer — no speech, no music.`,
     },
   );
   return storeArtifact(store, {
     kind: "transition",
-    key: `${beast.storagePath || `misc/${beast.mint}`}/gameplay/transition-evolution-${Date.now()}.mp4`,
+    key: `${beast.storagePath || `misc/${beast.mint}`}/gameplay/transition-ascension-${Date.now()}.mp4`,
     buffer: result.master.buffer,
     contentType: "video/mp4",
     model: result.segments[0]?.model,
@@ -439,7 +439,7 @@ export async function buildEvolutionCeremonyVideo(
 /** Build a transition clip (frame-strip APNG, non-boomerang) for the moment. */
 export async function buildTransition(
   beast: NftBeastInput,
-  kind: MutationKind,
+  kind: RerollKind,
   profile: BeastProfile,
   newStage: number | undefined,
   store: ArtifactStore,
@@ -459,41 +459,41 @@ export async function buildTransition(
 }
 
 /**
- * Produce the full mutation-event content bundle for one beast. Best-effort
+ * Produce the full reroll-event content bundle for one beast. Best-effort
  * sub-steps: a failed transition or silent voice never fails the job.
  */
-export async function generateMutationContent(
-  input: NftMutationContentInput,
+export async function generateRerollContent(
+  input: NftRerollContentInput,
   opts: { store?: ArtifactStore } = {},
-): Promise<NftMutationContentResult> {
+): Promise<NftRerollContentResult> {
   const store = opts.store || getDefaultArtifactStore();
   const beast: NftBeastInput = { ...input.beast };
   const profile = resolveBeastProfile(beast);
   const artifacts: NftArtifact[] = [];
-  const result: NftMutationContentResult = {
+  const result: NftRerollContentResult = {
     mint: beast.mint,
     kind: input.kind,
     artifacts,
   };
 
-  // The PRE-evolution canonical look — captured before the refresh swaps
-  // beast.assetUrls to the evolved art. It anchors the ceremony video's start
-  // frame (the form the beast evolves FROM).
-  const preEvolutionLookUrl = beast.assetUrls?.fullBody || beast.assetUrls?.dp;
+  // The PRE-ascension canonical look — captured before the refresh swaps
+  // beast.assetUrls to the ascended art. It anchors the ceremony video's start
+  // frame (the form the beast ascends FROM).
+  const preAscensionLookUrl = beast.assetUrls?.fullBody || beast.assetUrls?.dp;
 
-  // 1. Evolution → full regen FIRST so the transition + new loops use the
-  //    evolved look. Visual refresh only when explicitly requested.
+  // 1. Ascension → full regen FIRST so the transition + new loops use the
+  //    ascended look. Visual refresh only when explicitly requested.
   let refreshed: RefreshedAssets | null = null;
   try {
-    if (input.kind === "evolution") {
-      refreshed = await refreshEvolutionAssets(beast, { store });
+    if (input.kind === "ascension") {
+      refreshed = await refreshAscensionAssets(beast, { store });
     } else if (input.kind === "visual" && input.refreshAssets) {
       refreshed = await refreshVisualDp(beast, input.traitIndex ?? 0, input.newTraitName, {
         store,
       });
     }
   } catch (e: any) {
-    logger.warning(`mutation: asset refresh failed: ${e?.message || e}`);
+    logger.warning(`reroll: asset refresh failed: ${e?.message || e}`);
   }
   if (refreshed) {
     beast.assetUrls = { ...beast.assetUrls, ...refreshed.assetUrls };
@@ -502,33 +502,33 @@ export async function generateMutationContent(
     if (refreshed.dp) artifacts.push(refreshed.dp);
   }
 
-  // 1b. Evolution → regenerate the 3 state loops from the fresh art.
-  if (input.kind === "evolution" && input.regenerateStateLoops !== false) {
+  // 1b. Ascension → regenerate the 3 state loops from the fresh art.
+  if (input.kind === "ascension" && input.regenerateStateLoops !== false) {
     try {
       const loops = await generateStateAnimations({ beast }, { store });
       result.stateLoops = loops.artifacts;
       artifacts.push(...loops.artifacts);
     } catch (e: any) {
-      logger.warning(`mutation: state loop regen failed: ${e?.message || e}`);
+      logger.warning(`reroll: state loop regen failed: ${e?.message || e}`);
     }
   }
 
-  // 2. Transition clip (evolution = the 3-beat ceremony; power = the named
-  //    country × lane technique's visual grammar). Evolutions render as ONE
+  // 2. Transition clip (ascension = the 3-beat ceremony; power = the named
+  //    country × lane technique's visual grammar). Ascensions render as ONE
   //    Seedance multi-scene generation (CHARGE/BURST/REVEAL in-prompt cuts,
-  //    pre-evolution start frame, evolved end frame, synced SFX); the
+  //    pre-ascension start frame, ascended end frame, synced SFX); the
   //    chroma-strip APNG remains the budget-mode + failure fallback.
   try {
     let transition: NftArtifact | null = null;
-    if (input.kind === "evolution" && !input.budgetMode && !CEREMONY_BUDGET_MODE) {
+    if (input.kind === "ascension" && !input.budgetMode && !CEREMONY_BUDGET_MODE) {
       try {
-        transition = await buildEvolutionCeremonyVideo(beast, profile, input.newStage, store, {
+        transition = await buildAscensionCeremonyVideo(beast, profile, input.newStage, store, {
           fromStage: input.fromStage,
-          preEvolutionLookUrl,
+          preAscensionLookUrl,
         });
       } catch (e: any) {
         logger.warning(
-          `mutation: ceremony video failed — falling back to strip: ${e?.message || e}`,
+          `reroll: ceremony video failed — falling back to strip: ${e?.message || e}`,
         );
       }
     }
@@ -543,7 +543,7 @@ export async function generateMutationContent(
       artifacts.push(transition);
     }
   } catch (e: any) {
-    logger.warning(`mutation: transition failed: ${e?.message || e}`);
+    logger.warning(`reroll: transition failed: ${e?.message || e}`);
   }
 
   // 3. Voiced dialogue line (continuity with the previous line this cycle).
@@ -578,7 +578,7 @@ export async function generateMutationContent(
   }
 
   logger.success(
-    `🎮 mutation ${input.kind} content for ${String(beast.mint).slice(0, 8)}… clip=${result.transition ? "y" : "n"} line="${dlg?.line || ""}"`,
+    `🎮 reroll ${input.kind} content for ${String(beast.mint).slice(0, 8)}… clip=${result.transition ? "y" : "n"} line="${dlg?.line || ""}"`,
   );
   return result;
 }

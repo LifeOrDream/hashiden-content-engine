@@ -1,6 +1,6 @@
 # NFT Asset Pipeline
 
-The NFT asset pipeline turns HashBeast game events into collectible media: mint art, living-sprite state loops, mutation clips, and cycle recaps. It lives in `src/nft-pipeline/` and runs as the `nft.*` job kinds on the service worker (or by importing the functions directly).
+The NFT asset pipeline turns HashBeast game events into collectible media: mint art, living-sprite state loops, reroll clips, and cycle recaps. It lives in `src/nft-pipeline/` and runs as the `nft.*` job kinds on the service worker (or by importing the functions directly).
 
 The boundary follows [architecture.md](architecture.md): the engine generates media and hands artifacts to a storage port. The backend gates budget BEFORE enqueueing, persists results (DB rows, NFT metadata JSON, CDN invalidation), tracks per-cycle memory, and emits sockets — the engine never touches game state.
 
@@ -32,10 +32,10 @@ No bucket names, hostnames, or credentials are hardcoded; everything comes from 
 
 ### 1. `nft.mint_assets` — mint art
 
-DNA → prompt grammar → validated character art.
+TRAIT SEED → prompt grammar → validated character art.
 
-- **Input** (`NftMintAssetsInput`): `mint`, `dna` (256-bit hex), `factionId`, `categoryValue`, `regionValue`, optional `referenceImageUrl` (breed base-body style anchor), optional `includeCinematic`, optional `baseType` (`"canine"` default; `"primate" | "amphibian" | "feline"` for lootbox/rebirth beasts — strict-validated against `HASHBEAST_BASE_TYPE_ALLOWLIST`, see [base-types.md](base-types.md)).
-- **Pipeline**: decode DNA → resolve faction × category × region × breed traits → build the full-body prompt from the faction grammar (`src/prompts/`) → generate `full_body.png` (3:4) style-locked to the breed reference → **Gemini identity gate** (posture / pixel style / facing direction) with up to `NFT_MINT_MAX_RETRIES` regens → generate `dp.png` (1:1) from the full body → Gemini same-character gate → optional `cinematic.png` PFP portrait (non-blocking).
+- **Input** (`NftMintAssetsInput`): `mint`, `trait seed` (256-bit hex), `factionId`, `categoryValue`, `regionValue`, optional `referenceImageUrl` (breed base-body style anchor), optional `includeCinematic`, optional `baseType` (`"canine"` default; `"primate" | "amphibian" | "feline"` for lootbox/prestige beasts — strict-validated against `HASHBEAST_BASE_TYPE_ALLOWLIST`, see [base-types.md](base-types.md)).
+- **Pipeline**: decode TRAIT SEED → resolve faction × category × region × breed traits → build the full-body prompt from the faction grammar (`src/prompts/`) → generate `full_body.png` (3:4) style-locked to the breed reference → **Gemini identity gate** (posture / pixel style / facing direction) with up to `NFT_MINT_MAX_RETRIES` regens → generate `dp.png` (1:1) from the full body → Gemini same-character gate → optional `cinematic.png` PFP portrait (non-blocking).
 - **Output** (`NftMintAssetsResult`): `storagePath` (`<faction>/<category>/<region>/<mint>`), artifacts, per-image validation summaries (attempts/passed/reason), and the exact prompt packet for reproducibility.
 - **Progress**: emits `{ step, percent, message }` via BullMQ `job.updateProgress` (`generating_full_body` → `uploading` → `generating_dp` → … → `completed`) so the backend can drive its mint-progress UX.
 - **References**: the breed base-body sprites are deployment assets. Pass `referenceImageUrl` per job, or configure `HASHBEAST_BASE_BODIES_DIR` / `HASHBEAST_BASE_BODIES_BASE_URL` (filenames in `BREED_BASE_BODIES`; non-canine base types resolve `basetypes/<baseType>/<breed>.png` under the same roots).
@@ -44,7 +44,7 @@ DNA → prompt grammar → validated character art.
 
 The chroma-strip method, used for the website's per-NFT mining / win / lose loops.
 
-- **Input** (`NftStateAnimationsInput`): `beast` (self-contained snapshot: mint, dna, canonical `assetUrls`, `storagePath`, personality, optional `baseType` — see [base-types.md](base-types.md)), optional `states` subset, optional `includePower` + `traitIndex`, optional `knownTechniques` (backend-owned debut memory), optional `arc` (emotional-arc directive, see below).
+- **Input** (`NftStateAnimationsInput`): `beast` (self-contained snapshot: mint, trait seed, canonical `assetUrls`, `storagePath`, personality, optional `baseType` — see [base-types.md](base-types.md)), optional `states` subset, optional `includePower` + `traitIndex`, optional `knownTechniques` (backend-owned debut memory), optional `arc` (emotional-arc directive, see below).
 - **Output**: transparent looping APNG artifacts under `<storagePath>/animations/<state>.png` plus `produced[]`. With `includePower`, the result also carries `techniqueUsed { name, isDebut? }` — the named country × lane move the power clip rendered (`isDebut` only when `knownTechniques` was passed).
 
 #### The chroma-strip APNG method
@@ -59,7 +59,7 @@ Variety rules: mining actions are flavored per country (each faction has its own
 
 #### Stage-aware performance (progression grammar)
 
-The beast's evolution stage (DNA `evolution` 0-7, snapshot fallback) selects a performance band from `src/world/progression.ts` — `pup` (0-1), `soldier` (2-3), `elite` (4-5), `ascendant` (6-7) — that rewrites the acting in every loop: a Pup wrestles a comically oversized tool and over-celebrates; an Ascended barely moves and barely acknowledges victory; losses scale puppy-despair → wounded-commander pride.
+The beast's ascension stage (TRAIT SEED `ascension` 0-7, snapshot fallback) selects a performance band from `src/world/progression.ts` — `pup` (0-1), `soldier` (2-3), `elite` (4-5), `ascendant` (6-7) — that rewrites the acting in every loop: a Pup wrestles a comically oversized tool and over-celebrates; an Ascended barely moves and barely acknowledges victory; losses scale puppy-despair → wounded-commander pride.
 
 Power clips render the beast's **named country × lane technique** (`techniqueFor` in `src/world/progression.ts`, picked deterministically by faction × wizard/muggle × traitIndex). The technique NAME never enters image prompts (text-free rule) — only its visual grammar; the name travels in `techniqueUsed` on the job result.
 
@@ -67,21 +67,21 @@ Power clips render the beast's **named country × lane technique** (`techniqueFo
 
 `arc: "starts dejected, spots the ore vein, ends determined"` threads a frame-by-frame emotional-arc directive into the strips — gated to stage >= 4 (`emotionalArcDirective`); silently ignored for lower-stage beasts.
 
-### 3. `nft.mutation_content` — mutation event content
+### 3. `nft.mutation_content` — reroll event content
 
 Per-event transition clip + voiced in-character dialogue line.
 
-- **Input** (`NftMutationContentInput`): `beast`, `kind: "visual" | "power" | "evolution"`, optional `traitIndex`, `newTraitName`, `newStage`, `fromStage` (ceremony from-stage; defaults to `newStage - 1` / DNA stage), `previousLine` (dialogue continuity — cycle memory is backend-owned), `voiceId`, `gameState` (now the full typed `MomentContext` — streaks, rank deltas, roll vs threshold, rival id), `refreshAssets`, `regenerateStateLoops`, `knownTechniques` (debut memory), `budgetMode` (evolution: force the chroma-strip ceremony instead of the Seedance video).
+- **Input** (`NftMutationContentInput`): `beast`, `kind: "visual" | "power" | "ascension"`, optional `traitIndex`, `newTraitName`, `newStage`, `fromStage` (ceremony from-stage; defaults to `newStage - 1` / TRAIT SEED stage), `previousLine` (dialogue continuity — cycle memory is backend-owned), `voiceId`, `gameState` (now the full typed `MomentContext` — streaks, rank deltas, roll vs threshold, rival id), `refreshAssets`, `regenerateStateLoops`, `knownTechniques` (debut memory), `budgetMode` (ascension: force the chroma-strip ceremony instead of the Seedance video).
 - **Policy** (ported from production):
   - `visual` → transition + dialogue; canonical-art regen deferred to cycle end (`refreshAssets: true` opts into an immediate single-trait DP refresh, identity-gated).
   - `power` → transition + dialogue; the transition renders the beast's NAMED country × lane technique (visual grammar only — the name never enters image prompts); result carries `powerSlot` (1-5) and `techniqueUsed { name, isDebut? }`.
-  - `evolution` → full regen FIRST (new full body anchored to the evolution-level base body + new DP, then fresh state loops) so the transition uses the evolved look, then transition + dialogue. The evolution transition is the **3-beat ceremony** — CHARGE (anticipation) → BURST (whiteout morph, identity-readable silhouette held inside the light) → REVEAL (signature pose + aura settle) — from `src/world/progression.ts`, with per-transition canon (The First Spark … The Ascension), stage aura escalation tokens, silhouette-change notes, and country aura flavor (USA gold ticker-ribbons, China jade rings, Russia frost pressure…). It renders as **ONE Seedance 2.0 multi-scene generation** (~12s MP4, `NFT_CEREMONY_VIDEO_SECS`/`_RESOLUTION`/`_ASPECT`): the three beats are in-prompt cuts, the PRE-evolution canonical art is the start frame, the evolved canonical art is the `end_image_url`, and `generate_audio` carries the synced whiteout impact — identity anchored by construction on both ends (see [video-scenes.md](video-scenes.md)). **Budget mode** (`budgetMode: true` per job or `NFT_CEREMONY_BUDGET_MODE=true`) — and any video failure — falls back to the legacy 3-keyframe chroma-strip APNG choreography, where the whole strip passes the Gemini identity gate.
+  - `ascension` → full regen FIRST (new full body anchored to the ascension-level base body + new DP, then fresh state loops) so the transition uses the ascended look, then transition + dialogue. The ascension transition is the **3-beat ceremony** — CHARGE (anticipation) → BURST (whiteout morph, identity-readable silhouette held inside the light) → REVEAL (signature pose + aura settle) — from `src/world/progression.ts`, with per-transition canon (The First Spark … The Ascension), stage aura escalation tokens, silhouette-change notes, and country aura flavor (USA gold ticker-ribbons, China jade rings, Russia frost pressure…). It renders as **ONE Seedance 2.0 multi-scene generation** (~12s MP4, `NFT_CEREMONY_VIDEO_SECS`/`_RESOLUTION`/`_ASPECT`): the three beats are in-prompt cuts, the PRE-ascension canonical art is the start frame, the ascended canonical art is the `end_image_url`, and `generate_audio` carries the synced whiteout impact — identity anchored by construction on both ends (see [video-scenes.md](video-scenes.md)). **Budget mode** (`budgetMode: true` per job or `NFT_CEREMONY_BUDGET_MODE=true`) — and any video failure — falls back to the legacy 3-keyframe chroma-strip APNG choreography, where the whole strip passes the Gemini identity gate.
 - **Dialogue**: one ≤14-word trash-talk line written by the configured LLM with personality + game-state + previous-line continuity, then voiced with the shared per-(faction × breed × stage-band) MiniMax voice (TTS persisted through the artifact store as `dialogue_audio`). When `gameState.rivalFactionId` is one of the beast country's world-bible rivals, the prompt injects the canon rivalry edge so the line references the rivalry. If this job designed a NEW voice, the result includes `voiceProfile` — persist it backend-side (`setVoiceRegistry` can plug in a durable registry; MiniMax expires unused voice ids after ~7 days).
 - **Output** (`NftMutationContentResult`): `transition`, `dialogue { line, soundId, audio? }`, `refreshedAssets`, `stateLoops`, `powerSlot`, `techniqueUsed`, plus the flat `artifacts[]`.
 
 ### 4. `nft.moment_content` — extended game-moment content
 
-Dialogue (and optionally an identity-gated reaction clip) for the moment vocabulary beyond mutations: `first_win`, `win_streak` (n ≥ 3), `clutch_comeback`, `near_miss`, `humiliated_by_rival`, `revenge_win`, `mvp_coronation`, `chapter_cliffhanger`, `lootbox_near_miss`, `lootbox_jackpot` (plus the mutation-mapped `mutated`/`powered`/`evolved`). Grammar lives in `src/nft-pipeline/moments.ts` — every moment has a DISTINCT dialogue directive + body-language token set.
+Dialogue (and optionally an identity-gated reaction clip) for the moment vocabulary beyond rerolls: `first_win`, `win_streak` (n ≥ 3), `clutch_comeback`, `near_miss`, `humiliated_by_rival`, `revenge_win`, `mvp_coronation`, `chapter_cliffhanger`, `lootbox_near_miss`, `lootbox_jackpot` (plus the reroll-mapped `rerolled`/`powered`/`ascended`). Grammar lives in `src/nft-pipeline/moments.ts` — every moment has a DISTINCT dialogue directive + body-language token set.
 
 - **Input** (`NftMomentContentInput`): `beast`, optional explicit `moment`, `context` (typed `MomentContext`: `won`/`winType`, streak fields `winStreak`/`maxWinStreak`/`totalWins`, rank deltas `rankBefore`/`rankAfter`, lootbox `rollValue` vs `thresholdBps` — roll UNDER threshold wins, `rivalFactionId`/`lastLossToFactionId`, `isFinalRound`, `mvp`), `previousLine`, `voiceId`, `includeClip` (default false — the cheap dialogue-only path).
 - **Derivation**: when `moment` is omitted, `deriveMoment(context)` picks the most dramatic applicable moment with deterministic precedence (lootbox outcomes > coronation > revenge > first win > streak > comeback > rival humiliation > near miss > cliffhanger). The job throws if nothing is derivable.
@@ -136,7 +136,7 @@ import {
 } from "@lifeordream/hashiden-content-engine";
 
 const result = await generateMintAssets(
-  { mint, dna, factionId, categoryValue, regionValue, referenceImageUrl },
+  { mint, trait seed, factionId, categoryValue, regionValue, referenceImageUrl },
   { store: new InlineArtifactStore(), onProgress: console.log },
 );
 ```

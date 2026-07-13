@@ -4,15 +4,15 @@
  * This file contains the foundational prompts for generating HashBeast NFT assets.
  * The system uses a layered prompt approach combining:
  *
- * FINAL_PROMPT = CORE_STYLE + FACTION_IDENTITY + CATEGORY + REGION + APPEARANCE_TRAITS + EVOLUTION
+ * FINAL_PROMPT = CORE_STYLE + FACTION_IDENTITY + CATEGORY + REGION + APPEARANCE_TRAITS + ASCENSION
  *
- * DNA Trait Mapping (21 Appearance Traits, 5 bits each = 0-31 values):
+ * TRAIT_SEED Trait Mapping (21 Appearance Traits, 5 bits each = 0-31 values):
  * - Trait 0: Category (IMMUTABLE) - Wizard 0-15 / Muggle 16-31
  * - Trait 1: Region - 8 regions × 4 personality types per faction
  * - Traits 2-20: Progressive visual traits (higher value = cooler look)
  *
  * Genesis hashbeasts: Trait 0 = 0-31 (full range), Traits 1-20 = 0-9 (limited)
- * Evolved hashbeasts: All traits can reach 0-31 through mutations
+ * Ascended hashbeasts: All traits can reach 0-31 through rerolls
  */
 
 // =============================================================================
@@ -28,7 +28,7 @@ by any government, that grew stronger as humans mined it, and that would one day
 make its holders the true rulers of the financial world.`,
 
   the_mining_wars: `Now, hashbeasts from 12 great nations compete in the eternal Mining Wars.
-Every round, factions battle across 24 blocks, staking their claims and evolving their
+Every round, factions battle across 24 blocks, staking their claims and ascending their
 warriors. The goal is simple: accumulate more $DEN than any other faction.
 Make $DEN the biggest token on Earth - bigger than Bitcoin itself.
 The wars never end. The competition is eternal. Only the strongest factions survive.`,
@@ -52,10 +52,10 @@ This is ancient magic encoded in blockchain - wealth that grows itself.`,
 };
 
 // =============================================================================
-// EVOLUTION STAGES (0-7)
+// ASCENSION STAGES (0-7)
 // =============================================================================
 
-export const EVOLUTION_STAGES = {
+export const ASCENSION_STAGES = {
   0: {
     name: "Pup",
     description: "Young recruit, just awakened to the $DEN revolution",
@@ -141,13 +141,13 @@ export const TRAIT_TIERS = {
     min: 16,
     max: 23,
     name: "Rare",
-    description: "Premium items, evolution/breeding only",
+    description: "Premium items, ascension/fusion only",
   },
   LEGENDARY: {
     min: 24,
     max: 31,
     name: "Legendary",
-    description: "Ultimate items, highly evolved only",
+    description: "Ultimate items, highly ascended only",
   },
 };
 
@@ -276,7 +276,7 @@ export const TRAIT_DEFINITIONS = {
  * Values 16-31: Muggle World (mundane infiltration roles)
  *
  * Genesis hashbeasts can have ANY category value (0-31)
- * Category is IMMUTABLE - never changes through mutation or breeding
+ * Category is IMMUTABLE - never changes through reroll or fusion
  */
 
 export const CATEGORY_RANGES = {
@@ -538,15 +538,15 @@ export const MUGGLE_CATEGORIES_BASE = {
 // PROMPT BUILDING FUNCTIONS
 // =============================================================================
 
-export function getEvolutionPrompt(stage: number): string {
-  const evolution = EVOLUTION_STAGES[stage as keyof typeof EVOLUTION_STAGES];
-  if (!evolution) return "";
+export function getAscensionPrompt(stage: number): string {
+  const ascension = ASCENSION_STAGES[stage as keyof typeof ASCENSION_STAGES];
+  if (!ascension) return "";
 
   return `
-EVOLUTION: ${evolution.name} (Stage ${stage})
-Size: ${evolution.size_prompt}
-Demeanor: ${evolution.demeanor}
-Visual cues: ${evolution.visual_cues}`;
+ASCENSION: ${ascension.name} (Stage ${stage})
+Size: ${ascension.size_prompt}
+Demeanor: ${ascension.demeanor}
+Visual cues: ${ascension.visual_cues}`;
 }
 
 export function getCategoryInfo(categoryValue: number) {

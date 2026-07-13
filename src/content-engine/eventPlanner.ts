@@ -20,7 +20,7 @@ export function tropeForPulse(theme: WorldPulse["theme"]): string {
 
 export function scoreBeat(kind: string, role: string, arc: string): number {
   let score = 25;
-  if (kind === "evolution") score = 90;
+  if (kind === "ascension") score = 90;
   else if (kind === "win") score = 80;
   else if (kind === "lead_change") score = 85;
   else if (kind === "power") score = 55;
@@ -42,7 +42,7 @@ export function pickTrope(kind: string, role: string, arc: string): string {
       ? "the final-seconds overtake"
       : "the overtake / dethroning";
   }
-  if (kind === "evolution") return "glow-up turning point";
+  if (kind === "ascension") return "glow-up turning point";
   if (kind === "win") return "victory swagger";
   if (kind === "power") return "new move unleashed";
   if (role === "underdog") return "underdog rising";
@@ -59,8 +59,8 @@ export function beatText(
   evt: IncomingEventLike,
 ): string {
   switch (kind) {
-    case "evolution":
-      return `${faction}'s fighter evolved to stage ${evt.new_stage ?? "?"} — a surge of new power.`;
+    case "ascension":
+      return `${faction}'s fighter ascended to stage ${evt.new_stage ?? "?"} — a surge of new power.`;
     case "power":
       return `${faction}'s fighter unlocked a stronger move.`;
     case "visual":

@@ -1,7 +1,7 @@
 /**
  * MOMENT GRAMMAR — the emotional-range layer (Phase C).
  *
- * Extends the dialogue/state moment types beyond mutated/powered/evolved with
+ * Extends the dialogue/state moment types beyond rerolled/powered/ascended with
  * the full outcome vocabulary of a season: first wins, streaks, comebacks,
  * near-misses, rival humiliations, revenge, coronations, cliffhangers and
  * lootbox drama. Everything here is PURE and deterministic (unit-testable,
@@ -21,7 +21,7 @@ import { countryBible, type RivalryEdge } from "../world/bible.js";
 import { baseTypeMascotPhrase, safeBaseType } from "../world/baseTypes.js";
 import { performanceBand, normalizeStage } from "../world/progression.js";
 import { beastMemoryPromptBlock, type BeastMemorySnapshot } from "./beastMemory.js";
-import { genomeTextDirective, genomeHonorIntentDirective } from "./genomeBlock.js";
+import { traitMapTextDirective, traitMapHonorIntentDirective } from "./traitMapBlock.js";
 import type { NftBeastInput } from "./types.js";
 import type { BeastProfile } from "./stateAnimations.js";
 
@@ -29,11 +29,11 @@ import type { BeastProfile } from "./stateAnimations.js";
 // Types
 // ─────────────────────────────────────────────────────────────────────────────
 
-/** The full moment vocabulary. The first three map 1:1 onto mutation kinds. */
+/** The full moment vocabulary. The first three map 1:1 onto reroll kinds. */
 export type MomentType =
-  | "mutated"
+  | "rerolled"
   | "powered"
-  | "evolved"
+  | "ascended"
   | "first_win"
   | "win_streak"
   | "clutch_comeback"
@@ -80,7 +80,7 @@ export interface MomentContext {
 
 export interface MomentGrammar {
   type: MomentType;
-  /** Frontend SFX id (existing ids only — "mutation" | "jackpot"). */
+  /** Frontend SFX id (existing ids only — "reroll" | "jackpot"). */
   soundId: string;
   /** The dialogue DIRECTIVE — what the line must feel like at this moment. */
   directive: (ctx: MomentContext, nation: string, rivalNation?: string) => string;
@@ -147,27 +147,27 @@ export function deriveMoment(ctx: MomentContext): MomentType | null {
 // ─────────────────────────────────────────────────────────────────────────────
 
 const GRAMMAR: Record<MomentType, MomentGrammar> = {
-  mutated: {
-    type: "mutated",
-    soundId: "mutation",
+  rerolled: {
+    type: "rerolled",
+    soundId: "reroll",
     directive: (_ctx, nation) =>
-      `it just MUTATED a new trait mid-battle for ${nation} — startled delight, showing off the fresh look`,
+      `it just REROLLED a new trait mid-battle for ${nation} — startled delight, showing off the fresh look`,
     bodyLanguage:
       "double-take at its own body, then a proud spin to show the new trait off",
   },
   powered: {
     type: "powered",
-    soundId: "mutation",
+    soundId: "reroll",
     directive: (_ctx, nation) =>
       `it just POWERED UP (a stat surged) for ${nation} — surging confidence, feeling the new strength crackle`,
     bodyLanguage:
       "flexing stance as energy crackles, testing the new power with a sharp jab",
   },
-  evolved: {
-    type: "evolved",
+  ascended: {
+    type: "ascended",
     soundId: "jackpot",
     directive: (ctx, nation) =>
-      `it just EVOLVED to a more powerful form (stage ${ctx.newStage ?? "?"}) for ${nation} — reborn gravitas, a new chapter declared`,
+      `it just ASCENDED to a more powerful form (stage ${ctx.newStage ?? "?"}) for ${nation} — prestiged gravitas, a new chapter declared`,
     bodyLanguage:
       "rises taller than before, surveys its own new silhouette, plants a claim-the-ground stance",
   },
@@ -197,7 +197,7 @@ const GRAMMAR: Record<MomentType, MomentGrammar> = {
   },
   near_miss: {
     type: "near_miss",
-    soundId: "mutation",
+    soundId: "reroll",
     directive: (_ctx, nation) =>
       `SO close — right country, wrong call for ${nation}; agonized almost, gallows humor through gritted teeth`,
     bodyLanguage:
@@ -205,7 +205,7 @@ const GRAMMAR: Record<MomentType, MomentGrammar> = {
   },
   humiliated_by_rival: {
     type: "humiliated_by_rival",
-    soundId: "mutation",
+    soundId: "reroll",
     directive: (_ctx, nation, rivalNation) =>
       `${nation} just got beaten by ${rivalNation || "its blood rival"} — stung pride, public embarrassment, a vow muttered through a forced smile`,
     bodyLanguage:
@@ -229,7 +229,7 @@ const GRAMMAR: Record<MomentType, MomentGrammar> = {
   },
   chapter_cliffhanger: {
     type: "chapter_cliffhanger",
-    soundId: "mutation",
+    soundId: "reroll",
     directive: (_ctx, nation) =>
       `the chapter ends unresolved for ${nation} — ominous tease, a promise of what comes next, speak to the future not the room`,
     bodyLanguage:
@@ -237,7 +237,7 @@ const GRAMMAR: Record<MomentType, MomentGrammar> = {
   },
   lootbox_near_miss: {
     type: "lootbox_near_miss",
-    soundId: "mutation",
+    soundId: "reroll",
     directive: (ctx, nation) =>
       `the lootbox dice rolled ${ctx.rollValue ?? "?"} needing under ${ctx.thresholdBps ?? "?"} — missed by a hair for ${nation}; cosmic-injustice comedy, bargaining with the dice`,
     bodyLanguage:
@@ -349,8 +349,8 @@ export function buildMomentDialoguePrompt(
     state.length ? `Game state: ${state.join("; ")}.` : "",
     rivalryBlock(beast.factionId ?? 0, ctx.rivalFactionId),
     beastMemoryPromptBlock(memory),
-    genomeTextDirective(beast.genomeBlock),
-    genomeHonorIntentDirective(beast.genomeBlock),
+    traitMapTextDirective(beast.traitMapBlock),
+    traitMapHonorIntentDirective(beast.traitMapBlock),
     prevLine
       ? `Its PREVIOUS line this cycle was: "${prevLine}". Continue that thread / escalate it.`
       : "",

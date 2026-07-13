@@ -1,7 +1,7 @@
 # Casino Rituals + Audio Identity (Phase F)
 
-The casino moments of Mining Wars — lootbox rolls, claim-time mutation rolls,
-evolutions — resolve to **staged rituals**, not toasts. This doc covers the
+The casino moments of Mining Wars — lootbox rolls, claim-time reroll rolls,
+ascensions — resolve to **staged rituals**, not toasts. This doc covers the
 ritual job kinds, the rarity light language they draw from, and the audio
 identity spec that gives every moment an ownable sound.
 
@@ -10,7 +10,7 @@ identity spec that gives every moment an ownable sound.
 | Kind | Input | Result | Cost |
 | --- | --- | --- | --- |
 | `ritual.lootbox_reveal` | `RitualLootboxRevealInput` (roll_value, threshold_bps, factionId, rarity/revealStage, optional beast + `includeDialogue` + `includeCinematic`/`cinematicStartFrameUrl`) | `RitualContentResult` (staged ritual + optional voiced line + optional `cinematic` MP4) | FREE by default; `includeDialogue` adds LLM + TTS; `includeCinematic` adds ONE Seedance 2.0 multi-scene video (acts as in-prompt cuts, native synced SFX) + 1 keyframe image unless `cinematicStartFrameUrl` is provided — see [video-scenes.md](video-scenes.md) |
-| `ritual.claim_roll` | `RitualClaimRollInput` (result: visual/power/evolution/none, factionId, newStage, optional beast + `includeDialogue`) | `RitualContentResult` | FREE by default; `includeDialogue` adds LLM + TTS |
+| `ritual.claim_roll` | `RitualClaimRollInput` (result: visual/power/ascension/none, factionId, newStage, optional beast + `includeDialogue`) | `RitualContentResult` | FREE by default; `includeDialogue` adds LLM + TTS |
 | `audio.identity_cue` | `{ cueId }` from `ALL_AUDIO_CUE_IDS` | `AudioIdentityCueResult` (fal url + meta) | one stable-audio call |
 
 Rules, same as every content job:
@@ -43,14 +43,14 @@ a pacing hint (`durationMs`), visual `staging`, `lightLanguage`, a
 | Lootbox distant miss | `anticipation_shake → dim_resolve` (no false-hope theater) |
 | Claim roll (hit) | `charge_roll → roll_hit` |
 | Claim roll (no hit) | `charge_roll → roll_settle` |
-| Evolution | `charge → burst → reveal` (the canonical 3-beat ceremony) |
+| Ascension | `charge → burst → reveal` (the canonical 3-beat ceremony) |
 
 The **near-miss** is its own dramatic beat: `lock_strain` stages "the lock
 almost turned" with the actual `roll_value` vs `threshold_bps` margin (roll
 UNDER threshold wins, same classifier as the moment grammar). A distant miss
 deliberately skips it — teasing a player who wasn't close is bad theater.
 
-`npm run demo:rituals` prints the win / near-miss / evolution definitions and
+`npm run demo:rituals` prints the win / near-miss / ascension definitions and
 fails if they ever collapse into the same shape; `npm run test:grammar` holds
 the distinctness, margin-dramatization, and lexicon guarantees.
 
@@ -81,7 +81,7 @@ Four cue families, all generated through the existing stable-audio path
 
 1. **Country leitmotifs** (12, `leitmotif_<code>`, 8s) — national identity via
    instrumentation and rhythm, never anthem quotes, always instrumental.
-2. **Evolution stings** (`evolution_sting_<band>`) — escalate with the B3
+2. **Ascension stings** (`evolution_sting_<band>`) — escalate with the B3
    performance bands: pup toy-chime → soldier brass hit → elite orchestral
    shockwave → ascendant serene swell.
 3. **Story themes** — `chapter_settled_theme` (24s) and `losing_streak_motif`
@@ -89,7 +89,7 @@ Four cue families, all generated through the existing stable-audio path
 4. **Ritual SFX** — anticipation/crack/fanfares(minor/major/mythic)/near-miss
    for lootboxes, anticipation/resolve-win/resolve-miss for claim rolls.
 
-**soundId wiring:** the FE's existing SFX ids are `"mutation"` and
+**soundId wiring:** the FE's existing SFX ids are `"reroll"` and
 `"jackpot"`. Every cue carries `fallbackSoundId` from that set and
 `legacyPlayableSoundId()` resolves any id (new or legacy) to something
 playable today — new ids extend the existing mapping without breaking it.

@@ -27,10 +27,10 @@ flowchart TB
   end
 
   subgraph Nft["NFT asset pipeline (engine)"]
-    N1["DNA → prompt grammar<br/>faction × category × region × breed"]
+    N1["TRAIT SEED → prompt grammar<br/>faction × category × region × breed"]
     N2["Mint art: full_body / dp / cinematic<br/>+ Gemini identity gate"]
     N3["Chroma-strip state loops<br/>mining / win / lose APNG"]
-    N4["Mutation content<br/>transition clip + voiced line"]
+    N4["Reroll content<br/>transition clip + voiced line"]
     N5["Cycle recap stitch (ffmpeg)"]
     N6["Artifact store port<br/>S3 adapter or inline buffers"]
   end
@@ -64,7 +64,7 @@ Content engine responsibilities:
 - Write screenplays, scene scripts, frame plans, and motion prompts.
 - Track reusable world-pack and trailer definitions.
 - Produce prompt packets and proof metadata for generated media.
-- Run the NFT asset pipeline: DNA → mint art with identity validation, chroma-strip state loops, mutation transition clips + voiced lines, and cycle recap stitching ([docs/nft-pipeline.md](nft-pipeline.md)).
+- Run the NFT asset pipeline: TRAIT SEED → mint art with identity validation, chroma-strip state loops, reroll transition clips + voiced lines, and cycle recap stitching ([docs/nft-pipeline.md](nft-pipeline.md)).
 - Hand generated media to the artifact store port (optional env-configured S3 adapter, or inline buffers in the job result) — never write game state.
 
 ## Design Principle

@@ -5,9 +5,9 @@ The Mining Wars grammar historically hardcoded one body plan: the anthropomorphi
 | Base type | Status | Movement grammar | Voice timbre |
 | --- | --- | --- | --- |
 | `canine` | **Genesis default** — every existing beast | Pack-fighter: planted stances, charging sprints, tail/ear signals | unchanged (legacy) |
-| `primate` | Lootbox/rebirth only | Climb-and-swing: brachiation arcs, knuckle-walk lopes, vertical takeoffs, one-arm hangs | hooting/chattering, chest-thump emphasis |
-| `amphibian` | Lootbox/rebirth only | Springy low-slung: coiled crouches, long-jump launches, sticky-pad wall clings | croaky resonance, ribbit undertones |
-| `feline` | Lootbox/rebirth only | Silent-precision: low stalks, coiled stillness, explosive pounces, soundless landings | sly purr, sharp hiss on insults |
+| `primate` | Lootbox/prestige only | Climb-and-swing: brachiation arcs, knuckle-walk lopes, vertical takeoffs, one-arm hangs | hooting/chattering, chest-thump emphasis |
+| `amphibian` | Lootbox/prestige only | Springy low-slung: coiled crouches, long-jump launches, sticky-pad wall clings | croaky resonance, ribbit undertones |
+| `feline` | Lootbox/prestige only | Silent-precision: low stalks, coiled stillness, explosive pounces, soundless landings | sly purr, sharp hiss on insults |
 
 Each non-canine base type carries:
 
@@ -15,7 +15,7 @@ Each non-canine base type carries:
 - **Movement grammar** — injected into animation strips and transition prompts (`baseTypeMotionDirective`).
 - **Voice timbre modifier** — appended to MiniMax voice-design prompts (`buildVoiceDesignPrompt`). Non-canine voices get their own keyspace (`<baseType>:<faction>:<breed>:<band>`); canine keys keep the legacy format so no existing voice re-designs.
 - **Per-country skinning rules** — 12 entries per base type. The country style from the world bible modulates the base type: a Brazil primate (carnival blaze, capoeira-flow swings) reads nothing like a Japan primate (onsen-macaque calm, tech-ronin layers). Hard canon holds at every base type: **never flags as clothing** — national identity via costume style + palette only; no readable text in images.
-- **A starter breed pack** — 4 breeds, indexed by the same DNA breed bits (0-3) canine uses:
+- **A starter breed pack** — 4 breeds, indexed by the same TRAIT SEED breed bits (0-3) canine uses:
   - primate: Macaque, Capuchin, Gibbon, Gorilla
   - amphibian: Tree Frog, Bullfrog, Axolotl, Toad
   - feline: Shadow Cat, Siamese, Maine Coon, Sand Cat
@@ -24,11 +24,11 @@ Each non-canine base type carries:
 
 ## Gating: who gets a non-canine form
 
-**Availability is a game-economy gate, not an engine feature.** Genesis HashBeasts are canine. Non-canine base types enter the game only through the **lootbox / rebirth path** — the backend decides which beast earned which form and simply passes it in job inputs:
+**Availability is a game-economy gate, not an engine feature.** Genesis HashBeasts are canine. Non-canine base types enter the game only through the **lootbox / prestige path** — the backend decides which beast earned which form and simply passes it in job inputs:
 
 - `nft.mint_assets` input gains `baseType?: string` (default `"canine"`). Validation is **strict**: unknown values or values outside the deployment allowlist **throw**, so a backend bug can never silently mint the wrong body plan.
 - Beast snapshots (`NftBeastInput` — used by `nft.state_animations`, `nft.mutation_content`, `nft.moment_content`, `nft.mint_intro`, asset refresh) gain `baseType?: string`. Validation is **best-effort** (`safeBaseType`): junk falls back to canine — a bad snapshot field never kills a content job for an existing beast.
-- The deployment allowlist is env-controlled: `HASHBEAST_BASE_TYPE_ALLOWLIST` (comma-separated; default `canine,primate,amphibian,feline`). A deployment that has not shipped the lootbox/rebirth path runs `HASHBEAST_BASE_TYPE_ALLOWLIST=canine`. Canine is always allowed.
+- The deployment allowlist is env-controlled: `HASHBEAST_BASE_TYPE_ALLOWLIST` (comma-separated; default `canine,primate,amphibian,feline`). A deployment that has not shipped the lootbox/prestige path runs `HASHBEAST_BASE_TYPE_ALLOWLIST=canine`. Canine is always allowed.
 
 **Budget**: `baseType` adds **zero new job kinds and zero extra generations** — it only changes prompt content of existing jobs, so the existing contentEconomics budget gates apply unchanged. Gate dispatch exactly as before.
 
@@ -41,7 +41,7 @@ Every character render keeps its Gemini identity gate, and every gate prompt now
 
 ## Reference base bodies
 
-Canine mint references keep the legacy layout (`BREED_BASE_BODIES`, per-country files). Non-canine breeds resolve `basetypes/<baseType>/<breed>.png` (e.g. `basetypes/feline/shadow_cat.png`) under the same `HASHBEAST_BASE_BODIES_DIR` / `HASHBEAST_BASE_BODIES_BASE_URL` roots, or pass `referenceImageUrl` per job. Evolution-level base bodies exist for the canine layout only — non-canine beasts evolve anchored purely on their own current art (`refreshEvolutionAssets`).
+Canine mint references keep the legacy layout (`BREED_BASE_BODIES`, per-country files). Non-canine breeds resolve `basetypes/<baseType>/<breed>.png` (e.g. `basetypes/feline/shadow_cat.png`) under the same `HASHBEAST_BASE_BODIES_DIR` / `HASHBEAST_BASE_BODIES_BASE_URL` roots, or pass `referenceImageUrl` per job. Ascension-level base bodies exist for the canine layout only — non-canine beasts ascend anchored purely on their own current art (`refreshEvolutionAssets`).
 
 ## API surface
 
@@ -62,7 +62,7 @@ worldBaseTypes.getBreedForBaseType(id, factionId, breedValue);
 
 ## Show canon
 
-The Hashiden show cast (world bible leaders + lieutenants) remains canine canon — show-level prompts (`screenplay.ts`, `directorGrammar.ts`, scene scripts) keep their dog-warrior wording. Per-beast surfaces (mint art, state loops, mutation/moment/intro dialogue, voices) follow the beast's `baseType`.
+The Hashiden show cast (world bible leaders + lieutenants) remains canine canon — show-level prompts (`screenplay.ts`, `directorGrammar.ts`, scene scripts) keep their dog-warrior wording. Per-beast surfaces (mint art, state loops, reroll/moment/intro dialogue, voices) follow the beast's `baseType`.
 
 ## Acceptance set (Phase E)
 

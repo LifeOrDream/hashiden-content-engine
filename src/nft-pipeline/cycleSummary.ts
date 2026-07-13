@@ -1,6 +1,6 @@
 /**
  * Cycle summary stitch — merges a beast's transition clips from one war cycle
- * (trait + evolution moments, in order) into ONE opaque MP4 "progress video".
+ * (trait + ascension moments, in order) into ONE opaque MP4 "progress video".
  *
  * Each transition clip (APNG strip assembly or MP4 Seedance ceremony) is
  * normalized (fps/scale/pad to a square canvas on the console background) and
@@ -32,7 +32,7 @@ const SUMMARY_SIZE = Math.max(360, Number(process.env.NFT_CYCLE_SUMMARY_SIZE || 
 const SUMMARY_BG = process.env.NFT_CYCLE_SUMMARY_BG || "0x0d0f1a";
 
 export interface CycleClipInput {
-  /** Moment kind, e.g. "trait" | "evolution". */
+  /** Moment kind, e.g. "trait" | "ascension". */
   kind: string;
   /** APNG transition clip URL (must be fetchable by the worker). */
   url: string;

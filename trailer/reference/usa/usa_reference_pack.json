@@ -7,7 +7,7 @@
     "Corgi",
     "Australian Shepherd"
   ],
-  "styleDirection": "Evolved/unlocked Hashiden trailer-tier HashBeasts and grounded magical show environments: high-resolution 2D arcade-cel with pixel-art DNA, bright cover-pic lighting, readable breed silhouettes, country-specific gear, real scene staging, subtle physical magic through props/architecture, no floating cube spam, no generic game-state backgrounds, no photorealism, no generic 3D, no non-canon breeds.",
+  "styleDirection": "Ascended/unlocked Hashiden trailer-tier HashBeasts and grounded magical show environments: high-resolution 2D arcade-cel with pixel-art TRAIT_SEED, bright cover-pic lighting, readable breed silhouettes, country-specific gear, real scene staging, subtle physical magic through props/architecture, no floating cube spam, no generic game-state backgrounds, no photorealism, no generic 3D, no non-canon breeds.",
   "characters": [
     {
       "id": "usa_golden_retriever_supreme_commander",
@@ -52,7 +52,7 @@
     },
     {
       "id": "usa_wand_tech_garage_lab",
-      "use": "Wand-tech invention, AI/content pipeline scenes, power mutation upgrade",
+      "use": "Wand-tech invention, AI/content pipeline scenes, power reroll upgrade",
       "path": "environments/v2_grounded_magic/usa_wand_tech_garage_lab_grounded_magic.png"
     },
     {
@@ -63,13 +63,13 @@
   ],
   "boards": [
     {
-      "id": "usa_character_board_v2_actual_breeds_evolved",
-      "use": "Group-level evolved USA breed lineup approval board",
-      "path": "generated_approval/usa_character_board_v2_actual_breeds_evolved.png"
+      "id": "usa_character_board_v2_actual_breeds_ascended",
+      "use": "Group-level ascended USA breed lineup approval board",
+      "path": "generated_approval/usa_character_board_v2_actual_breeds_ascended.png"
     },
     {
       "id": "usa_power_gear_reference_board",
-      "use": "USA power equipment, evolution unlocks, prop/gear visual vocabulary",
+      "use": "USA power equipment, ascension unlocks, prop/gear visual vocabulary",
       "path": "boards/usa_power_gear_reference_board.png"
     }
   ]

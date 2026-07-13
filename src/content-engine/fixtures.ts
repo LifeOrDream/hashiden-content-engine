@@ -16,7 +16,7 @@ export const fakeReelFormat: VideoFormat = {
 export const fakeHashBeast: HashBeastLike = {
   mint: "FAKE_USA_REX_001",
   breed: "Golden Retriever",
-  evolution_stage: 4,
+  ascension_stage: 4,
   faction_id: 0,
   bio: "A star-spangled command-doge who treats every market panic like a televised war room drill.",
   personality: {

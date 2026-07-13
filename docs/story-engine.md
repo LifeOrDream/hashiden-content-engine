@@ -23,13 +23,13 @@ interface BeastMemorySnapshot {
 
 ### Epithet trigger rules (canon)
 
-`deriveEpithetTriggers(stats)` is the reference implementation; the backend mirrors it at its claim / evolution / settle handlers and writes timeline rows when a trigger fires:
+`deriveEpithetTriggers(stats)` is the reference implementation; the backend mirrors it at its claim / ascension / settle handlers and writes timeline rows when a trigger fires:
 
 | Trigger | Rule | Title |
 | --- | --- | --- |
 | `first_claim` | owner claims their first winning round | "First Blood" |
 | `win_streak_5` | a claimed win extends the streak to >= 5 | "The Unbroken" |
-| `evolution_stage_4` | the beast evolves to stage >= 4 | "Ascendant" |
+| `evolution_stage_4` | the beast ascends to stage >= 4 | "Ascendant" |
 | `country_mvp` | the beast's owner is crowned a cycle's country MVP | "Pride of {nation}" |
 
 Titles are text surfaces only — they never enter generated images (no-readable-text rule).
@@ -49,11 +49,11 @@ The backend records the result as the beast's `minted` timeline event; the intro
 
 Turns a settled cycle's indexed facts into the chapter anatomy. Pure builders live in `src/content-engine/chapterWriter.ts`; the LLM orchestration (one call + banned-lexicon lint + ONE feedback retry + deterministic fallback) lives in the service processor.
 
-- **Input** (`ChapterWriteInput`): `facts: ChapterCycleFacts` — winner, final ranks / rank swings, per-country MVPs (owner callsigns), biggest mutations/evolutions (with B4 technique names), jackpots, mint intros (with intro lines), compute spend, **`previousCliffhanger`** (the previous chapter's persisted cliffhanger), and optional **`worldContext`** (per-country parody hooks from `world.brief`; the writer prompt surfaces the winner's + top movers' briefs — max 4 entries, ≤ 200 chars each — as optional flavor that never contradicts on-chain facts).
+- **Input** (`ChapterWriteInput`): `facts: ChapterCycleFacts` — winner, final ranks / rank swings, per-country MVPs (owner callsigns), biggest rerolls/ascensions (with B4 technique names), jackpots, mint intros (with intro lines), compute spend, **`previousCliffhanger`** (the previous chapter's persisted cliffhanger), and optional **`worldContext`** (per-country parody hooks from `world.brief`; the writer prompt surfaces the winner's + top movers' briefs — max 4 entries, ≤ 200 chars each — as optional flavor that never contradicts on-chain facts).
 - **Output** (`ChapterAnatomy`):
   - **COVER** — `title` + `coverPrompt` staged on the **winning country's bible location card** with its palette (arcade-cel rung, text-free, no flag clothing).
   - **RECAP** — 3-5 beats with character callouts; **beat 1 pays off `previousCliffhanger`** when present (the deterministic fallback quotes it verbatim, so serialization holds even on the zero-spend path).
-  - **CAST** — beasts that earned screen time (MVPs, evolutions, technique debuts, fresh recruits carrying their intro lines), owner callsigns.
+  - **CAST** — beasts that earned screen time (MVPs, ascensions, technique debuts, fresh recruits carrying their intro lines), owner callsigns.
   - **COMPUTE LEDGER** — cost passthrough from the spend ledger.
   - **CLIFFHANGER** — one NEW open-loop line, PERSISTED by the backend so the next chapter's facts can pay it off.
 - **Lint**: every text field passes `dialogueSmells` + chapter-surface bans (stale product language); a draft that fails twice ships the deterministic fallback instead.

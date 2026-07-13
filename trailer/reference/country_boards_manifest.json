@@ -1,13 +1,13 @@
 {
   "version": 1,
-  "purpose": "Country-level trailer reference boards for evolved HashBeast characters and grounded Hashiden show environments.",
-  "styleDirection": "High-resolution 2D arcade-cel with pixel-art DNA, bright Hashiden key-art lighting, readable canonical breed silhouettes, country-specific production design, subtle physical magic, no floating cube spam, no generic game-state backgrounds, no photorealism, no generic 3D CGI.",
+  "purpose": "Country-level trailer reference boards for ascended HashBeast characters and grounded Hashiden show environments.",
+  "styleDirection": "High-resolution 2D arcade-cel with pixel-art TRAIT_SEED, bright Hashiden key-art lighting, readable canonical breed silhouettes, country-specific production design, subtle physical magic, no floating cube spam, no generic game-state backgrounds, no photorealism, no generic 3D CGI.",
   "countries": [
     {
       "country": "USA",
       "factionId": 0,
       "breedCanon": ["Golden Retriever", "Husky", "Corgi", "Australian Shepherd"],
-      "characterBoard": "usa/generated_approval/usa_character_board_v2_actual_breeds_evolved.png",
+      "characterBoard": "usa/generated_approval/usa_character_board_v2_actual_breeds_ascended.png",
       "environmentBoard": "usa/environments/usa_command_plaza_war_room.png",
       "landscapeLuxuryEnvironmentBoard": "usa/boards/usa_landscape_luxury_environment_board.png"
     },

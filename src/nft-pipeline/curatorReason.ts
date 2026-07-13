@@ -7,7 +7,7 @@
  * beast for chapter placement, RELIST a held beast onto the market at the
  * protocol's price (the sale's proceeds return to the nation's treasury).
  * This job drafts the Curator's picks in
- * character: the beast's distilled genome (motif / motivation / past-life
+ * character: the beast's distilled trait_map (motif / motivation / past-life
  * echoes) colors the voice, and the owner's notes are coaching it weighs but
  * may decline. Everything it returns is a PROPOSAL — the game backend
  * re-validates every pick against its own state and the owner still signs the
@@ -117,7 +117,7 @@ function clip(input: unknown, max: number): string {
   return String(input ?? "").replace(/\s+/g, " ").trim().slice(0, max);
 }
 
-/** Lint every pick's rationale; [] = clean. Mirrors lintGenomeCard. */
+/** Lint every pick's rationale; [] = clean. Mirrors lintTraitMapCard. */
 export function lintCuratorPicks(picks: CuratorReasonPick[]): string[] {
   const flags: string[] = [];
   for (const p of picks) {

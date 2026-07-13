@@ -2,7 +2,7 @@ export interface HashBeastLike {
   mint?: string;
   bio?: string;
   breed?: string;
-  evolution_stage?: number;
+  ascension_stage?: number;
   faction_id?: number;
   asset_urls?: { dp?: string; fullBody?: string };
   personality?: {
@@ -100,7 +100,7 @@ export interface FactionStanding {
   rankDelta?: number;
   roundWins?: number;
   gameplayScore?: number;
-  mutationScore?: number;
+  rerollScore?: number;
   users?: number;
   usersDelta?: number;
   minted?: number;
@@ -141,7 +141,7 @@ export interface WorldPulse {
 }
 
 export interface IncomingEventLike {
-  kind: "evolution" | "power" | "visual" | "win" | "lead_change";
+  kind: "ascension" | "power" | "visual" | "win" | "lead_change";
   event_id?: string;
   mint?: string;
   faction_id?: number;
