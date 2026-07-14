@@ -73,15 +73,7 @@ web_modules/
 # Hashiden local generation outputs and secrets
 .DS_Store
 logs/
-!webui/app/api/jobs/\[id\]/logs/
-!webui/app/api/jobs/\[id\]/logs/route.ts
-trailer/out/
-trailer/cast/*
-!trailer/cast/.gitignore
-trailer/assets/*
-!trailer/assets/.gitignore
-!trailer/assets/reference/
-!trailer/assets/reference/**
+pet-output/
 *.mp4
 *.mov
 *.webm
@@ -92,38 +84,8 @@ trailer/assets/*
 .cache
 .parcel-cache
 
-# Next.js build output
-.next
-out
-
-# Nuxt.js build / generate output
-.nuxt
+# Build output
 dist
-.output
-
-# Gatsby files
-.cache/
-# Comment in the public line in if your project uses Gatsby and not Next.js
-# https://nextjs.org/blog/next-9-1#public-directory-support
-# public
-
-# vuepress build output
-.vuepress/dist
-
-# vuepress v2.x temp directory
-.temp
-
-# Sveltekit cache directory
-.svelte-kit/
-
-# vitepress build output
-**/.vitepress/dist
-
-# vitepress cache directory
-**/.vitepress/cache
-
-# Docusaurus cache and generated files
-.docusaurus
 
 # Serverless directories
 .serverless/

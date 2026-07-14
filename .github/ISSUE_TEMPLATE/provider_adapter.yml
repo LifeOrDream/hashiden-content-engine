@@ -1,5 +1,5 @@
 name: Provider adapter request
-description: Request or propose an image, video, voice, music, lip-sync, storage, or delivery adapter.
+description: Request or propose an image-generation or artifact-storage adapter.
 title: "[Provider]: "
 labels:
   - "area: providers"
@@ -16,14 +16,8 @@ body:
     attributes:
       label: Provider type
       options:
-        - LLM/script
         - image
-        - video
-        - speech
-        - music/SFX
-        - lip-sync
         - storage
-        - delivery
         - other
     validations:
       required: true

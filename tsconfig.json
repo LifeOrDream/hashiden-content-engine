@@ -16,12 +16,10 @@
   },
   "include": [
     "src/**/*.ts",
-    "scripts/**/*.ts",
-    "trailer/**/*.ts"
+    "scripts/**/*.ts"
   ],
   "exclude": [
     "node_modules",
-    "dist",
-    "trailer/out"
+    "dist"
   ]
 }

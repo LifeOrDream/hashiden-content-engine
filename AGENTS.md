@@ -1,38 +1,22 @@
 # AGENTS.md
 
-Guidance for AI coding agents working in this repo.
-
 ## Boundaries
 
-- Keep creative engine logic portable and backend-free.
-- Do not add Hashiden production DB, wallet, admin, posting, or private backend dependencies here.
-- Provider adapters may call external services, but prompt/story/canon logic should stay independent of provider SDKs when possible.
-- Never read or print `.env` values unless the user explicitly asks for a redacted check.
+- Keep the engine portable and backend-free.
+- Never add game-state, wallet, database, admin, or posting authority here.
+- Never read or print `.env` values.
+- Keep provider calls behind `ImageGenerator` and persistence behind `ArtifactStore`.
 
-## Good Default Workflow
+## Workflow
 
-1. Read `README.md`, `CONTRIBUTING.md`, and the relevant docs file.
-2. For prompt/media changes, run `npm run demo:fixture`.
-3. For TypeScript changes, run `npm run typecheck`.
-4. Include media proof or fixture proof in PR notes.
-5. When adding or changing a service job kind, keep `src/service/contracts.ts`
-   and the processor registry (`src/service/processor.ts`) in sync. The current
-   job surface: `nft.*` (mint_assets, mint_intro, mutation_content,
-   state_animations, moment_content, cycle_summary, genome_distill, glow_up),
-   `chapter.*` (write, canonize, produce), `ritual.*` (claim_roll,
-   lootbox_reveal), `audio.identity_cue`, `world.brief`, `curator.reason`, and
-   `produce_reel`.
+1. Read `README.md` and `docs/PET_CONTENT_CONTRACT.md`.
+2. Keep `src/service/contracts.ts` and `src/service/processor.ts` in sync.
+3. Run `npm test` and `npm run build`.
+4. For intentional prompt changes, update and review the prompt hashes.
 
-## Style
+## Prompt Rules
 
-- Prefer small focused changes.
-- Keep docs and examples runnable without paid API keys when possible.
-- Treat generated videos/images as proof artifacts, not source files.
-- Keep secrets, signed URLs, and private production outputs out of git.
-
-## Prompt Work
-
-- Improve measurable output quality, not just wording.
-- Preserve character identity when reference images are attached.
-- Avoid generic cinematic language that weakens the Hashiden/HashBeast visual identity.
-- Add or update fixtures when changing reusable prompt behavior.
+- Optimize for pet attachment, meme clarity, identity continuity, and 64px readability.
+- Preserve canonical identity whenever a reference image is present.
+- Accept only structured, allowlisted traits. Do not pass owner prose through to providers.
+- Do not reintroduce film, trailer, screenplay, lore, voice, or chat generation.

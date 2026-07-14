@@ -1,56 +1,41 @@
 {
   "name": "hashiden-content-engine",
   "version": "0.1.0",
-  "description": "Open-source content pipeline for Hashiden HashBeasts, game-native story memory, prompts, trailers, and AI video.",
+  "description": "Portable pet-art worker for Hashiden mint, expression, evolution, and rare-card media.",
   "type": "module",
-  "workspaces": [
-    "webui"
-  ],
   "main": "./dist/src/index.js",
   "types": "./dist/src/index.d.ts",
   "exports": {
     ".": "./dist/src/index.js",
-    "./content-engine": "./dist/src/content-engine/index.js"
+    "./pet-content": "./dist/src/pet-content/index.js"
   },
   "files": [
-    "dist",
-    "trailer",
-    "scripts",
-    "src/assets/brand/brand_badge.png"
+    "dist"
   ],
   "scripts": {
+    "clean": "node -e \"require('node:fs').rmSync('dist', { recursive: true, force: true })\"",
+    "prebuild": "npm run clean",
     "build": "tsc",
     "typecheck": "tsc --noEmit",
-    "demo:fixture": "tsx scripts/demo_fixture.ts",
-    "demo:chapters": "tsx scripts/demo_chapters.ts",
-    "demo:rituals": "tsx scripts/demo_rituals.ts",
-    "test:grammar": "tsx scripts/test_grammar.ts",
-    "check:oss": "npm run typecheck && npm run test:grammar && npm run demo:fixture && npm run demo:chapters && npm run demo:rituals",
+    "test:contract": "tsx scripts/petContract.test.ts",
+    "test:prompts": "tsx scripts/petPrompts.test.ts",
+    "test:generator": "tsx scripts/petGenerator.test.ts",
+    "test": "npm run typecheck && npm run test:contract && npm run test:prompts && npm run test:generator",
+    "check:oss": "npm test",
     "service:worker": "tsx src/service/worker.ts",
-    "chapter:produce": "tsx scripts/produce_chapter.ts",
-    "chapter:replay": "tsx scripts/replay_chapter.ts",
-    "webui": "npm --workspace @lifeordream/hashiden-content-engine-webui run dev",
-    "webui:build": "npm --workspace @lifeordream/hashiden-content-engine-webui run build",
-    "webui:typecheck": "npm --workspace @lifeordream/hashiden-content-engine-webui run typecheck",
-    "trailer:script": "tsx trailer/pipeline/run.ts",
-    "trailer:canonize": "tsx trailer/pipeline/canonize.ts",
-    "trailer:generate": "tsx trailer/generate/run.ts"
+    "service:worker:built": "node dist/src/service/worker.js"
   },
   "keywords": [
     "hashiden",
     "hashbeasts",
     "ai-content",
-    "trailers",
-    "story-engine"
+    "virtual-pets",
+    "game-art"
   ],
   "license": "MIT",
   "dependencies": {
     "@aws-sdk/client-s3": "^3.1085.0",
-    "@google/genai": "^2.11.0",
-    "axios": "^1.18.1",
     "bullmq": "^5.79.2",
-    "chalk": "^5.6.2",
-    "date-fns": "^4.1.0",
     "dotenv": "^17.4.2",
     "ioredis": "^5.11.1"
   },

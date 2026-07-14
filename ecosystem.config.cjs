@@ -1,7 +1,4 @@
-// PM2 ecosystem for the hashiden content-engine worker (runs on the workbox).
-// Consumes the `hashiden-content-engine` BullMQ queue on the shared Valkey HA
-// cluster. Off the live app boxes so ffmpeg/video work can't contend with the
-// game. .env (mode 600) holds FAL/GEMINI/AWS secrets + the Valkey sentinel cfg.
+// PM2 ecosystem for the Hashiden pet-art worker.
 const ROOT = '/home/ec2-user/hashiden-content-engine';
 
 module.exports = {
@@ -16,7 +13,7 @@ module.exports = {
       autorestart: true,
       watch: false,
       max_memory_restart: '2G',
-      kill_timeout: 30000, // let in-flight jobs drain on SIGTERM
+      kill_timeout: 30000,
       out_file: '/home/ec2-user/.pm2/logs/content-engine.log',
       error_file: '/home/ec2-user/.pm2/logs/content-engine.err.log',
       merge_logs: true,

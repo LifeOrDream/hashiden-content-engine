@@ -14,7 +14,7 @@ Related #
 
 ## Media Proof
 
-Required for prompt, script, style, video, image, voice, character, world-pack, or provider changes.
+Required for pet prompt, image-provider, or artifact-store changes.
 
 - Behavior addressed:
 - Real environment or fixture tested:
@@ -32,7 +32,8 @@ Commands run:
 
 ```bash
 npm run typecheck
-npm run demo:fixture
+npm test
+npm run build
 ```
 
 ## Risk

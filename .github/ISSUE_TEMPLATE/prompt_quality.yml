@@ -1,5 +1,5 @@
 name: Prompt quality issue
-description: Report a prompt, dialogue, keyframe, or director-grammar quality problem.
+description: Report a pet identity, composition, expression, or meme-readability problem.
 title: "[Prompt Quality]: "
 labels:
   - "area: prompts"
@@ -10,7 +10,7 @@ body:
     attributes:
       label: Problem
       description: What output quality issue are you seeing?
-      placeholder: Character identity drifts when the prompt includes a war-room screen and a rival faction.
+      placeholder: The crab loses its face marking between the PFP and expression sheet.
     validations:
       required: true
   - type: dropdown
@@ -18,13 +18,12 @@ body:
     attributes:
       label: Surface
       options:
-        - screenplay
-        - dialogue
-        - keyframe prompt
-        - video motion prompt
-        - director grammar
-        - negative prompt
-        - character canon
+        - mint full body
+        - mint PFP
+        - evolution art
+        - expression sheet
+        - rare card
+        - contract validation
         - other
     validations:
       required: true
@@ -40,7 +39,7 @@ body:
     id: media_proof
     attributes:
       label: Media proof
-      description: Add image/video links, screenshots, request ids, or before/after evidence.
+      description: Add image links, screenshots, request ids, or before/after evidence.
   - type: textarea
     id: proposed_fix
     attributes:
