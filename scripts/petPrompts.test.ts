@@ -1,11 +1,21 @@
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 import {
+  BREED_BASE_BODIES,
+  assertCountryDpPromptQuality,
+  assertCountryMintPromptQuality,
   assertPetPromptQuality,
+  buildCountryMintDpPrompt,
+  buildCountryMintFullBodyPrompt,
   buildPetPromptSet,
   deriveVisualIdentity,
+  resolveCountryMintProfile,
 } from "../src/pet-content/index.js";
-import { petPacketFixture } from "./fixtures/petPacket.js";
+import {
+  genesisPetPacketFixture,
+  mintTraitSeedFixture,
+  petPacketFixture,
+} from "./fixtures/petPacket.js";
 
 const packet = petPacketFixture("pet.evolution_art");
 const first = buildPetPromptSet(packet);
@@ -49,6 +59,40 @@ const visualRerollPrompt = buildPetPromptSet(visualReroll).full_body;
 assert.match(visualRerollPrompt, /visual reroll rule/i);
 assert.match(visualRerollPrompt, /remix target/i);
 
+const genesis = genesisPetPacketFixture();
+const countryPrompt = buildCountryMintFullBodyPrompt(genesis);
+const countryDpPrompt = buildCountryMintDpPrompt();
+assertCountryMintPromptQuality(countryPrompt);
+assertCountryDpPromptQuality(countryDpPrompt);
+assert.match(countryPrompt, /Faction: India/i);
+assert.match(countryPrompt, /Indian Pariah/i);
+assert.match(countryPrompt, /same upright standing posture/i);
+assert.match(countryPrompt, /7 appearance traits|appearance traits/i);
+assert.match(countryDpPrompt, /only identity reference/i);
+const mintProfile = resolveCountryMintProfile(genesis);
+assert.equal(mintProfile.resolved.faction.name, "India");
+assert.equal(mintProfile.resolved.breed.name, "Indian Pariah");
+
+for (let faction = 0; faction < 12; faction += 1) {
+  for (let breed = 0; breed < 4; breed += 1) {
+    const variant = genesisPetPacketFixture();
+    variant.origin.faction_id = faction;
+    variant.origin.trait_seed = mintTraitSeedFixture({
+      faction,
+      stage: 0,
+      breed,
+      generation: 0,
+    });
+    variant.pet.body_variant = breed;
+    const profile = resolveCountryMintProfile(variant);
+    assert.equal(profile.resolved.faction.id, faction);
+    assert.equal(profile.decoded.breed, breed);
+    assert.ok(profile.resolved.breed.name);
+    assert.ok(BREED_BASE_BODIES[faction]?.[breed]);
+    assertCountryMintPromptQuality(buildCountryMintFullBodyPrompt(variant));
+  }
+}
+
 const hashes = Object.fromEntries(
   Object.entries(first).map(([key, value]) => [
     key,
@@ -56,10 +100,10 @@ const hashes = Object.fromEntries(
   ]),
 );
 assert.deepEqual(hashes, {
-  full_body: "8cd90d6f29c7e410",
-  dp: "a11267dfa9208d87",
-  expression_sheet: "d4579f8c6fcb2de9",
-  rare_card: "ac4a1c4b6696415b",
+  full_body: "f3e65f81f8a9eddb",
+  dp: "6db4e026fac9fc9f",
+  expression_sheet: "afd3d0d2bafae97b",
+  rare_card: "bc2efa3b6f2c9b26",
 });
 
 console.log("pet prompts OK");

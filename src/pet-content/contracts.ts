@@ -10,6 +10,7 @@ import {
   type PetContentJobKind,
   type PetEvolutionReason,
 } from "./catalog.js";
+import { decodeMintTraitSeed, normalizeTraitSeedHex } from "./traitSeed.js";
 
 export interface PetDna {
   version: number;
@@ -36,6 +37,11 @@ export interface PetVisualPacket {
   identity_digest: string;
   art_version: number;
   evolution_reason: PetEvolutionReason | null;
+  origin: {
+    trait_seed: string;
+    faction_id: number;
+    reference_image_url: string | null;
+  };
   pet: {
     name: string;
     body_variant: number;
@@ -80,6 +86,26 @@ export interface PetContentResult {
   prompts: Record<string, string>;
   artifacts: PetArtifact[];
   expressions?: Record<string, string>;
+  mint_profile?: {
+    faction_id: number;
+    faction_code: string;
+    faction_name: string;
+    breed_value: number;
+    breed_name: string;
+    type_value: number;
+    occupation: string;
+    reference_source: string;
+  };
+  validation?: {
+    full_body: PetValidationSummary;
+    dp: PetValidationSummary;
+  };
+}
+
+export interface PetValidationSummary {
+  attempts: number;
+  passed: boolean;
+  reason: string;
 }
 
 function record(value: unknown, field: string): Record<string, any> {
@@ -97,7 +123,9 @@ function exactRecord(
   const input = record(value, field);
   const allowed = new Set(keys);
   for (const key of Object.keys(input)) {
-    if (!allowed.has(key)) throw new Error(`${field}.${key} is not in contract v1`);
+    if (!allowed.has(key)) {
+      throw new Error(`${field}.${key} is not in ${PET_CONTRACT_VERSION}`);
+    }
   }
   for (const key of keys) {
     if (!(key in input)) throw new Error(`${field}.${key} is required`);
@@ -137,7 +165,9 @@ function optionalUrl(value: unknown, field: string): string | null {
 
 function enumValue(value: unknown, field: string, allowed: readonly string[]): string {
   const clean = stringValue(value, field);
-  if (!allowed.includes(clean)) throw new Error(`${field} is not in contract v1`);
+  if (!allowed.includes(clean)) {
+    throw new Error(`${field} is not in ${PET_CONTRACT_VERSION}`);
+  }
   return clean;
 }
 
@@ -194,6 +224,7 @@ export function parsePetVisualPacket(
     "identity_digest",
     "art_version",
     "evolution_reason",
+    "origin",
     "pet",
     "continuity",
     "rare_moment",
@@ -226,6 +257,18 @@ export function parsePetVisualPacket(
     throw new Error("evolution_reason is only valid for pet.evolution_art");
   }
 
+  const originRaw = exactRecord(input.origin, "origin", [
+    "trait_seed",
+    "faction_id",
+    "reference_image_url",
+  ]);
+  const traitSeed = normalizeTraitSeedHex(originRaw.trait_seed);
+  const factionId = integer(originRaw.faction_id, "origin.faction_id", 0, 11);
+  const decodedOrigin = decodeMintTraitSeed(traitSeed);
+  if (decodedOrigin.faction !== factionId) {
+    throw new Error("origin.faction_id does not match origin.trait_seed");
+  }
+
   const petRaw = exactRecord(input.pet, "pet", [
     "name",
     "body_variant",
@@ -244,6 +287,15 @@ export function parsePetVisualPacket(
     throw new Error(
       `pet.species_id must be ${expectedSpeciesId} for generation ${generation} body ${bodyVariant}`,
     );
+  }
+  if (decodedOrigin.breed !== bodyVariant) {
+    throw new Error("pet.body_variant does not match origin.trait_seed breed");
+  }
+  if (decodedOrigin.ascension !== stage) {
+    throw new Error("pet.stage does not match origin.trait_seed ascension");
+  }
+  if (decodedOrigin.prestige_count !== generation) {
+    throw new Error("pet.generation does not match origin.trait_seed prestige count");
   }
   const continuity = exactRecord(input.continuity, "continuity", [
     "dp_url",
@@ -289,6 +341,14 @@ export function parsePetVisualPacket(
     identity_digest: identityDigest,
     art_version: integer(input.art_version, "art_version", 1, 1_000_000),
     evolution_reason: evolutionReason,
+    origin: {
+      trait_seed: traitSeed,
+      faction_id: factionId,
+      reference_image_url: optionalUrl(
+        originRaw.reference_image_url,
+        "origin.reference_image_url",
+      ),
+    },
     pet: {
       name: safePetName(petRaw.name),
       body_variant: bodyVariant,

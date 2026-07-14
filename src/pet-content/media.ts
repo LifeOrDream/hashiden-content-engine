@@ -6,7 +6,11 @@ const PET_IMAGE_EDIT_MODEL =
 const POLL_MS = Math.max(1_000, Number(process.env.FAL_POLL_INTERVAL_MS || 3_000));
 const TIMEOUT_MS = Math.max(
   30_000,
-  Number(process.env.PET_IMAGE_TIMEOUT_MS || 180_000),
+  Number(
+    process.env.PET_IMAGE_TIMEOUT_MS ||
+    process.env.FAL_IMAGE_TIMEOUT_MS ||
+    180_000,
+  ),
 );
 
 export interface ImageReference {
@@ -25,6 +29,7 @@ export interface GeneratedImage {
 export interface GenerateImageOptions {
   aspectRatio: "1:1" | "3:4" | "4:5";
   resolution?: "1K" | "2K";
+  model?: string;
 }
 
 export type ImageGenerator = (
@@ -147,8 +152,8 @@ export const generatePetImage: ImageGenerator = async (
   options,
 ) => {
   const imageUrls = await Promise.all(references.map(referenceDataUri));
-  const model = imageUrls.length > 0
+  const model = options.model || (imageUrls.length > 0
     ? PET_IMAGE_EDIT_MODEL
-    : PET_IMAGE_GENERATION_MODEL;
+    : PET_IMAGE_GENERATION_MODEL);
   return runFalImage(model, prompt, imageUrls, options);
 };

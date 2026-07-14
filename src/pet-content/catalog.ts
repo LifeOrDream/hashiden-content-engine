@@ -1,5 +1,5 @@
-export const PET_PROMPT_VERSION = "pet-prompt-v1";
-export const PET_CONTRACT_VERSION = "pet-content-v1";
+export const PET_PROMPT_VERSION = "pet-prompt-v2-country-breed";
+export const PET_CONTRACT_VERSION = "pet-content-v2";
 
 export const PET_JOB_KINDS = [
   "pet.mint_art",
