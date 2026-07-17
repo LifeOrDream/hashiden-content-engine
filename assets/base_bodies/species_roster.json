@@ -1,0 +1,849 @@
+{
+  "schema_version": 2,
+  "pose_reference": "canaan_dog.png",
+  "notes": [
+    "Country assignments are game faction rosters, not claims about breed or species origin.",
+    "Each country exposes exactly four body variants because body_variant is a two-bit on-chain value.",
+    "Rebirth level 1 is cat-only. Rebirth level 2 uses real monkey and ape species as its four primate forms.",
+    "Rebirth level 3 is Pepe-only and uses four fictional biological Pepe morphs per country faction.",
+    "Rebirth level 4 is baby-dragon-only and uses dinosaur-inspired hatchling species with unmistakably young proportions.",
+    "Rebirth level 5 is Mechling-only and uses four cute autonomous robot-pet chassis per country faction.",
+    "Asset paths resolve as <asset_directory>/<country slug>/<variant file>."
+  ],
+  "generations": {
+    "1": {
+      "species_id": "cat",
+      "rebirth_level": 1,
+      "asset_directory": "rebirth_01",
+      "countries": [
+        {
+          "country_id": 0,
+          "country": "USA",
+          "slug": "usa",
+          "variants": [
+            { "variant": 0, "name": "Maine Coon", "file": "maine_coon.png" },
+            { "variant": 1, "name": "Ragdoll", "file": "ragdoll.png" },
+            { "variant": 2, "name": "American Curl", "file": "american_curl.png" },
+            { "variant": 3, "name": "Bengal", "file": "bengal.png" }
+          ]
+        },
+        {
+          "country_id": 1,
+          "country": "China",
+          "slug": "china",
+          "variants": [
+            { "variant": 0, "name": "Oriental Shorthair", "file": "oriental_shorthair.png" },
+            { "variant": 1, "name": "Burmese", "file": "burmese.png" },
+            { "variant": 2, "name": "Siamese", "file": "siamese.png" },
+            { "variant": 3, "name": "Selkirk Rex", "file": "selkirk_rex.png" }
+          ]
+        },
+        {
+          "country_id": 2,
+          "country": "Russia",
+          "slug": "russia",
+          "variants": [
+            { "variant": 0, "name": "Siberian", "file": "siberian.png" },
+            { "variant": 1, "name": "Russian Blue", "file": "russian_blue.png" },
+            { "variant": 2, "name": "Don Sphynx", "file": "don_sphynx.png" },
+            { "variant": 3, "name": "Kurilian Bobtail", "file": "kurilian_bobtail.png" }
+          ]
+        },
+        {
+          "country_id": 3,
+          "country": "India",
+          "slug": "india",
+          "variants": [
+            { "variant": 0, "name": "Bombay", "file": "bombay.png" },
+            { "variant": 1, "name": "Chausie", "file": "chausie.png" },
+            { "variant": 2, "name": "Ceylon", "file": "ceylon.png" },
+            { "variant": 3, "name": "Toyger", "file": "toyger.png" }
+          ]
+        },
+        {
+          "country_id": 4,
+          "country": "Japan",
+          "slug": "japan",
+          "variants": [
+            { "variant": 0, "name": "Japanese Bobtail", "file": "japanese_bobtail.png" },
+            { "variant": 1, "name": "Munchkin", "file": "munchkin.png" },
+            { "variant": 2, "name": "Scottish Fold", "file": "scottish_fold.png" },
+            { "variant": 3, "name": "Exotic Shorthair", "file": "exotic_shorthair.png" }
+          ]
+        },
+        {
+          "country_id": 5,
+          "country": "South Korea",
+          "slug": "south_korea",
+          "variants": [
+            { "variant": 0, "name": "Korat", "file": "korat.png" },
+            { "variant": 1, "name": "Singapura", "file": "singapura.png" },
+            { "variant": 2, "name": "Snowshoe", "file": "snowshoe.png" },
+            { "variant": 3, "name": "Balinese", "file": "balinese.png" }
+          ]
+        },
+        {
+          "country_id": 6,
+          "country": "Iran",
+          "slug": "iran",
+          "variants": [
+            { "variant": 0, "name": "Persian", "file": "persian.png" },
+            { "variant": 1, "name": "Turkish Angora", "file": "turkish_angora.png" },
+            { "variant": 2, "name": "Turkish Van", "file": "turkish_van.png" },
+            { "variant": 3, "name": "Arabian Mau", "file": "arabian_mau.png" }
+          ]
+        },
+        {
+          "country_id": 7,
+          "country": "UK",
+          "slug": "uk",
+          "variants": [
+            { "variant": 0, "name": "British Shorthair", "file": "british_shorthair.png" },
+            { "variant": 1, "name": "Cornish Rex", "file": "cornish_rex.png" },
+            { "variant": 2, "name": "Devon Rex", "file": "devon_rex.png" },
+            { "variant": 3, "name": "Manx", "file": "manx.png" }
+          ]
+        },
+        {
+          "country_id": 8,
+          "country": "North Korea",
+          "slug": "north_korea",
+          "variants": [
+            { "variant": 0, "name": "Karelian Bobtail", "file": "karelian_bobtail.png" },
+            { "variant": 1, "name": "Ural Rex", "file": "ural_rex.png" },
+            { "variant": 2, "name": "Neva Masquerade", "file": "neva_masquerade.png" },
+            { "variant": 3, "name": "Pixiebob", "file": "pixiebob.png" }
+          ]
+        },
+        {
+          "country_id": 9,
+          "country": "France",
+          "slug": "france",
+          "variants": [
+            { "variant": 0, "name": "Chartreux", "file": "chartreux.png" },
+            { "variant": 1, "name": "Sacred Birman", "file": "sacred_birman.png" },
+            { "variant": 2, "name": "Burmilla", "file": "burmilla.png" },
+            { "variant": 3, "name": "Lykoi", "file": "lykoi.png" }
+          ]
+        },
+        {
+          "country_id": 10,
+          "country": "Brazil",
+          "slug": "brazil",
+          "variants": [
+            { "variant": 0, "name": "Brazilian Shorthair", "file": "brazilian_shorthair.png" },
+            { "variant": 1, "name": "Savannah", "file": "savannah.png" },
+            { "variant": 2, "name": "Ocicat", "file": "ocicat.png" },
+            { "variant": 3, "name": "LaPerm", "file": "laperm.png" }
+          ]
+        },
+        {
+          "country_id": 11,
+          "country": "Israel",
+          "slug": "israel",
+          "variants": [
+            { "variant": 0, "name": "Kanaani", "file": "kanaani.png" },
+            { "variant": 1, "name": "Egyptian Mau", "file": "egyptian_mau.png" },
+            { "variant": 2, "name": "Aphrodite Giant", "file": "aphrodite_giant.png" },
+            { "variant": 3, "name": "Sokoke", "file": "sokoke.png" }
+          ]
+        }
+      ]
+    },
+    "2": {
+      "species_id": "primate",
+      "rebirth_level": 2,
+      "asset_directory": "rebirth_02",
+      "countries": [
+        {
+          "country_id": 0,
+          "country": "USA",
+          "slug": "usa",
+          "variants": [
+            { "variant": 0, "name": "Common Chimpanzee", "file": "common_chimpanzee.png" },
+            { "variant": 1, "name": "Rhesus Macaque", "file": "rhesus_macaque.png" },
+            { "variant": 2, "name": "Common Squirrel Monkey", "file": "common_squirrel_monkey.png" },
+            { "variant": 3, "name": "Western Lowland Gorilla", "file": "western_lowland_gorilla.png" }
+          ]
+        },
+        {
+          "country_id": 1,
+          "country": "China",
+          "slug": "china",
+          "variants": [
+            { "variant": 0, "name": "Golden Snub-nosed Monkey", "file": "golden_snub_nosed_monkey.png" },
+            { "variant": 1, "name": "Yunnan Snub-nosed Monkey", "file": "yunnan_snub_nosed_monkey.png" },
+            { "variant": 2, "name": "Tibetan Macaque", "file": "tibetan_macaque.png" },
+            { "variant": 3, "name": "Hainan Black-crested Gibbon", "file": "hainan_black_crested_gibbon.png" }
+          ]
+        },
+        {
+          "country_id": 2,
+          "country": "Russia",
+          "slug": "russia",
+          "variants": [
+            { "variant": 0, "name": "Mountain Gorilla", "file": "mountain_gorilla.png" },
+            { "variant": 1, "name": "Gelada", "file": "gelada.png" },
+            { "variant": 2, "name": "Barbary Macaque", "file": "barbary_macaque.png" },
+            { "variant": 3, "name": "Siamang", "file": "siamang.png" }
+          ]
+        },
+        {
+          "country_id": 3,
+          "country": "India",
+          "slug": "india",
+          "variants": [
+            { "variant": 0, "name": "Hanuman Langur", "file": "hanuman_langur.png" },
+            { "variant": 1, "name": "Lion-tailed Macaque", "file": "lion_tailed_macaque.png" },
+            { "variant": 2, "name": "Bonnet Macaque", "file": "bonnet_macaque.png" },
+            { "variant": 3, "name": "Nilgiri Langur", "file": "nilgiri_langur.png" }
+          ]
+        },
+        {
+          "country_id": 4,
+          "country": "Japan",
+          "slug": "japan",
+          "variants": [
+            { "variant": 0, "name": "Japanese Macaque", "file": "japanese_macaque.png" },
+            { "variant": 1, "name": "Lar Gibbon", "file": "lar_gibbon.png" },
+            { "variant": 2, "name": "Celebes Crested Macaque", "file": "celebes_crested_macaque.png" },
+            { "variant": 3, "name": "Dusky Leaf Monkey", "file": "dusky_leaf_monkey.png" }
+          ]
+        },
+        {
+          "country_id": 5,
+          "country": "South Korea",
+          "slug": "south_korea",
+          "variants": [
+            { "variant": 0, "name": "Crab-eating Macaque", "file": "crab_eating_macaque.png" },
+            { "variant": 1, "name": "Northern White-cheeked Gibbon", "file": "northern_white_cheeked_gibbon.png" },
+            { "variant": 2, "name": "Proboscis Monkey", "file": "proboscis_monkey.png" },
+            { "variant": 3, "name": "Francois's Langur", "file": "francois_langur.png" }
+          ]
+        },
+        {
+          "country_id": 6,
+          "country": "Iran",
+          "slug": "iran",
+          "variants": [
+            { "variant": 0, "name": "Hamadryas Baboon", "file": "hamadryas_baboon.png" },
+            { "variant": 1, "name": "Olive Baboon", "file": "olive_baboon.png" },
+            { "variant": 2, "name": "Patas Monkey", "file": "patas_monkey.png" },
+            { "variant": 3, "name": "Vervet Monkey", "file": "vervet_monkey.png" }
+          ]
+        },
+        {
+          "country_id": 7,
+          "country": "UK",
+          "slug": "uk",
+          "variants": [
+            { "variant": 0, "name": "Mandrill", "file": "mandrill.png" },
+            { "variant": 1, "name": "Drill", "file": "drill.png" },
+            { "variant": 2, "name": "Black-and-white Colobus", "file": "black_and_white_colobus.png" },
+            { "variant": 3, "name": "Common Marmoset", "file": "common_marmoset.png" }
+          ]
+        },
+        {
+          "country_id": 8,
+          "country": "North Korea",
+          "slug": "north_korea",
+          "variants": [
+            { "variant": 0, "name": "Southern Pig-tailed Macaque", "file": "southern_pig_tailed_macaque.png" },
+            { "variant": 1, "name": "Yellow-cheeked Crested Gibbon", "file": "yellow_cheeked_crested_gibbon.png" },
+            { "variant": 2, "name": "Guinea Baboon", "file": "guinea_baboon.png" },
+            { "variant": 3, "name": "De Brazza's Monkey", "file": "de_brazzas_monkey.png" }
+          ]
+        },
+        {
+          "country_id": 9,
+          "country": "France",
+          "slug": "france",
+          "variants": [
+            { "variant": 0, "name": "Bonobo", "file": "bonobo.png" },
+            { "variant": 1, "name": "Diana Monkey", "file": "diana_monkey.png" },
+            { "variant": 2, "name": "Cotton-top Tamarin", "file": "cotton_top_tamarin.png" },
+            { "variant": 3, "name": "Western Red Colobus", "file": "western_red_colobus.png" }
+          ]
+        },
+        {
+          "country_id": 10,
+          "country": "Brazil",
+          "slug": "brazil",
+          "variants": [
+            { "variant": 0, "name": "Tufted Capuchin", "file": "tufted_capuchin.png" },
+            { "variant": 1, "name": "Golden Lion Tamarin", "file": "golden_lion_tamarin.png" },
+            { "variant": 2, "name": "Black-and-gold Howler Monkey", "file": "black_and_gold_howler_monkey.png" },
+            { "variant": 3, "name": "Bald Uakari", "file": "bald_uakari.png" }
+          ]
+        },
+        {
+          "country_id": 11,
+          "country": "Israel",
+          "slug": "israel",
+          "variants": [
+            { "variant": 0, "name": "Bornean Orangutan", "file": "bornean_orangutan.png" },
+            { "variant": 1, "name": "Emperor Tamarin", "file": "emperor_tamarin.png" },
+            { "variant": 2, "name": "Geoffroy's Spider Monkey", "file": "geoffroys_spider_monkey.png" },
+            { "variant": 3, "name": "Pygmy Marmoset", "file": "pygmy_marmoset.png" }
+          ]
+        }
+      ]
+    },
+    "3": {
+      "species_id": "pepe",
+      "rebirth_level": 3,
+      "asset_directory": "rebirth_03",
+      "countries": [
+        {
+          "country_id": 0,
+          "country": "USA",
+          "slug": "usa",
+          "variants": [
+            { "variant": 0, "name": "Canyon Pepe", "file": "canyon_pepe.png" },
+            { "variant": 1, "name": "Bayou Pepe", "file": "bayou_pepe.png" },
+            { "variant": 2, "name": "Pacific Pepe", "file": "pacific_pepe.png" },
+            { "variant": 3, "name": "Thunder Pepe", "file": "thunder_pepe.png" }
+          ]
+        },
+        {
+          "country_id": 1,
+          "country": "China",
+          "slug": "china",
+          "variants": [
+            { "variant": 0, "name": "Jade Pepe", "file": "jade_pepe.png" },
+            { "variant": 1, "name": "Moon Pepe", "file": "moon_pepe.png" },
+            { "variant": 2, "name": "Bamboo Pepe", "file": "bamboo_pepe.png" },
+            { "variant": 3, "name": "Golden Pepe", "file": "golden_pepe.png" }
+          ]
+        },
+        {
+          "country_id": 2,
+          "country": "Russia",
+          "slug": "russia",
+          "variants": [
+            { "variant": 0, "name": "Taiga Pepe", "file": "taiga_pepe.png" },
+            { "variant": 1, "name": "Tundra Pepe", "file": "tundra_pepe.png" },
+            { "variant": 2, "name": "Sable Pepe", "file": "sable_pepe.png" },
+            { "variant": 3, "name": "Volcano Pepe", "file": "volcano_pepe.png" }
+          ]
+        },
+        {
+          "country_id": 3,
+          "country": "India",
+          "slug": "india",
+          "variants": [
+            { "variant": 0, "name": "Monsoon Pepe", "file": "monsoon_pepe.png" },
+            { "variant": 1, "name": "Lotus Pepe", "file": "lotus_pepe.png" },
+            { "variant": 2, "name": "Tiger Pepe", "file": "tiger_pepe.png" },
+            { "variant": 3, "name": "Indigo Pepe", "file": "indigo_pepe.png" }
+          ]
+        },
+        {
+          "country_id": 4,
+          "country": "Japan",
+          "slug": "japan",
+          "variants": [
+            { "variant": 0, "name": "Sakura Pepe", "file": "sakura_pepe.png" },
+            { "variant": 1, "name": "Koi Pepe", "file": "koi_pepe.png" },
+            { "variant": 2, "name": "Oni Pepe", "file": "oni_pepe.png" },
+            { "variant": 3, "name": "Matcha Pepe", "file": "matcha_pepe.png" }
+          ]
+        },
+        {
+          "country_id": 5,
+          "country": "South Korea",
+          "slug": "south_korea",
+          "variants": [
+            { "variant": 0, "name": "Jeju Pepe", "file": "jeju_pepe.png" },
+            { "variant": 1, "name": "Moon Jar Pepe", "file": "moon_jar_pepe.png" },
+            { "variant": 2, "name": "Tiger Lily Pepe", "file": "tiger_lily_pepe.png" },
+            { "variant": 3, "name": "Neon Pepe", "file": "neon_pepe.png" }
+          ]
+        },
+        {
+          "country_id": 6,
+          "country": "Iran",
+          "slug": "iran",
+          "variants": [
+            { "variant": 0, "name": "Zagros Pepe", "file": "zagros_pepe.png" },
+            { "variant": 1, "name": "Caspian Pepe", "file": "caspian_pepe.png" },
+            { "variant": 2, "name": "Saffron Pepe", "file": "saffron_pepe.png" },
+            { "variant": 3, "name": "Salt Desert Pepe", "file": "salt_desert_pepe.png" }
+          ]
+        },
+        {
+          "country_id": 7,
+          "country": "UK",
+          "slug": "uk",
+          "variants": [
+            { "variant": 0, "name": "Bog Pepe", "file": "bog_pepe.png" },
+            { "variant": 1, "name": "Chalk Pepe", "file": "chalk_pepe.png" },
+            { "variant": 2, "name": "Highland Pepe", "file": "highland_pepe.png" },
+            { "variant": 3, "name": "Rainy Pepe", "file": "rainy_pepe.png" }
+          ]
+        },
+        {
+          "country_id": 8,
+          "country": "North Korea",
+          "slug": "north_korea",
+          "variants": [
+            { "variant": 0, "name": "Paektu Pepe", "file": "paektu_pepe.png" },
+            { "variant": 1, "name": "Pine Pepe", "file": "pine_pepe.png" },
+            { "variant": 2, "name": "Reed Pepe", "file": "reed_pepe.png" },
+            { "variant": 3, "name": "Crater Pepe", "file": "crater_pepe.png" }
+          ]
+        },
+        {
+          "country_id": 9,
+          "country": "France",
+          "slug": "france",
+          "variants": [
+            { "variant": 0, "name": "Lavender Pepe", "file": "lavender_pepe.png" },
+            { "variant": 1, "name": "Alpine Pepe", "file": "alpine_pepe.png" },
+            { "variant": 2, "name": "Atlantic Pepe", "file": "atlantic_pepe.png" },
+            { "variant": 3, "name": "Truffle Pepe", "file": "truffle_pepe.png" }
+          ]
+        },
+        {
+          "country_id": 10,
+          "country": "Brazil",
+          "slug": "brazil",
+          "variants": [
+            { "variant": 0, "name": "Amazon Pepe", "file": "amazon_pepe.png" },
+            { "variant": 1, "name": "Carnival Pepe", "file": "carnival_pepe.png" },
+            { "variant": 2, "name": "Sunset Pepe", "file": "sunset_pepe.png" },
+            { "variant": 3, "name": "Obsidian Pepe", "file": "obsidian_pepe.png" }
+          ]
+        },
+        {
+          "country_id": 11,
+          "country": "Israel",
+          "slug": "israel",
+          "variants": [
+            { "variant": 0, "name": "Negev Pepe", "file": "negev_pepe.png" },
+            { "variant": 1, "name": "Dead Sea Pepe", "file": "dead_sea_pepe.png" },
+            { "variant": 2, "name": "Galilee Pepe", "file": "galilee_pepe.png" },
+            { "variant": 3, "name": "Coral Pepe", "file": "coral_pepe.png" }
+          ]
+        }
+      ]
+    },
+    "4": {
+      "species_id": "dragon",
+      "rebirth_level": 4,
+      "asset_directory": "rebirth_04",
+      "countries": [
+        {
+          "country_id": 0,
+          "country": "USA",
+          "slug": "usa",
+          "variants": [
+            { "variant": 0, "name": "Canyon Tyrant Hatchling", "file": "canyon_tyrant_hatchling.png" },
+            { "variant": 1, "name": "Bayou Sailback Hatchling", "file": "bayou_sailback_hatchling.png" },
+            { "variant": 2, "name": "Prairie Threehorn Hatchling", "file": "prairie_threehorn_hatchling.png" },
+            { "variant": 3, "name": "Sequoia Longneck Hatchling", "file": "sequoia_longneck_hatchling.png" }
+          ]
+        },
+        {
+          "country_id": 1,
+          "country": "China",
+          "slug": "china",
+          "variants": [
+            { "variant": 0, "name": "Jade Crest Hatchling", "file": "jade_crest_hatchling.png" },
+            { "variant": 1, "name": "Moon Frill Hatchling", "file": "moon_frill_hatchling.png" },
+            { "variant": 2, "name": "Bamboo Raptor Hatchling", "file": "bamboo_raptor_hatchling.png" },
+            { "variant": 3, "name": "Golden Clubtail Hatchling", "file": "golden_clubtail_hatchling.png" }
+          ]
+        },
+        {
+          "country_id": 2,
+          "country": "Russia",
+          "slug": "russia",
+          "variants": [
+            { "variant": 0, "name": "Taiga Tyrant Hatchling", "file": "taiga_tyrant_hatchling.png" },
+            { "variant": 1, "name": "Tundra Featherwing Hatchling", "file": "tundra_featherwing_hatchling.png" },
+            { "variant": 2, "name": "Ural Ironback Hatchling", "file": "ural_ironback_hatchling.png" },
+            { "variant": 3, "name": "Kamchatka Sailcrest Hatchling", "file": "kamchatka_sailcrest_hatchling.png" }
+          ]
+        },
+        {
+          "country_id": 3,
+          "country": "India",
+          "slug": "india",
+          "variants": [
+            { "variant": 0, "name": "Monsoon Spinefin Hatchling", "file": "monsoon_spinefin_hatchling.png" },
+            { "variant": 1, "name": "Lotus Frillwing Hatchling", "file": "lotus_frillwing_hatchling.png" },
+            { "variant": 2, "name": "Tiger Raptor Hatchling", "file": "tiger_raptor_hatchling.png" },
+            { "variant": 3, "name": "Indigo Longneck Hatchling", "file": "indigo_longneck_hatchling.png" }
+          ]
+        },
+        {
+          "country_id": 4,
+          "country": "Japan",
+          "slug": "japan",
+          "variants": [
+            { "variant": 0, "name": "Sakura Wyrmling Hatchling", "file": "sakura_wyrmling_hatchling.png" },
+            { "variant": 1, "name": "Koi Tidefin Hatchling", "file": "koi_tidefin_hatchling.png" },
+            { "variant": 2, "name": "Oni Domehead Hatchling", "file": "oni_domehead_hatchling.png" },
+            { "variant": 3, "name": "Matcha Plateback Hatchling", "file": "matcha_plateback_hatchling.png" }
+          ]
+        },
+        {
+          "country_id": 5,
+          "country": "South Korea",
+          "slug": "south_korea",
+          "variants": [
+            { "variant": 0, "name": "Jeju Basaltback Hatchling", "file": "jeju_basaltback_hatchling.png" },
+            { "variant": 1, "name": "Moon Crest Hatchling", "file": "moon_crest_hatchling.png" },
+            { "variant": 2, "name": "Tiger Lily Clawfoot Hatchling", "file": "tiger_lily_clawfoot_hatchling.png" },
+            { "variant": 3, "name": "Neon Cometwing Hatchling", "file": "neon_cometwing_hatchling.png" }
+          ]
+        },
+        {
+          "country_id": 6,
+          "country": "Iran",
+          "slug": "iran",
+          "variants": [
+            { "variant": 0, "name": "Zagros Rockhorn Hatchling", "file": "zagros_rockhorn_hatchling.png" },
+            { "variant": 1, "name": "Caspian Finfang Hatchling", "file": "caspian_finfang_hatchling.png" },
+            { "variant": 2, "name": "Saffron Sailwing Hatchling", "file": "saffron_sailwing_hatchling.png" },
+            { "variant": 3, "name": "Salt Domehead Hatchling", "file": "salt_domehead_hatchling.png" }
+          ]
+        },
+        {
+          "country_id": 7,
+          "country": "UK",
+          "slug": "uk",
+          "variants": [
+            { "variant": 0, "name": "Bog Mossbelly Hatchling", "file": "bog_mossbelly_hatchling.png" },
+            { "variant": 1, "name": "Chalk Skybeak Hatchling", "file": "chalk_skybeak_hatchling.png" },
+            { "variant": 2, "name": "Highland Thistlehorn Hatchling", "file": "highland_thistlehorn_hatchling.png" },
+            { "variant": 3, "name": "Rainy Whiptail Hatchling", "file": "rainy_whiptail_hatchling.png" }
+          ]
+        },
+        {
+          "country_id": 8,
+          "country": "North Korea",
+          "slug": "north_korea",
+          "variants": [
+            { "variant": 0, "name": "Paektu Frostcrest Hatchling", "file": "paektu_frostcrest_hatchling.png" },
+            { "variant": 1, "name": "Pine Razorclaw Hatchling", "file": "pine_razorclaw_hatchling.png" },
+            { "variant": 2, "name": "Reed Longneck Hatchling", "file": "reed_longneck_hatchling.png" },
+            { "variant": 3, "name": "Crater Armorback Hatchling", "file": "crater_armorback_hatchling.png" }
+          ]
+        },
+        {
+          "country_id": 9,
+          "country": "France",
+          "slug": "france",
+          "variants": [
+            { "variant": 0, "name": "Lavender Frillwing Hatchling", "file": "lavender_frillwing_hatchling.png" },
+            { "variant": 1, "name": "Alpine Icehorn Hatchling", "file": "alpine_icehorn_hatchling.png" },
+            { "variant": 2, "name": "Atlantic Tidecrest Hatchling", "file": "atlantic_tidecrest_hatchling.png" },
+            { "variant": 3, "name": "Truffle Rootsnout Hatchling", "file": "truffle_rootsnout_hatchling.png" }
+          ]
+        },
+        {
+          "country_id": 10,
+          "country": "Brazil",
+          "slug": "brazil",
+          "variants": [
+            { "variant": 0, "name": "Amazon Featherwing Hatchling", "file": "amazon_featherwing_hatchling.png" },
+            { "variant": 1, "name": "Carnival Rainbowcrest Hatchling", "file": "carnival_rainbowcrest_hatchling.png" },
+            { "variant": 2, "name": "Sunset Sailback Hatchling", "file": "sunset_sailback_hatchling.png" },
+            { "variant": 3, "name": "Obsidian Clubtail Hatchling", "file": "obsidian_clubtail_hatchling.png" }
+          ]
+        },
+        {
+          "country_id": 11,
+          "country": "Israel",
+          "slug": "israel",
+          "variants": [
+            { "variant": 0, "name": "Negev Dunerunner Hatchling", "file": "negev_dunerunner_hatchling.png" },
+            { "variant": 1, "name": "Dead Sea Saltback Hatchling", "file": "dead_sea_saltback_hatchling.png" },
+            { "variant": 2, "name": "Galilee Berryhorn Hatchling", "file": "galilee_berryhorn_hatchling.png" },
+            { "variant": 3, "name": "Coral Tidewing Hatchling", "file": "coral_tidewing_hatchling.png" }
+          ]
+        }
+      ]
+    },
+    "5": {
+      "species_id": "mech",
+      "rebirth_level": 5,
+      "asset_directory": "rebirth_05",
+      "countries": [
+        {
+          "country_id": 0,
+          "country": "USA",
+          "slug": "usa",
+          "variants": [
+            { "variant": 0, "name": "Canyon Rover Mechling", "file": "canyon_rover_mechling.png" },
+            { "variant": 1, "name": "Bayou Salvage Mechling", "file": "bayou_salvage_mechling.png" },
+            { "variant": 2, "name": "Prairie Hauler Mechling", "file": "prairie_hauler_mechling.png" },
+            { "variant": 3, "name": "Pacific Hover Mechling", "file": "pacific_hover_mechling.png" }
+          ]
+        },
+        {
+          "country_id": 1,
+          "country": "China",
+          "slug": "china",
+          "variants": [
+            { "variant": 0, "name": "Jade Orbit Mechling", "file": "jade_orbit_mechling.png" },
+            { "variant": 1, "name": "Moon Pearl Mechling", "file": "moon_pearl_mechling.png" },
+            { "variant": 2, "name": "Bamboo Scout Mechling", "file": "bamboo_scout_mechling.png" },
+            { "variant": 3, "name": "Golden Foundry Mechling", "file": "golden_foundry_mechling.png" }
+          ]
+        },
+        {
+          "country_id": 2,
+          "country": "Russia",
+          "slug": "russia",
+          "variants": [
+            { "variant": 0, "name": "Taiga Tracker Mechling", "file": "taiga_tracker_mechling.png" },
+            { "variant": 1, "name": "Tundra Snowcat Mechling", "file": "tundra_snowcat_mechling.png" },
+            { "variant": 2, "name": "Ural Forge Mechling", "file": "ural_forge_mechling.png" },
+            { "variant": 3, "name": "Kamchatka Core Mechling", "file": "kamchatka_core_mechling.png" }
+          ]
+        },
+        {
+          "country_id": 3,
+          "country": "India",
+          "slug": "india",
+          "variants": [
+            { "variant": 0, "name": "Monsoon Spark Mechling", "file": "monsoon_spark_mechling.png" },
+            { "variant": 1, "name": "Lotus Orb Mechling", "file": "lotus_orb_mechling.png" },
+            { "variant": 2, "name": "Tiger Strider Mechling", "file": "tiger_strider_mechling.png" },
+            { "variant": 3, "name": "Indigo Satellite Mechling", "file": "indigo_satellite_mechling.png" }
+          ]
+        },
+        {
+          "country_id": 4,
+          "country": "Japan",
+          "slug": "japan",
+          "variants": [
+            { "variant": 0, "name": "Sakura Sprite Mechling", "file": "sakura_sprite_mechling.png" },
+            { "variant": 1, "name": "Koi Stream Mechling", "file": "koi_stream_mechling.png" },
+            { "variant": 2, "name": "Oni Bulwark Mechling", "file": "oni_bulwark_mechling.png" },
+            { "variant": 3, "name": "Matcha Helper Mechling", "file": "matcha_helper_mechling.png" }
+          ]
+        },
+        {
+          "country_id": 5,
+          "country": "South Korea",
+          "slug": "south_korea",
+          "variants": [
+            { "variant": 0, "name": "Jeju Basalt Mechling", "file": "jeju_basalt_mechling.png" },
+            { "variant": 1, "name": "Moon Screen Mechling", "file": "moon_screen_mechling.png" },
+            { "variant": 2, "name": "Tiger Lily Dash Mechling", "file": "tiger_lily_dash_mechling.png" },
+            { "variant": 3, "name": "Neon Arcade Mechling", "file": "neon_arcade_mechling.png" }
+          ]
+        },
+        {
+          "country_id": 6,
+          "country": "Iran",
+          "slug": "iran",
+          "variants": [
+            { "variant": 0, "name": "Zagros Climber Mechling", "file": "zagros_climber_mechling.png" },
+            { "variant": 1, "name": "Caspian Tide Mechling", "file": "caspian_tide_mechling.png" },
+            { "variant": 2, "name": "Saffron Solar Mechling", "file": "saffron_solar_mechling.png" },
+            { "variant": 3, "name": "Salt Crystal Mechling", "file": "salt_crystal_mechling.png" }
+          ]
+        },
+        {
+          "country_id": 7,
+          "country": "UK",
+          "slug": "uk",
+          "variants": [
+            { "variant": 0, "name": "Bog Scrapper Mechling", "file": "bog_scrapper_mechling.png" },
+            { "variant": 1, "name": "Chalk Clockwork Mechling", "file": "chalk_clockwork_mechling.png" },
+            { "variant": 2, "name": "Highland Hauler Mechling", "file": "highland_hauler_mechling.png" },
+            { "variant": 3, "name": "Rainy Radar Mechling", "file": "rainy_radar_mechling.png" }
+          ]
+        },
+        {
+          "country_id": 8,
+          "country": "North Korea",
+          "slug": "north_korea",
+          "variants": [
+            { "variant": 0, "name": "Paektu Frostcore Mechling", "file": "paektu_frostcore_mechling.png" },
+            { "variant": 1, "name": "Pine Sentry Mechling", "file": "pine_sentry_mechling.png" },
+            { "variant": 2, "name": "Reed Walker Mechling", "file": "reed_walker_mechling.png" },
+            { "variant": 3, "name": "Crater Rover Mechling", "file": "crater_rover_mechling.png" }
+          ]
+        },
+        {
+          "country_id": 9,
+          "country": "France",
+          "slug": "france",
+          "variants": [
+            { "variant": 0, "name": "Lavender Glider Mechling", "file": "lavender_glider_mechling.png" },
+            { "variant": 1, "name": "Alpine Climber Mechling", "file": "alpine_climber_mechling.png" },
+            { "variant": 2, "name": "Atlantic Diver Mechling", "file": "atlantic_diver_mechling.png" },
+            { "variant": 3, "name": "Truffle Digger Mechling", "file": "truffle_digger_mechling.png" }
+          ]
+        },
+        {
+          "country_id": 10,
+          "country": "Brazil",
+          "slug": "brazil",
+          "variants": [
+            { "variant": 0, "name": "Amazon Canopy Mechling", "file": "amazon_canopy_mechling.png" },
+            { "variant": 1, "name": "Carnival Prism Mechling", "file": "carnival_prism_mechling.png" },
+            { "variant": 2, "name": "Sunset Solar Mechling", "file": "sunset_solar_mechling.png" },
+            { "variant": 3, "name": "Obsidian Night Mechling", "file": "obsidian_night_mechling.png" }
+          ]
+        },
+        {
+          "country_id": 11,
+          "country": "Israel",
+          "slug": "israel",
+          "variants": [
+            { "variant": 0, "name": "Negev Dune Mechling", "file": "negev_dune_mechling.png" },
+            { "variant": 1, "name": "Dead Sea Buoy Mechling", "file": "dead_sea_buoy_mechling.png" },
+            { "variant": 2, "name": "Galilee Garden Mechling", "file": "galilee_garden_mechling.png" },
+            { "variant": 3, "name": "Coral Reef Mechling", "file": "coral_reef_mechling.png" }
+          ]
+        }
+      ]
+    },
+    "6": {
+      "species_id": "hashwaifu",
+      "rebirth_level": 6,
+      "asset_directory": "rebirth_06",
+      "countries": [
+        {
+          "country_id": 0,
+          "country": "USA",
+          "slug": "usa",
+          "variants": [
+            { "variant": 0, "name": "Nova Ace Pilot HashWaifu", "file": "nova_ace_pilot_hashwaifu.png" },
+            { "variant": 1, "name": "Circuit Tech Hacker HashWaifu", "file": "circuit_tech_hacker_hashwaifu.png" },
+            { "variant": 2, "name": "Luna Star Mystic HashWaifu", "file": "luna_star_mystic_hashwaifu.png" },
+            { "variant": 3, "name": "Comet Space Rogue HashWaifu", "file": "comet_space_rogue_hashwaifu.png" }
+          ]
+        },
+        {
+          "country_id": 1,
+          "country": "China",
+          "slug": "china",
+          "variants": [
+            { "variant": 0, "name": "Jade Ace Pilot HashWaifu", "file": "jade_ace_pilot_hashwaifu.png" },
+            { "variant": 1, "name": "Pearl Tech Hacker HashWaifu", "file": "pearl_tech_hacker_hashwaifu.png" },
+            { "variant": 2, "name": "Moon Star Mystic HashWaifu", "file": "moon_star_mystic_hashwaifu.png" },
+            { "variant": 3, "name": "Ember Space Rogue HashWaifu", "file": "ember_space_rogue_hashwaifu.png" }
+          ]
+        },
+        {
+          "country_id": 2,
+          "country": "Russia",
+          "slug": "russia",
+          "variants": [
+            { "variant": 0, "name": "Taiga Ace Pilot HashWaifu", "file": "taiga_ace_pilot_hashwaifu.png" },
+            { "variant": 1, "name": "Frost Circuit Tech Hacker HashWaifu", "file": "frost_circuit_tech_hacker_hashwaifu.png" },
+            { "variant": 2, "name": "Aurora Star Mystic HashWaifu", "file": "aurora_star_mystic_hashwaifu.png" },
+            { "variant": 3, "name": "Kamchatka Space Rogue HashWaifu", "file": "kamchatka_space_rogue_hashwaifu.png" }
+          ]
+        },
+        {
+          "country_id": 3,
+          "country": "India",
+          "slug": "india",
+          "variants": [
+            { "variant": 0, "name": "Monsoon Ace Pilot HashWaifu", "file": "monsoon_ace_pilot_hashwaifu.png" },
+            { "variant": 1, "name": "Indigo Tech Hacker HashWaifu", "file": "indigo_tech_hacker_hashwaifu.png" },
+            { "variant": 2, "name": "Lotus Star Mystic HashWaifu", "file": "lotus_star_mystic_hashwaifu.png" },
+            { "variant": 3, "name": "Saffron Space Rogue HashWaifu", "file": "saffron_space_rogue_hashwaifu.png" }
+          ]
+        },
+        {
+          "country_id": 4,
+          "country": "Japan",
+          "slug": "japan",
+          "variants": [
+            { "variant": 0, "name": "Koi Ace Pilot HashWaifu", "file": "koi_ace_pilot_hashwaifu.png" },
+            { "variant": 1, "name": "Neon Tech Hacker HashWaifu", "file": "neon_tech_hacker_hashwaifu.png" },
+            { "variant": 2, "name": "Sakura Star Mystic HashWaifu", "file": "sakura_star_mystic_hashwaifu.png" },
+            { "variant": 3, "name": "Oni Space Rogue HashWaifu", "file": "oni_space_rogue_hashwaifu.png" }
+          ]
+        },
+        {
+          "country_id": 5,
+          "country": "South Korea",
+          "slug": "south_korea",
+          "variants": [
+            { "variant": 0, "name": "Jeju Ace Pilot HashWaifu", "file": "jeju_ace_pilot_hashwaifu.png" },
+            { "variant": 1, "name": "Seoul Neon Tech Hacker HashWaifu", "file": "seoul_neon_tech_hacker_hashwaifu.png" },
+            { "variant": 2, "name": "Moonlight Star Mystic HashWaifu", "file": "moonlight_star_mystic_hashwaifu.png" },
+            { "variant": 3, "name": "Tiger Lily Space Rogue HashWaifu", "file": "tiger_lily_space_rogue_hashwaifu.png" }
+          ]
+        },
+        {
+          "country_id": 6,
+          "country": "Iran",
+          "slug": "iran",
+          "variants": [
+            { "variant": 0, "name": "Zagros Ace Pilot HashWaifu", "file": "zagros_ace_pilot_hashwaifu.png" },
+            { "variant": 1, "name": "Lapis Tech Hacker HashWaifu", "file": "lapis_tech_hacker_hashwaifu.png" },
+            { "variant": 2, "name": "Caspian Star Mystic HashWaifu", "file": "caspian_star_mystic_hashwaifu.png" },
+            { "variant": 3, "name": "Persian Saffron Space Rogue HashWaifu", "file": "persian_saffron_space_rogue_hashwaifu.png" }
+          ]
+        },
+        {
+          "country_id": 7,
+          "country": "UK",
+          "slug": "uk",
+          "variants": [
+            { "variant": 0, "name": "Atlantic Ace Pilot HashWaifu", "file": "atlantic_ace_pilot_hashwaifu.png" },
+            { "variant": 1, "name": "London Circuit Tech Hacker HashWaifu", "file": "london_circuit_tech_hacker_hashwaifu.png" },
+            { "variant": 2, "name": "Highland Star Mystic HashWaifu", "file": "highland_star_mystic_hashwaifu.png" },
+            { "variant": 3, "name": "Rainy Space Rogue HashWaifu", "file": "rainy_space_rogue_hashwaifu.png" }
+          ]
+        },
+        {
+          "country_id": 8,
+          "country": "North Korea",
+          "slug": "north_korea",
+          "variants": [
+            { "variant": 0, "name": "Paektu Ace Pilot HashWaifu", "file": "paektu_ace_pilot_hashwaifu.png" },
+            { "variant": 1, "name": "Pine Tech Hacker HashWaifu", "file": "pine_tech_hacker_hashwaifu.png" },
+            { "variant": 2, "name": "Mooncrater Star Mystic HashWaifu", "file": "mooncrater_star_mystic_hashwaifu.png" },
+            { "variant": 3, "name": "Reed Space Rogue HashWaifu", "file": "reed_space_rogue_hashwaifu.png" }
+          ]
+        },
+        {
+          "country_id": 9,
+          "country": "France",
+          "slug": "france",
+          "variants": [
+            { "variant": 0, "name": "Alpine Ace Pilot HashWaifu", "file": "alpine_ace_pilot_hashwaifu.png" },
+            { "variant": 1, "name": "Paris Circuit Tech Hacker HashWaifu", "file": "paris_circuit_tech_hacker_hashwaifu.png" },
+            { "variant": 2, "name": "Lavender Star Mystic HashWaifu", "file": "lavender_star_mystic_hashwaifu.png" },
+            { "variant": 3, "name": "Atlantic Space Rogue HashWaifu", "file": "atlantic_space_rogue_hashwaifu.png" }
+          ]
+        },
+        {
+          "country_id": 10,
+          "country": "Brazil",
+          "slug": "brazil",
+          "variants": [
+            { "variant": 0, "name": "Amazon Ace Pilot HashWaifu", "file": "amazon_ace_pilot_hashwaifu.png" },
+            { "variant": 1, "name": "Carnival Tech Hacker HashWaifu", "file": "carnival_tech_hacker_hashwaifu.png" },
+            { "variant": 2, "name": "Sunset Star Mystic HashWaifu", "file": "sunset_star_mystic_hashwaifu.png" },
+            { "variant": 3, "name": "Obsidian Space Rogue HashWaifu", "file": "obsidian_space_rogue_hashwaifu.png" }
+          ]
+        },
+        {
+          "country_id": 11,
+          "country": "Israel",
+          "slug": "israel",
+          "variants": [
+            { "variant": 0, "name": "Negev Ace Pilot HashWaifu", "file": "negev_ace_pilot_hashwaifu.png" },
+            { "variant": 1, "name": "Tel Aviv Circuit Tech Hacker HashWaifu", "file": "tel_aviv_circuit_tech_hacker_hashwaifu.png" },
+            { "variant": 2, "name": "Galilee Star Mystic HashWaifu", "file": "galilee_star_mystic_hashwaifu.png" },
+            { "variant": 3, "name": "Coral Space Rogue HashWaifu", "file": "coral_space_rogue_hashwaifu.png" }
+          ]
+        }
+      ]
+    }
+  }
+}

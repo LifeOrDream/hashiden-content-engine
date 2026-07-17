@@ -195,6 +195,16 @@ function fallbackPaths(): string[] {
   ];
 }
 
+function breedBodyPaths(filename: string): string[] {
+  const configuredDir = process.env.HASHBEAST_BASE_BODIES_DIR || "";
+  return [
+    configuredDir ? path.join(configuredDir, filename) : "",
+    path.resolve(process.cwd(), "assets/base_bodies", filename),
+    fileURLToPath(new URL(`../../assets/base_bodies/${filename}`, import.meta.url)),
+    fileURLToPath(new URL(`../../../assets/base_bodies/${filename}`, import.meta.url)),
+  ];
+}
+
 export async function resolveCountryMintReference(
   packet: PetVisualPacket,
 ): Promise<ResolvedMintReference> {
@@ -205,10 +215,8 @@ export async function resolveCountryMintReference(
     return fetchReference(packet.origin.reference_image_url, "packet-reference");
   }
 
-  const baseBodiesDir = process.env.HASHBEAST_BASE_BODIES_DIR || "";
-  if (filename && baseBodiesDir) {
-    const local = path.join(baseBodiesDir, filename);
-    const found = await firstReadable([local]);
+  if (filename) {
+    const found = await firstReadable(breedBodyPaths(filename));
     if (found) return readReference(found, `breed-local:${filename}`);
   }
 
