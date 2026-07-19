@@ -47,11 +47,11 @@ export const STAGE_LABELS = [
 export const GENERATION_LABELS = [
   "Fresh Mint",
   "Came Back Weird",
-  "Market Animal",
+  "Ape Mode",
+  "Peak Meme",
   "Mythic Problem",
   "Built Different",
-  "Haunted",
-  "Cosmic",
+  "Waifu Awakening",
   "Final Form",
 ] as const;
 
@@ -88,6 +88,14 @@ export const SPECIES: Record<string, SpeciesDefinition> = {
     silhouette: "wide head, large eyes, squat spring-loaded legs",
     movement: "tiny hops and abrupt full-body celebrations",
     memeHook: "looks calm while making terrible decisions",
+  },
+  pepe: {
+    id: "pepe",
+    label: "Pepe",
+    renderNoun: "compact anthropomorphic Pepe pet",
+    silhouette: "bulbous frog head, droopy eyes, broad mouth, spring-loaded legs",
+    movement: "deadpan pauses, tiny hops, and violently confident celebrations",
+    memeHook: "calls every loss character development",
   },
   ape: {
     id: "ape",
@@ -131,11 +139,11 @@ export const SPECIES: Record<string, SpeciesDefinition> = {
   },
   dragon: {
     id: "dragon",
-    label: "Dragon",
-    renderNoun: "compact pet dragon",
-    silhouette: "small horns, wing nubs, thick tail, readable snout",
-    movement: "proud stomps, wing flicks, accidental smoke puffs",
-    memeHook: "ancient power, toddler patience",
+    label: "Baby Dragon",
+    renderNoun: "adorable baby dragon hatchling",
+    silhouette: "oversized head and eyes, round belly, stubby paws, tiny horns and wing buds, thick tail",
+    movement: "wobbly stomps, eager wing flicks, and accidental tiny smoke hiccups",
+    memeHook: "ancient power with the emotional regulation of a toddler",
   },
   phoenix: {
     id: "phoenix",
@@ -147,11 +155,11 @@ export const SPECIES: Record<string, SpeciesDefinition> = {
   },
   mech: {
     id: "mech",
-    label: "Mech",
-    renderNoun: "compact pet-like mech",
-    silhouette: "blocky head, sturdy limbs, one bright status light",
-    movement: "servo snaps, tiny boot sequence, power poses",
-    memeHook: "advanced hardware running personal grudges",
+    label: "Mechling",
+    renderNoun: "cute autonomous robot pet",
+    silhouette: "oversized expressive face display, compact chassis, short limbs, mechanical paws, tiny antenna and tail",
+    movement: "eager servo wiggles, clumsy boot sequences, and proud little system checks",
+    memeHook: "advanced hardware running feelings it cannot debug",
   },
   golem: {
     id: "golem",
@@ -177,13 +185,13 @@ export const SPECIES: Record<string, SpeciesDefinition> = {
     movement: "hinge snaps, coin rattles, fake-object disguises",
     memeHook: "pretends to be loot until attention arrives",
   },
-  cosmic_blob: {
-    id: "cosmic_blob",
-    label: "Cosmic Blob",
-    renderNoun: "compact cosmic blob pet",
-    silhouette: "simple rounded body, two bright eyes, one orbiting speck",
-    movement: "soft wobble, tiny gravity pulses, impossible squishes",
-    memeHook: "contains galaxies and no risk management",
+  hashwaifu: {
+    id: "hashwaifu",
+    label: "HashWaifu",
+    renderNoun: "adult anime space heroine",
+    silhouette: "mature humanoid proportions, expressive face, distinctive hair, and a clean fitted flight suit",
+    movement: "confident stance shifts, expressive glances, hair swishes, and perfectly timed smug reactions",
+    memeHook: "awakened into a humanoid avatar and immediately developed main-character syndrome",
   },
   eidolon: {
     id: "eidolon",
@@ -197,12 +205,12 @@ export const SPECIES: Record<string, SpeciesDefinition> = {
 
 export const SPECIES_BY_GENERATION = [
   ["dog", "dog", "dog", "dog"],
-  ["cat", "cat", "frog", "ape"],
-  ["bull", "bear", "crab", "whale"],
-  ["dragon", "dragon", "phoenix", "phoenix"],
-  ["mech", "mech", "golem", "golem"],
-  ["ghost", "ghost", "mimic", "mimic"],
-  ["cosmic_blob", "cosmic_blob", "cosmic_blob", "cosmic_blob"],
+  ["cat", "cat", "cat", "cat"],
+  ["ape", "ape", "ape", "ape"],
+  ["pepe", "pepe", "pepe", "pepe"],
+  ["dragon", "dragon", "dragon", "dragon"],
+  ["mech", "mech", "mech", "mech"],
+  ["hashwaifu", "hashwaifu", "hashwaifu", "hashwaifu"],
   ["eidolon", "eidolon", "eidolon", "eidolon"],
 ] as const;
 

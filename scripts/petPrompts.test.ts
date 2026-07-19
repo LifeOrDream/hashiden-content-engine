@@ -1,5 +1,7 @@
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
+import { readFile } from "node:fs/promises";
+import { fileURLToPath } from "node:url";
 import {
   BREED_BASE_BODIES,
   assertCountryDpPromptQuality,
@@ -9,6 +11,7 @@ import {
   buildCountryMintFullBodyPrompt,
   buildPetPromptSet,
   deriveVisualIdentity,
+  resolveCountryMintReference,
   resolveCountryMintProfile,
 } from "../src/pet-content/index.js";
 import {
@@ -93,6 +96,21 @@ for (let faction = 0; faction < 12; faction += 1) {
   }
 }
 
+const packagedBodiesDir = fileURLToPath(new URL("../assets/base_bodies/", import.meta.url));
+const bodyFilenames = new Set(Object.values(BREED_BASE_BODIES).flatMap((breeds) => Object.values(breeds)));
+assert.equal(bodyFilenames.size, 47, "the 48 breed slots should resolve to 47 bodies because Pungsan is shared");
+for (const filename of bodyFilenames) {
+  const bytes = await readFile(`${packagedBodiesDir}/${filename}`);
+  assert.equal(
+    bytes.subarray(0, 8).toString("hex"),
+    "89504e470d0a1a0a",
+    `${filename} must contain PNG bytes`,
+  );
+}
+const packagedReference = await resolveCountryMintReference(genesis);
+assert.equal(packagedReference.source, "breed-local:indian_pariah.png");
+assert.equal(packagedReference.contentType, "image/png");
+
 const hashes = Object.fromEntries(
   Object.entries(first).map(([key, value]) => [
     key,
@@ -100,10 +118,10 @@ const hashes = Object.fromEntries(
   ]),
 );
 assert.deepEqual(hashes, {
-  full_body: "f3e65f81f8a9eddb",
-  dp: "6db4e026fac9fc9f",
-  expression_sheet: "afd3d0d2bafae97b",
-  rare_card: "bc2efa3b6f2c9b26",
+  full_body: "0118396fdca8a24a",
+  dp: "8353fbea399033a7",
+  expression_sheet: "929e9b1a84c8449c",
+  rare_card: "4918cc02aa3c6315",
 });
 
 console.log("pet prompts OK");

@@ -61,7 +61,7 @@ export function petPacketFixture(kind: PetContentJobKind = "pet.mint_art"): PetV
       name: "Bonk Jr",
       body_variant: 2,
       generation: 2,
-      species_id: "crab",
+      species_id: "ape",
       stage: 4,
       dna: {
         version: 1,

@@ -9,7 +9,7 @@ import { petPacketFixture } from "./fixtures/petPacket.js";
 for (const kind of PET_JOB_KINDS) {
   const parsed = parsePetVisualPacket(petPacketFixture(kind), kind);
   assert.equal(parsed.mode, kind);
-  assert.equal(parsed.pet.species_id, "crab");
+  assert.equal(parsed.pet.species_id, "ape");
   assert.equal(parsed.pet.generation, 2);
   assert.equal(parsed.pet.stage, 4);
   assert.equal(parsed.origin.faction_id, 3);
@@ -28,7 +28,7 @@ assert.throws(() => parsePetVisualPacket(unknownSpecies), /not in pet-content-v2
 
 const mismatchedSpecies = petPacketFixture() as any;
 mismatchedSpecies.pet.species_id = "bear";
-assert.throws(() => parsePetVisualPacket(mismatchedSpecies), /must be crab/);
+assert.throws(() => parsePetVisualPacket(mismatchedSpecies), /must be ape/);
 
 const unknownField = petPacketFixture() as any;
 unknownField.art_direction = { instruction: "trust me" };
@@ -49,7 +49,7 @@ assert.throws(() => parsePetVisualPacket(mismatchedFaction), /faction_id does no
 
 const mismatchedBreed = petPacketFixture() as any;
 mismatchedBreed.pet.body_variant = 1;
-mismatchedBreed.pet.species_id = "bear";
+mismatchedBreed.pet.species_id = "ape";
 assert.throws(() => parsePetVisualPacket(mismatchedBreed), /body_variant does not match/);
 
 const mismatchedStage = petPacketFixture() as any;
@@ -58,7 +58,7 @@ assert.throws(() => parsePetVisualPacket(mismatchedStage), /stage does not match
 
 const mismatchedGeneration = petPacketFixture() as any;
 mismatchedGeneration.pet.generation = 1;
-mismatchedGeneration.pet.species_id = "frog";
+mismatchedGeneration.pet.species_id = "cat";
 assert.throws(() => parsePetVisualPacket(mismatchedGeneration), /generation does not match/);
 
 const missingEvolutionReason = petPacketFixture("pet.evolution_art") as any;

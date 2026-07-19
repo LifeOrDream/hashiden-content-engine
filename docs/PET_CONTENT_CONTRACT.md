@@ -59,7 +59,7 @@ Results echo the identity tuple and include `prompt_version`, exact prompts, and
 signature gag is also soul-stable; the smaller life token may change on rebirth.
 `identity_digest` remains life-specific and is used for stale-result rejection.
 Body proportions follow the current body variant and species. Generation-zero
-dog mints resolve one of 12 country grammars and 48 country-linked breeds. Their
+dog mints resolve one grammar per active country seat and 48 country-linked breeds. Their
 full body uses a standing reference for posture, facing, and pixel style; the
 square PFP then uses that generated full body as its sole identity reference.
 Both images pass bounded Gemini checks when `GEMINI_KEY` is configured. Later

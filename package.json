@@ -21,7 +21,8 @@
     "test:contract": "tsx scripts/petContract.test.ts",
     "test:prompts": "tsx scripts/petPrompts.test.ts",
     "test:generator": "tsx scripts/petGenerator.test.ts",
-    "test": "npm run typecheck && npm run test:contract && npm run test:prompts && npm run test:generator",
+    "test:assets": "tsx scripts/baseBodies.test.ts",
+    "test": "npm run typecheck && npm run test:contract && npm run test:prompts && npm run test:generator && npm run test:assets",
     "check:oss": "npm test",
     "service:worker": "tsx src/service/worker.ts",
     "service:worker:built": "node dist/src/service/worker.js"
