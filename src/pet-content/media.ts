@@ -3,6 +3,13 @@ const PET_IMAGE_GENERATION_MODEL =
   process.env.PET_IMAGE_GENERATION_MODEL || "fal-ai/nano-banana-2";
 const PET_IMAGE_EDIT_MODEL =
   process.env.PET_IMAGE_EDIT_MODEL || "fal-ai/nano-banana-2/edit";
+/**
+ * Local-testing stub: when PET_MEDIA_STUB is set to a directory of existing
+ * art files, pet image generation never calls fal.ai — it returns a canned
+ * image from that directory instead (deterministic per prompt, so retries
+ * and replays stay stable). Leave unset in real deployments.
+ */
+const PET_MEDIA_STUB = (process.env.PET_MEDIA_STUB || "").replace(/\/+$/, "");
 const POLL_MS = Math.max(1_000, Number(process.env.FAL_POLL_INTERVAL_MS || 3_000));
 const TIMEOUT_MS = Math.max(
   30_000,
@@ -151,9 +158,47 @@ export const generatePetImage: ImageGenerator = async (
   references,
   options,
 ) => {
+  if (PET_MEDIA_STUB) return runStubImage(prompt, options);
   const imageUrls = await Promise.all(references.map(referenceDataUri));
   const model = options.model || (imageUrls.length > 0
     ? PET_IMAGE_EDIT_MODEL
     : PET_IMAGE_GENERATION_MODEL);
   return runFalImage(model, prompt, imageUrls, options);
 };
+
+/* --- local stub: canned art, zero fal calls ------------------------------ */
+
+import { createHash } from "node:crypto";
+import { readdir, readFile } from "node:fs/promises";
+import path from "node:path";
+
+let stubFilesCache: string[] | null = null;
+
+async function stubFiles(): Promise<string[]> {
+  if (stubFilesCache) return stubFilesCache;
+  const entries = await readdir(PET_MEDIA_STUB);
+  stubFilesCache = entries
+    .filter((name) => /\.(png|jpe?g|webp)$/i.test(name))
+    .sort();
+  if (stubFilesCache.length === 0) {
+    throw new Error(`PET_MEDIA_STUB=${PET_MEDIA_STUB} has no image files`);
+  }
+  return stubFilesCache;
+}
+
+async function runStubImage(
+  prompt: string,
+  options: GenerateImageOptions,
+): Promise<GeneratedImage> {
+  const files = await stubFiles();
+  const hash = createHash("sha256").update(prompt).digest();
+  const index = hash.readUInt32BE(0) % files.length;
+  const file = files[index];
+  const buffer = await readFile(path.join(PET_MEDIA_STUB, file));
+  return {
+    buffer,
+    sourceUrl: `stub://${file}`,
+    model: options.model || "stub/local-art",
+    requestId: `stub-${hash.toString("hex").slice(0, 16)}`,
+  };
+}
