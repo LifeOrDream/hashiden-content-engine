@@ -48,6 +48,17 @@ npm run service:worker
 
 Production should set `PET_ARTIFACT_STORE=s3`; backend result handlers persist public artifact URLs and reject inline-only results.
 
+For localnet, use the same worker and generator with a filesystem-backed artifact store:
+
+```bash
+PET_ARTIFACT_STORE=local \
+PET_LOCAL_ASSET_DIR=/absolute/path/to/hashiden-game/public/assets/generated/hashbeast-assets \
+PET_LOCAL_ASSET_BASE_URL=http://localhost:3100/assets/generated/hashbeast-assets \
+npm run service:worker
+```
+
+This keeps the production object-key layout and serves distinct canonical `full_body.png` and square `dp.png` files from the local frontend.
+
 ## Boundary
 
 The engine has no wallet, chain, database, posting, or game-state authority. It validates the typed visual packet, derives cross-life visual locks from `soul_digest`, builds prompts, generates images, stores artifacts, and returns provenance. The life-specific `identity_digest` remains part of the backend's stale-result guard.
