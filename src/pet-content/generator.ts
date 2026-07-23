@@ -13,6 +13,7 @@ import {
 } from "./media.js";
 import {
   assertCountryDpPromptQuality,
+  assertCountryEvolutionPromptQuality,
   assertCountryMintPromptQuality,
   buildCountryEvolutionFullBodyPrompt,
   buildCountryMintDpPrompt,
@@ -166,7 +167,8 @@ async function generateBaseArt(
     : buildFullBodyPrompt(packet);
   const dpPrompt = countryBreed ? buildCountryMintDpPrompt() : buildDpPrompt(packet);
   if (countryBreed) {
-    assertCountryMintPromptQuality(fullBodyPrompt);
+    if (packet.mode === "pet.mint_art") assertCountryMintPromptQuality(fullBodyPrompt);
+    else assertCountryEvolutionPromptQuality(fullBodyPrompt);
     assertCountryDpPromptQuality(dpPrompt);
   } else {
     assertPetPromptQuality(fullBodyPrompt);

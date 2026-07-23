@@ -6,6 +6,10 @@ import {
   countryReferenceStyleBlock,
   usesCountryBreedArt,
 } from "./countryMint.js";
+import {
+  personalityPoseLine,
+  visualRemixTarget,
+} from "./personalization.js";
 
 const PALETTES = [
   "electric teal, tomato red, and warm white",
@@ -51,15 +55,6 @@ const STAGE_ENERGY = [
   "boss energy; polished materials and calm authority",
   "legend energy; rare finish and restrained supernatural accent",
   "unleashed final-stage energy; clearest silhouette and one impossible detail",
-] as const;
-
-const VISUAL_REMIXES = [
-  "remix one small accessory material with a glossy arcade finish",
-  "add one asymmetrical stripe or edge accent outside the locked face marking",
-  "reinterpret the signature prop as a tiny upgraded handmade version",
-  "shift one secondary material to a playful translucent finish",
-  "add one compact lucky charm that does not compete with the signature gag",
-  "give the silhouette one slightly bolder non-anatomical accent",
 ] as const;
 
 export interface PetPromptSet {
@@ -109,7 +104,7 @@ function identityBlock(packet: PetVisualPacket): string {
     `FACE LOCK: ${visual.eyes}; ${visual.marking}.`,
     `SIGNATURE GAG: ${visual.signatureProp}. Keep it readable, small, and funny.`,
     `LIFE TOKEN: a tiny ${visual.lifeToken}. It is secondary to the signature gag.`,
-    `PERSONALITY IN THE POSE: ${packet.pet.dna.temperament}, ${packet.pet.dna.humor_mode}, ${packet.pet.dna.contradiction}.`,
+    personalityPoseLine(packet),
     `SPECIES JOKE: ${species.memeHook}.`,
     `MOTION LANGUAGE: ${species.movement}.`,
     `LIFE STAGE: ${STAGE_LABELS[packet.pet.stage]}; ${STAGE_ENERGY[packet.pet.stage]}.`,
@@ -161,16 +156,13 @@ function continuityBlock(packet: PetVisualPacket): string {
     ].join("\n");
   }
   if (packet.evolution_reason === "visual_reroll") {
-    const digest = createHash("sha256")
-      .update(`${packet.identity_digest}:${packet.art_version}:visual-remix`)
-      .digest("hex");
     return [
       "VISUAL REROLL RULE: keep the same pet, species, life stage, and body plan.",
       locks,
       hasReference
         ? "Use the supplied canonical pet as the exact identity reference."
         : "No canonical image is available; use the soul locks above as the identity reference.",
-      `REMIX TARGET: ${pick(VISUAL_REMIXES, digest, 0)}.`,
+      `REMIX TARGET: ${visualRemixTarget(packet)}.`,
       "Change only that non-core accent. Do not stack accessories or redesign the pet.",
     ].join("\n");
   }

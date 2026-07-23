@@ -5,8 +5,10 @@ import { fileURLToPath } from "node:url";
 import {
   BREED_BASE_BODIES,
   assertCountryDpPromptQuality,
+  assertCountryEvolutionPromptQuality,
   assertCountryMintPromptQuality,
   assertPetPromptQuality,
+  buildCountryEvolutionFullBodyPrompt,
   buildCountryMintDpPrompt,
   buildCountryMintFullBodyPrompt,
   buildPetPromptSet,
@@ -96,6 +98,49 @@ for (let faction = 0; faction < 12; faction += 1) {
   }
 }
 
+// G0 evolution prompts must carry the effective-DNA personalization slots
+// (the §8.9 fix): interview-overridable words reach launch-population art.
+function genesisEvolutionFixture(reason: "ascension" | "visual_reroll") {
+  const evolution = genesisPetPacketFixture();
+  evolution.mode = "pet.evolution_art";
+  evolution.evolution_reason = reason;
+  evolution.continuity.full_body_url = "https://assets.example.test/pets/chai/full_body.png";
+  return evolution;
+}
+
+const g0Reroll = genesisEvolutionFixture("visual_reroll");
+const g0RerollPrompt = buildCountryEvolutionFullBodyPrompt(g0Reroll);
+assertCountryEvolutionPromptQuality(g0RerollPrompt);
+assert.equal(g0RerollPrompt, buildCountryEvolutionFullBodyPrompt(g0Reroll), "G0 evolution prompt must be deterministic");
+assert.match(g0RerollPrompt, /PERSONALITY IN THE POSE: dramatic, delusional confidence, acts fearless but hates confetti\./);
+assert.match(g0RerollPrompt, /CONDUCT: on wins it does one smug spin; on losses it demands a recount\./);
+assert.match(g0RerollPrompt, /REMIX TARGET: /);
+assert.match(g0RerollPrompt, /never change breed anatomy/i);
+assert.match(g0RerollPrompt, /same recognizable HashBeast/i);
+// The interview seam: packet dna is effectiveDna, so an override word must land verbatim.
+const g0Interviewed = genesisEvolutionFixture("visual_reroll");
+g0Interviewed.pet.dna.temperament = "chaotic";
+g0Interviewed.pet.dna.victory_ritual = "zoomies lap";
+assert.match(
+  buildCountryEvolutionFullBodyPrompt(g0Interviewed),
+  /PERSONALITY IN THE POSE: chaotic, /,
+);
+assert.match(buildCountryEvolutionFullBodyPrompt(g0Interviewed), /on wins it zoomies lap;/);
+// Remix pick is digest-stable per art_version and gated to visual_reroll only.
+const g0RerollNextVersion = genesisEvolutionFixture("visual_reroll");
+g0RerollNextVersion.art_version = 2;
+assert.notEqual(
+  buildCountryEvolutionFullBodyPrompt(g0RerollNextVersion),
+  g0RerollPrompt,
+  "a new art_version must be able to move the remix digest",
+);
+const g0Ascension = genesisEvolutionFixture("ascension");
+const g0AscensionPrompt = buildCountryEvolutionFullBodyPrompt(g0Ascension);
+assertCountryEvolutionPromptQuality(g0AscensionPrompt);
+assert.doesNotMatch(g0AscensionPrompt, /REMIX TARGET/);
+assert.match(g0AscensionPrompt, /PERSONALITY IN THE POSE: /);
+assert.match(g0AscensionPrompt, /EVOLUTION REASON: ascension/);
+
 const packagedBodiesDir = fileURLToPath(new URL("../assets/base_bodies/", import.meta.url));
 const bodyFilenames = new Set(Object.values(BREED_BASE_BODIES).flatMap((breeds) => Object.values(breeds)));
 assert.equal(bodyFilenames.size, 47, "the 48 breed slots should resolve to 47 bodies because Pungsan is shared");
@@ -111,17 +156,26 @@ const packagedReference = await resolveCountryMintReference(genesis);
 assert.equal(packagedReference.source, "breed-local:indian_pariah.png");
 assert.equal(packagedReference.contentType, "image/png");
 
+const goldenPrompts: Record<string, string> = {
+  ...first,
+  g0_evolution_visual_reroll: g0RerollPrompt,
+  g0_evolution_ascension: g0AscensionPrompt,
+};
 const hashes = Object.fromEntries(
-  Object.entries(first).map(([key, value]) => [
+  Object.entries(goldenPrompts).map(([key, value]) => [
     key,
     createHash("sha256").update(value).digest("hex").slice(0, 16),
   ]),
 );
+// Golden hashes for pet-prompt-v3-g0-personalized. Re-bake deliberately on
+// any prompt change and bump PET_PROMPT_VERSION with it.
 assert.deepEqual(hashes, {
-  full_body: "0118396fdca8a24a",
-  dp: "8353fbea399033a7",
-  expression_sheet: "929e9b1a84c8449c",
-  rare_card: "4918cc02aa3c6315",
+  full_body: "5593809c7adcc921",
+  dp: "e891985b4d8a6d98",
+  expression_sheet: "91813184d7be94a6",
+  rare_card: "5c4f9a2af0701bba",
+  g0_evolution_visual_reroll: "8944646f0ab256dd",
+  g0_evolution_ascension: "f8e74d7830ba1466",
 });
 
 console.log("pet prompts OK");

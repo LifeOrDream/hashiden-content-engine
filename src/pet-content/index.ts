@@ -2,6 +2,7 @@ export * from "./catalog.js";
 export * from "./contracts.js";
 export * from "./traitSeed.js";
 export * from "./countryMint.js";
+export * from "./personalization.js";
 export * from "./identityValidation.js";
 export * from "./prompts.js";
 export * from "./media.js";

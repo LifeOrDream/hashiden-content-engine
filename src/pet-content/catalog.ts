@@ -1,4 +1,7 @@
-export const PET_PROMPT_VERSION = "pet-prompt-v2-country-breed";
+// v3: G0 country-breed evolution prompts now carry the effective-DNA
+// personalization slots (PERSONALITY IN THE POSE / CONDUCT / REMIX TARGET),
+// so interview-steered art regenerates instead of deduping against v2 output.
+export const PET_PROMPT_VERSION = "pet-prompt-v3-g0-personalized";
 export const PET_CONTRACT_VERSION = "pet-content-v2";
 
 export const PET_JOB_KINDS = [

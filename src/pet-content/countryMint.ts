@@ -8,6 +8,11 @@ import {
 } from "../prompts/index.js";
 import type { PetVisualPacket } from "./contracts.js";
 import {
+  conductLine,
+  personalityPoseLine,
+  visualRemixTarget,
+} from "./personalization.js";
+import {
   decodeMintTraitSeed,
   visibleAppearance,
   type DecodedMintTraitSeed,
@@ -98,6 +103,21 @@ CRITICAL OUTPUT RULES:
 - Character fills most of a 3:4 portrait frame`;
 }
 
+function countryEvolutionPersonalityBlock(packet: PetVisualPacket): string {
+  const lines = [
+    personalityPoseLine(packet),
+    conductLine(packet),
+    "Show personality only through stance, expression, ear and tail attitude, and micro-pose. It must never change breed anatomy, face geometry, markings, palette, outfit, or equipment.",
+  ];
+  if (packet.evolution_reason === "visual_reroll") {
+    lines.push(
+      `REMIX TARGET: ${visualRemixTarget(packet)}.`,
+      "Change only that one non-core accent. Do not stack accessories or redesign the character.",
+    );
+  }
+  return lines.join("\n");
+}
+
 export function buildCountryEvolutionFullBodyPrompt(packet: PetVisualPacket): string {
   const reason = packet.evolution_reason || "ascension";
   return `REFERENCE IMAGE PROVIDED: The attached image is this exact HashBeast before a ${reason.replace(/_/g, " ")} update.
@@ -105,6 +125,8 @@ export function buildCountryEvolutionFullBodyPrompt(packet: PetVisualPacket): st
 Preserve the same individual character: exact dog breed anatomy, face geometry, recognizable markings, country identity, pixel-art medium, pixel density, standing posture, and facing direction. Apply only the updated on-chain country-role appearance and ascension traits below.
 
 ${archivedCharacterPrompt(packet)}
+
+${countryEvolutionPersonalityBlock(packet)}
 
 EVOLUTION REASON: ${reason}
 CHARACTER ID: HashBeast #${packet.mint.slice(0, 8)}
@@ -256,6 +278,20 @@ export function assertCountryMintPromptQuality(prompt: string): void {
     }
   }
   if (prompt.length > 12_000) throw new Error("country mint prompt exceeds 12000 characters");
+}
+
+export function assertCountryEvolutionPromptQuality(prompt: string): void {
+  assertCountryMintPromptQuality(prompt);
+  const normalized = prompt.toLowerCase();
+  for (const required of [
+    "same recognizable hashbeast",
+    "personality in the pose",
+    "conduct:",
+  ]) {
+    if (!normalized.includes(required)) {
+      throw new Error(`country evolution prompt is missing quality rule: ${required}`);
+    }
+  }
 }
 
 export function assertCountryDpPromptQuality(prompt: string): void {
